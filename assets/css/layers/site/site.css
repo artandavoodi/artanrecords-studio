@@ -1,0 +1,41 @@
+/* ARTANDAVOODI · Shared rails, navigation and catalogue controls. */
+.site-navigation, main, .site-footer, .site-status {
+  inline-size: var(--cv-page-width);
+  margin-inline: auto;
+}
+.site-navigation, .site-navigation nav, .record-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+.site-navigation { justify-content: space-between; padding-block: var(--spacing-lg); }
+.site-navigation a, .site-footer a { text-decoration: none; }
+.site-navigation nav a, .site-footer, .eyebrow {
+  font-size: var(--site-type-caption-size);
+  font-weight: var(--site-type-label-weight);
+  letter-spacing: var(--site-type-label-tracking);
+  text-transform: uppercase;
+}
+.site-navigation nav a { color: var(--cv-text-secondary); }
+.site-navigation nav a:hover, .site-navigation nav a[aria-current] { color: var(--cv-text-primary); }
+.skip-link:not(:focus) { position: absolute; inline-size: 0; block-size: 0; overflow: hidden; }
+.site-section { display: grid; gap: var(--spacing-xl); padding-block: var(--cv-page-padding-block); }
+.site-footer { display: grid; justify-items: center; gap: var(--spacing-xl); padding-block: var(--spacing-xl); color: var(--cv-text-secondary); }
+.control {
+  padding: var(--spacing-sm) var(--spacing-md);
+  min-block-size: var(--control-height-md);
+  color: var(--cv-text-primary);
+  background: transparent;
+  border: var(--border-width-hairline) solid var(--cv-border);
+  border-radius: var(--shape-control-radius);
+}
+.control:hover, .control[aria-pressed='true'] { background: var(--control-bg-hover); }
+.catalogue { display: grid; gap: var(--spacing-3xl); }
+.catalogue-record { display: grid; gap: var(--spacing-md); }
+.catalogue img { border-radius: var(--shape-card-radius); }
+.site-status { padding-block: var(--spacing-lg); }
+img[data-monochrome] { filter: var(--site-monochrome-icon-filter); }
+.site-back-link { display: inline-grid; place-items: center; justify-self: start; inline-size: var(--control-height-sm); block-size: var(--control-height-sm); appearance: none; border: 0; padding: 0; background: transparent; color: var(--cv-text-primary); text-decoration: none; cursor: pointer; transition: opacity var(--duration-base) var(--ease-standard); }
+.site-back-link img { inline-size: var(--icon-size-md); block-size: var(--icon-size-md); }
+.site-back-link:hover { opacity: var(--opacity-muted); }

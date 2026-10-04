@@ -1,0 +1,9 @@
+/* Canonical artistic navigation motion: distributed to artist and label sites. */
+:root {
+  --site-header-motion-duration: 420ms;
+  --site-header-motion-offset: 0.5rem;
+  --site-menu-motion-duration: 560ms;
+  --site-menu-motion-offset: 0.35rem;
+  --site-menu-motion-stagger: 60ms;
+  --site-navigation-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}

@@ -1,0 +1,11 @@
+/* Surface layout only. The label owns all brand values and scales. */
+.surface header, .surface-section, .surface-card, .surface-search { display: grid; gap: var(--spacing-md); min-inline-size: 0; }
+.surface-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--featured-card-width)), 1fr)); gap: var(--spacing-xl); }
+.surface-card { align-content: start; padding-block: var(--spacing-lg); border-block-start: var(--border-width-hairline) solid var(--cv-border); }
+.surface-card a { text-decoration: none; }
+.surface-section { max-inline-size: var(--cv-reading-width); scroll-margin-block-start: var(--site-header-height); }
+.surface-status { color: var(--cv-text-secondary); font-size: var(--site-type-caption-size); }
+.surface { overflow-wrap: anywhere; }
+.surface-search { max-inline-size: var(--cv-reading-width); }
+.surface-search input { inline-size: 100%; min-inline-size: 0; font: inherit; }
+.surface-search [data-search-results] { display: grid; gap: var(--spacing-lg); }

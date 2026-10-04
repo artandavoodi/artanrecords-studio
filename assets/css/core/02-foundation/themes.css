@@ -1,0 +1,306 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) ROOT THEME FALLBACK TOKENS
+   03) DARK MODE THEME TOKENS
+   04) LIGHT MODE THEME TOKENS
+   05) SYSTEM MODE THEME TOKENS
+   06) CUSTOM MODE THEME TOKENS
+   07) CONTRAST MODIFIER TOKENS
+   08) CUSTOM COLOR OUTPUT TOKENS
+   09) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/02-foundation/themes.css */
+
+/* =============================================================================
+   02) ROOT THEME FALLBACK TOKENS
+============================================================================= */
+:root{
+  color-scheme:dark;
+
+  --theme-mode:dark;
+  --theme-effective-mode:dark;
+  --theme-contrast:standard;
+
+  --bg-color:var(--color-black);
+  --text-color:var(--color-white);
+  --text-primary-color:var(--text-color);
+  --text-secondary-color:var(--color-primary3);
+  --link-color:var(--color-primary5);
+  --link-hover-color:var(--color-primary6);
+  --border-color:rgba(255,255,255,0.14);
+  --border-color-base:rgba(255,255,255,0.14);
+
+  --surface-primary:var(--surface-1);
+  --surface-secondary:var(--surface-2);
+  --surface-tertiary:var(--surface-3);
+  --surface-elevated:rgba(10,10,10,0.72);
+  --surface-glass:rgba(10,10,10,0.56);
+
+  --control-bg:rgba(255,255,255,0.04);
+  --control-bg-hover:rgba(255,255,255,0.08);
+  --control-border:rgba(255,255,255,0.14);
+  --control-border-strong:rgba(255,255,255,0.22);
+  --control-border-base:rgba(255,255,255,0.14);
+  --control-border-strong-base:rgba(255,255,255,0.22);
+
+  --field-bg:rgba(255,255,255,0.03);
+  --field-bg-focus:rgba(255,255,255,0.05);
+  --field-border:rgba(255,255,255,0.14);
+  --field-border-focus:rgba(255,255,255,0.26);
+  --field-border-base:rgba(255,255,255,0.14);
+  --field-border-focus-base:rgba(255,255,255,0.26);
+
+  --overlay-backdrop:var(--overlay-backdrop-dark);
+
+  --menu-surface:rgba(0,0,0,0.94);
+  --menu-surface-strong:rgba(0,0,0,0.92);
+  --menu-border:rgba(255,255,255,0.18);
+  --menu-sep:rgba(255,255,255,0.14);
+
+  --hover-overlay-bg:var(--color-white);
+  --hover-overlay-text:var(--color-black);
+
+  --theme-accent-color:var(--link-color);
+  --theme-accent-hover-color:var(--link-hover-color);
+  --theme-custom-bg-color:var(--bg-color);
+  --theme-custom-text-color:var(--text-color);
+  --theme-custom-surface-color:var(--surface-primary);
+  --theme-custom-border-color:var(--border-color);
+
+  --digital-brain-stage-bg:var(--bg-color);
+  --digital-brain-cortex-base:color-mix(in srgb, var(--color-secondary6) 48%, var(--color-black) 52%);
+  --digital-brain-cortex-border:color-mix(in srgb, var(--color-white) 36%, transparent);
+  --digital-brain-cortex-fold:color-mix(in srgb, var(--color-white) 30%, transparent);
+  --digital-brain-cortex-midline:color-mix(in srgb, var(--color-primary5) 34%, var(--color-white) 20%);
+  --digital-brain-brainstem:color-mix(in srgb, var(--color-secondary2) 42%, var(--color-black) 58%);
+  --digital-brain-region-frontal:color-mix(in srgb, var(--status-success-color) 36%, var(--digital-brain-cortex-base) 64%);
+  --digital-brain-region-parietal:color-mix(in srgb, var(--color-primary5) 30%, var(--digital-brain-cortex-base) 70%);
+  --digital-brain-region-temporal:color-mix(in srgb, var(--status-warning-color) 38%, var(--digital-brain-cortex-base) 62%);
+  --digital-brain-region-occipital:color-mix(in srgb, var(--text-secondary-color) 30%, var(--digital-brain-cortex-base) 70%);
+  --digital-brain-region-limbic:color-mix(in srgb, var(--status-danger-color) 32%, var(--digital-brain-cortex-base) 68%);
+  --digital-brain-layer-identity:color-mix(in srgb, var(--color-primary9) 42%, var(--digital-brain-cortex-base) 58%);
+  --digital-brain-layer-source:color-mix(in srgb, var(--status-success-color) 48%, var(--digital-brain-cortex-base) 52%);
+  --digital-brain-layer-personality:color-mix(in srgb, var(--color-primary10) 52%, var(--digital-brain-cortex-base) 48%);
+  --digital-brain-layer-memory:color-mix(in srgb, var(--color-primary5) 50%, var(--digital-brain-cortex-base) 50%);
+  --digital-brain-layer-voice:color-mix(in srgb, var(--status-danger-color) 42%, var(--digital-brain-cortex-base) 58%);
+}
+
+/* =============================================================================
+   03) DARK MODE THEME TOKENS
+============================================================================= */
+html[data-theme="dark"],
+html[data-theme="system"][data-theme-effective="dark"],
+html[data-theme="custom"][data-theme-effective="dark"]{
+  color-scheme:dark;
+
+  --theme-mode:dark;
+  --theme-effective-mode:dark;
+
+  --bg-color:var(--color-black);
+  --text-color:var(--color-white);
+  --text-primary-color:var(--text-color);
+  --text-secondary-color:var(--color-primary3);
+  --link-color:var(--color-primary5);
+  --link-hover-color:var(--color-primary6);
+  --border-color:rgba(255,255,255,0.14);
+  --border-color-base:rgba(255,255,255,0.14);
+
+  --surface-primary:var(--surface-1);
+  --surface-secondary:var(--surface-2);
+  --surface-tertiary:var(--surface-3);
+  --surface-elevated:rgba(10,10,10,0.72);
+  --surface-glass:rgba(10,10,10,0.56);
+
+  --control-bg:rgba(255,255,255,0.04);
+  --control-bg-hover:rgba(255,255,255,0.08);
+  --control-border:rgba(255,255,255,0.14);
+  --control-border-strong:rgba(255,255,255,0.22);
+  --control-border-base:rgba(255,255,255,0.14);
+  --control-border-strong-base:rgba(255,255,255,0.22);
+
+  --field-bg:rgba(255,255,255,0.03);
+  --field-bg-focus:rgba(255,255,255,0.05);
+  --field-border:rgba(255,255,255,0.14);
+  --field-border-focus:rgba(255,255,255,0.26);
+  --field-border-base:rgba(255,255,255,0.14);
+  --field-border-focus-base:rgba(255,255,255,0.26);
+
+  --overlay-backdrop:var(--overlay-backdrop-dark);
+
+  --menu-surface:rgba(0,0,0,0.94);
+  --menu-surface-strong:rgba(0,0,0,0.92);
+  --menu-border:rgba(255,255,255,0.18);
+  --menu-sep:rgba(255,255,255,0.14);
+
+  --digital-brain-stage-bg:var(--bg-color);
+  --digital-brain-cortex-base:color-mix(in srgb, var(--color-secondary6) 48%, var(--color-black) 52%);
+  --digital-brain-cortex-border:color-mix(in srgb, var(--color-white) 36%, transparent);
+  --digital-brain-cortex-fold:color-mix(in srgb, var(--color-white) 30%, transparent);
+  --digital-brain-cortex-midline:color-mix(in srgb, var(--color-primary5) 34%, var(--color-white) 20%);
+  --digital-brain-brainstem:color-mix(in srgb, var(--color-secondary2) 42%, var(--color-black) 58%);
+  --digital-brain-region-frontal:color-mix(in srgb, var(--status-success-color) 36%, var(--digital-brain-cortex-base) 64%);
+  --digital-brain-region-parietal:color-mix(in srgb, var(--color-primary5) 30%, var(--digital-brain-cortex-base) 70%);
+  --digital-brain-region-temporal:color-mix(in srgb, var(--status-warning-color) 38%, var(--digital-brain-cortex-base) 62%);
+  --digital-brain-region-occipital:color-mix(in srgb, var(--text-secondary-color) 30%, var(--digital-brain-cortex-base) 70%);
+  --digital-brain-region-limbic:color-mix(in srgb, var(--status-danger-color) 32%, var(--digital-brain-cortex-base) 68%);
+  --digital-brain-layer-identity:color-mix(in srgb, var(--color-primary9) 42%, var(--digital-brain-cortex-base) 58%);
+  --digital-brain-layer-source:color-mix(in srgb, var(--status-success-color) 48%, var(--digital-brain-cortex-base) 52%);
+  --digital-brain-layer-personality:color-mix(in srgb, var(--color-primary10) 52%, var(--digital-brain-cortex-base) 48%);
+  --digital-brain-layer-memory:color-mix(in srgb, var(--color-primary5) 50%, var(--digital-brain-cortex-base) 50%);
+  --digital-brain-layer-voice:color-mix(in srgb, var(--status-danger-color) 42%, var(--digital-brain-cortex-base) 58%);
+}
+
+/* =============================================================================
+   04) LIGHT MODE THEME TOKENS
+============================================================================= */
+html[data-theme="light"],
+html[data-theme="system"][data-theme-effective="light"],
+html[data-theme="custom"][data-theme-effective="light"]{
+  color-scheme:light;
+
+  --theme-mode:light;
+  --theme-effective-mode:light;
+
+  --bg-color:var(--color-white);
+  --text-color:var(--color-black);
+  --text-primary-color:var(--text-color);
+  --text-secondary-color:var(--color-black);
+  --link-color:var(--color-primary5);
+  --link-hover-color:var(--color-primary6);
+  --border-color:rgba(0,0,0,0.14);
+  --border-color-base:rgba(0,0,0,0.14);
+
+  --surface-primary:var(--surface-inverse-1);
+  --surface-secondary:var(--surface-inverse-2);
+  --surface-tertiary:var(--surface-inverse-3);
+  --surface-elevated:rgba(255,255,255,0.78);
+  --surface-glass:rgba(255,255,255,0.6);
+
+  --control-bg:rgba(0,0,0,0.03);
+  --control-bg-hover:rgba(0,0,0,0.06);
+  --control-border:rgba(0,0,0,0.14);
+  --control-border-strong:rgba(0,0,0,0.2);
+  --control-border-base:rgba(0,0,0,0.14);
+  --control-border-strong-base:rgba(0,0,0,0.2);
+
+  --field-bg:rgba(0,0,0,0.02);
+  --field-bg-focus:rgba(0,0,0,0.035);
+  --field-border:rgba(0,0,0,0.14);
+  --field-border-focus:rgba(0,0,0,0.24);
+  --field-border-base:rgba(0,0,0,0.14);
+  --field-border-focus-base:rgba(0,0,0,0.24);
+
+  --overlay-backdrop:var(--overlay-backdrop-light);
+
+  --menu-surface:rgba(255,255,255,0.92);
+  --menu-surface-strong:rgba(255,255,255,0.88);
+  --menu-border:rgba(0,0,0,0.14);
+  --menu-sep:rgba(0,0,0,0.12);
+
+  --hover-overlay-bg:var(--color-black);
+  --hover-overlay-text:var(--color-white);
+
+  --digital-brain-stage-bg:var(--bg-color);
+  --digital-brain-cortex-base:color-mix(in srgb, var(--color-secondary6) 42%, var(--color-white) 58%);
+  --digital-brain-cortex-border:color-mix(in srgb, var(--color-black) 30%, transparent);
+  --digital-brain-cortex-fold:color-mix(in srgb, var(--color-black) 22%, transparent);
+  --digital-brain-cortex-midline:color-mix(in srgb, var(--color-primary5) 32%, var(--color-black) 16%);
+  --digital-brain-brainstem:color-mix(in srgb, var(--color-secondary2) 30%, var(--color-white) 70%);
+  --digital-brain-region-frontal:color-mix(in srgb, var(--status-success-color) 24%, var(--digital-brain-cortex-base) 76%);
+  --digital-brain-region-parietal:color-mix(in srgb, var(--color-primary5) 18%, var(--digital-brain-cortex-base) 82%);
+  --digital-brain-region-temporal:color-mix(in srgb, var(--status-warning-color) 26%, var(--digital-brain-cortex-base) 74%);
+  --digital-brain-region-occipital:color-mix(in srgb, var(--color-secondary2) 18%, var(--digital-brain-cortex-base) 82%);
+  --digital-brain-region-limbic:color-mix(in srgb, var(--status-danger-color) 22%, var(--digital-brain-cortex-base) 78%);
+  --digital-brain-layer-identity:color-mix(in srgb, var(--color-primary9) 34%, var(--digital-brain-cortex-base) 66%);
+  --digital-brain-layer-source:color-mix(in srgb, var(--status-success-color) 36%, var(--digital-brain-cortex-base) 64%);
+  --digital-brain-layer-personality:color-mix(in srgb, var(--color-primary10) 42%, var(--digital-brain-cortex-base) 58%);
+  --digital-brain-layer-memory:color-mix(in srgb, var(--color-primary5) 34%, var(--digital-brain-cortex-base) 66%);
+  --digital-brain-layer-voice:color-mix(in srgb, var(--status-danger-color) 32%, var(--digital-brain-cortex-base) 68%);
+}
+
+/* =============================================================================
+   05) SYSTEM MODE THEME TOKENS
+============================================================================= */
+html[data-theme="system"]{
+  --theme-mode:system;
+}
+
+/* =============================================================================
+   06) CUSTOM MODE THEME TOKENS
+============================================================================= */
+html[data-theme="custom"]{
+  --theme-mode:custom;
+}
+
+/* =============================================================================
+   07) CONTRAST MODIFIER TOKENS
+============================================================================= */
+html[data-theme-contrast="low"]{
+  --theme-contrast:low;
+  --border-color:color-mix(in srgb,var(--border-color-base) 52%,transparent);
+  --control-border:color-mix(in srgb,var(--control-border-base) 52%,transparent);
+  --control-border-strong:color-mix(in srgb,var(--control-border-strong-base) 52%,transparent);
+  --field-border:color-mix(in srgb,var(--field-border-base) 52%,transparent);
+  --field-border-focus:color-mix(in srgb,var(--field-border-focus-base) 52%,transparent);
+}
+
+html[data-theme-contrast="standard"]{
+  --theme-contrast:standard;
+}
+
+html[data-theme-contrast="high"]{
+  --theme-contrast:high;
+  --border-color:color-mix(in srgb,var(--border-color-base) 72%,var(--text-color));
+  --control-border:color-mix(in srgb,var(--control-border-base) 72%,var(--text-color));
+  --control-border-strong:color-mix(in srgb,var(--control-border-strong-base) 72%,var(--text-color));
+  --field-border:color-mix(in srgb,var(--field-border-base) 72%,var(--text-color));
+  --field-border-focus:color-mix(in srgb,var(--field-border-focus-base) 72%,var(--text-color));
+}
+
+/* =============================================================================
+   08) CUSTOM COLOR OUTPUT TOKENS
+============================================================================= */
+html[data-theme="custom"]{
+  --bg-color:var(--theme-custom-bg-color);
+  --text-color:var(--theme-custom-text-color);
+  --text-primary-color:var(--theme-custom-text-color);
+  --text-secondary-color:color-mix(in srgb,var(--theme-custom-text-color) 72%,var(--theme-custom-bg-color));
+  --link-color:var(--theme-accent-color);
+  --link-hover-color:var(--theme-accent-hover-color);
+  --border-color:var(--theme-custom-border-color);
+  --border-color-base:var(--theme-custom-border-color);
+
+  --surface-primary:var(--theme-custom-surface-color);
+  --surface-secondary:color-mix(in srgb,var(--theme-custom-surface-color) 92%,var(--theme-custom-text-color));
+  --surface-tertiary:color-mix(in srgb,var(--theme-custom-surface-color) 84%,var(--theme-custom-text-color));
+  --surface-elevated:color-mix(in srgb,var(--theme-custom-surface-color) 88%,transparent);
+  --surface-glass:color-mix(in srgb,var(--theme-custom-surface-color) 72%,transparent);
+
+  --control-bg:color-mix(in srgb,var(--theme-custom-surface-color) 92%,var(--theme-custom-text-color));
+  --control-bg-hover:color-mix(in srgb,var(--theme-custom-surface-color) 84%,var(--theme-custom-text-color));
+  --control-border:var(--theme-custom-border-color);
+  --control-border-strong:color-mix(in srgb,var(--theme-custom-border-color) 72%,var(--theme-custom-text-color));
+  --control-border-base:var(--theme-custom-border-color);
+  --control-border-strong-base:color-mix(in srgb,var(--theme-custom-border-color) 72%,var(--theme-custom-text-color));
+
+  --field-bg:color-mix(in srgb,var(--theme-custom-surface-color) 96%,var(--theme-custom-text-color));
+  --field-bg-focus:color-mix(in srgb,var(--theme-custom-surface-color) 88%,var(--theme-custom-text-color));
+  --field-border:var(--theme-custom-border-color);
+  --field-border-focus:color-mix(in srgb,var(--theme-custom-border-color) 64%,var(--theme-custom-text-color));
+  --field-border-base:var(--theme-custom-border-color);
+  --field-border-focus-base:color-mix(in srgb,var(--theme-custom-border-color) 64%,var(--theme-custom-text-color));
+
+  --menu-surface:color-mix(in srgb,var(--theme-custom-bg-color) 94%,transparent);
+  --menu-surface-strong:color-mix(in srgb,var(--theme-custom-bg-color) 88%,transparent);
+  --menu-border:var(--theme-custom-border-color);
+  --menu-sep:color-mix(in srgb,var(--theme-custom-border-color) 76%,transparent);
+}
+
+/* =============================================================================
+   09) END OF FILE
+============================================================================= */

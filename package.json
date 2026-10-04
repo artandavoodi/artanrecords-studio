@@ -1,0 +1,12 @@
+{
+  "name": "artanrecords-studio",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node foundation/build.mjs",
+    "check": "node tools/check.mjs"
+  }
+}

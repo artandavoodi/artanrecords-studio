@@ -1,0 +1,47 @@
+/* ARTANDAVOODI · Semantic bridge to existing approved tokens.
+   Replaces unresolved legacy CV alias targets; defines no new visual values. */
+:root {
+  /* Separator motion from artan-live's focus/detail reveal owner. */
+  --site-divider-duration: 920ms;
+  --site-divider-stagger: 90ms;
+  /* Reference tooltip geometry shared by icon actions. */
+  --site-tooltip-overlap: 0.1rem;
+  --site-tooltip-offset: 0.12rem;
+  --site-tooltip-width: min(20rem, 72vw);
+  /* Exact navigation geometry and menu type from artan-live/site.css. */
+  --site-menu-button-size: 1.1rem;
+  --site-menu-line-size: 1rem;
+  --site-menu-line-offset: 0.18rem;
+  --site-header-height: calc(var(--spacing-lg) * 2 + var(--site-menu-button-size) + env(safe-area-inset-top, 0px));
+  --site-menu-type-size: min(5rem, max(2.2rem, 7vw));
+  --site-menu-type-tracking: -0.04em;
+  --site-menu-type-leading: 0.98;
+  --site-menu-type-size-mobile: min(12vw, 3.2rem);
+  --artist-portrait-width: 22rem;
+  --featured-card-width: 14rem;
+  --cv-motion-duration: var(--duration-base);
+  --cv-motion-ease: var(--ease-standard);
+  --site-monochrome-icon-filter: none;
+  --cv-page-bg: var(--bg-color);
+  --cv-text-primary: var(--text-primary-color);
+  --cv-text-secondary: var(--text-secondary-color);
+  --cv-border: var(--border-color);
+  --cv-page-width: var(--site-rail-width);
+  --cv-reading-width: min(var(--reading-width-md), var(--site-rail-width));
+  --cv-page-padding-block: var(--section-padding-y);
+  --cv-font-base: var(--font-base);
+  --cv-font-caption: var(--font-size-caption);
+  --cv-line-body: var(--line-height-body);
+  --cv-letter-label: var(--tracking-label);
+  --cv-opacity-none: 0;
+  --cv-opacity-full: var(--opacity-full);
+}
+/* Breakpoint retained from the audited artan-live semantic bridge. */
+html[data-theme-effective='dark'] { --site-monochrome-icon-filter: invert(1); }
+@media (max-width: 860px) {
+  :root {
+    --cv-page-width: var(--site-rail-width-mobile);
+    --cv-reading-width: min(var(--reading-width-md), var(--site-rail-width-mobile));
+    --cv-page-padding-block: var(--section-padding-y-mobile);
+  }
+}

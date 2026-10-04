@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "name": "Artan Records",
+  "foundingDate": "2025",
+  "foundingLabel": "Founded",
+  "logoAlt": "Artan Records logo",
+  "domain": "https://artanrecords.com",
+  "description": "An independent record label for artists, recordings and creative collaboration. Music first. A lasting home for the work.",
+  "founder": {
+    "artistId": "artan-davoodi",
+    "name": "Artan Davoodi",
+    "alternateName": "Saeed Davoodi"
+  },
+  "logo": "assets/brand/logo/artan-records-symbol-black.svg",
+  "logoAssets": {
+    "wordmark": "assets/brand/logo/artan-records-wordmark.svg",
+    "wordmarkBlack": "assets/brand/logo/artan-records-wordmark-black.svg",
+    "wordmarkWhite": "assets/brand/logo/artan-records-wordmark-white.svg",
+    "wordmarkPng": "assets/brand/logo/artan-records-wordmark.png",
+    "symbolWhite": "assets/brand/logo/artan-records-symbol-white.svg"
+  },
+  "artistWebsite": "https://artandavoodi.com/",
+  "publicHub": "https://artan.live/",
+  "contact": [
+    { "label": "Contact", "url": "mailto:contact@artanrecords.com", "icon": "email" },
+    { "label": "Collaborations", "url": "mailto:collaborate@artanrecords.com", "icon": "email" }
+  ],
+  "navigation": [
+    { "label": "Home", "path": "/", "fragment": "home" },
+    { "label": "Releases", "path": "/releases/", "fragment": "releases" },
+    { "label": "Artists", "path": "/artists/", "fragment": "artists" },
+    { "label": "For artists", "path": "/for-artists/", "fragment": "for-artists" },
+    { "label": "About", "path": "/about/", "fragment": "about" },
+    { "label": "Contact", "path": "/contact/", "fragment": "contact" }
+  ],
+  "about": "Artan Records is an independent record label built around artists and their recordings. We bring music, credits, artwork and release information together, giving the work a clear and lasting home.",
+  "principle": "The infrastructure serves the art. We welcome music and creative collaborations through a considered, human-reviewed process. Each project begins with the work and the person behind it, not an automatic upload pipeline.",
+  "history": "Founded in 2025 by Artan Davoodi, Artan Records began with his recordings and is opening a wider conversation with artists and collaborators. The catalog is a beginning, not a boundary.",
+  "labels": {
+    "skip": "Skip to content", "menuOpen": "Open site menu", "menuClose": "Close site menu",
+    "dark": "Dark appearance", "light": "Light appearance", "back": "Back to releases",
+    "tracks": "Tracks", "artistWebsite": "Artist website", "publicHub": "Public hub",
+    "notFound": "Page not found", "returnHome": "Return home"
+  }
+}

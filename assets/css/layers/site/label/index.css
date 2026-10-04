@@ -1,0 +1,70 @@
+/* Label composition consumes the shared source tokens, not a parallel scale. */
+.label-introduction { align-content: start; }
+.label-introduction > div { display: grid; gap: var(--spacing-md); }
+html:has(main[data-fragment="home"]) { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+main[data-fragment="home"] > .site-section { min-block-size: calc(var(--section-min-height-stable) - var(--site-header-height)); align-content: center; scroll-snap-align: start; scroll-snap-stop: always; }
+html:has(main[data-fragment="home"]) [data-fragment="footer"] { scroll-snap-align: end; }
+@media (max-width: 860px), (prefers-reduced-motion: reduce) {
+  html:has(main[data-fragment="home"]) { scroll-snap-type: none; }
+  main[data-fragment="home"] > .site-section { scroll-snap-align: none; scroll-snap-stop: normal; }
+}
+.discovery-feature a { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--featured-card-width)), 1fr)); gap: var(--spacing-xl); align-items: center; text-decoration: none; padding: var(--spacing-lg); border-radius: var(--shape-card-radius); background: var(--control-bg-hover); }
+.discovery-feature img { aspect-ratio: 1; object-fit: cover; border-radius: var(--shape-card-radius); }
+.discovery-feature a > div { display: grid; gap: var(--spacing-md); }
+.reading { max-inline-size: var(--cv-reading-width); }
+.information-links { display: flex; flex-wrap: wrap; gap: var(--spacing-md) var(--spacing-lg); }
+.information-page header, .information-page section { display: grid; gap: var(--spacing-md); max-inline-size: var(--cv-reading-width); }
+.information-page section { scroll-margin-block-start: var(--site-header-height); }
+.information-page { overflow-wrap: anywhere; }
+.artist-intake { display: grid; gap: var(--spacing-xl); }
+.artist-intake__channel { display: grid; gap: var(--spacing-md); }
+.artist-enquiry { max-inline-size: var(--cv-reading-width); }
+.artist-enquiry summary { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); cursor: pointer; padding-block: var(--spacing-md); list-style: none; }
+.artist-enquiry summary::-webkit-details-marker { display: none; }
+.artist-enquiry summary > img { inline-size: var(--icon-size-md); transition: transform var(--duration-base) var(--ease-standard); }
+.artist-enquiry[open] > summary > img { transform: rotate(90deg); }
+.artist-enquiry__information { display: grid; justify-items: start; gap: var(--spacing-sm); overflow-wrap: anywhere; }
+.artist-enquiry form, .artist-enquiry__field { display: grid; gap: var(--spacing-sm); }
+.artist-enquiry form { gap: var(--spacing-lg); padding-block: var(--spacing-lg); }
+.artist-enquiry input:not([type="checkbox"]), .artist-enquiry textarea, .artist-enquiry select { inline-size: 100%; min-inline-size: 0; box-sizing: border-box; padding: var(--spacing-sm); border: var(--border-width-hairline) solid var(--cv-border); border-radius: var(--radius-md); background: var(--cv-page-bg); color: var(--cv-text-primary); font: inherit; }
+.artist-enquiry textarea { resize: vertical; }
+.artist-enquiry__consent { display: flex; align-items: baseline; gap: var(--spacing-sm); }
+.artist-enquiry button { justify-self: start; padding: var(--spacing-sm) var(--spacing-lg); border: 0; border-radius: var(--radius-md); background: var(--cv-text-primary); color: var(--cv-page-bg); font: inherit; cursor: pointer; }
+[data-fragment="artist"] > article > figure { inline-size: min(100%, var(--featured-card-width)); }
+.artist-card, .artist-link-groups, .artist-link-group { display: grid; gap: var(--spacing-md); }
+.artist-card a { display: flex; align-items: center; gap: var(--spacing-md); text-decoration: none; }
+.artist-card figure { flex: 0 0 var(--control-height-xl); inline-size: var(--control-height-xl); }
+.artist-card img, .artist-profile > figure img { aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-circle); }
+.artist-card h3 { min-inline-size: 0; overflow-wrap: anywhere; }
+.artist-facts div { display: flex; align-items: baseline; flex-wrap: wrap; gap: var(--spacing-sm); }
+.artist-facts dd { margin: 0; }
+.artist-facts dt, .artist-link-group h2 { font-size: var(--site-type-caption-size); }
+.artist-link-groups { gap: var(--spacing-xl); }
+.catalogue { grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--featured-card-width)), 1fr)); }
+.release-card { display: grid; align-content: start; gap: var(--spacing-md); max-inline-size: var(--featured-card-width); padding: var(--spacing-sm); border-radius: var(--shape-card-radius); transition: background var(--duration-base) var(--ease-standard); }
+.release-card:hover, .release-card:focus-within { background: var(--control-bg-hover); }
+.release-card a { display: grid; align-content: start; gap: var(--spacing-sm); text-decoration: none; }
+.release-card img { inline-size: var(--featured-card-width); aspect-ratio: 1; object-fit: cover; }
+.release > figure { inline-size: min(100%, var(--featured-card-width)); justify-self: center; }
+.release > header { text-align: center; }
+.release { min-inline-size: 0; grid-template-columns: minmax(0, 1fr); }
+.release > p { max-inline-size: var(--cv-reading-width); }
+.release dl { display: flex; flex-wrap: wrap; gap: var(--spacing-xl); }
+.release dd { margin: 0; }
+.release dt { font-size: var(--site-type-caption-size); text-transform: uppercase; }
+.release summary { display: flex; align-items: center; gap: var(--spacing-md); cursor: pointer; padding-block: var(--spacing-md); list-style: none; }
+.release summary::-webkit-details-marker { display: none; }
+.release summary > img { inline-size: var(--icon-size-md); margin-inline-start: auto; }
+.release details[open] > summary > img { transform: rotate(90deg); }
+.release details p { white-space: pre-line; margin-block: var(--spacing-md); max-inline-size: var(--cv-reading-width); }
+.release li { border-block-start: var(--border-width-hairline) solid var(--cv-border); }
+.release li a { text-decoration: none; }
+.streaming { display: flex; flex-wrap: wrap; gap: var(--spacing-md); }
+.label-wordmark { display: block; inline-size: min(100%, var(--featured-card-width)); block-size: auto; }
+.contact-links img { inline-size: var(--icon-size-md); block-size: var(--icon-size-md); }
+.contact-links { display: grid; gap: var(--spacing-lg); }
+.contact-links a { display: flex; align-items: center; gap: var(--spacing-md); text-decoration: none; }
+html:not([data-enhanced]) .site-menu { position: static; }
+html:not([data-enhanced]) .site-menu__surface { min-block-size: auto; padding-block: var(--spacing-lg); }
+html:not([data-enhanced]) .site-menu__links { display: flex; flex-wrap: wrap; }
+html:not([data-enhanced]) .site-menu__links a { font-size: var(--site-type-body-size); }

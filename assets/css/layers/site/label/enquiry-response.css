@@ -1,0 +1,8 @@
+/* Submission response uses the same foundation, typography and theme tokens. */
+.enquiry-response { min-block-size: 100vh; min-block-size: 100svh; display: grid; place-items: center; padding: var(--spacing-lg); box-sizing: border-box; }
+.enquiry-response__card { display: grid; justify-items: center; gap: var(--spacing-xl); inline-size: min(100%, var(--cv-reading-width)); margin: 0; padding: var(--spacing-xl); box-sizing: border-box; border: var(--border-width-hairline) solid var(--cv-border); border-radius: var(--shape-card-radius); text-align: center; }
+.enquiry-response__logo { inline-size: min(100%, var(--featured-card-width)); block-size: auto; }
+.enquiry-response__card h1 { font-size: var(--site-type-body-size); font-weight: var(--font-weight-regular); line-height: var(--line-height-body); }
+.enquiry-response__return { display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-sm); text-decoration: none; }
+.enquiry-response__return img { inline-size: var(--icon-size-md); block-size: var(--icon-size-md); filter: var(--site-monochrome-icon-filter); }
+.enquiry-response__return:hover { opacity: var(--opacity-muted); }

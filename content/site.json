@@ -1,0 +1,277 @@
+{
+  "name": "Artan Records Studio",
+  "domain": "https://studio.artanrecords.com",
+  "indexable": false,
+  "copyright": "© 2026 Artan Records",
+  "contentsLabel": "On this page",
+  "search": null,
+  "navigation": [
+    {
+      "label": "Overview",
+      "url": "/"
+    },
+    {
+      "label": "Artan Records",
+      "url": "https://artanrecords.com/"
+    },
+    {
+      "label": "Documentation",
+      "url": "https://docs.artanrecords.com/"
+    }
+  ],
+  "footer": [
+    {
+      "label": "Submit your music",
+      "url": "https://artanrecords.com/submit/"
+    },
+    {
+      "label": "Submission privacy",
+      "url": "https://artanrecords.com/submission-privacy/"
+    },
+    {
+      "label": "Contact",
+      "url": "mailto:contact@artanrecords.com"
+    }
+  ],
+  "pages": [
+    {
+      "path": "/",
+      "title": "Your artist workspace",
+      "description": "A foundation for artist operations. Private accounts and connected services are not yet available.",
+      "status": "Public foundation · Not an authenticated dashboard",
+      "sections": []
+    },
+    {
+      "path": "/releases/",
+      "title": "Releases",
+      "description": "Release submission and private asset storage are not available. Start with a reviewed enquiry on the label website.",
+      "category": "Workspace",
+      "sections": [
+        {
+          "id": "availability",
+          "title": "Prepare a release",
+          "paragraphs": [
+            "Release submission and private asset storage are not available. Start with a reviewed enquiry on the label website."
+          ]
+        },
+        {
+          "id": "guidance",
+          "title": "Read the guidance",
+          "paragraphs": [
+            "Understand the current process before sharing information."
+          ],
+          "links": [
+            {
+              "label": "Open artist guidance",
+              "url": "https://docs.artanrecords.com/release-workflow/"
+            }
+          ]
+        }
+      ],
+      "status": "Not connected"
+    },
+    {
+      "path": "/analytics/",
+      "title": "Analytics",
+      "description": "No streaming data source or artist account is connected. No statistics are shown or estimated.",
+      "category": "Workspace",
+      "sections": [
+        {
+          "id": "availability",
+          "title": "Understand listening data",
+          "paragraphs": [
+            "No streaming data source or artist account is connected. No statistics are shown or estimated."
+          ]
+        },
+        {
+          "id": "guidance",
+          "title": "Read the guidance",
+          "paragraphs": [
+            "Understand the current process before sharing information."
+          ],
+          "links": [
+            {
+              "label": "Open artist guidance",
+              "url": "https://docs.artanrecords.com/royalties/"
+            }
+          ]
+        }
+      ],
+      "status": "Not connected"
+    },
+    {
+      "path": "/royalties/",
+      "title": "Royalties",
+      "description": "No royalty imports, ledger or agreement-based calculations are connected. There is no balance to display.",
+      "category": "Workspace",
+      "sections": [
+        {
+          "id": "availability",
+          "title": "Read the financial context",
+          "paragraphs": [
+            "No royalty imports, ledger or agreement-based calculations are connected. There is no balance to display."
+          ]
+        },
+        {
+          "id": "guidance",
+          "title": "Read the guidance",
+          "paragraphs": [
+            "Understand the current process before sharing information."
+          ],
+          "links": [
+            {
+              "label": "Open artist guidance",
+              "url": "https://docs.artanrecords.com/royalties/"
+            }
+          ]
+        }
+      ],
+      "status": "Not connected"
+    },
+    {
+      "path": "/statements/",
+      "title": "Statements",
+      "description": "No private statements are hosted here. Ask the label about a statement through a confirmed contact channel.",
+      "category": "Workspace",
+      "sections": [
+        {
+          "id": "availability",
+          "title": "Keep a clear record",
+          "paragraphs": [
+            "No private statements are hosted here. Ask the label about a statement through a confirmed contact channel."
+          ]
+        },
+        {
+          "id": "guidance",
+          "title": "Read the guidance",
+          "paragraphs": [
+            "Understand the current process before sharing information."
+          ],
+          "links": [
+            {
+              "label": "Open artist guidance",
+              "url": "https://docs.artanrecords.com/royalties/"
+            }
+          ]
+        }
+      ],
+      "status": "Not connected"
+    },
+    {
+      "path": "/payouts/",
+      "title": "Payouts",
+      "description": "There is no payment provider or payout workflow connected. Do not send bank details through public enquiries.",
+      "category": "Workspace",
+      "sections": [
+        {
+          "id": "availability",
+          "title": "Payment information stays private",
+          "paragraphs": [
+            "There is no payment provider or payout workflow connected. Do not send bank details through public enquiries."
+          ]
+        },
+        {
+          "id": "guidance",
+          "title": "Read the guidance",
+          "paragraphs": [
+            "Understand the current process before sharing information."
+          ],
+          "links": [
+            {
+              "label": "Open artist guidance",
+              "url": "https://docs.artanrecords.com/payments/"
+            }
+          ]
+        }
+      ],
+      "status": "Not connected"
+    },
+    {
+      "path": "/agreements/",
+      "title": "Agreements",
+      "description": "No signed agreements or digital-signature service are available in this foundation.",
+      "category": "Workspace",
+      "sections": [
+        {
+          "id": "availability",
+          "title": "Review before signing",
+          "paragraphs": [
+            "No signed agreements or digital-signature service are available in this foundation."
+          ]
+        },
+        {
+          "id": "guidance",
+          "title": "Read the guidance",
+          "paragraphs": [
+            "Understand the current process before sharing information."
+          ],
+          "links": [
+            {
+              "label": "Open artist guidance",
+              "url": "https://docs.artanrecords.com/agreements/"
+            }
+          ]
+        }
+      ],
+      "status": "Not connected"
+    },
+    {
+      "path": "/profile/",
+      "title": "Artist profile",
+      "description": "Approved artist profiles are published by the label. Self-service profile editing is not yet available.",
+      "category": "Workspace",
+      "sections": [
+        {
+          "id": "availability",
+          "title": "Your public identity",
+          "paragraphs": [
+            "Approved artist profiles are published by the label. Self-service profile editing is not yet available."
+          ]
+        },
+        {
+          "id": "guidance",
+          "title": "Read the guidance",
+          "paragraphs": [
+            "Understand the current process before sharing information."
+          ],
+          "links": [
+            {
+              "label": "Open artist guidance",
+              "url": "https://docs.artanrecords.com/metadata/"
+            }
+          ]
+        }
+      ],
+      "status": "Not connected"
+    },
+    {
+      "path": "/settings/",
+      "title": "Account and privacy",
+      "description": "Account registration, sign-in, password management and tax onboarding are not available. Theme controls affect this browser only.",
+      "category": "Workspace",
+      "sections": [
+        {
+          "id": "availability",
+          "title": "A secure account comes first",
+          "paragraphs": [
+            "Account registration, sign-in, password management and tax onboarding are not available. Theme controls affect this browser only."
+          ]
+        },
+        {
+          "id": "guidance",
+          "title": "Read the guidance",
+          "paragraphs": [
+            "Understand the current process before sharing information."
+          ],
+          "links": [
+            {
+              "label": "Open artist guidance",
+              "url": "https://docs.artanrecords.com/studio/"
+            }
+          ]
+        }
+      ],
+      "status": "Not connected"
+    }
+  ]
+}

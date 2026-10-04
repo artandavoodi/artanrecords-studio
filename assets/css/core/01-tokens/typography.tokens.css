@@ -1,0 +1,17 @@
+/* ARTANDAVOODI · Site type roles mapped to the approved source scale.
+   Foundation owns headings; modules consume body, caption and label roles. */
+:root {
+  --site-type-family: var(--font-base);
+  --site-type-headline-size: var(--font-size-section-title);
+  --site-type-heading-size: var(--font-size-title-1);
+  --site-type-heading-weight: var(--font-weight-body);
+  --site-type-heading-leading: var(--line-height-heading);
+  --site-type-heading-tracking: var(--tracking-heading);
+  --site-type-body-size: var(--font-size-body-1);
+  --site-type-body-weight: var(--font-weight-body);
+  --site-type-body-leading: var(--line-height-body);
+  --site-type-caption-size: var(--font-size-caption-1);
+  --site-type-label-weight: var(--font-weight-body);
+  --site-type-label-leading: var(--line-height-heading-tight);
+  --site-type-label-tracking: var(--tracking-label);
+}

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "home",
+      "src": "assets/icons/navigation/home.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "back",
+      "src": "assets/icons/navigation/back.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "chevron-right",
+      "src": "assets/icons/navigation/chevron-right.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "x",
+      "src": "assets/icons/social/platforms/x.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "email",
+      "src": "assets/icons/social/platforms/email.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "globe",
+      "src": "assets/icons/navigation/globe.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "amazon-music",
+      "monochrome": true,
+      "src": "assets/icons/commerce/platforms/amazon/amazon.svg",
+      "alt": ""
+    },
+    {
+      "id": "apple-music",
+      "monochrome": true,
+      "src": "assets/icons/social/platforms/apple-music.svg",
+      "alt": ""
+    },
+    {
+      "id": "spotify",
+      "monochrome": true,
+      "src": "assets/icons/social/platforms/spotify.svg",
+      "alt": ""
+    },
+    {
+      "id": "youtube-music",
+      "monochrome": true,
+      "src": "assets/icons/social/platforms/youtube-music.svg",
+      "alt": ""
+    },
+    {
+      "id": "deezer",
+      "monochrome": true,
+      "src": "assets/icons/social/platforms/deezer.svg",
+      "alt": ""
+    },
+    {
+      "id": "tidal",
+      "monochrome": true,
+      "src": "assets/icons/social/platforms/tidal.svg",
+      "alt": ""
+    }
+  ]
+}
