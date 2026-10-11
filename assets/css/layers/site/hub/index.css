@@ -6,5 +6,19 @@
 .hub .record-links { display: grid; align-items: initial; justify-content: initial; gap: var(--spacing-2xl); }
 .hub__link { position: relative; display: inline-flex; align-items: center; justify-content: center; min-inline-size: var(--control-height-sm); min-block-size: var(--control-height-sm); text-decoration: none; }
 .hub__link img { inline-size: var(--icon-size-md); block-size: var(--icon-size-md); object-fit: contain; }
-.hub__tooltip { position: absolute; inset-block-end: calc(100% - var(--site-tooltip-overlap)); inset-inline-start: 50%; transform: translate(-50%, var(--site-tooltip-offset)); inline-size: max-content; max-inline-size: var(--site-tooltip-width); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-md); background: var(--cv-text-primary); color: var(--cv-page-bg); font-size: var(--site-type-caption-size); font-weight: var(--site-type-label-weight); letter-spacing: var(--site-type-label-tracking); line-height: var(--site-type-label-leading); opacity: var(--cv-opacity-none); pointer-events: none; transition: opacity var(--cv-motion-duration) var(--cv-motion-ease), transform var(--cv-motion-duration) var(--cv-motion-ease); }
-.hub__link:hover .hub__tooltip, .hub__link:focus-visible .hub__tooltip { opacity: var(--cv-opacity-full); transform: translate(-50%, 0); }
+.hub__tooltip { position: static; transform: none; font: inherit; color: inherit; opacity: var(--cv-opacity-full); transition: none; overflow-wrap: anywhere; }
+@media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+  .hub__group[data-presentation="icons"] .hub__tooltip { position: absolute; inset-block-end: calc(100% - var(--site-tooltip-overlap)); inset-inline-start: 50%; transform: translate(-50%, var(--site-tooltip-offset)); inline-size: max-content; max-inline-size: var(--site-tooltip-width); padding: var(--spacing-xs) var(--spacing-sm); border-radius: var(--radius-md); background: var(--cv-text-primary); color: var(--cv-page-bg); font-size: var(--site-type-caption-size); font-weight: var(--site-type-label-weight); letter-spacing: var(--site-type-label-tracking); line-height: var(--site-type-label-leading); opacity: var(--cv-opacity-none); pointer-events: none; transition: opacity var(--cv-motion-duration) var(--cv-motion-ease), transform var(--cv-motion-duration) var(--cv-motion-ease); }
+  .hub__group[data-presentation="icons"] .hub__link:hover .hub__tooltip, .hub__group[data-presentation="icons"] .hub__link:focus-visible .hub__tooltip { opacity: var(--cv-opacity-full); transform: translate(-50%, 0); }
+}
+.hub__group[data-presentation="labels"] .hub__group-links { display: grid; justify-content: stretch; inline-size: min(100%, var(--cv-reading-width)); }
+.hub__group[data-presentation="labels"] .hub__link { justify-content: flex-start; gap: var(--spacing-md); }
+.hub__group[data-presentation="labels"] .hub__tooltip { position: static; transform: none; inline-size: auto; max-inline-size: none; padding: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; opacity: var(--cv-opacity-full); transition: none; overflow-wrap: anywhere; }
+.hub__link img { flex-shrink: 0; }
+@media (max-width: 1024px), (hover: none), (pointer: coarse) {
+  .hub__group h3 { position: static; inline-size: auto; block-size: auto; opacity: var(--cv-opacity-full); justify-self: start; }
+  .hub__group { justify-items: stretch; }
+  .hub__group-links, .hub__group[data-presentation="labels"] .hub__group-links { display: grid; justify-content: stretch; inline-size: 100%; }
+  .hub__link { justify-content: flex-start; gap: var(--spacing-md); }
+  .hub .hub__tooltip { position: static; transform: none; inline-size: auto; max-inline-size: none; padding: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; opacity: var(--cv-opacity-full); transition: none; overflow-wrap: anywhere; }
+}

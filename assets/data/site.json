@@ -4,8 +4,14 @@
   "foundingDate": "2025",
   "foundingLabel": "Founded",
   "logoAlt": "Artan Records logo",
+  "shareImage": {"src":"assets/brand/logo/artan-records-wordmark.png","alt":"Artan Records — independent record label"},
   "domain": "https://artanrecords.com",
   "description": "An independent record label for artists, recordings and creative collaboration. Music first. A lasting home for the work.",
+  "introduction": [
+    "Music first.",
+    "An independent record label for artists, recordings and creative collaboration.",
+    "A lasting home for the work."
+  ],
   "founder": {
     "artistId": "artan-davoodi",
     "name": "Artan Davoodi",
@@ -21,6 +27,10 @@
   },
   "artistWebsite": "https://artandavoodi.com/",
   "publicHub": "https://artan.live/",
+  "social": [
+    { "label": "Instagram", "url": "https://www.instagram.com/artanrecords", "icon": "instagram", "order": 1 },
+    { "label": "X", "url": "https://x.com/artanrecords", "icon": "x", "order": 2 }
+  ],
   "contact": [
     { "label": "Contact", "url": "mailto:contact@artanrecords.com", "icon": "email" },
     { "label": "Collaborations", "url": "mailto:collaborate@artanrecords.com", "icon": "email" }
@@ -40,6 +50,7 @@
     "skip": "Skip to content", "menuOpen": "Open site menu", "menuClose": "Close site menu",
     "dark": "Dark appearance", "light": "Light appearance", "back": "Back to releases",
     "tracks": "Tracks", "artistWebsite": "Artist website", "publicHub": "Public hub",
-    "notFound": "Page not found", "returnHome": "Return home"
+    "notFound": "Page not found", "returnHome": "Return home",
+    "allArtists": "All artists", "artistProfile": "Artist profile", "allReleases": "All releases"
   }
 }

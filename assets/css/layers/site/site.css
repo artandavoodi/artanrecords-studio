@@ -36,6 +36,7 @@
 .catalogue img { border-radius: var(--shape-card-radius); }
 .site-status { padding-block: var(--spacing-lg); }
 img[data-monochrome] { filter: var(--site-monochrome-icon-filter); }
+html[data-theme-effective='dark'] img[data-dark-monochrome] { filter: brightness(0) invert(1); }
 .site-back-link { display: inline-grid; place-items: center; justify-self: start; inline-size: var(--control-height-sm); block-size: var(--control-height-sm); appearance: none; border: 0; padding: 0; background: transparent; color: var(--cv-text-primary); text-decoration: none; cursor: pointer; transition: opacity var(--duration-base) var(--ease-standard); }
 .site-back-link img { inline-size: var(--icon-size-md); block-size: var(--icon-size-md); }
 .site-back-link:hover { opacity: var(--opacity-muted); }

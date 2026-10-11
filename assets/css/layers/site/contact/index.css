@@ -1,0 +1,11 @@
+/* Contact composition reuses enquiry controls and the artist journey scene system. */
+.contact-introduction { display: grid; align-items: center; padding-block: var(--cv-page-padding-block); }
+.contact-introduction > * { grid-area: 1 / 1; }
+.contact-introduction .artist-journey__copy { z-index: 1; }
+.contact-introduction .journey-scene { pointer-events: none; border-radius: 0; inline-size: 100%; aspect-ratio: auto; min-block-size: 0; align-self: stretch; }
+.contact-introduction h1 { font-size: var(--journey-title-size); font-weight: var(--font-weight-bold); line-height: var(--line-height-heading-tight); white-space: pre-line; }
+.contact-page .contact-direct { border-block-start: var(--border-width-hairline) solid var(--cv-border); }
+.contact-page .contact-links { inline-size: min(100%, var(--cv-reading-width)); }
+@media (max-width: 860px) {
+  .contact-introduction { grid-template-columns: minmax(0, 1fr); gap: var(--spacing-xl); }
+}

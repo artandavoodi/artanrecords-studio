@@ -1,0 +1,20 @@
+/* Initial enhancement state; uses the Neuroartan circle's shared motion tokens. */
+html[data-loading] body > * { display: none !important; }
+html[data-loading] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  inline-size: var(--loader-circle-size);
+  block-size: var(--loader-circle-size);
+  border-radius: var(--radius-circle);
+  background: var(--cv-text-primary);
+  animation: site-startup-breathe var(--loader-circle-motion-duration) var(--loader-circle-motion-ease) infinite;
+}
+@keyframes site-startup-breathe {
+  0%, 100% { opacity: .72; transform: scale(.94); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-loading] body::before { animation: none; }
+}

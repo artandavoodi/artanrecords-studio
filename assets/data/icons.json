@@ -2,6 +2,24 @@
   "schemaVersion": 1,
   "items": [
     {
+      "id": "youtube",
+      "src": "assets/icons/social/platforms/youtube.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "tiktok",
+      "src": "assets/icons/social/platforms/tiktok.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "facebook",
+      "src": "assets/icons/social/platforms/facebook.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
       "id": "home",
       "src": "assets/icons/navigation/home.svg",
       "alt": "",
@@ -16,6 +34,12 @@
     {
       "id": "chevron-right",
       "src": "assets/icons/navigation/chevron-right.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "instagram",
+      "src": "assets/icons/social/platforms/instagram.svg",
       "alt": "",
       "monochrome": true
     },
