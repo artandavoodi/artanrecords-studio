@@ -113,6 +113,9 @@ html:has(main[data-fragment="artist"]) .site-footer > .hub { display: none; }
 .information-page header, .information-page section { display: grid; gap: var(--spacing-md); max-inline-size: var(--cv-reading-width); }
 .information-page section { scroll-margin-block-start: var(--site-header-height); }
 .information-page { overflow-wrap: anywhere; }
+.leadership-card { display: grid; gap: var(--spacing-md); min-inline-size: 0; }
+.leadership-card figure { inline-size: min(100%, var(--featured-card-width)); margin: 0; }
+.leadership-card figure img { inline-size: 100%; block-size: auto; border-radius: var(--radius-md); }
 .information-accordion { border-block-end: var(--border-width-hairline) solid var(--cv-border); scroll-margin-block-start: var(--site-header-height); }
 .information-accordion summary { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); padding-block: var(--spacing-lg); cursor: pointer; list-style: none; }
 .information-accordion summary::-webkit-details-marker { display: none; }
