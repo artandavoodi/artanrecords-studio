@@ -6392,6 +6392,11 @@ html[data-theme-effective='dark'] { --site-monochrome-icon-filter: invert(1); }
   --site-menu-motion-offset: 0.35rem;
   --site-menu-motion-stagger: 60ms;
   --site-navigation-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --site-theme-arrive-duration: calc(var(--duration-slow) * 2);
+  --site-theme-arrive-delay: calc(var(--site-theme-arrive-duration) * 0.3);
+  --site-theme-breathe-scale: 1.35;
+  --site-theme-dot-size: var(--spacing-sm);
+  --site-theme-target-size: var(--control-height-md);
 }
 
 
@@ -6945,6 +6950,49 @@ html[data-menu-open] .site-menu__links a { opacity: 1; transform: translateY(0);
 }
 
 /* Label composition consumes the shared source tokens, not a parallel scale. */
+/* Hub-owned menu-only theme control, distributed to the artist website. */
+[data-menu-theme] {
+  display: grid;
+  place-items: center;
+  inline-size: var(--site-theme-target-size);
+  block-size: var(--site-theme-target-size);
+  margin-inline-start: calc((var(--site-theme-dot-size) - var(--site-theme-target-size)) / 2);
+  border: 0;
+  padding: 0;
+  border-radius: var(--radius-circle);
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity var(--duration-slow) var(--ease-standard), transform var(--duration-slow) var(--ease-standard), visibility var(--duration-slow);
+}
+[data-menu-theme]::before {
+  content: '';
+  inline-size: var(--site-theme-dot-size);
+  block-size: var(--site-theme-dot-size);
+  border-radius: var(--radius-circle);
+  background: var(--cv-text-primary);
+}
+[data-menu-theme]:focus-visible { outline: var(--border-width-hairline) solid var(--cv-text-primary); outline-offset: var(--spacing-xs); }
+html[data-menu-open] [data-menu-theme] {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  animation: site-theme-arrive var(--site-theme-arrive-duration) var(--ease-standard) var(--site-theme-arrive-delay) backwards;
+}
+@keyframes site-theme-arrive {
+  from { opacity: 0; transform: scale(0); }
+  65% { opacity: 1; transform: scale(var(--site-theme-breathe-scale)); }
+  to { opacity: 1; transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-menu-theme], html[data-menu-open] [data-menu-theme] { animation: none; transition: none; }
+}
+
 :root {
   --label-artwork-motion-duration: var(--nav-institutional-motion-panel-slow);
   --label-artwork-motion-ease: var(--ease-standard);
@@ -6978,13 +7026,7 @@ html[data-menu-open] .label-header-logo { visibility: hidden; opacity: 0; transf
 .label-header-logo .label-wordmark { inline-size: 100%; }
 .label-wordmark--dark { display: none; }
 html[data-theme-effective="dark"] .label-wordmark--dark { display: block; }
-.label-menu-theme { grid-area: 1 / 1; justify-self: start; inline-size: var(--spacing-sm); block-size: var(--spacing-sm); border: 0; padding: 0; border-radius: var(--radius-circle); background: var(--cv-text-primary); cursor: pointer; visibility: hidden; opacity: 0; transform: scale(0); transition: opacity var(--duration-slow) var(--ease-standard), transform var(--duration-slow) var(--ease-standard), visibility var(--duration-slow); }
-html[data-menu-open] .label-menu-theme { visibility: visible; opacity: 1; transform: none; animation: label-theme-arrive var(--label-logo-collapse-duration) var(--ease-standard) calc(var(--label-logo-collapse-duration) * 0.3) backwards; }
-@keyframes label-theme-arrive {
-  from { opacity: 0; transform: scale(0); }
-  65% { opacity: 1; transform: scale(var(--label-theme-breathe-scale)); }
-  to { opacity: 1; transform: scale(1); }
-}
+.label-menu-theme { grid-area: 1 / 1; justify-self: start; }
 .label-header-actions { grid-area: 1 / 2; transform-origin: right center; transition: opacity var(--label-logo-collapse-duration) var(--ease-standard), transform var(--label-logo-collapse-duration) var(--ease-standard), visibility var(--label-logo-collapse-duration); }
 html[data-menu-open] .label-header-actions { visibility: hidden; opacity: 0; transform: translateX(var(--spacing-xl)) scale(0); }
 html[data-header-drawer]:not([data-menu-open]) .label-header-logo { visibility: hidden; opacity: 0; transform: translateX(var(--menu-drawer-distance)) scale(0); }
@@ -7068,6 +7110,7 @@ html:has(main[data-fragment="artist"]) .site-footer > .hub { display: none; }
 .information-accordion summary > img { inline-size: var(--icon-size-md); flex-shrink: 0; transition: transform var(--duration-base) var(--ease-standard); }
 .information-accordion[open] > summary > img { transform: rotate(90deg); }
 .information-accordion p { max-inline-size: var(--cv-reading-width); margin-block: 0 var(--spacing-lg); }
+.information-accordion > .label-actions { padding-block-end: var(--spacing-lg); }
 .artist-intake { display: grid; gap: var(--spacing-xl); }
 .artist-intake__channel { display: grid; gap: var(--spacing-md); }
 .artist-enquiry { inline-size: 100%; min-inline-size: 0; }

@@ -1,4 +1,5 @@
 /* Label composition consumes the shared source tokens, not a parallel scale. */
+@import url('../theme-menu.css');
 :root {
   --label-artwork-motion-duration: var(--nav-institutional-motion-panel-slow);
   --label-artwork-motion-ease: var(--ease-standard);
@@ -32,13 +33,7 @@ html[data-menu-open] .label-header-logo { visibility: hidden; opacity: 0; transf
 .label-header-logo .label-wordmark { inline-size: 100%; }
 .label-wordmark--dark { display: none; }
 html[data-theme-effective="dark"] .label-wordmark--dark { display: block; }
-.label-menu-theme { grid-area: 1 / 1; justify-self: start; inline-size: var(--spacing-sm); block-size: var(--spacing-sm); border: 0; padding: 0; border-radius: var(--radius-circle); background: var(--cv-text-primary); cursor: pointer; visibility: hidden; opacity: 0; transform: scale(0); transition: opacity var(--duration-slow) var(--ease-standard), transform var(--duration-slow) var(--ease-standard), visibility var(--duration-slow); }
-html[data-menu-open] .label-menu-theme { visibility: visible; opacity: 1; transform: none; animation: label-theme-arrive var(--label-logo-collapse-duration) var(--ease-standard) calc(var(--label-logo-collapse-duration) * 0.3) backwards; }
-@keyframes label-theme-arrive {
-  from { opacity: 0; transform: scale(0); }
-  65% { opacity: 1; transform: scale(var(--label-theme-breathe-scale)); }
-  to { opacity: 1; transform: scale(1); }
-}
+.label-menu-theme { grid-area: 1 / 1; justify-self: start; }
 .label-header-actions { grid-area: 1 / 2; transform-origin: right center; transition: opacity var(--label-logo-collapse-duration) var(--ease-standard), transform var(--label-logo-collapse-duration) var(--ease-standard), visibility var(--label-logo-collapse-duration); }
 html[data-menu-open] .label-header-actions { visibility: hidden; opacity: 0; transform: translateX(var(--spacing-xl)) scale(0); }
 html[data-header-drawer]:not([data-menu-open]) .label-header-logo { visibility: hidden; opacity: 0; transform: translateX(var(--menu-drawer-distance)) scale(0); }
@@ -122,6 +117,7 @@ html:has(main[data-fragment="artist"]) .site-footer > .hub { display: none; }
 .information-accordion summary > img { inline-size: var(--icon-size-md); flex-shrink: 0; transition: transform var(--duration-base) var(--ease-standard); }
 .information-accordion[open] > summary > img { transform: rotate(90deg); }
 .information-accordion p { max-inline-size: var(--cv-reading-width); margin-block: 0 var(--spacing-lg); }
+.information-accordion > .label-actions { padding-block-end: var(--spacing-lg); }
 .artist-intake { display: grid; gap: var(--spacing-xl); }
 .artist-intake__channel { display: grid; gap: var(--spacing-md); }
 .artist-enquiry { inline-size: 100%; min-inline-size: 0; }

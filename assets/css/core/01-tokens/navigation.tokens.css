@@ -6,4 +6,9 @@
   --site-menu-motion-offset: 0.35rem;
   --site-menu-motion-stagger: 60ms;
   --site-navigation-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --site-theme-arrive-duration: calc(var(--duration-slow) * 2);
+  --site-theme-arrive-delay: calc(var(--site-theme-arrive-duration) * 0.3);
+  --site-theme-breathe-scale: 1.35;
+  --site-theme-dot-size: var(--spacing-sm);
+  --site-theme-target-size: var(--control-height-md);
 }
