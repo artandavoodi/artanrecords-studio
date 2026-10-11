@@ -7194,7 +7194,13 @@ html:not([data-enhanced]) .site-menu__links a { font-size: var(--site-type-body-
   gap: var(--spacing-xl);
   padding-block: var(--cv-page-padding-block);
 }
-.artist-journey__hero { min-block-size: calc(var(--section-min-height-stable) - var(--site-header-height)); background: radial-gradient(ellipse at 90% 20%, color-mix(in srgb, var(--color-primary5) 12%, transparent), transparent 55%), radial-gradient(ellipse at 10% 85%, color-mix(in srgb, var(--color-primary7) 10%, transparent), transparent 55%); }
+.artist-journey__hero {
+  min-block-size: calc(var(--section-min-height-stable) - var(--site-header-height));
+  background-image: radial-gradient(ellipse closest-side at center, color-mix(in srgb, var(--color-primary5) 12%, transparent), transparent 100%), radial-gradient(ellipse closest-side at center, color-mix(in srgb, var(--color-primary7) 10%, transparent), transparent 100%);
+  background-size: 85% 90%, 75% 85%;
+  background-position: right center, left center;
+  background-repeat: no-repeat;
+}
 .artist-journey__hero h1 { font-size: var(--journey-title-size); font-weight: var(--font-weight-bold); line-height: var(--line-height-heading-tight); white-space: pre-line; }
 .artist-journey h2 { font-size: var(--journey-section-size); font-weight: var(--font-weight-bold); line-height: var(--line-height-heading-tight); text-wrap: balance; }
 .artist-journey__cue { color: var(--cv-text-secondary); margin-block-start: var(--spacing-xl); }
@@ -7215,6 +7221,7 @@ html:not([data-enhanced]) .site-menu__links a { font-size: var(--site-type-body-
 .artist-journey__step:nth-child(even) .artist-journey__artwork { grid-column: 1; grid-row: 1; }
 .artist-journey__step:nth-child(even) .artist-journey__copy { grid-column: 2; }
 .artist-journey__conversation { border-block-start: var(--border-width-hairline) solid var(--cv-border); scroll-margin-block-start: var(--site-header-height); }
+.artist-journey > .label-actions { padding-block: var(--spacing-xl); }
 .artist-journey .artist-enquiry summary { border-block: var(--border-width-hairline) solid var(--cv-border); font-size: var(--site-type-heading-size); }
 @media (prefers-reduced-motion: no-preference) {
   .artist-journey[data-motion-ready] .artist-journey__step > * { transition: opacity var(--journey-motion-duration) var(--journey-motion-ease), transform var(--journey-motion-duration) var(--journey-motion-ease); }
