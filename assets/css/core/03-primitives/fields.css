@@ -1,0 +1,79 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SHARED FIELD BASE
+   03) FIELD STATE STABILITY
+   04) PLACEHOLDER STATES
+   05) MOBILE FIELD STABILITY
+   06) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/fields.css */
+
+/* =============================================================================
+   02) SHARED FIELD BASE
+============================================================================= */
+.ui-field{
+  width:var(--size-full);
+  min-height:var(--account-field-height);
+  padding:var(--spacing-none) var(--account-field-padding-x);
+  border-radius:var(--account-field-radius);
+  border:var(--border-width-hairline) solid var(--control-border-unified);
+  background:var(--control-surface);
+  color:var(--control-text-unified);
+  font-family:var(--font-family);
+  font-size:var(--account-field-font-size);
+  font-weight:var(--control-font-weight);
+  line-height:var(--account-field-line-height);
+  letter-spacing:var(--account-field-letter-spacing);
+  box-shadow:none;
+  transition:var(--interaction-transition-control);
+}
+
+/* =============================================================================
+   03) FIELD STATE STABILITY
+============================================================================= */
+.ui-field:hover,
+.ui-field:focus,
+.ui-field:focus-visible{
+  border-color:var(--control-border-unified);
+  background:var(--control-surface);
+  color:var(--control-text-unified);
+  outline:none;
+  box-shadow:none;
+}
+
+/* Native field controls share the same restrained active state. */
+:where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="submit"]):not([type="button"]):not([type="reset"]),select,textarea):focus,
+:where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="submit"]):not([type="button"]):not([type="reset"]),select,textarea):focus-visible{
+  border-color:var(--control-border-unified);
+  outline:none;
+  box-shadow:none;
+}
+
+/* =============================================================================
+   04) PLACEHOLDER STATES
+============================================================================= */
+.ui-field::placeholder{
+  color:var(--text-secondary-color);
+  opacity:var(--state-opacity-high);
+}
+
+/* =============================================================================
+   05) MOBILE FIELD STABILITY
+============================================================================= */
+@media (hover:none), (pointer:coarse), (max-width:768px){
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  textarea,
+  select,
+  [contenteditable="true"]{
+    font-size:max(16px, 1em);
+  }
+}
+
+/* =============================================================================
+   06) END OF FILE
+============================================================================= */
