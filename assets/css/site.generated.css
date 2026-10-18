@@ -7212,6 +7212,7 @@ html:has(main[data-fragment="artist"]) .site-footer > .hub { display: none; }
   .release-spotlight > article, .release-filters { grid-template-columns: minmax(0, 1fr); }
 }
 .information-links { display: flex; flex-wrap: wrap; gap: var(--spacing-md) var(--spacing-lg); }
+.site-footer a[href^="mailto:"] { font-size:inherit; font-weight:inherit; }
 [data-information-tabs] [role="tab"][aria-selected="false"] { opacity: var(--opacity-muted); }
 [data-information-tabs] [role="tablist"] { gap: var(--website-local-nav-link-gap); border-block-end: var(--border-width-hairline) solid var(--cv-border); }
 [data-information-tabs] [role="tab"] { display: inline-flex; align-items: center; justify-content: center; padding: var(--nav-tab-padding-y) var(--nav-tab-padding-x); padding-block-end: var(--spacing-md); border: 0; border-block-end: var(--border-width-hairline) solid transparent; background: transparent; text-decoration: none; color: var(--nav-local-color); font-size: var(--website-local-nav-link-font-size); font-weight: var(--website-local-nav-font-weight); letter-spacing: var(--website-local-nav-letter-spacing); line-height: var(--website-local-nav-line-height); white-space: nowrap; transition: color var(--duration-base) var(--interaction-ease-standard), opacity var(--duration-base) var(--interaction-ease-standard); }
@@ -7569,10 +7570,6 @@ a[href^="mailto:"], .ui-email {
   font-weight:var(--email-text-weight);
   text-decoration:none;
   overflow-wrap:anywhere;
-}
-.site-footer a[href^="mailto:"] {
-  font-size:inherit;
-  font-weight:inherit;
 }
 .publication-meta {
   display:flex;

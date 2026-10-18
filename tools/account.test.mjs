@@ -26,11 +26,21 @@ test('private data policies never grant client financial or contract writes',asy
   for(const table of ['studio_profiles','studio_memberships','studio_submissions','studio_contracts'])assert.ok(sql.includes(`alter table public.${table} enable row level security`));
   assert.doesNotMatch(sql,/grant (?:all|insert|update|delete).*studio_contracts/i);assert.match(sql,/'studio-avatars','studio-avatars',false/);
 });
-test('search has one dedicated route and no duplicate profile shortcut',async()=>{
+test('header owns account and search controls; dialogs stay outside page content',async()=>{
   const home=await readFile('index.html','utf8'),search=await readFile('search/index.html','utf8');
-  assert.doesNotMatch(home,/type="search"|class="studio-tabs"/);
-  assert.match(home,/href="\/search\/" aria-label="Search Studio"/);
-  for(const category of ['All','Workspace','Account','Legal'])assert.ok(search.includes(`data-search-category="${category}"`));
+  const main=home.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1],header=home.match(/<header\b[^>]*>([\s\S]*?)<\/header>/)[1];
+  assert.doesNotMatch(main,/type="search"|class="studio-tools"|data-account-view/);
+  assert.match(header,/data-studio-account-open/);assert.match(header,/data-studio-search-open/);
+  assert.match(search,/<dialog id="store-search-dialog"/);assert.match(home,/<dialog id="account-dialog"/);
+  assert.match(search,/data-search-close aria-label="Close search"/);
+  assert.match(search,/class="dialog-close global-close-button"/);
+});
+test('Studio uses the Store search ranking and configured categories',async()=>{
+  const {searchStore}=await import('../app/shared/search.js');
+  const index=JSON.parse(await readFile('search-index.json','utf8'));
+  assert.equal(searchStore(index,'royalties')[0].path,'/royalties/');
+  assert.ok(searchStore(index,'account',{category:'account'}).every(item=>item.category==='account'));
+  assert.deepEqual(searchStore(index,''),[]);
 });
 test('billing addresses have owner-only policies and client field limits',async()=>{
   const sql=await readFile('supabase/migrations/202610180002_studio_billing.sql','utf8');

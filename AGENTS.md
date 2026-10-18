@@ -14,3 +14,11 @@ isolated backend migrations in supabase/. Do not edit foundation/ or assets/
 directly. Account activation requires a dedicated configured project, applied
 and tested RLS, verified delivery and owner approval; prepared code is not a
 deployed service. Index only public introduction and notices, never private data.
+
+Header tools use the label's header action mount, never page-body shortcuts.
+Account access and search use dialogs outside main; profile management remains
+account-owned. Preserve native dialog focus restoration and page scroll position.
+app/shared/ is a generated, checksum-verified Store distribution. Its search,
+dialog helper, close primitive and presentation rules are not independently owned
+here. Update only via tools/build-app.mjs --sync-design against a verified Store
+commit; CSS extraction boundaries must fail if the owning source changes.
