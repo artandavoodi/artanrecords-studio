@@ -1,0 +1,15 @@
+{
+  "supabase":{"url":"","publishableKey":""},
+  "providers":{"google":false,"phone":false},
+  "payments":{"enabled":false,"provider":"stripe-connect","onboardingEndpoint":null},
+  "profileFields":[
+    {"name":"display_name","label":"Display name","autocomplete":"nickname","max":100},
+    {"name":"artist_name","label":"Artist name","autocomplete":"off","max":100},
+    {"name":"website","label":"Website","type":"url","autocomplete":"url","max":500}
+  ],
+  "labels":{"signin":"Sign in","signup":"Create account","recover":"Reset password","email":"Email","password":"Password","save":"Save profile","signout":"Sign out","account":"Account","profile":"Artist profile","search":"Search Studio"},
+  "unavailable":"Studio accounts are being prepared. Sign-in is not available yet.",
+  "phoneNotice":"Phone verification is not available yet. No verification text has been sent.",
+  "effectiveDate":"2026-10-18",
+  "icons":{"account":"core/identity/account/account.svg","profile":"core/identity/profile/profile.svg","visibility-on":"core/identity/access/visibility-on.svg","visibility-off":"core/identity/access/visibility-off.svg","search":"core/actions/search/search.svg","camera":"core/media/camera/camera.svg","check":"core/actions/check/check.svg","close":"core/actions/close/close.svg","cookies":"core/interface/cookies/cookies.svg"}
+}

@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "2c481fbf20200d688c4b851d7e57766ccd4a70d1",
+  "commit": "9c9da1f96414d164a470f3352d15366731859409",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "faaac582c9cccdc7447cc29a16258787214d3a9e77f231e4f33ae1a427563011",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -60,8 +60,8 @@
     "assets/fragments/navigation/index.html": "dac1448461f23f58f2f591dfeb6fa3e181178428d3646650167566c7b96c30f1",
     "assets/data/site.json": "3916ae28da33f661a292228f6850bdfcd7797bd5519b09c374c5b06084e5523a",
     "assets/data/icons.json": "e2e0dd28910310d3522ce2c2dab50847b89f376cba848c716b929e524a43db5b",
-    "foundation/build.mjs": "2edddca3533ab2289143f588bf42d5745616dda63413bb10e4301f84c0a8f84c",
-    "foundation/shell.html": "f3b8214842860598147a09802a850789916cf3506f82c3204c0cd2d56fc1c49a",
+    "foundation/build.mjs": "3a9fc4c87a2bed0772c59f8e390cf1e577266be725966f5f4e2f980554f38229",
+    "foundation/shell.html": "771cca5466905348d103b0b8940287342d92e83e1860c67d36b85bbf889e1999",
     "foundation/surface.css": "b429b21247ae3fa0f737a816ba3daca9de280008c47e322f36c59bcaed5dfbd3",
     "foundation/app.js": "53eb9618621ac0a32776355f0dc9e24ce114b1b12d58646ca22179a2a6e2611b"
   }

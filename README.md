@@ -1,5 +1,11 @@
 # Artan Records Studio
 
+## Account Upgrade, October 18, 2026
+
+Studio-owned application modules are in app/ and backend preparation is in supabase/. The shared label shell remains pinned and checksum-verified. The duplicate body logo is removed; public search, account routes, private profile and release-draft clients, cookie choices and legal notices are implemented locally. Public introduction and legal pages are indexable; workspace routes are not.
+
+No Studio backend is activated: the free-project quota is exhausted and the owner deferred reviewing the Pro purchase. Do not reuse Store/Neuroartan projects or enable registration until a dedicated project, migrations, email delivery, CAPTCHA/rate limits and two-account RLS tests are verified. Phone, Google, Stripe Connect, real financial reporting and digital signature delivery remain inactive. See supabase/README.md for activation and contract-management gates. A build or mock test is not evidence of hosted operational readiness.
+
 Target domain:
 
 `https://studio.artanrecords.com`

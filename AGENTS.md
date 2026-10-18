@@ -9,3 +9,8 @@ identifies its exact revision. Do not add independent icons, colors or fonts.
 Run npm run build and npm run check before committing. CI verifies regeneration.
 Never commit private artist data, Business.md, contracts, secrets or financial data.
 Studio is a public foundation, not a secure account platform.
+Studio-owned application code belongs in app/, configuration in content/, and
+isolated backend migrations in supabase/. Do not edit foundation/ or assets/
+directly. Account activation requires a dedicated configured project, applied
+and tested RLS, verified delivery and owner approval; prepared code is not a
+deployed service. Index only public introduction and notices, never private data.
