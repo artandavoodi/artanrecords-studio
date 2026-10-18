@@ -1,0 +1,12 @@
+{
+  "name":"Artan Records Studio",
+  "summary":"The artist platform being developed by Artan Records for release preparation, agreements and royalty reporting.",
+  "groups":[
+    {"label":"Workspace","items":[{"path":"/","label":"Overview","icon":"dashboard"},{"path":"/releases/","label":"Releases","icon":"release"},{"path":"/analytics/","label":"Analytics","icon":"analytics"}]},
+    {"label":"Business","items":[{"path":"/royalties/","label":"Royalties","icon":"finance"},{"path":"/statements/","label":"Statements","icon":"document"},{"path":"/payouts/","label":"Payouts","icon":"payment"},{"path":"/agreements/","label":"Agreements","icon":"contract"}]},
+    {"label":"Account","items":[{"path":"/profile/","label":"Artist profile","icon":"account"},{"path":"/settings/","label":"Settings","icon":"settings"}]}
+  ],
+  "settings":[{"id":"appearance","label":"Appearance","icon":"appearance"},{"id":"privacy","label":"Privacy","icon":"cookies"},{"id":"security","label":"Security","icon":"password"},{"id":"connections","label":"Connections","icon":"analytics"}],
+  "overview":{"title":"Your work, in one place","description":"Prepare release information, find your agreements and understand the reporting process. Account services are being prepared; private artist data is not connected yet.","action":"Prepare a release","href":"/releases/","secondary":"Artist guidance","secondaryHref":"https://docs.artanrecords.com/","statusTitle":"Workspace connections","statusText":"Account access, reporting and payment services are not connected. No earnings or streaming figures are shown."},
+  "features":[{"path":"/releases/","title":"Release preparation","description":"Keep titles, credits and release notes together. Private draft storage becomes available when account services are connected.","icon":"release"},{"path":"/agreements/","title":"Agreements","description":"A dedicated place for agreements shared by the label. Signing remains unavailable until the secure signing service is connected.","icon":"contract"},{"path":"/analytics/","title":"Listening and reporting","description":"Listening data and royalty statements have separate places, without treating streaming counts as earnings.","icon":"analytics"}]
+}

@@ -1,5 +1,19 @@
 # Artan Records Studio
 
+## Platform Shell
+
+Workspace navigation is owned by content/platform.json. Desktop uses a collapsible
+rail; compact views use the same icon-driven destinations in the menu. Settings
+provides appearance, privacy, account-security access and connection status.
+The public overview carries SoftwareApplication metadata; private workspace
+routes remain noindex. manifest.webmanifest prepares standalone browser launch;
+there is no offline cache or service worker storing private records.
+
+Prepared is not connected: dedicated Supabase activation, hosted auth verification,
+streaming imports, royalty accounting, payout onboarding and secure signing remain
+required before this can operate as an artist business platform. No balances,
+streaming totals, signed contracts or payment readiness are simulated.
+
 ## Account Upgrade, October 18, 2026
 
 Header account/search tools now occupy the label's canonical action slot and inherit

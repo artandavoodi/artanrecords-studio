@@ -3,6 +3,7 @@
 @import url('./shared/password-field.css');
 @import url('./shared/close-button.css');
 @import url('./shared/store-surfaces.css');
+@import url('./platform.css');
 
 /* Studio composition; shared brand values and label header motion stay canonical. */
 .studio-surface { display:grid; gap:var(--spacing-xl); }

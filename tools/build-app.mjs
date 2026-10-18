@@ -22,18 +22,21 @@ if(process.argv.includes('--sync-design')){
 const design=JSON.parse(await readFile('app/design-manifest.json','utf8'));
 for(const name of primitives)if(createHash('sha256').update(await readFile(`app/shared/${name}`)).digest('hex')!==design.files[name])throw Error('Shared control drift: '+name);
 const site=JSON.parse(await readFile('content/site.json','utf8'));
+const brand=JSON.parse(await readFile('assets/data/site.json','utf8'));
+await writeFile('manifest.webmanifest',JSON.stringify({name:site.name,short_name:'Studio',id:'/',start_url:'/',scope:'/',display:'standalone',lang:'en',categories:['music','business'],icons:[{src:'/'+brand.logo,sizes:'any',type:'image/svg+xml',purpose:'any'}]})+'\n');
 await writeFile('search-index.json',JSON.stringify(site.pages.filter(page=>page.path!=='/search/').map(page=>({title:page.title,path:page.path,text:page.description,keywords:page.sections.flatMap(section=>[section.title,...section.paragraphs]).join(' '),category:['/privacy/','/terms/'].includes(page.path)?'legal':['/account/','/profile/','/settings/'].includes(page.path)?'account':'workspace'})))+'\n');
 // A standalone checkout builds from the pinned distribution; only explicit sync reads the owner.
 if(process.argv.includes('--sync-icons')){
   const source='../control-center',revision=execFileSync('git',['-C',source,'rev-parse','HEAD'],{encoding:'utf8'}).trim();
-  await mkdir('app/icons',{recursive:true});const files={};
-  for(const [name,path] of Object.entries(config.icons)){
+  await mkdir('app/icons',{recursive:true});const files={},available={};
+  for(const [name,path] of Object.entries({placeholder:config.placeholderIcon,...config.icons})){
     const bytes=execFileSync('git',['-C',source,'show',`${revision}:registry/icons/source/${path}`]);
     await writeFile(`app/icons/${name}.svg`,bytes);files[name]=createHash('sha256').update(bytes).digest('hex');
+    available[name]=/<(?:path|circle|rect|line|polygon|polyline|ellipse|use|image|text)\b/.test(bytes.toString());
   }
-  await writeFile('app/icon-manifest.json',JSON.stringify({source:'artandavoodi/control-center',revision,files},null,2)+'\n');
+  await writeFile('app/icon-manifest.json',JSON.stringify({source:'artandavoodi/control-center',revision,files,available},null,2)+'\n');
 }else {
-  if(Object.keys(existing.files).length!==Object.keys(config.icons).length)throw Error('Synchronize the registered Studio icons before building.');
+  if(Object.keys(existing.files).length!==Object.keys(config.icons).length+1)throw Error('Synchronize the registered Studio icons before building.');
   for(const [name,hash] of Object.entries(existing.files))if(createHash('sha256').update(await readFile(`app/icons/${name}.svg`)).digest('hex')!==hash)throw Error('Registered icon drift: '+name);
 }
 await build({entryPoints:['app/main.js'],bundle:true,format:'esm',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/studio.js',minify:true});

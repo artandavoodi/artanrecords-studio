@@ -1,9 +1,10 @@
 import {readFile} from 'node:fs/promises';
+import {renderIcon} from './icon-render.mjs';
 const settings=JSON.parse(await readFile(new URL('../content/account.json',import.meta.url),'utf8'));
-const icon=name=>`<img class="studio-icon account-action-icon" src="/app/icons/${name}.svg" alt="">`;
+const icon=name=>renderIcon(name,value=>String(value),'studio-icon account-action-icon');
 
 export function renderActions(){
-  return `<button class="studio-header-control" type="button" data-studio-search-open aria-label="Search Studio">${icon('search')}</button><button class="studio-header-control" type="button" data-studio-account-open aria-label="Open account">${icon('account')}</button>`;
+  return `<a class="studio-header-control" href="/settings/" aria-label="Settings">${icon('settings')}</a><button class="studio-header-control" type="button" data-studio-search-open aria-label="Search Studio">${icon('search')}</button><button class="studio-header-control" type="button" data-studio-account-open aria-label="Open account">${icon('account')}</button>`;
 }
 
 export function searchContent(){

@@ -7,7 +7,7 @@
   <link rel="icon" href="/assets/brand/logo/artan-records-symbol-black.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/css/core/00-orchestrator/style.css">
   <link rel="stylesheet" href="/foundation/surface.css">
-  <meta name="referrer" content="no-referrer"><link rel="stylesheet" href="/app/studio.css"><script type="module" src="/app/dist/studio.js"></script>
+  <meta name="referrer" content="no-referrer"><link rel="manifest" href="/manifest.webmanifest"><link rel="stylesheet" href="/app/studio.css"><script type="module" src="/app/dist/studio.js"></script>
   <script type="module" src="/foundation/app.js"></script>
 </head>
 <body>
@@ -15,14 +15,14 @@
   <a class="skip-link" href="#main-content">Skip to content</a>
   <a class="label-header-logo" href="/" aria-label="Artan Records"><img class="label-wordmark label-wordmark--light" src="/assets/brand/logo/artan-records-wordmark-black.svg" alt=""><img class="label-wordmark label-wordmark--dark" src="/assets/brand/logo/artan-records-wordmark-white.svg" alt=""></a>
   <button class="label-menu-theme" data-theme-toggle data-menu-theme data-dark-label="Dark appearance" data-light-label="Light appearance" aria-label="Dark appearance" aria-pressed="false" type="button" hidden></button>
-  <div class="label-home-actions label-header-actions"><button class="studio-header-control" type="button" data-studio-search-open aria-label="Search Studio"><img class="studio-icon account-action-icon" src="/app/icons/search.svg" alt=""></button><button class="studio-header-control" type="button" data-studio-account-open aria-label="Open account"><img class="studio-icon account-action-icon" src="/app/icons/account.svg" alt=""></button></div>
+  <div class="label-home-actions label-header-actions"><a class="studio-header-control" href="/settings/" aria-label="Settings"><img class="studio-icon account-action-icon" src="/app/icons/settings.svg" alt=""></a><button class="studio-header-control" type="button" data-studio-search-open aria-label="Search Studio"><img class="studio-icon account-action-icon" src="/app/icons/search.svg" alt=""></button><button class="studio-header-control" type="button" data-studio-account-open aria-label="Open account"><img class="studio-icon account-action-icon" src="/app/icons/account.svg" alt=""></button></div>
   <button class="site-menu-toggle" data-menu-toggle data-close-label="Close site menu" aria-label="Open site menu" aria-expanded="false" aria-controls="site-menu" type="button" hidden>
     <span class="site-menu-toggle__line" aria-hidden="true"></span>
     <span class="site-menu-toggle__line" aria-hidden="true"></span>
   </button>
 </header>
-<section class="site-menu" id="site-menu" data-menu>
-  <div class="site-menu__surface"><nav class="site-menu__links" aria-label="Open site menu"><a href="/releases/">Releases</a><a href="/agreements/">Agreements</a><a href="/account/">Your account</a><a href="/">Overview</a><a href="https://artanrecords.com/">Artan Records</a><a href="https://docs.artanrecords.com/">Documentation</a></nav></div>
+<section class="site-menu" id="site-menu" data-menu hidden>
+  <div class="site-menu__surface"><nav class="site-menu__links" aria-label="Open site menu"><a href="/"><img class="studio-icon" src="/app/icons/dashboard.svg" alt=""><span>Overview</span></a><a href="/releases/"><img class="studio-icon" src="/app/icons/release.svg" alt=""><span>Releases</span></a><a href="/analytics/"><img class="studio-icon" src="/app/icons/analytics.svg" alt=""><span>Analytics</span></a><a href="/royalties/"><img class="studio-icon" src="/app/icons/finance.svg" alt=""><span>Royalties</span></a><a href="/statements/"><img class="studio-icon" src="/app/icons/document.svg" alt=""><span>Statements</span></a><a href="/payouts/"><img class="studio-icon" src="/app/icons/payment.svg" alt=""><span>Payouts</span></a><a href="/agreements/"><img class="studio-icon" src="/app/icons/contract.svg" alt=""><span>Agreements</span></a><a href="/profile/"><img class="studio-icon" src="/app/icons/account.svg" alt=""><span>Artist profile</span></a><a href="/settings/"><img class="studio-icon" src="/app/icons/settings.svg" alt=""><span>Settings</span></a></nav></div>
 </section>
 </div>
   <main id="main-content" tabindex="-1"><section class="site-section surface studio-surface"><header><p class="eyebrow">Artan Records Studio</p><h1>Search Studio</h1><p class="reading">Find account help, artist guidance and workspace information.</p></header><button class="ui-button" type="button" data-studio-search-open><img class="studio-icon" src="/app/icons/search.svg" alt="">Open search</button></section></main>

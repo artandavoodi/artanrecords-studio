@@ -8,6 +8,7 @@ import {bindWorkspace} from './workspace.js';
 import {bindSearch} from './search.js';
 import {bindBilling} from './billing.js';
 import {bindChrome} from './chrome.js';
+import {bindPlatform} from './platform.js';
 bindPreferences();
 bindSearch();
 const chrome=bindChrome();
@@ -17,6 +18,7 @@ document.querySelectorAll('[data-signout]').forEach(button=>{button.classList.ad
 let client=null;
 try{if(configured(config))client=createClient(config.supabase.url,config.supabase.publishableKey,{auth:{storageKey:'artanrecords-studio-auth',storage:sessionStorage,flowType:'pkce',detectSessionInUrl:false}});}catch(error){console.error('[studio] Backend configuration rejected');}
 const context={client,config,resolveUser,profileValues,validPhoto};
+bindPlatform(context);
 const accountCallback=new URLSearchParams(location.search).has('code')||new URLSearchParams(location.search).has('token_hash');
 client?.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){document.querySelectorAll('[data-profile-form],[data-submissions-list],[data-contracts-list]').forEach(element=>element.replaceChildren());document.querySelector('[data-avatar]')?.removeAttribute('src');location.replace('/account/');}});
 await bindAccount(context);await bindProfile(context);

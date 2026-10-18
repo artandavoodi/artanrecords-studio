@@ -47,3 +47,14 @@ test('billing addresses have owner-only policies and client field limits',async(
   assert.match(sql,/enable row level security/);assert.match(sql,/revoke all.*anon,authenticated/);assert.match(sql,/with check\(account_id=\(select auth.uid\(\)\)\)/);
   const config=JSON.parse(await readFile('content/account.json','utf8'));assert.ok(config.billingFields.every(field=>field.autocomplete.startsWith('billing ')&&field.max<=200));
 });
+test('platform navigation resolves every configured destination and keeps private workspace routes noindex',async()=>{
+  const platform=JSON.parse(await readFile('content/platform.json','utf8')),site=JSON.parse(await readFile('content/site.json','utf8'));
+  for(const item of platform.groups.flatMap(group=>group.items))assert.ok(site.pages.some(page=>page.path===item.path));
+  const settings=await readFile('settings/index.html','utf8');assert.match(settings,/data-platform-layout/);assert.match(settings,/data-studio-theme="dark"/);assert.match(settings,/noindex,follow/);
+  for(const page of ['analytics','royalties','statements','payouts','profile'])assert.match(await readFile(page+'/index.html','utf8'),/noindex,follow/);
+});
+test('public platform metadata identifies the app without inventing reviews or financial results',async()=>{
+  const html=await readFile('index.html','utf8'),manifest=JSON.parse(await readFile('manifest.webmanifest','utf8'));
+  assert.match(html,/"@type":"SoftwareApplication"/);assert.match(html,/content="index,follow"/);assert.match(html,/rel="manifest"/);
+  assert.doesNotMatch(html,/aggregateRating|ratingValue/);assert.equal(manifest.display,'standalone');assert.equal(manifest.start_url,'/');
+});

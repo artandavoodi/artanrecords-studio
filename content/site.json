@@ -47,8 +47,10 @@
     {
       "path": "/",
       "indexable": true,
-      "title": "Your artist workspace",
-      "description": "A dedicated space for artists working with Artan Records. Account access is being prepared.",
+      "title": "Artan Records Studio",
+      "heading":"Overview",
+      "description": "An artist platform being developed by Artan Records for release preparation, artist agreements and royalty reporting. Explore the workspace and account guidance.",
+      "application":{"@type":"SoftwareApplication","name":"Artan Records Studio","url":"https://studio.artanrecords.com/","applicationCategory":"MultimediaApplication","operatingSystem":"Web browser","description":"Artist workspace foundation for Artan Records. Account, reporting, payment and signing services require separate activation."},
       "status": "Public foundation · Not an authenticated dashboard",
       "sections": []
     },
@@ -257,8 +259,8 @@
     },
     {
       "path": "/settings/",
-      "title": "Account and privacy",
-      "description": "Account registration, sign-in, password management and tax onboarding are not available. Theme controls affect this browser only.",
+      "title": "Settings",
+      "description": "Manage appearance, privacy and account access, and review workspace connections.",
       "category": "Workspace",
       "sections": [
         {
