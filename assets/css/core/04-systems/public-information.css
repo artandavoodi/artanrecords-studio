@@ -17,6 +17,10 @@ a[href^="mailto:"], .ui-email {
   text-decoration:none;
   overflow-wrap:anywhere;
 }
+.site-footer a[href^="mailto:"] {
+  font-size:inherit;
+  font-weight:inherit;
+}
 .publication-meta {
   display:flex;
   flex-wrap:wrap;

@@ -4,6 +4,7 @@ insert into public.studio_profiles(id,display_name) select id,'Private artist' f
 insert into public.studio_submissions(account_id,title,work_type) select id,'Private recording','recording' from auth.users;
 insert into public.studio_contracts(account_id,title,version,document_sha256,status) select id,'Private agreement',1,repeat('a',64),'review' from auth.users;
 insert into storage.objects(bucket_id,name) select 'studio-avatars',id::text||'/avatar' from auth.users;
+insert into public.studio_billing_addresses(account_id) select id from auth.users;
 set local role authenticated;
 select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000001',true);
 do $$
@@ -12,6 +13,7 @@ begin
   if (select count(*) from public.studio_submissions)<>1 then raise exception 'Submission isolation failed'; end if;
   if (select count(id) from public.studio_contracts)<>1 then raise exception 'Contract isolation failed'; end if;
   if (select count(*) from storage.objects)<>1 then raise exception 'Avatar isolation failed'; end if;
+  if (select count(*) from public.studio_billing_addresses)<>1 then raise exception 'Billing address isolation failed'; end if;
   update public.studio_profiles set display_name='Forbidden' where id='00000000-0000-0000-0000-000000000002';
   if found then raise exception 'Cross-account update permitted'; end if;
   begin

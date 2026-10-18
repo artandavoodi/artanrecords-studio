@@ -1,0 +1,172 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SHARED BUTTON / CONTROL BASE
+   03) BUTTON STATE STABILITY
+   04) PRIMARY BUTTON VARIANT
+   05) BRAND BUTTON VARIANT
+   06) SECONDARY BUTTON VARIANT
+   07) GHOST BUTTON VARIANT
+   08) ICON BUTTON PRIMITIVE
+   09) BUTTON SIZE VARIANTS
+   10) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/buttons.css */
+
+/* =============================================================================
+   02) SHARED BUTTON / CONTROL BASE
+============================================================================= */
+.ui-button,
+.ui-control{
+  appearance:none;
+  -webkit-appearance:none;
+  display:inline-flex;
+  flex:0 0 auto;
+  align-items:center;
+  justify-content:center;
+  gap:var(--spacing-sm);
+  white-space:nowrap;
+  border:none;
+  background:transparent;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  transition:none;
+}
+
+/* =============================================================================
+   03) BUTTON STATE STABILITY
+============================================================================= */
+.ui-button:focus-visible,
+.ui-control:focus-visible{
+  outline:none;
+  box-shadow:none;
+}
+
+/* =============================================================================
+   04) PRIMARY BUTTON VARIANT
+============================================================================= */
+.ui-button--primary{
+  background:var(--text-color);
+  color:var(--bg-color);
+  border-color:transparent;
+}
+
+.ui-button--primary:hover{
+  opacity:var(--state-opacity-high);
+}
+
+/* =============================================================================
+   05) BRAND BUTTON VARIANT
+============================================================================= */
+.ui-button--brand{
+  background:var(--color-primary1);
+  color:var(--text-color);
+  border-color:transparent;
+}
+
+.ui-button--brand:hover{
+  background:var(--color-primary1);
+  color:var(--text-color);
+  border-color:transparent;
+  opacity:var(--state-opacity-high);
+}
+
+/* =============================================================================
+   06) SECONDARY BUTTON VARIANT
+============================================================================= */
+.ui-button--secondary{
+  background:transparent;
+}
+
+/* =============================================================================
+   07) GHOST BUTTON VARIANT
+============================================================================= */
+.ui-button--ghost{
+  background:transparent;
+  border-color:transparent;
+  padding-inline:var(--spacing-none);
+  min-height:auto;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+}
+
+.ui-button--ghost:hover,
+.ui-button--ghost:focus-visible,
+.ui-button--ghost:active{
+  background:transparent;
+  border-color:transparent;
+  box-shadow:none;
+  color:currentColor;
+  opacity:var(--hover-opacity-strong);
+}
+
+.ui-button--ghost:focus-visible{
+  outline:none;
+}
+
+/* =============================================================================
+   08) ICON BUTTON PRIMITIVE
+============================================================================= */
+.ui-button--icon,
+.ui-control--icon{
+  width:var(--control-height-md);
+  min-width:var(--control-height-md);
+  padding:var(--spacing-none);
+  gap:var(--spacing-none);
+  border-radius:var(--shape-icon-button-radius);
+}
+
+.ui-button--icon.ui-button--sm,
+.ui-control--icon.ui-control--sm{
+  width:var(--control-height-sm);
+  min-width:var(--control-height-sm);
+}
+
+.ui-button--icon.ui-button--lg,
+.ui-control--icon.ui-control--lg{
+  width:var(--control-height-lg);
+  min-width:var(--control-height-lg);
+}
+
+.ui-button__icon,
+.ui-control__icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:calc(var(--close-control-line-width) * var(--accessibility-icon-scale));
+  height:calc(var(--close-control-line-width) * var(--accessibility-icon-scale));
+  flex:0 0 auto;
+}
+
+.ui-button__icon > svg,
+.ui-button__icon > img,
+.ui-control__icon > svg,
+.ui-control__icon > img{
+  display:block;
+  width:var(--size-full);
+  height:var(--size-full);
+}
+
+/* =============================================================================
+   09) BUTTON SIZE VARIANTS
+============================================================================= */
+.ui-button--sm,
+.ui-control--sm{
+  min-height:var(--control-height-sm);
+  padding:var(--spacing-none) var(--control-padding-x-sm);
+}
+
+.ui-button--lg,
+.ui-control--lg{
+  min-height:var(--control-height-lg);
+  padding:var(--spacing-none) var(--control-padding-x-lg);
+}
+
+/* =============================================================================
+   10) END OF FILE
+============================================================================= */

@@ -26,6 +26,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y postgresql-client
       - run: psql -v ON_ERROR_STOP=1 -f tools/database-tests/bootstrap.sql
       - run: psql -v ON_ERROR_STOP=1 -f supabase/migrations/202610180001_studio_accounts.sql
+      - run: psql -v ON_ERROR_STOP=1 -f supabase/migrations/202610180002_studio_billing.sql
       - run: psql -v ON_ERROR_STOP=1 -f tools/database-tests/isolation.sql
   validate:
     runs-on: ubuntu-latest

@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "9c9da1f96414d164a470f3352d15366731859409",
+  "commit": "2b629b7ca3c40b46d59f176511ae4c4e1945ccdb",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "faaac582c9cccdc7447cc29a16258787214d3a9e77f231e4f33ae1a427563011",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -14,7 +14,7 @@
     "assets/css/core/03-primitives/fields.css": "bd4836b6119acd5f7e7ddae414176cd7592560f42d85175a871fa36c2946480f",
     "assets/css/core/04-systems/preferences-presentation.css": "45ddb4276f887aac259c1c4383354fe53340a21c891bac71d73ea7849f1ca4ea",
     "assets/css/core/04-systems/preferences.css": "d0746c97b1da2108c357395b9c8ce66f42fc83dceb19cecc0ace9a421ca27b97",
-    "assets/css/core/04-systems/public-information.css": "32743cadeb70623bd0e84a4a780041a695a3eee554bf06bf7a2b167ac7445a8a",
+    "assets/css/core/04-systems/public-information.css": "3712467ce29a8cff99d941f5df193d07b5e83d4232837d051fbc23f6b2f85dca",
     "assets/css/core/04-systems/startup.css": "73f7e032ac2c67869379cee0efcc0c7c87883cd85cef379c256522d95bab31cc",
     "assets/css/layers/00-orchestrator/00-layers-all.css": "8037edc9e1ce0e0e49a6617b090daad3c1f0497b469835e87039b6d3d32b522e",
     "assets/css/layers/site/contact/index.css": "94173ea68756beb7a16b358c4b32c6aa946e5f0b652779d54bf352c2517b4094",
@@ -27,7 +27,7 @@
     "assets/css/layers/site/site.css": "24c1c51aca13c2aaf6979c3fc11d4c0cef7fe3b6dc283e407a59112c3679d550",
     "assets/css/layers/site/submission/index.css": "3249ad0f7519a091c2acb7ace5473b7c90ee77430dc31b53c6d08fdb42c1ede8",
     "assets/css/layers/site/theme-menu.css": "9570198870280d8ab0843cbcbd95c0b5e13ab74cffa3088ea9df3a3067cc7d43",
-    "assets/css/site.generated.css": "b1eae5b661f4ccd3ca583339a23710bc58d47b0f904748f8f02e78fd1b621534",
+    "assets/css/site.generated.css": "9adf8876b0b9dd6adafe5b434feeb665f286c678ed4650b1ed6eea65ee9a8e1e",
     "assets/brand/logo/artan-records-symbol-black.svg": "da98d41ede7eb68fc68aa0df873fcac42608cac0370675e4c7720b38a1ad1ca7",
     "assets/brand/logo/artan-records-symbol-white.svg": "c59b4298baa29dad94c59d0762ab139b0b54aca31093d7d0450de163ac6235b5",
     "assets/brand/logo/artan-records-wordmark-black.svg": "9f1e643c3b4a2b36b36d581fb94c32a731a95d5766e8ecc81a1b64bcb5e6e38b",
@@ -61,7 +61,7 @@
     "assets/data/site.json": "3916ae28da33f661a292228f6850bdfcd7797bd5519b09c374c5b06084e5523a",
     "assets/data/icons.json": "e2e0dd28910310d3522ce2c2dab50847b89f376cba848c716b929e524a43db5b",
     "foundation/build.mjs": "3a9fc4c87a2bed0772c59f8e390cf1e577266be725966f5f4e2f980554f38229",
-    "foundation/shell.html": "771cca5466905348d103b0b8940287342d92e83e1860c67d36b85bbf889e1999",
+    "foundation/shell.html": "b040cf5eb4f6501e68ef916a06381acc92b769e3b8936f2da927c22cbcdd1947",
     "foundation/surface.css": "b429b21247ae3fa0f737a816ba3daca9de280008c47e322f36c59bcaed5dfbd3",
     "foundation/app.js": "53eb9618621ac0a32776355f0dc9e24ce114b1b12d58646ca22179a2a6e2611b"
   }

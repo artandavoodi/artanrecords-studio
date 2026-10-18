@@ -2,6 +2,10 @@
   "source": "artandavoodi/control-center",
   "revision": "e2b761214e6c929160f9d8fc0d48cd67f3357500",
   "files": {
+    "signin": "b1857c7ac2012e8c3cbc6aa02ac6f2d18bff71864112fc42d20b3d34df406e69",
+    "signout": "06997dfdfdaeb66b3b875f290391ecca3617dc01583e10c88c53da745efeb44f",
+    "google": "506bdde11ce45da4c9a4f85ea36b82f8a8d16fb0e4dc3c88c84cb540cbe058cf",
+    "password": "b42e4367a92bc54a9639c95f2e35e0eaa3f6c237b3d8efc9546509735d6aba7e",
     "account": "4913e5db3f1332b04ac0723740225c3a0c229431a74370cd77e95b5df4db880a",
     "profile": "3603dfb3d4683fce09176bd7b6a5969657796cd05b8906d4e146f4e888d58ad7",
     "visibility-on": "d499bf0b785f4a5910794a4fc77e9a975592d21c022117ad906aeb67b1aad3e7",

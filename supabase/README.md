@@ -3,7 +3,7 @@
 This is a separate project, not the Store or Neuroartan project. No hosted migration has been applied and no project credentials are configured.
 
 1. The owner reviews and purchases a plan if desired, then creates a dedicated project and enters its database password privately.
-2. Apply the migration in this project only; run real two-account RLS tests, including avatar path attacks, membership escalation and contract writes.
+2. Apply both migrations in timestamp order in this project only; run real two-account RLS tests, including billing addresses, avatar path attacks, membership escalation and contract writes.
 3. Configure the canonical Studio URL and explicit local callback allowlist. Require email confirmation, configure rate limits and CAPTCHA, and verify actual email delivery before opening registration.
    For confirmation and recovery links that work across tabs/devices, configure the dedicated templates with Studio's /account/ callback, token_hash and the matching type. The client supports verifyOtp for those templates and PKCE code exchange for same-tab provider returns; it scrubs one-time credentials from the address bar. Do not claim cross-device recovery until the deployed template and actual mail journey are tested.
 4. Add only the public project URL and publishable key to content/account.json. Never add a service-role key to the browser or repository.
