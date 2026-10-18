@@ -1,0 +1,11 @@
+/* Same ecosystem dialog tokens; no border-based action or focus state. */
+@import url('./preferences-presentation.css');
+.privacy-preferences { inline-size:min(var(--reading-width-md),calc(100% - var(--spacing-xl))); max-block-size:calc(100svh - var(--spacing-xl)); overflow-y:auto; padding:var(--spacing-md); gap:var(--spacing-md); background:var(--glass-overlay-drawer-shell-bg); color:var(--cv-text-primary); border:0; border-radius:var(--dialog-radius-unified); scrollbar-width:none; }
+.privacy-preferences[open] { display:grid; text-align:center; }
+.privacy-preferences::backdrop { background:var(--glass-overlay-backdrop-bg); backdrop-filter:blur(var(--glass-overlay-backdrop-blur)) saturate(var(--glass-overlay-backdrop-saturate)); -webkit-backdrop-filter:blur(var(--glass-overlay-backdrop-blur)) saturate(var(--glass-overlay-backdrop-saturate)); }
+body:has(.privacy-preferences[open]) { overflow:hidden; }
+.privacy-preferences button { border:0; border-radius:var(--shape-control-radius); background:transparent; color:var(--cv-text-primary); cursor:pointer; }
+.privacy-preferences button:hover,.privacy-preferences button:focus-visible { background:var(--control-bg-hover); outline:none; }
+.privacy-preferences h2:focus { outline:none; }
+.privacy-preferences > a { justify-self:center; text-decoration:none; }
+.site-footer .information-links button { border:0; padding:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }

@@ -1,0 +1,37 @@
+/* Submission brief: shared journey behavior, distinct editorial composition. */
+.submission-journey {
+  --submission-motion-duration:var(--nav-institutional-motion-panel-slow);
+  --submission-motion-ease:var(--ease-standard);
+  --submission-number-size:var(--font-size-display-1);
+  --submission-heading-size:var(--font-size-display-2);
+}
+.submission-journey__hero { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); align-items:center; gap:var(--spacing-3xl); min-block-size:calc(var(--section-min-height-stable) * 0.7); padding-block:var(--cv-page-padding-block); }
+.submission-journey__hero h1 { margin-block:var(--spacing-lg); font-size:var(--font-size-display-1); font-weight:var(--font-weight-bold); line-height:var(--line-height-heading-tight); white-space:pre-line; }
+.submission-journey__introduction, .submission-journey__body { display:grid; align-content:start; gap:var(--spacing-lg); }
+.submission-journey__introduction > p, .submission-journey__body > p { margin:0; }
+.submission-journey__step { padding-block:var(--cv-page-padding-block); border-block-start:var(--border-width-hairline) solid var(--cv-border); }
+.submission-journey__copy { position:relative; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,3fr); align-items:start; gap:var(--spacing-3xl); }
+.submission-journey__number { margin:0; font-size:var(--submission-number-size); font-weight:var(--font-weight-bold); line-height:var(--line-height-heading-tight); color:var(--cv-text-primary); transform-origin:left top; }
+.submission-journey__body h2 { margin:0; font-size:var(--submission-heading-size); font-weight:var(--font-weight-light); line-height:var(--line-height-heading-tight); text-wrap:balance; transform-origin:left center; }
+.submission-journey__conversation { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.4fr); align-items:start; gap:var(--spacing-3xl); padding-block:var(--cv-page-padding-block); border-block-start:var(--border-width-hairline) solid var(--cv-border); scroll-margin-block-start:var(--site-header-height); }
+.submission-journey__conversation > header { display:grid; gap:var(--spacing-lg); }
+.submission-journey__conversation > header > * { margin:0; }
+.submission-journey__resources { padding-block:var(--spacing-xl); border-block-start:var(--border-width-hairline) solid var(--cv-border); }
+@media (prefers-reduced-motion:no-preference) {
+  .submission-journey[data-motion-ready] .submission-journey__number { opacity:calc(0.4 + 0.6 * var(--journey-focus,0)); scale:calc(0.8 + 0.2 * var(--journey-focus,0)); }
+  .submission-journey[data-motion-ready] .submission-journey__body h2 { scale:calc(0.92 + 0.08 * var(--journey-focus,0)); }
+  .submission-journey[data-motion-ready] .submission-journey__number,
+  .submission-journey[data-motion-ready] .submission-journey__body { transition:opacity var(--submission-motion-duration) var(--submission-motion-ease),transform var(--submission-motion-duration) var(--submission-motion-ease),scale var(--duration-base) var(--submission-motion-ease); }
+  .submission-journey[data-motion-ready] .submission-journey__body h2 { transition:scale var(--duration-base) var(--submission-motion-ease); }
+  .submission-journey[data-motion-ready] [data-journey-step]:not([data-visible]) .submission-journey__number,
+  .submission-journey[data-motion-ready] [data-journey-step]:not([data-visible]) .submission-journey__body { opacity:0; transform:translateY(var(--spacing-lg)); }
+  .submission-journey[data-motion-ready] [data-visible] .submission-journey__body { transition-delay:calc(var(--duration-base) / 2); }
+  .submission-journey__hero h1 { animation:submission-arrive var(--submission-motion-duration) var(--submission-motion-ease) both; }
+  @keyframes submission-arrive { from { opacity:0; transform:translateY(var(--spacing-lg)); } to { opacity:1; transform:none; } }
+}
+@media (max-width:1024px), (hover:none), (pointer:coarse) {
+  .submission-journey { --submission-heading-size:var(--font-size-h1); }
+  .submission-journey__hero, .submission-journey__conversation { grid-template-columns:minmax(0,1fr); gap:var(--spacing-xl); min-block-size:auto; }
+  .submission-journey__hero h1 { font-size:var(--font-size-display-2); }
+  .submission-journey__copy { grid-template-columns:minmax(0,1fr); gap:var(--spacing-lg); }
+}

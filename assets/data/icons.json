@@ -96,6 +96,24 @@
       "monochrome": true,
       "src": "assets/icons/social/platforms/tidal.svg",
       "alt": ""
+    },
+    {
+      "id": "cookies",
+      "src": "assets/icons/actions/cookies.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "check",
+      "src": "assets/icons/actions/check.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "close",
+      "src": "assets/icons/actions/close.svg",
+      "alt": "",
+      "monochrome": true
     }
   ]
 }

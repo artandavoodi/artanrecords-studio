@@ -15,7 +15,7 @@
   font-size: var(--site-type-caption-size);
   font-weight: var(--site-type-label-weight);
   letter-spacing: var(--site-type-label-tracking);
-  text-transform: uppercase;
+  text-transform: none;
 }
 .site-navigation nav a { color: var(--cv-text-secondary); }
 .site-navigation nav a:hover, .site-navigation nav a[aria-current] { color: var(--cv-text-primary); }

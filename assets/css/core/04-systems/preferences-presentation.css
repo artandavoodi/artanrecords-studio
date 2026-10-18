@@ -1,0 +1,53 @@
+/* Generated from Neuroartan consent tokens and icon motion; edit the source, not this distribution. */
+:root{--dialog-consent-brand-symbol-wrap-size:2.4rem;
+--dialog-consent-brand-symbol-size:2.3rem;
+--dialog-consent-brand-symbol-size-mobile:1.9rem;
+--dialog-consent-brand-gap:1.04rem;
+--dialog-consent-eyebrow-size:0.78rem;
+--dialog-consent-eyebrow-weight:400;
+--dialog-consent-eyebrow-line-height:1.2;
+--dialog-consent-copy-size:0.95rem;
+--dialog-consent-copy-weight:300;
+--dialog-consent-copy-line-height:1.58;
+--dialog-consent-action-gap:0.72rem;
+--dialog-consent-action-min-height:3rem;
+--dialog-consent-action-padding-y:0.82rem;
+--dialog-consent-action-padding-x:1rem;
+--dialog-consent-action-size:0.94rem;
+--dialog-consent-action-weight:300;
+--dialog-consent-action-line-height:1.2;
+--dialog-consent-action-tracking:-0.015em;
+--dialog-consent-row-icon-size:1.68rem;
+--overlay-motion-duration:320ms;
+--overlay-motion-ease:cubic-bezier(0.22, 1, 0.36, 1);
+--dialog-overlay-transform-closed:translateY(1.2rem) scale(0.985);
+--dialog-overlay-transform-open:translateY(0) scale(1);}
+@keyframes cookieConsentIconFloat{
+  0%,
+  100%{
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  18%{
+    transform: translate(-50%, -50%) rotate(-30deg) scale(1);
+  }
+  34%{
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  62%{
+    transform: translate(-50%, -50%) rotate(0deg) scale(0.94);
+  }
+  78%{
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+}
+.privacy-preferences[open]{animation:preferencePanelEntrance var(--overlay-motion-duration) var(--overlay-motion-ease) both;}
+.privacy-preferences h2{margin:0;font-size:var(--dialog-consent-eyebrow-size);font-weight:var(--dialog-consent-eyebrow-weight);line-height:var(--dialog-consent-eyebrow-line-height);}
+.privacy-preferences > p{font-size:var(--dialog-consent-copy-size);font-weight:var(--dialog-consent-copy-weight);line-height:var(--dialog-consent-copy-line-height);}
+.privacy-preferences__symbol{position:relative;display:block;justify-self:center;inline-size:var(--dialog-consent-brand-symbol-wrap-size);block-size:var(--dialog-consent-brand-symbol-wrap-size);}
+.privacy-preferences__symbol img{position:absolute;top:50%;left:50%;inline-size:var(--dialog-consent-brand-symbol-size);block-size:var(--dialog-consent-brand-symbol-size);max-inline-size:none;object-fit:contain;transform:translate(-50%,-50%);transform-origin:center;animation:cookieConsentIconFloat 5.8s var(--interaction-ease-standard) infinite;}
+.privacy-preferences__actions{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--dialog-consent-action-gap);}
+.privacy-preferences__action{display:inline-flex;flex:1 1 0;align-items:center;justify-content:center;gap:var(--dialog-consent-action-gap);min-block-size:var(--dialog-consent-action-min-height);padding:var(--dialog-consent-action-padding-y) var(--dialog-consent-action-padding-x);font-size:var(--dialog-consent-action-size);font-weight:var(--dialog-consent-action-weight);line-height:var(--dialog-consent-action-line-height);letter-spacing:var(--dialog-consent-action-tracking);}
+.privacy-preferences__action img{inline-size:var(--dialog-consent-row-icon-size);block-size:var(--dialog-consent-row-icon-size);object-fit:contain;}
+@keyframes preferencePanelEntrance{from{opacity:0;transform:var(--dialog-overlay-transform-closed);}to{opacity:1;transform:var(--dialog-overlay-transform-open);}}
+@media(max-width:1024px){.privacy-preferences__symbol img{inline-size:var(--dialog-consent-brand-symbol-size-mobile);block-size:var(--dialog-consent-brand-symbol-size-mobile);}}
+@media(prefers-reduced-motion:reduce){.privacy-preferences[open],.privacy-preferences__symbol img{animation:none;}}

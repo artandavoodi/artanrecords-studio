@@ -19,7 +19,8 @@ export function bindMenu({ openLabel, closeLabel, selectors = {}, persistentHead
   let menuScrollY = window.scrollY;
   const revealHeader = () => root.removeAttribute('data-header-hidden');
   const updateHeader = () => {
-    const firstSection = persistentHeader ? document.querySelector('main[data-fragment="home"] > section') : null;
+    const snapping = getComputedStyle(root).scrollSnapType !== 'none';
+    const firstSection = persistentHeader && snapping ? document.querySelector('main[data-fragment="home"] > section') : null;
     const initialSnapOffset = firstSection
       ? firstSection.getBoundingClientRect().top + window.scrollY - (parseFloat(getComputedStyle(root).scrollPaddingBlockStart) || 0)
       : 0;
@@ -34,14 +35,17 @@ export function bindMenu({ openLabel, closeLabel, selectors = {}, persistentHead
     }
   };
   navigation?.addEventListener('focusin', revealHeader);
-  window.addEventListener('scroll', () => {
+  const scheduleHeader = () => {
     if (pending) return;
     pending = true;
     requestAnimationFrame(() => {
       pending = false;
       updateHeader();
     });
-  }, { passive: true });
+  };
+  window.addEventListener('scroll', scheduleHeader, { passive: true });
+  window.addEventListener('resize', scheduleHeader, { passive: true });
+  window.visualViewport?.addEventListener('resize', scheduleHeader, { passive: true });
   window.addEventListener('pageshow', updateHeader);
   navigation?.addEventListener('focusout', () => requestAnimationFrame(updateHeader));
   const setOpen = value => {

@@ -1,5 +1,6 @@
 {
   "schemaVersion": 1,
+  "preferences":{"title":"Cookies & preferences","description":"Browser storage remembers your privacy choice. Allow saves your appearance for future visits; Skip leaves optional preference storage off. Forms use necessary verification technologies when you open them.","allow":"Allow","skip":"Skip","settings":"Cookies & preferences","notice":"Legal information","storage":{"choiceKey":"artanrecords-preferences","themeKey":"artanrecords-theme","validDays":180,"version":1}},
   "name": "Artan Records",
   "foundingDate": "2025",
   "foundingLabel": "Founded",
@@ -8,9 +9,9 @@
   "domain": "https://artanrecords.com",
   "description": "An independent record label for artists, recordings and creative collaboration. Music first. A lasting home for the work.",
   "introduction": [
-    "Music first.",
-    "An independent record label for artists, recordings and creative collaboration.",
-    "A lasting home for the work."
+    "Music first",
+    {"prefix":"A record label for","phrases":["artists","recordings","creative collaboration"],"motion":{"hold":2200,"type":65,"erase":35}},
+    "A lasting home for the work"
   ],
   "founder": {
     "artistId": "artan-davoodi",
