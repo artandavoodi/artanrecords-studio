@@ -31,6 +31,7 @@ test('header owns account and search controls; dialogs stay outside page content
   const main=home.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1],header=home.match(/<header\b[^>]*>([\s\S]*?)<\/header>/)[1];
   assert.doesNotMatch(main,/type="search"|class="studio-tools"|data-account-view/);
   assert.match(header,/data-studio-account-open/);assert.match(header,/data-studio-search-open/);
+  assert.match(header,/platform-header-actions label-header-actions/);assert.doesNotMatch(header,/label-home-actions/);
   assert.match(search,/<dialog id="store-search-dialog"/);assert.match(home,/<dialog id="account-dialog"/);
   assert.match(search,/data-search-close aria-label="Close search"/);
   assert.match(search,/class="dialog-close global-close-button"/);

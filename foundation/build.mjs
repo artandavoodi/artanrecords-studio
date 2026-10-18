@@ -23,7 +23,7 @@ function link(item){
   if(item.url.startsWith('/')&&!paths.has(item.url.split('#')[0]))throw Error('Unknown local route '+item.url);
   return `<a href="${e(item.url)}">${e(item.label)}</a>`;
 }
-const navigation=fill(navTemplate,{...Object.fromEntries(Object.entries(brand.labels).map(([k,v])=>[k,e(v)])),name:e(brand.name),wordmarkLight:e(brand.logoAssets.wordmarkBlack),wordmarkDark:e(brand.logoAssets.wordmarkWhite),homeLinks:application?.renderActions?application.renderActions({e}):'',links:application?.renderMenu?application.renderMenu({e}):config.navigation.map(link).join('')});
+const navigation=fill(navTemplate,{...Object.fromEntries(Object.entries(brand.labels).map(([k,v])=>[k,e(v)])),name:e(brand.name),actionsClass:application?'platform-header-actions':'label-home-actions',wordmarkLight:e(brand.logoAssets.wordmarkBlack),wordmarkDark:e(brand.logoAssets.wordmarkWhite),homeLinks:application?.renderActions?application.renderActions({e}):'',links:application?.renderMenu?application.renderMenu({e}):config.navigation.map(link).join('')});
 const directory=config.pages.filter(p=>p.path!=='/');
 const cards=directory.map(p=>`<article class="surface-card"><p class="eyebrow">${e(p.category)}</p><h2><a href="${e(p.path)}">${e(p.title)}</a></h2><p>${e(p.description)}</p>${p.status?`<p class="surface-status">${e(p.status)}</p>`:''}</article>`).join('');
 for(const page of config.pages) {
