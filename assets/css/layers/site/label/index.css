@@ -90,8 +90,6 @@ html[data-home-free-scroll]:has(main[data-fragment="home"]) { scroll-snap-type:n
 .label-home-actions a[data-emphasis="primary"], .label-actions a[data-emphasis="primary"] { background:var(--label-primary-action-background); color:var(--label-primary-action-text); }
 html[data-theme-effective="dark"] .label-wordmark--light { display: none; }
 html:has(main[data-fragment="artist"]) .site-footer > .hub { display: none; }
-.site-footer :is(a,button) { color: var(--cv-text-primary); opacity: var(--opacity-muted); transition: opacity var(--duration-base) var(--ease-standard); }
-.site-footer :is(a,button):hover, .site-footer :is(a,button):focus-visible { opacity: var(--cv-opacity-full); }
 @media (max-width: 1024px), (hover: none), (pointer: coarse) {
   .site-footer > .hub .hub__group-links { display: flex; }
 }

@@ -26,15 +26,26 @@ test('private data policies never grant client financial or contract writes',asy
   for(const table of ['studio_profiles','studio_memberships','studio_submissions','studio_contracts'])assert.ok(sql.includes(`alter table public.${table} enable row level security`));
   assert.doesNotMatch(sql,/grant (?:all|insert|update|delete).*studio_contracts/i);assert.match(sql,/'studio-avatars','studio-avatars',false/);
 });
-test('header owns account and search controls; dialogs stay outside page content',async()=>{
+test('header provides responsive account and search controls; dialogs stay outside page content',async()=>{
   const home=await readFile('index.html','utf8'),search=await readFile('search/index.html','utf8');
   const main=home.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1],header=home.match(/<header\b[^>]*>([\s\S]*?)<\/header>/)[1];
   assert.doesNotMatch(main,/type="search"|class="studio-tools"|data-account-view/);
   assert.match(header,/data-studio-account-open/);assert.match(header,/data-studio-search-open/);
+  assert.match(header,/studio-header-mobile/);
   assert.match(header,/platform-header-actions label-header-actions/);assert.doesNotMatch(header,/label-home-actions/);
   assert.match(search,/<dialog id="store-search-dialog"/);assert.match(home,/<dialog id="account-dialog"/);
   assert.match(search,/data-search-close aria-label="Close search"/);
   assert.match(search,/class="dialog-close global-close-button"/);
+});
+test('workspace menu is responsive and separate from label resources',async()=>{
+  const {renderMenu}=await import('../app/platform-render.mjs');
+  const html=renderMenu({e:String});
+  assert.match(html,/class="studio-menu-workspace"/);
+  assert.match(html,/https:\/\/docs.artanrecords.com\//);
+  const css=await readFile('app/platform.css','utf8');
+  assert.match(css,/\.label-navigation \.studio-header-mobile \{ display:none/);
+  assert.match(css,/@media\(max-width:1024px\).*studio-header-mobile \{ display:grid/s);
+  assert.match(css,/justify-content:flex-start; text-align:start/);
 });
 test('Studio uses the Store search ranking and configured categories',async()=>{
   const {searchStore}=await import('../app/shared/search.js');

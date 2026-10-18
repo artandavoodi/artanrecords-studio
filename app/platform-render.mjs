@@ -5,7 +5,10 @@ const icon=renderIcon;
 export function renderPlatformNavigation(page,e){
   return `<aside class="studio-platform-rail" aria-label="Artist workspace"><button class="studio-header-control" type="button" data-platform-rail-toggle aria-label="Collapse navigation" aria-expanded="true" aria-controls="studio-workspace-navigation">${icon('panel',e)}</button><nav id="studio-workspace-navigation" aria-label="Workspace navigation">${data.groups.map(group=>`<section class="studio-platform-group"><h2>${e(group.label)}</h2>${group.items.map(item=>`<a href="${e(item.path)}" aria-label="${e(item.label)}"${page.path===item.path?' aria-current="page"':''}>${icon(item.icon,e)}<span>${e(item.label)}</span></a>`).join('')}</section>`).join('')}</nav></aside>`;
 }
-export function renderMenu({e}){return data.groups.flatMap(group=>group.items).map(item=>`<a href="${e(item.path)}">${icon(item.icon,e)}<span>${e(item.label)}</span></a>`).join('');}
+export function renderMenu({e}){
+  const links=items=>items.map(item=>`<a href="${e(item.path)}">${icon(item.icon,e)}<span>${e(item.label)}</span></a>`).join('');
+  return `<div class="studio-menu-workspace">${links(data.groups.flatMap(group=>group.items))}</div>${links(data.menu)}`;
+}
 export function renderOverview(e){
   return `<section class="studio-platform-introduction"><h2>${e(data.overview.title)}</h2><p>${e(data.overview.description)}</p><div class="studio-hero-actions"><a class="studio-primary" href="${e(data.overview.href)}">${icon('release',e)}${e(data.overview.action)}</a><a href="${e(data.overview.secondaryHref)}">${icon('document',e)}${e(data.overview.secondary)}</a></div></section><div class="studio-platform-features">${data.features.map(item=>`<article class="surface-card">${icon(item.icon,e)}<h2><a href="${e(item.path)}">${e(item.title)}</a></h2><p>${e(item.description)}</p></article>`).join('')}</div><section class="studio-platform-connection"><h2>${e(data.overview.statusTitle)}</h2><p>${e(data.overview.statusText)}</p><a href="/settings/#connections">${icon('settings',e)}Connection settings</a></section>`;
 }

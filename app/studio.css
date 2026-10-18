@@ -17,12 +17,12 @@
 .studio-hero-actions > :is(a,button),.studio-account .ui-button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); min-block-size:var(--control-height-md); padding:var(--spacing-sm) var(--spacing-lg); border:0; border-radius:var(--account-field-radius); background:var(--control-bg-hover); color:var(--cv-text-primary); text-decoration:none; cursor:pointer; }
 .studio-hero-actions .studio-primary { background:var(--label-primary-action-background); color:var(--label-primary-action-text); }
 .studio-hero-actions .studio-primary img { filter:brightness(0) invert(1); }
-.studio-account { display:grid; gap:var(--spacing-lg); inline-size:100%; max-inline-size:var(--cv-reading-width); }
+.studio-account { display:grid; gap:var(--spacing-lg); inline-size:100%; max-inline-size:var(--reading-width-md); }
 .studio-account form { display:grid; gap:var(--spacing-md); }
 .studio-account label { display:grid; gap:var(--account-content-gap-xs); }
 .studio-account :is(input:not([type=checkbox]):not([type=file]),textarea,select) { inline-size:100%; box-sizing:border-box; }
 .studio-account textarea.ui-field { padding-block:var(--spacing-md); }
-.studio-account a { text-decoration:none; font-weight:var(--font-weight-semibold); }
+.studio-account a { text-decoration:none; font-weight:inherit; }
 .studio-account .ui-password-field__toggle { padding:0; min-block-size:var(--password-field-toggle-size); background:transparent; }
 .studio-account .studio-signout { background:var(--layout-home-featured-functions-card-spectrum-orange); color:var(--color-black); }
 .studio-account .studio-signout img { filter:brightness(0); }
@@ -31,7 +31,7 @@
 .studio-auth-tabs { display:grid; gap:var(--spacing-md); }
 .studio-account .studio-auth-tabs button { background:transparent; padding-inline:0; }
 .studio-auth-tabs [aria-pressed=false] { opacity:var(--opacity-muted); }
-.studio-account-notices { display:flex; flex-wrap:wrap; gap:var(--spacing-md) var(--spacing-lg); }
+.studio-account-notices { display:flex; flex-wrap:wrap; justify-content:center; gap:var(--spacing-md) var(--spacing-lg); font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 #account-dialog > h2 { padding-inline-end:var(--global-close-button-size); margin-block-end:var(--spacing-lg); }
 .studio-account .studio-provider { inline-size:100%; }
 .studio-account label:has(> input[type=checkbox]) { display:flex; align-items:flex-start; gap:var(--spacing-sm); }

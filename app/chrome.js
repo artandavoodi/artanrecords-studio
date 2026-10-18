@@ -30,5 +30,5 @@ export function bindChrome(){
   searchClose.addEventListener('click',()=>search.close());
   search.addEventListener('close',()=>{arrival?.cancel();arrival=null;searchClose.classList.remove('is-arriving');delete search.dataset.searchPhase;document.documentElement.removeAttribute('data-search-open');});
   if(location.pathname==='/search/')openSearch(document.querySelector('[data-studio-search-open]'));
-  return {openAccount,account,setUser(value){user=value;document.querySelector('.studio-header-control[data-studio-account-open]').setAttribute('aria-label',user?'Manage your account':'Open account');}};
+  return {openAccount,account,setUser(value){user=value;document.querySelector('.studio-header-control[data-studio-account-open]')?.setAttribute('aria-label',user?'Manage your account':'Open account');}};
 }

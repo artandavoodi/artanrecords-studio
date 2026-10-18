@@ -8,4 +8,4 @@ body:has(.privacy-preferences[open]) { overflow:hidden; }
 .privacy-preferences button:hover,.privacy-preferences button:focus-visible { background:var(--control-bg-hover); outline:none; }
 .privacy-preferences h2:focus { outline:none; }
 .privacy-preferences > a { justify-self:center; text-decoration:none; }
-.site-footer .information-links button { border:0; padding:0; background:transparent; color:inherit; font:inherit; cursor:pointer; }
+.site-footer .information-links button { border:0; padding:0; background:transparent; cursor:pointer; }
