@@ -20,8 +20,6 @@ Contract records prepare private account assignment, version and content-hash tr
 
 Stripe Connect is the contemplated separate onboarding/payout boundary, not a reused Store checkout key. Account eligibility, country support, agreements, charges, reconciliation and signed idempotent webhooks must be reviewed before implementation. No payment, payout or royalty balance is active. Never store card numbers, bank details or tax documents in profile fields.
 
-## Public Discovery
-
 ## Partnership Preparation
 
 `202610190001_studio_partnerships.sql` prepares agreement-specific, versioned
@@ -31,5 +29,7 @@ Only trusted staff services may assign terms; clients receive account-scoped
 read access through the associated contract. This migration has not been applied
 to a hosted project. Database-level isolation tests are required before activation;
 source assertions are not a substitute for those tests.
+
+## Public Discovery
 
 Only the introduction and public legal notices are indexable. Private account, submission, agreement, analytics and financial routes stay noindex and require database authorization for their records. A sitemap is a discovery hint, not a ranking guarantee. Search currently indexes public explanatory text and route names only, never private account records.
