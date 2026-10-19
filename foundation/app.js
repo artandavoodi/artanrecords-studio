@@ -9,7 +9,8 @@ try {
   const response=await fetch('/assets/data/site.json');
   if(!response.ok)throw Error('Brand configuration unavailable');
   const brand=await response.json();
-  bindTheme(brand.labels);bindNavigation(brand.labels);
+  if(document.querySelector('[data-theme-toggle]'))bindTheme(brand.labels);
+  bindNavigation(brand.labels);
   document.documentElement.dataset.enhanced='true';
 } catch(error){console.error(error);}
 const searchOpen=document.querySelector('[data-docs-search-open]');

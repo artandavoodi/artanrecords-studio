@@ -1,0 +1,122 @@
+{
+  "domain": "https://artanrecords.com",
+  "notices": [
+    {
+      "legacyPath": "/cookies/",
+      "footerLabel": "Studio cookies",
+      "path": "/studio-cookies/",
+      "title": "Cookie Policy",
+      "description": "Storage and preference choices in Artanrecords Studio.",
+      "effectiveDate": "2026-10-19",
+      "lastUpdated": "2026-10-19",
+      "sections": [
+        {
+          "id": "essential",
+          "title": "Essential storage",
+          "paragraphs": [
+            "Consent choices and account security use necessary browser storage. Essential storage is always active. Studio account services are not connected yet; authentication storage becomes necessary when sign-in is available."
+          ]
+        },
+        {
+          "id": "experience",
+          "title": "Optional preferences",
+          "paragraphs": [
+            "With preference memory allowed, this browser remembers appearance, contrast, palette and workspace sidebar choices across visits. Declining optional storage keeps changes in session storage until the tab session ends. These choices do not currently synchronize to an artist account."
+          ]
+        },
+        {
+          "id": "analytics",
+          "title": "Analytics",
+          "paragraphs": [
+            "Analytics are not connected. Choosing an analytics preference does not activate tracking or create listening or royalty reports. Any future analytics service must be disclosed here before activation."
+          ]
+        },
+        {
+          "id": "controls",
+          "title": "Change your choices",
+          "paragraphs": [
+            "Open Cookies & preferences from the footer or Privacy settings to save individual choices, allow optional categories or decline them. Withdrawing preference memory removes persistent Studio appearance and navigation settings from this browser; essential consent and security records remain separate."
+          ]
+        }
+      ]
+    },
+    {
+      "legacyPath": "/privacy/",
+      "footerLabel": "Studio privacy",
+      "path": "/studio-privacy/",
+      "title": "Privacy and cookies",
+      "description": "How Artanrecords Studio handles account information and your choices.",
+      "effectiveDate": "2026-10-19",
+      "lastUpdated": "2026-10-19",
+      "sections": [
+        {
+          "id": "account",
+          "title": "Your account",
+          "paragraphs": [
+            "Studio account information is used to provide access, maintain your artist profile and respond to your requests. Creating an account does not grant access to another artist's work or financial records. Profile photographs and unreleased submissions are not public catalogue content."
+          ]
+        },
+        {
+          "id": "storage",
+          "title": "Cookies and similar technologies",
+          "paragraphs": [
+            "Essential browser storage supports security and your consent choices. Optional preference memory stores appearance, contrast, palette and sidebar choices across visits only when permitted. Declining optional storage keeps interface changes in session storage until the tab session ends. Analytics are not connected. These preferences do not currently synchronize to an artist account. See the Cookie Policy for storage categories and controls."
+          ]
+        },
+        {
+          "id": "rights",
+          "title": "Your choices",
+          "paragraphs": [
+            "For access, correction, deletion or privacy questions, contact contact@artanrecords.com. Some records may need to be retained to meet contractual or legal obligations. Account and payment services will be described here when connected; no banking or tax information should be submitted through public forms."
+          ]
+        }
+      ]
+    },
+    {
+      "legacyPath": "/terms/",
+      "footerLabel": "Studio terms",
+      "path": "/studio-terms/",
+      "title": "Studio terms",
+      "description": "Access to Artanrecords Studio and artist services.",
+      "effectiveDate": "2026-10-19",
+      "lastUpdated": "2026-10-19",
+      "sections": [
+        {
+          "id": "access",
+          "title": "Accounts and artist access",
+          "paragraphs": [
+            "Use accurate account information and protect your credentials. An account is separate from an artist agreement; label-managed approval determines access to artist workspaces. Do not access another person's records or submit work without permission."
+          ]
+        },
+        {
+          "id": "work",
+          "title": "Your work",
+          "paragraphs": [
+            "Submit only material you are entitled to share. A submission is not an agreement to release or distribute a recording. Distribution, rights, royalty splits and payment obligations require a separate confirmed agreement."
+          ]
+        },
+        {
+          "id": "payments",
+          "title": "Royalties and payments",
+          "paragraphs": [
+            "Listening statistics are not a royalty statement. Earnings, deductions, currencies, reporting periods and payout eligibility depend on verified reports and the applicable agreement. No payout amount or date is promised by an unconnected workspace. Payment or identity onboarding must use the designated secure provider; do not send bank details through public enquiries."
+          ]
+        },
+        {
+          "id": "support",
+          "title": "Help and statutory rights",
+          "paragraphs": [
+            "Contact contact@artanrecords.com for access or service questions. These terms do not remove rights that cannot lawfully be excluded. Financial services, charges and payment-provider terms must be disclosed before those features are activated."
+          ]
+        },
+        {
+          "id": "preferences",
+          "title": "Workspace preferences",
+          "paragraphs": [
+            "Appearance and workspace controls personalize this browser and do not alter an artist agreement, royalty calculation or service entitlement. Optional storage follows your cookie choices. Account preference synchronization and custom background rendering are not connected; no service is activated by selecting a prepared control."
+          ]
+        }
+      ]
+    }
+  ]
+}

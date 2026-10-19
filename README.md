@@ -2,6 +2,13 @@
 
 ## Shared Platform Controls
 
+Studio owns its stationary header and copyright-only footer in
+`app/shell-render.mjs`; marketing navigation does not own platform identity.
+Public Studio notices are authored in Artanrecords website's
+`docs/assets/data/studio-legal.json`, published there, and imported through the
+foundation manifest. Legacy Studio notice routes read that same source and are
+not indexed. Privacy controls remain available in Settings, not the footer.
+
 Neuroartan owns the consent panel, theme engine, radio and toggle primitives,
 appearance markup, and category vectors imported under `app/neuroartan/`.
 Run `node tools/sync-platform.mjs --sync` only against a committed Neuroartan

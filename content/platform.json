@@ -1,5 +1,6 @@
 {
   "name":"Artanrecords Studio",
+  "chrome":{"label":"Studio"},
   "summary":"The artist platform being developed by Artanrecords for release preparation, agreements and royalty reporting.",
   "groups":[
     {"label":"Workspace","items":[{"path":"/","label":"Overview","icon":"dashboard"},{"path":"/releases/","label":"Releases","icon":"release"},{"path":"/analytics/","label":"Analytics","icon":"analytics"}]},

@@ -17,7 +17,6 @@ export async function bindPreferences(){
   await import('./neuroartan/assets/js/layers/website/overlays/cookie/cookie-consent.js');
   let first=true;try{first=!JSON.parse(localStorage.getItem('neuroartan.cookieConsent'))?.state;}catch{}
   if(first&&!legal)requestAnimationFrame(open);
-  const settings=document.createElement('button');settings.type='button';settings.textContent='Cookies & preferences';settings.addEventListener('click',open);document.querySelector('.site-footer .information-links')?.append(settings);
   document.querySelectorAll('[data-studio-preferences]').forEach(button=>button.addEventListener('click',open));
   document.querySelectorAll('#cookie-consent-mount a').forEach(link=>link.addEventListener('click',()=>{document.body.classList.remove('cookie-consent-open','cookie-consent-closing');}));
 }

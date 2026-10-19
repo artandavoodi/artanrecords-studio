@@ -1,5 +1,7 @@
 import {readFile} from 'node:fs/promises';
 const root=new URL('./neuroartan/',import.meta.url);
+const publication=JSON.parse(await readFile(new URL('../assets/data/studio-legal.json',import.meta.url),'utf8'));
+export const legalUrl=path=>publication.domain+publication.notices.find(notice=>notice.legacyPath===path).path;
 const shell=JSON.parse(await readFile(new URL('assets/data/platform/home-platform-shell.json',root),'utf8'));
 export function settingsIcon(id){
   const find=value=>{if(!value||typeof value!=='object')return null;if(value.id===id&&value.icon)return value.icon;for(const child of Object.values(value)){const found=find(child);if(found)return found;}return null;};
@@ -11,9 +13,9 @@ export async function platformFragment(path){
 export const cookieMarkup=(await platformFragment('assets/fragments/layers/website/cookie/cookie-consent.html'))
   .replace('data-cookie-consent="root"','data-cookie-consent="root" data-cookie-consent-asset-base="/app/neuroartan/assets/fragments/layers/website/cookie"')
   .replaceAll('Neuroartan','Artanrecords Studio')
-  .replaceAll('/pages/legal/terms/index.html','/terms/')
-  .replaceAll('/pages/legal/privacy/index.html','/privacy/')
-  .replaceAll('/pages/legal/cookies/index.html','/cookies/')
+  .replaceAll('/pages/legal/terms/index.html',legalUrl('/terms/'))
+  .replaceAll('/pages/legal/privacy/index.html',legalUrl('/privacy/'))
+  .replaceAll('/pages/legal/cookies/index.html',legalUrl('/cookies/'))
   .replace(/<button[^>]*data-cookie-consent-language="true"[\s\S]*?<\/button>/,'')
   .replace(/<p\s+class="cookie-consent-language-status"[\s\S]*?<\/p>/,'')
   .replace(/<p class="cookie-consent-copy"[^>]*>[\s\S]*?<\/p>/,'<p class="cookie-consent-copy">Essential storage supports security, sign-in and your consent choice. Choose whether to remember optional appearance and navigation preferences. Analytics are not connected.</p>')

@@ -26,13 +26,12 @@ test('private data policies never grant client financial or contract writes',asy
   for(const table of ['studio_profiles','studio_memberships','studio_submissions','studio_contracts'])assert.ok(sql.includes(`alter table public.${table} enable row level security`));
   assert.doesNotMatch(sql,/grant (?:all|insert|update|delete).*studio_contracts/i);assert.match(sql,/'studio-avatars','studio-avatars',false/);
 });
-test('header provides responsive account and search controls; dialogs stay outside page content',async()=>{
+test('platform header keeps Studio identity and search without promotional chrome',async()=>{
   const home=await readFile('index.html','utf8'),search=await readFile('search/index.html','utf8');
   const main=home.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1],header=home.match(/<header\b[^>]*>([\s\S]*?)<\/header>/)[1];
   assert.doesNotMatch(main,/type="search"|class="studio-tools"|data-account-view/);
-  assert.match(header,/data-studio-account-open/);assert.match(header,/data-studio-search-open/);
-  assert.match(header,/studio-header-mobile/);
-  assert.match(header,/platform-header-actions label-header-actions/);assert.doesNotMatch(header,/label-home-actions/);
+  assert.match(header,/studio-brand-label">Studio/);assert.match(header,/data-studio-search-open/);
+  assert.doesNotMatch(header,/data-studio-account-open|studio-header-mobile|label-header-logo|label-header-actions|label-home-actions/);
   assert.match(search,/<dialog id="store-search-dialog"/);assert.match(home,/<dialog id="account-dialog"/);
   assert.match(search,/data-search-close aria-label="Close search"/);
   assert.match(search,/class="dialog-close global-close-button"/);
@@ -43,8 +42,8 @@ test('workspace menu is responsive and separate from label resources',async()=>{
   assert.match(html,/class="studio-menu-workspace"/);
   assert.match(html,/https:\/\/docs.artanrecords.com\//);
   const css=await readFile('app/platform.css','utf8');
-  assert.match(css,/\.label-navigation \.studio-header-mobile \{ display:none/);
-  assert.match(css,/@media\(max-width:1024px\).*studio-header-mobile \{ display:grid/s);
+  assert.match(css,/@media\(max-width:1024px\).*studio-platform-rail \{ display:none/s);
+  assert.match(css,/studio-menu-workspace \{ display:contents/);
   assert.match(css,/justify-content:flex-start; text-align:start/);
 });
 test('Studio uses the Store search ranking and configured categories',async()=>{
@@ -134,4 +133,10 @@ test('cookie publication and platform controls use verified shared sources',asyn
   const html=await readFile('settings/index.html','utf8');assert.match(html,/data-cookie-consent="root"/);assert.match(html,/data-cookie-consent-row="essential"/);assert.match(html,/data-cookie-consent-toggle="analytics"/);assert.match(html,/ui-radio-list__indicator/);assert.match(html,/platform-menue-settings-appearance.svg/);
   const notice=await readFile('cookies/index.html','utf8');assert.match(notice,/2026-10-19/);assert.match(notice,/session storage/);
   const royalties=await readFile('royalties/index.html','utf8');assert.doesNotMatch(royalties,/Read the financial context|Read the guidance|Accepted standard releases/);
+});
+test('Studio footer is copyright-only and public notices retain a single website owner',async()=>{
+  const html=await readFile('index.html','utf8');const footer=html.match(/<footer class="studio-footer">([\s\S]*?)<\/footer>/)?.[1];assert.ok(footer);assert.doesNotMatch(footer,/<a\b|<button\b|Privacy|Submit|Contact/);assert.match(footer,/© 2026 Artanrecords/);
+  const publication=JSON.parse(await readFile('assets/data/studio-legal.json','utf8'));const site=JSON.parse(await readFile('content/site.json','utf8'));
+  for(const notice of publication.notices){assert.equal(site.pages.find(page=>page.path===notice.legacyPath).sections.length,0);assert.ok(html.includes(publication.domain+notice.path));}
+  const preferences=await readFile('app/preferences.js','utf8');assert.doesNotMatch(preferences,/information-links|append\(settings\)/);
 });

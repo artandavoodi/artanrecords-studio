@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "edc35e7ebdf2e3ac3509a226ee580976998b072a",
+  "commit": "b1b2e9bf00688ef55e6d5a2a7ac8dbd73b4f7cf6",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "faaac582c9cccdc7447cc29a16258787214d3a9e77f231e4f33ae1a427563011",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -60,6 +60,7 @@
     "assets/icons/social/platforms/youtube-music.svg": "f96c8a67f93717df8f9f57b0e96638b19e8fd80a165ddf83598592b5342612f5",
     "assets/icons/social/platforms/youtube.svg": "94f7062f3106f4379a3ab1de21e71afc2900792e0f7eb68b8d877eb799c8bd3b",
     "assets/js/core/02-systems/document-reader.js": "e9b7f2b586b103d74efd7c90b4c82dd5357ed21c72fcfd4834dba74cb47cae3b",
+    "assets/data/studio-legal.json": "42952836961d78a51acd37c76d58a93ad3c92f3e3fa4f28c27e9a768db183776",
     "registry/icons/public/assets/core/identity/access/visibility-on.svg": "d499bf0b785f4a5910794a4fc77e9a975592d21c022117ad906aeb67b1aad3e7",
     "registry/icons/public/assets/core/identity/access/visibility-off.svg": "655bfe844eb290946a3fb9622fc8ca5433ca261b1c3531346442c6b1b6d7e190",
     "registry/icons/public/assets/core/navigation/chevron/chevron-down.svg": "267f15b40d1f468dd67aa683522be1166bed34488003b70181d9f6ab00da01a6",
@@ -71,10 +72,10 @@
     "assets/fragments/navigation/index.html": "cb02baebb3d6c2be6831dbce704b78b32c9250f414f893a96535518094faf999",
     "assets/data/site.json": "996db42699ba7396d7016793b052dfc32f8673ddc6ba583951211aa060648716",
     "assets/data/icons.json": "28b57e2adb35f11f320e61268216709e054a49ecd1405b93385c37b891b52f74",
-    "foundation/build.mjs": "0b83a5786bde00a2bab7a5e933177c582252e7ca1b38759b22e00dd64622e277",
-    "foundation/shell.html": "f4f120a34b12a1cb0a0c4a12714b16e6df54f8a525dcaf494617da2b631f8846",
+    "foundation/build.mjs": "f615f4324599b204ae7cb5d2e1b6de7abf7411e433ff2f21f977d1d7b90d068c",
+    "foundation/shell.html": "c445931a615369aef2d72b5f3660988ae1be578b4a198b8e7173f859648ef04c",
     "foundation/surface.css": "2760654c69a2cc61a0d5f822c734686d75b525d2fb919c9fb295c061a3c9769d",
-    "foundation/app.js": "150e63d182703007ac590335afa590e26de10f0eb53cd76c2a768565c43bae07",
+    "foundation/app.js": "572e494f0bb9e8da1eb9df5782b778b960e356d769cfde4ddbe4f83eedc5f86a",
     "foundation/search.mjs": "562dee8645f11d8d2a5c7a8bdaec54a1772594c6d1dc8b7ac7e2e56a054c11fe"
   }
 }

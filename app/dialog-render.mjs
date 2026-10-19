@@ -5,7 +5,7 @@ const settings=JSON.parse(await readFile(new URL('../content/account.json',impor
 const icon=name=>renderIcon(name,value=>String(value),'studio-icon account-action-icon');
 
 export function renderActions(){
-  return `<button class="studio-header-control studio-header-mobile" type="button" data-studio-account-open aria-label="Open account">${icon('account')}</button><button class="studio-header-control" type="button" data-studio-search-open aria-label="Search Studio">${icon('search')}</button><a class="studio-header-control studio-header-mobile" href="/settings/" aria-label="Settings">${icon('settings')}</a>`;
+  return `<button class="studio-header-control" type="button" data-studio-search-open aria-label="Search Studio">${icon('search')}</button>`;
 }
 
 export function searchContent(){
