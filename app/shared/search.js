@@ -21,10 +21,10 @@ export async function bindStoreSearch(config){
   const render=()=>{
     clear.hidden=!input.value;
     results.replaceChildren();more.hidden=true;filters.hidden=!input.value.trim();if(!ready)return;
-    if(!input.value.trim()){status.textContent='Search by title, artist, format or question.';return;}
+    if(!input.value.trim()){status.textContent=config.search.prompt||'Search by title, artist, format or question.';return;}
     const all=searchStore(index,input.value,{limit:Infinity}),matches=category==='all'?all:all.filter(item=>item.category===category);
     for(const item of config.search.categories){const count=item.id==='all'?all.length:all.filter(result=>result.category===item.id).length;const button=buttons.get(item.id);button.textContent=`${item.label} (${count})`;button.setAttribute('aria-pressed',String(item.id===category));}
-    status.textContent=matches.length?`${matches.length} ${matches.length===1?'result':'results'}${matches.length>visible?`, showing ${visible}`:''}`:all.length?'No results in this category. Choose All to see other matches.':'No matches. Try a title, format or help topic.';
+    status.textContent=matches.length?`${matches.length} ${matches.length===1?'result':'results'}${matches.length>visible?`, showing ${visible}`:''}`:all.length?'No results in this category. Choose All to see other matches.':config.search.empty||'No matches. Try a title, format or help topic.';
     more.hidden=matches.length<=visible;
     for(const item of matches.slice(0,visible)){
       if(!item.path.startsWith('/')||item.path.startsWith('//'))continue;
