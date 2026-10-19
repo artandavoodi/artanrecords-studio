@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "4973ca13854056a54340f52e9aecc1967f0c3917",
+  "commit": "edc35e7ebdf2e3ac3509a226ee580976998b072a",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "faaac582c9cccdc7447cc29a16258787214d3a9e77f231e4f33ae1a427563011",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -13,10 +13,12 @@
     "assets/css/core/02-foundation/foundation.css": "bf5f0a8a37bbc60873b4da7542ed3a8bc3a60bfa9d95e1bdfc9ab9b4b067052e",
     "assets/css/core/02-foundation/themes.css": "23d80888ad0ec02cfb99da6e9faae1b924ad5f206e421f21d17bd5c2eafdcb98",
     "assets/css/core/03-primitives/fields.css": "bd4836b6119acd5f7e7ddae414176cd7592560f42d85175a871fa36c2946480f",
+    "assets/css/core/04-systems/docs-search.css": "0bca5f2c19d29f75fe01efd290ce8f9362fbcf0e8ba4b82c84ee87be7bb4ee51",
     "assets/css/core/04-systems/document-reader.css": "be4ca66d63054ffcf0066036d7c0e94c6da781bb1df787f1d0295b007002c59c",
     "assets/css/core/04-systems/preferences-presentation.css": "45ddb4276f887aac259c1c4383354fe53340a21c891bac71d73ea7849f1ca4ea",
     "assets/css/core/04-systems/preferences.css": "70e6fa93c78b6148ac1d12540e4c0b5ea670af49607c9e77bd13e333a3b3bc25",
     "assets/css/core/04-systems/public-information.css": "32743cadeb70623bd0e84a4a780041a695a3eee554bf06bf7a2b167ac7445a8a",
+    "assets/css/core/04-systems/search-close.css": "7520a27614ccfd7ea9b7f9fd94f04590e0a79a9a6ebdc7a587461d3847396c20",
     "assets/css/core/04-systems/startup.css": "73f7e032ac2c67869379cee0efcc0c7c87883cd85cef379c256522d95bab31cc",
     "assets/css/layers/00-orchestrator/00-layers-all.css": "8037edc9e1ce0e0e49a6617b090daad3c1f0497b469835e87039b6d3d32b522e",
     "assets/css/layers/site/contact/index.css": "94173ea68756beb7a16b358c4b32c6aa946e5f0b652779d54bf352c2517b4094",
@@ -40,6 +42,7 @@
     "assets/icons/actions/check.svg": "3d5f11cd561884abb16caa769b551368e55249bfa4305570c533214e669e8ec6",
     "assets/icons/actions/close.svg": "bbf01f68e9dbca049099e02ec7a60ca1a5ba73023980cb854c5c4c8173004419",
     "assets/icons/actions/cookies.svg": "2d9260b8fd642aaf72d428eed614ff92aee24a639154214d3fa19d19cc5bc9e7",
+    "assets/icons/actions/search.svg": "abdb05666a80bc2e391b0b76baa70210d595a5c027ee4b8f451aac6234d883d5",
     "assets/icons/commerce/platforms/amazon/amazon.svg": "08e5de4782296c6e724a6e8caf655a2d66998e70a8c75f548fcdc2c96ac487d9",
     "assets/icons/navigation/back.svg": "78d015c37800e318e22b1afbafdc0f0d5a561e90646ad55d9475898f08cb43d6",
     "assets/icons/navigation/chevron-right.svg": "106303fa2bd5611f1082ff4149083307a7ead325911770effad6c9470f6341fe",
@@ -62,13 +65,16 @@
     "registry/icons/public/assets/core/navigation/chevron/chevron-down.svg": "267f15b40d1f468dd67aa683522be1166bed34488003b70181d9f6ab00da01a6",
     "assets/js/core/theme.js": "2e2ce8c21ba4ff29c76da892d65b443fb198c0d404d66653d77d7aac22b635e4",
     "assets/js/core/menu.js": "22521f98c9e38ae5d70ec2ce63ced6127b5cfdb4918d0040d8b634e802645239",
+    "assets/js/core/search.js": "41d1e23049bbe9447e2292544ce2fed669cae4b59c8aa61a00099e173555a768",
+    "assets/js/core/dialogs.js": "c937f4c0a419193662233f84549ea0ed009386be060af082b0a950e7fde37ea0",
     "assets/js/layers/site/navigation.js": "d38db699e3f63fc9e4b96c8afac7d3013d78b831c6937fde88d43d6acd5fce07",
     "assets/fragments/navigation/index.html": "cb02baebb3d6c2be6831dbce704b78b32c9250f414f893a96535518094faf999",
     "assets/data/site.json": "996db42699ba7396d7016793b052dfc32f8673ddc6ba583951211aa060648716",
-    "assets/data/icons.json": "e2e0dd28910310d3522ce2c2dab50847b89f376cba848c716b929e524a43db5b",
-    "foundation/build.mjs": "ec36dfc38c83bc2593c333933040fd68d4e0c182e79a19e21bde09c3109c5c8c",
+    "assets/data/icons.json": "28b57e2adb35f11f320e61268216709e054a49ecd1405b93385c37b891b52f74",
+    "foundation/build.mjs": "0b83a5786bde00a2bab7a5e933177c582252e7ca1b38759b22e00dd64622e277",
     "foundation/shell.html": "f4f120a34b12a1cb0a0c4a12714b16e6df54f8a525dcaf494617da2b631f8846",
-    "foundation/surface.css": "7ea51a3526b4124b8420ca86d1f6dcbe2a8c868f6aae0c18bf984a641e0d260b",
-    "foundation/app.js": "f901c604aa902ea05086ddbe222a43d1b56ec67378886965ae02585069607554"
+    "foundation/surface.css": "2760654c69a2cc61a0d5f822c734686d75b525d2fb919c9fb295c061a3c9769d",
+    "foundation/app.js": "150e63d182703007ac590335afa590e26de10f0eb53cd76c2a768565c43bae07",
+    "foundation/search.mjs": "562dee8645f11d8d2a5c7a8bdaec54a1772594c6d1dc8b7ac7e2e56a054c11fe"
   }
 }

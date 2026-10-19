@@ -1,5 +1,6 @@
 import {readFile} from 'node:fs/promises';
 import {renderIcon} from './icon-render.mjs';
+import {searchMarkup} from '../foundation/search.mjs';
 const settings=JSON.parse(await readFile(new URL('../content/account.json',import.meta.url),'utf8'));
 const icon=name=>renderIcon(name,value=>String(value),'studio-icon account-action-icon');
 
@@ -8,7 +9,7 @@ export function renderActions(){
 }
 
 export function searchContent(){
-  return `<section class="store-search" data-store-search aria-labelledby="studio-search-title"><h2 id="studio-search-title">Search Studio</h2><form role="search"><div class="store-search-field">${icon('search')}<input class="ui-field" type="search" name="q" maxlength="120" placeholder="Search accounts, releases and help" aria-label="Search Studio" autocomplete="off" aria-controls="studio-search-results"><button type="button" class="global-close-button" data-search-clear aria-label="Clear search" hidden>${icon('close')}</button></div></form><div class="store-search-filters" role="group" aria-label="Filter search results" data-search-filters hidden></div><p role="status" aria-live="polite">Search by topic or question.</p><div id="studio-search-results" data-search-results></div><button type="button" data-search-more hidden></button></section>`;
+  return searchMarkup({title:'Search Studio',titleId:'studio-search-title',placeholder:'Search accounts, releases and help',icon});
 }
 
 export function renderDialogs({e}){

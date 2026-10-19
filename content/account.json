@@ -1,7 +1,8 @@
 {
   "supabase":{"url":"","publishableKey":""},
+  "preferences":{"choiceKey":"artanrecords-studio-preferences","themeKey":"artanrecords-studio-theme","validDays":180},
   "providers":{"google":false,"phone":false},
-  "search":{"pageSize":20,"moreLabel":"Show more","categories":[{"id":"all","label":"All"},{"id":"workspace","label":"Workspace"},{"id":"account","label":"Account"},{"id":"legal","label":"Legal"}]},
+  "search":{"pageSize":20,"moreLabel":"Show more","prompt":"Search your workspace or guidance.","categories":[{"id":"all","label":"All"},{"id":"workspace","label":"Workspace"},{"id":"account","label":"Account"},{"id":"legal","label":"Legal"}]},
   "payments":{"enabled":false,"provider":"stripe-connect","onboardingEndpoint":null},
   "profileFields":[
     {"name":"display_name","label":"Display name","autocomplete":"nickname","max":100},

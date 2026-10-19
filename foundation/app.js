@@ -1,6 +1,8 @@
 import {initializeTheme,bindTheme} from '../assets/js/core/theme.js';
 import {bindNavigation} from '../assets/js/layers/site/navigation.js';
 import {bindDocumentReaders} from '../assets/js/core/02-systems/document-reader.js';
+import {bindStoreSearch} from '../assets/js/core/search.js';
+import {openDialog} from '../assets/js/core/dialogs.js';
 bindDocumentReaders();
 initializeTheme();
 try {
@@ -10,21 +12,11 @@ try {
   bindTheme(brand.labels);bindNavigation(brand.labels);
   document.documentElement.dataset.enhanced='true';
 } catch(error){console.error(error);}
-const search=document.querySelector('[data-search]');
-if(search) {
-  const output=document.querySelector('[data-search-results]');
-  const status=document.querySelector('[data-search-status]');
-  try {
-    const response=await fetch('/search.json');
-    if(!response.ok)throw Error('Search unavailable');
-    const index=await response.json();
-    search.addEventListener('input',()=>{
-      const query=search.value.trim().toLocaleLowerCase();
-      output.replaceChildren();status.textContent='';
-      if(!query)return;
-      const matches=index.pages.filter(p=>`${p.title} ${p.description} ${p.text}`.toLocaleLowerCase().includes(query));
-      status.textContent=matches.length?index.labels.results.replace('{count}',String(matches.length)):index.labels.empty;
-      for(const page of matches){const a=document.createElement('a');a.href=page.path;a.textContent=page.title;output.append(a);}
-    });
-  } catch(error){search.disabled=true;console.error(error);}
+const searchOpen=document.querySelector('[data-docs-search-open]');
+if(searchOpen){
+  const dialog=document.getElementById('store-search-dialog');
+  const response=await fetch('/search.json',{cache:'no-store'});
+  if(response.ok){const data=await response.json();await bindStoreSearch({search:data.labels});}
+  searchOpen.addEventListener('click',()=>{openDialog(dialog);dialog.dispatchEvent(new Event('store-search-open'));});
+  dialog.querySelector('[data-search-close]').addEventListener('click',()=>dialog.close());
 }

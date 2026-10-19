@@ -1,5 +1,8 @@
 # Surface ownership
 
+Public brand: Artanrecords, one word. Normalize transcription variants in copy,
+browser titles and metadata; preserve registered domains and stable identifiers.
+
 This repository publishes public files from main at repository root.
 Content belongs to content/site.json. Generated HTML must not be edited manually.
 foundation/ and assets/ are checksum-verified copies from artandavoodi/artanrecords.

@@ -92,3 +92,22 @@ test('referrals and Stripe foundations remain inactive and cannot create client 
   assert.match(sql,/idempotency_key text not null unique/);
   assert.doesNotMatch(sql,/grant (?:insert|update|delete|all)/i);
 });
+test('appearance respects consent expiry and preserves both saved modes',async()=>{
+  const {restoreAppearance,saveAppearance}=await import('../app/appearance.js');
+  const config={choiceKey:'choice',themeKey:'theme'},values=new Map();
+  const storage={getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value)};
+  values.set('choice',JSON.stringify({choice:'allow',expires:Date.now()+60000}));
+  for(const theme of ['dark','light']){saveAppearance(storage,config,theme);assert.equal(restoreAppearance(storage,config),theme);}
+  values.set('choice',JSON.stringify({choice:'skip',expires:Date.now()+60000}));
+  assert.equal(restoreAppearance(storage,config),null);
+  saveAppearance(storage,config,'dark');assert.equal(values.get('theme'),'light');
+  values.set('choice',JSON.stringify({choice:'allow',expires:1}));assert.equal(restoreAppearance(storage,config),null);
+});
+test('settings use native disclosures and the primary menu excludes legal notices',async()=>{
+  const platform=JSON.parse(await readFile('content/platform.json','utf8'));
+  assert.ok(platform.menu.every(item=>!['/privacy/','/terms/'].includes(item.path)));
+  const html=await readFile('settings/index.html','utf8');
+  assert.match(html,/<details class="studio-settings-group"/);
+  assert.doesNotMatch(html,/data-settings-tab|<p class="eyebrow">Artanrecords Studio/);
+  assert.match(html,/appearance.js\?v=/);
+});

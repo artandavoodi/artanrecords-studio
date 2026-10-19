@@ -22,13 +22,20 @@
 .studio-platform-connection { color:var(--text-secondary-color); }
 .studio-platform-connection a { display:inline-flex; gap:var(--spacing-sm); align-items:center; color:var(--text-primary-color); text-decoration:none; }
 .studio-settings { display:grid; gap:var(--spacing-xl); }
-.studio-settings-tabs { display:flex; flex-wrap:wrap; gap:var(--spacing-lg); }
-.studio-settings-tabs a { display:inline-flex; align-items:center; gap:var(--spacing-sm); color:inherit; text-decoration:none; opacity:var(--state-opacity-muted); }
-.studio-settings-tabs a:is([aria-current],:hover,:focus-visible) { opacity:var(--overlay-opacity-open); outline:none; }
-.studio-settings [data-settings-panel] { display:grid; gap:var(--spacing-lg); }
+.studio-settings-group { padding-block:var(--spacing-lg); }
+.studio-settings-group + .studio-settings-group { border-block-start:var(--border-width-hairline) solid var(--cv-border); }
+.studio-settings-group > summary { display:flex; align-items:center; gap:var(--spacing-md); cursor:pointer; list-style:none; padding-block:var(--spacing-sm); }
+.studio-settings-group > summary::-webkit-details-marker { display:none; }
+.studio-settings-group > summary > span { flex:1; font-size:var(--font-size-h3); }
+.studio-settings-group > summary::after { content:''; inline-size:var(--icon-size-xs); block-size:var(--icon-size-xs); background:currentColor; mask:url('/registry/icons/public/assets/core/navigation/chevron/chevron-down.svg') center / contain no-repeat; }
+.studio-settings-group[open] > summary::after { transform:rotate(180deg); }
+.studio-settings-group > :not(summary) { margin-block-start:var(--spacing-lg); }
 .studio-settings .ui-button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); min-block-size:var(--control-height-md); padding:var(--spacing-sm) var(--spacing-lg); border:0; border-radius:var(--account-field-radius); background:var(--control-bg-hover); color:inherit; font:inherit; cursor:pointer; }
-.studio-setting-options { display:flex; gap:var(--spacing-lg); }
-.studio-setting-options button { font:inherit; padding:var(--spacing-md); border:0; background:var(--control-bg-hover); border-radius:var(--account-field-radius); color:inherit; cursor:pointer; opacity:var(--state-opacity-muted); }
+.studio-setting-options { display:grid; }
+.studio-setting-options button { display:flex; justify-content:space-between; align-items:center; gap:var(--spacing-lg); font:inherit; text-align:start; padding:var(--spacing-md) 0; border:0; background:none; color:inherit; cursor:pointer; opacity:var(--state-opacity-muted); }
+.studio-setting-options button > span { display:grid; gap:var(--spacing-xs); }
+.studio-setting-options small { color:var(--text-secondary-color); font:inherit; }
+.studio-setting-options button[aria-pressed=false] > img { visibility:hidden; }
 .studio-setting-options [aria-pressed=true] { opacity:var(--overlay-opacity-open); }
 .studio-connection-list { display:grid; gap:var(--spacing-lg); }
 .studio-connection-list > div { display:flex; flex-wrap:wrap; justify-content:space-between; gap:var(--spacing-md); }
@@ -36,4 +43,4 @@
 .site-menu__links a:has(.studio-icon) { display:flex; align-items:center; justify-content:flex-start; text-align:start; gap:var(--spacing-lg); font-size:var(--layout-home-platform-nav-text-size); font-weight:var(--layout-home-platform-nav-text-weight); }
 .site-menu__links a .studio-icon { inline-size:var(--layout-home-platform-nav-icon-size); block-size:var(--layout-home-platform-nav-icon-size); }
 @media(max-width:1024px){.studio-platform { grid-template-columns:minmax(var(--layout-home-platform-tablet-rail-min),var(--layout-home-platform-tablet-rail-max)) minmax(0,1fr); }}
-@media(max-width:1024px){.studio-platform,.studio-platform[data-rail-collapsed] { display:block; }.studio-platform-rail { display:none; }.label-navigation .studio-header-mobile { display:grid; }.site-menu__links .studio-menu-workspace { display:contents; }.studio-settings-tabs { gap:var(--spacing-md); }.studio-platform-introduction h2 { font-size:var(--font-size-h2); }}
+@media(max-width:1024px){.studio-platform,.studio-platform[data-rail-collapsed] { display:block; }.studio-platform-rail { display:none; }.label-navigation .studio-header-mobile { display:grid; }.site-menu__links .studio-menu-workspace { display:contents; } .studio-platform-introduction h2 { font-size:var(--font-size-h2); }}

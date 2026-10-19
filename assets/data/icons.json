@@ -114,6 +114,12 @@
       "src": "assets/icons/actions/close.svg",
       "alt": "",
       "monochrome": true
+    },
+    {
+      "id": "search",
+      "src": "assets/icons/actions/search.svg",
+      "alt": "",
+      "monochrome": true
     }
   ]
 }

@@ -1,4 +1,14 @@
-# Artan Records Studio
+# Artanrecords Studio
+
+## Next Platform Priorities
+
+These remain open, not implied by the public interface: isolated account and artist
+membership activation; secure release assets and provenance; versioned agreements
+and signing; distributor-neutral catalogue management; reconciled statement imports;
+auditable royalty accounting; verified payout onboarding; account-owned support
+requests; permission-aware private search; and hosted recovery/accessibility tests.
+No balances, signed agreements, payout readiness or analytics should be fabricated
+to fill an empty workspace. Public metadata describes available capabilities only.
 
 ## Platform Shell
 
