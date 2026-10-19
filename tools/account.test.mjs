@@ -103,11 +103,13 @@ test('appearance respects consent expiry and preserves both saved modes',async()
   saveAppearance(storage,config,'dark');assert.equal(values.get('theme'),'light');
   values.set('choice',JSON.stringify({choice:'allow',expires:1}));assert.equal(restoreAppearance(storage,config),null);
 });
-test('settings use native disclosures and the primary menu excludes legal notices',async()=>{
+test('settings use labelled selection panels without dropdowns and the primary menu excludes legal notices',async()=>{
   const platform=JSON.parse(await readFile('content/platform.json','utf8'));
   assert.ok(platform.menu.every(item=>!['/privacy/','/terms/'].includes(item.path)));
   const html=await readFile('settings/index.html','utf8');
-  assert.match(html,/<details class="studio-settings-group"/);
-  assert.doesNotMatch(html,/data-settings-tab|<p class="eyebrow">Artanrecords Studio/);
+  assert.equal((html.match(/role="tab"/g)||[]).length,platform.settings.length);
+  assert.equal((html.match(/role="tabpanel"/g)||[]).length,platform.settings.length);
+  for(const item of platform.settings){assert.ok(html.includes(`aria-controls="settings-${item.id}"`));assert.ok(html.includes(`aria-labelledby="settings-tab-${item.id}"`));}
+  assert.doesNotMatch(html,/<details class="studio-settings-group"|<summary>|<p class="eyebrow">Artanrecords Studio/);
   assert.match(html,/appearance.js\?v=/);
 });

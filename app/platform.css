@@ -21,15 +21,15 @@
 .studio-platform-features h2 { font-size:var(--font-size-h3); }
 .studio-platform-connection { color:var(--text-secondary-color); }
 .studio-platform-connection a { display:inline-flex; gap:var(--spacing-sm); align-items:center; color:var(--text-primary-color); text-decoration:none; }
-.studio-settings { display:grid; gap:var(--spacing-xl); }
-.studio-settings-group { padding-block:var(--spacing-lg); }
-.studio-settings-group + .studio-settings-group { border-block-start:var(--border-width-hairline) solid var(--cv-border); }
-.studio-settings-group > summary { display:flex; align-items:center; gap:var(--spacing-md); cursor:pointer; list-style:none; padding-block:var(--spacing-sm); }
-.studio-settings-group > summary::-webkit-details-marker { display:none; }
-.studio-settings-group > summary > span { flex:1; font-size:var(--font-size-h3); }
-.studio-settings-group > summary::after { content:''; inline-size:var(--icon-size-xs); block-size:var(--icon-size-xs); background:currentColor; mask:url('/registry/icons/public/assets/core/navigation/chevron/chevron-down.svg') center / contain no-repeat; }
-.studio-settings-group[open] > summary::after { transform:rotate(180deg); }
-.studio-settings-group > :not(summary) { margin-block-start:var(--spacing-lg); }
+.studio-settings { display:grid; grid-template-columns:var(--layout-home-platform-rail-width) minmax(0,1fr); gap:var(--spacing-xl); align-items:start; }
+.studio-settings-navigation { display:grid; gap:var(--layout-home-platform-nav-gap); position:sticky; inset-block-start:var(--site-header-height); }
+.studio-settings-navigation button { border:0; background:none; color:inherit; text-align:start; font:inherit; min-block-size:var(--control-height-md); padding:var(--spacing-sm) 0; cursor:pointer; opacity:var(--state-opacity-muted); transition:opacity var(--duration-base) var(--ease-standard); }
+.studio-settings-navigation button:is([aria-selected=true],:hover,:focus-visible) { opacity:var(--overlay-opacity-open); }
+.studio-settings-content { min-inline-size:0; }
+.studio-settings-group { display:grid; gap:var(--spacing-lg); }
+.studio-settings-group[hidden] { display:none; }
+.studio-settings-group h2 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
+@media(max-width:1024px){.studio-settings { grid-template-columns:minmax(0,1fr); }.studio-settings-navigation { position:static; display:flex; flex-wrap:wrap; column-gap:var(--spacing-lg); row-gap:var(--spacing-xs); }}
 .studio-settings .ui-button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); min-block-size:var(--control-height-md); padding:var(--spacing-sm) var(--spacing-lg); border:0; border-radius:var(--account-field-radius); background:var(--control-bg-hover); color:inherit; font:inherit; cursor:pointer; }
 .studio-setting-options { display:grid; }
 .studio-setting-options button { display:flex; justify-content:space-between; align-items:center; gap:var(--spacing-lg); font:inherit; text-align:start; padding:var(--spacing-md) 0; border:0; background:none; color:inherit; cursor:pointer; opacity:var(--state-opacity-muted); }
