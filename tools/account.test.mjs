@@ -70,3 +70,13 @@ test('public platform metadata identifies the app without inventing reviews or f
   assert.match(html,/"@type":"SoftwareApplication"/);assert.match(html,/content="index,follow"/);assert.match(html,/rel="manifest"/);
   assert.doesNotMatch(html,/aggregateRating|ratingValue/);assert.equal(manifest.display,'standalone');assert.equal(manifest.start_url,'/');
 });
+test('prepared partnership terms are agreement-owned and never client-writable',async()=>{
+  const sql=await readFile('supabase/migrations/202610190001_studio_partnerships.sql','utf8');
+  assert.match(sql,/references public.studio_contracts\(id\)/);
+  assert.match(sql,/artist_share_bps \+ artanrecords_share_bps = 10000/);
+  assert.match(sql,/unique \(agreement_id,version\)/);
+  assert.match(sql,/enable row level security/);
+  assert.match(sql,/revoke all on public.studio_partnerships from anon, authenticated/);
+  assert.match(sql,/c.account_id=\(select auth.uid\(\)\)/);
+  assert.doesNotMatch(sql,/grant (?:insert|update|delete|all)/i);
+});
