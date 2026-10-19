@@ -1,5 +1,20 @@
 # Artanrecords Studio
 
+## Shared Platform Controls
+
+Neuroartan owns the consent panel, theme engine, radio and toggle primitives,
+appearance markup, and category vectors imported under `app/neuroartan/`.
+Run `node tools/sync-platform.mjs --sync` only against a committed Neuroartan
+website source. `app/platform-manifest.json` pins the exact revision and hashes;
+normal builds verify the snapshot without reading neighbouring repositories.
+Do not edit those distributions or replace their vectors locally.
+
+Studio's adapter owns its legal routes and storage policy: optional preference
+memory permits persistent browser storage; otherwise interface choices remain
+in tab-session storage. Consent records are necessary storage. Account preference
+sync and background-rendering engines remain disconnected. Commercial plan and
+service explanations belong to the public website and Docs, not workspace pages.
+
 ## Next Platform Priorities
 
 These remain open, not implied by the public interface: isolated account and artist

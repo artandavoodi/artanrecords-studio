@@ -62,7 +62,7 @@ test('billing addresses have owner-only policies and client field limits',async(
 test('platform navigation resolves every configured destination and keeps private workspace routes noindex',async()=>{
   const platform=JSON.parse(await readFile('content/platform.json','utf8')),site=JSON.parse(await readFile('content/site.json','utf8'));
   for(const item of platform.groups.flatMap(group=>group.items))assert.ok(site.pages.some(page=>page.path===item.path));
-  const settings=await readFile('settings/index.html','utf8');assert.match(settings,/data-platform-layout/);assert.match(settings,/data-studio-theme="dark"/);assert.match(settings,/noindex,follow/);
+  const settings=await readFile('settings/index.html','utf8');assert.match(settings,/data-platform-layout/);assert.match(settings,/data-theme-option="dark"/);assert.match(settings,/noindex,follow/);
   for(const page of ['analytics','royalties','statements','payouts','profile'])assert.match(await readFile(page+'/index.html','utf8'),/noindex,follow/);
 });
 test('public platform metadata identifies the app without inventing reviews or financial results',async()=>{
@@ -115,4 +115,23 @@ test('settings use labelled selection panels without dropdowns and the primary m
   for(const item of platform.settings){assert.ok(html.includes(`aria-controls="settings-${item.id}"`));assert.ok(html.includes(`aria-labelledby="settings-tab-${item.id}"`));}
   assert.doesNotMatch(html,/<details class="studio-settings-group"|<summary>|<p class="eyebrow">Artanrecords Studio/);
   assert.match(html,/appearance.js\?v=/);
+});
+test('platform storage uses session continuity without silently granting persistent consent',async()=>{
+  const {installPreferenceStorage}=await import('../app/appearance.js');
+  const fake=()=>{const values=new Map();return {getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)};};
+  const original={window:globalThis.window,localStorage:globalThis.localStorage,sessionStorage:globalThis.sessionStorage};
+  try{
+    globalThis.window={};globalThis.localStorage=fake();globalThis.sessionStorage=fake();
+    const storage=installPreferenceStorage();storage.setItem('rail','closed');
+    assert.equal(localStorage.getItem('rail'),null);assert.equal(storage.getItem('rail'),'closed');
+    localStorage.setItem('neuroartan.cookieConsent',JSON.stringify({state:'customized',preferences:{'experience-preferences':true}}));
+    storage.setItem('rail','closed');assert.equal(localStorage.getItem('rail'),'closed');
+    storage.removeItem('rail');assert.equal(localStorage.getItem('rail'),null);assert.equal(sessionStorage.getItem('rail'),null);
+  }finally{Object.assign(globalThis,original);}
+});
+test('cookie publication and platform controls use verified shared sources',async()=>{
+  const {execFileSync}=await import('node:child_process');execFileSync(process.execPath,['tools/sync-platform.mjs']);
+  const html=await readFile('settings/index.html','utf8');assert.match(html,/data-cookie-consent="root"/);assert.match(html,/data-cookie-consent-row="essential"/);assert.match(html,/data-cookie-consent-toggle="analytics"/);assert.match(html,/ui-radio-list__indicator/);assert.match(html,/platform-menue-settings-appearance.svg/);
+  const notice=await readFile('cookies/index.html','utf8');assert.match(notice,/2026-10-19/);assert.match(notice,/session storage/);
+  const royalties=await readFile('royalties/index.html','utf8');assert.doesNotMatch(royalties,/Read the financial context|Read the guidance|Accepted standard releases/);
 });

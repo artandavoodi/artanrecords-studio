@@ -4,12 +4,27 @@
   "indexable": false,
   "copyright": "© 2026 Artanrecords",
   "contentsLabel": "On this page",
-  "application": {"renderer":"app/render.mjs"},
-  "search": {"label":"Search Studio","results":"{count} topics found","empty":"No matching topics. Try releases, profile or royalties."},
+  "application": {
+    "renderer": "app/render.mjs"
+  },
+  "search": {
+    "label": "Search Studio",
+    "results": "{count} topics found",
+    "empty": "No matching topics. Try releases, profile or royalties."
+  },
   "navigation": [
-    {"label":"Releases","url":"/releases/"},
-    {"label":"Agreements","url":"/agreements/"},
-    {"label":"Your account","url":"/account/"},
+    {
+      "label": "Releases",
+      "url": "/releases/"
+    },
+    {
+      "label": "Agreements",
+      "url": "/agreements/"
+    },
+    {
+      "label": "Your account",
+      "url": "/account/"
+    },
     {
       "label": "Overview",
       "url": "/"
@@ -24,8 +39,18 @@
     }
   ],
   "footer": [
-    {"label":"Privacy and cookies","url":"/privacy/"},
-    {"label":"Studio terms","url":"/terms/"},
+    {
+      "label": "Privacy and cookies",
+      "url": "/privacy/"
+    },
+    {
+      "label": "Cookie Policy",
+      "url": "/cookies/"
+    },
+    {
+      "label": "Studio terms",
+      "url": "/terms/"
+    },
     {
       "label": "Submit your music",
       "url": "https://artanrecords.com/submit/"
@@ -40,19 +65,154 @@
     }
   ],
   "pages": [
-    {"path":"/referrals/","title":"Artist introductions","description":"A future way to introduce artists and use approved service credits.","sections":[{"id":"programme","title":"A considered introduction","paragraphs":["The referral programme is not active yet. Introductions do not guarantee acceptance, earn credits automatically or change a recording agreement. Programme rules will define qualifying introductions and approved awards before launch."]},{"id":"credits","title":"Services, not royalty balances","paragraphs":["Proposed credits may be used toward approved promotion, artwork or website services. They are separate from royalties. No credit balance, redemption or cash withdrawal is currently available."]}]},
-    {"path":"/payments/","title":"Payment methods","description":"Optional-service payments and recording-income withdrawals have separate processes.","sections":[{"id":"services","title":"Optional services","paragraphs":["Accepted standard releases have no upfront base distribution fee. Additional paid work needs an agreed scope and price. Stripe payment methods are not connected yet; this page cannot collect or store payment details."]},{"id":"royalties","title":"Recording income","paragraphs":["Royalty statements and withdrawal requests require a verified financial backend and reconciliation. No payout is processed here. A payment method for optional services is not an account for receiving royalties."]}]},
-    {"path":"/search/","title":"Search Studio","description":"Find account help, artist guidance and workspace information.","sections":[]},
-    {"path":"/account/","title":"Your Studio account","description":"Sign in, create an account or recover access.","sections":[]},
-    {"path":"/privacy/","title":"Privacy and cookies","description":"How Artanrecords Studio handles account information and your choices.","indexable":true,"sections":[{"id":"account","title":"Your account","paragraphs":["Studio account information is used to provide access, maintain your artist profile and respond to your requests. Creating an account does not grant access to another artist's work or financial records. Profile photographs and unreleased submissions are not public catalogue content."]},{"id":"storage","title":"Cookies and similar technologies","paragraphs":["Essential browser storage supports sign-in and security. Your cookie choice is remembered in this browser. Optional appearance storage is used only after Allow; Skip leaves it off. You can revisit Cookies & preferences in the footer. External services apply their own notices when you visit them."]},{"id":"rights","title":"Your choices","paragraphs":["For access, correction, deletion or privacy questions, contact contact@artanrecords.com. Some records may need to be retained to meet contractual or legal obligations. Account and payment services will be described here when connected; no banking or tax information should be submitted through public forms."]}]},
-    {"path":"/terms/","title":"Studio terms","description":"Access to Artanrecords Studio and artist services.","indexable":true,"sections":[{"id":"access","title":"Accounts and artist access","paragraphs":["Use accurate account information and protect your credentials. An account is separate from an artist agreement; label-managed approval determines access to artist workspaces. Do not access another person's records or submit work without permission."]},{"id":"work","title":"Your work","paragraphs":["Submit only material you are entitled to share. A submission is not an agreement to release or distribute a recording. Distribution, rights, royalty splits and payment obligations require a separate confirmed agreement."]},{"id":"payments","title":"Royalties and payments","paragraphs":["Listening statistics are not a royalty statement. Earnings, deductions, currencies, reporting periods and payout eligibility depend on verified reports and the applicable agreement. No payout amount or date is promised by an unconnected workspace. Payment or identity onboarding must use the designated secure provider; do not send bank details through public enquiries."]},{"id":"support","title":"Help and statutory rights","paragraphs":["Contact contact@artanrecords.com for access or service questions. These terms do not remove rights that cannot lawfully be excluded. Financial services, charges and payment-provider terms must be disclosed before those features are activated."]}]},
+    {
+      "path": "/cookies/",
+      "title": "Cookie Policy",
+      "description": "Storage and preference choices in Artanrecords Studio.",
+      "indexable": true,
+      "sections": [
+        {
+          "id": "essential",
+          "title": "Essential storage",
+          "paragraphs": [
+            "Consent choices and account security use necessary browser storage. Essential storage is always active. Studio account services are not connected yet; authentication storage becomes necessary when sign-in is available."
+          ]
+        },
+        {
+          "id": "experience",
+          "title": "Optional preferences",
+          "paragraphs": [
+            "With preference memory allowed, this browser remembers appearance, contrast, palette and workspace sidebar choices across visits. Declining optional storage keeps changes in session storage until the tab session ends. These choices do not currently synchronize to an artist account."
+          ]
+        },
+        {
+          "id": "analytics",
+          "title": "Analytics",
+          "paragraphs": [
+            "Analytics are not connected. Choosing an analytics preference does not activate tracking or create listening or royalty reports. Any future analytics service must be disclosed here before activation."
+          ]
+        },
+        {
+          "id": "controls",
+          "title": "Change your choices",
+          "paragraphs": [
+            "Open Cookies & preferences from the footer or Privacy settings to save individual choices, allow optional categories or decline them. Withdrawing preference memory removes persistent Studio appearance and navigation settings from this browser; essential consent and security records remain separate."
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/referrals/",
+      "title": "Your introductions",
+      "description": "Approved artist introductions and service credits appear here when connected.",
+      "sections": [],
+      "status": "Not connected"
+    },
+    {
+      "path": "/payments/",
+      "title": "Payment methods",
+      "description": "Manage payment methods when payment services are connected.",
+      "sections": [],
+      "status": "Not connected"
+    },
+    {
+      "path": "/search/",
+      "title": "Search Studio",
+      "description": "Find account help, artist guidance and workspace information.",
+      "sections": []
+    },
+    {
+      "path": "/account/",
+      "title": "Your Studio account",
+      "description": "Sign in, create an account or recover access.",
+      "sections": []
+    },
+    {
+      "path": "/privacy/",
+      "title": "Privacy and cookies",
+      "description": "How Artanrecords Studio handles account information and your choices.",
+      "indexable": true,
+      "sections": [
+        {
+          "id": "account",
+          "title": "Your account",
+          "paragraphs": [
+            "Studio account information is used to provide access, maintain your artist profile and respond to your requests. Creating an account does not grant access to another artist's work or financial records. Profile photographs and unreleased submissions are not public catalogue content."
+          ]
+        },
+        {
+          "id": "storage",
+          "title": "Cookies and similar technologies",
+          "paragraphs": [
+            "Essential browser storage supports security and your consent choices. Optional preference memory stores appearance, contrast, palette and sidebar choices across visits only when permitted. Declining optional storage keeps interface changes in session storage until the tab session ends. Analytics are not connected. These preferences do not currently synchronize to an artist account. See the Cookie Policy for storage categories and controls."
+          ]
+        },
+        {
+          "id": "rights",
+          "title": "Your choices",
+          "paragraphs": [
+            "For access, correction, deletion or privacy questions, contact contact@artanrecords.com. Some records may need to be retained to meet contractual or legal obligations. Account and payment services will be described here when connected; no banking or tax information should be submitted through public forms."
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/terms/",
+      "title": "Studio terms",
+      "description": "Access to Artanrecords Studio and artist services.",
+      "indexable": true,
+      "sections": [
+        {
+          "id": "access",
+          "title": "Accounts and artist access",
+          "paragraphs": [
+            "Use accurate account information and protect your credentials. An account is separate from an artist agreement; label-managed approval determines access to artist workspaces. Do not access another person's records or submit work without permission."
+          ]
+        },
+        {
+          "id": "work",
+          "title": "Your work",
+          "paragraphs": [
+            "Submit only material you are entitled to share. A submission is not an agreement to release or distribute a recording. Distribution, rights, royalty splits and payment obligations require a separate confirmed agreement."
+          ]
+        },
+        {
+          "id": "payments",
+          "title": "Royalties and payments",
+          "paragraphs": [
+            "Listening statistics are not a royalty statement. Earnings, deductions, currencies, reporting periods and payout eligibility depend on verified reports and the applicable agreement. No payout amount or date is promised by an unconnected workspace. Payment or identity onboarding must use the designated secure provider; do not send bank details through public enquiries."
+          ]
+        },
+        {
+          "id": "support",
+          "title": "Help and statutory rights",
+          "paragraphs": [
+            "Contact contact@artanrecords.com for access or service questions. These terms do not remove rights that cannot lawfully be excluded. Financial services, charges and payment-provider terms must be disclosed before those features are activated."
+          ]
+        },
+        {
+          "id": "preferences",
+          "title": "Workspace preferences",
+          "paragraphs": [
+            "Appearance and workspace controls personalize this browser and do not alter an artist agreement, royalty calculation or service entitlement. Optional storage follows your cookie choices. Account preference synchronization and custom background rendering are not connected; no service is activated by selecting a prepared control."
+          ]
+        }
+      ]
+    },
     {
       "path": "/",
       "indexable": true,
       "title": "Artanrecords Studio",
-      "heading":"Overview",
+      "heading": "Overview",
       "description": "An artist platform being developed by Artanrecords for release preparation, artist agreements and royalty reporting. Explore the workspace and account guidance.",
-      "application":{"@type":"SoftwareApplication","name":"Artanrecords Studio","url":"https://studio.artanrecords.com/","applicationCategory":"MultimediaApplication","operatingSystem":"Web browser","description":"Artist workspace foundation for Artanrecords. Account, reporting, payment and signing services require separate activation."},
+      "application": {
+        "@type": "SoftwareApplication",
+        "name": "Artanrecords Studio",
+        "url": "https://studio.artanrecords.com/",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Web browser",
+        "description": "Artist workspace foundation for Artanrecords. Account, reporting, payment and signing services require separate activation."
+      },
       "status": "Public foundation · Not an authenticated dashboard",
       "sections": []
     },
@@ -88,204 +248,57 @@
     {
       "path": "/analytics/",
       "title": "Analytics",
-      "description": "No streaming data source or artist account is connected. No statistics are shown or estimated.",
+      "description": "Listening reports appear here when a verified reporting source is connected.",
       "category": "Workspace",
-      "sections": [
-        {
-          "id": "availability",
-          "title": "Understand listening data",
-          "paragraphs": [
-            "No streaming data source or artist account is connected. No statistics are shown or estimated."
-          ]
-        },
-        {
-          "id": "guidance",
-          "title": "Read the guidance",
-          "paragraphs": [
-            "Understand the current process before sharing information."
-          ],
-          "links": [
-            {
-              "label": "Open artist guidance",
-              "url": "https://docs.artanrecords.com/royalties/"
-            }
-          ]
-        }
-      ],
+      "sections": [],
       "status": "Not connected"
     },
     {
       "path": "/royalties/",
       "title": "Royalties",
-      "description": "No royalty imports, ledger or agreement-based calculations are connected. There is no balance to display.",
+      "description": "Your verified royalty balance and reporting periods appear here when connected.",
       "category": "Workspace",
-      "sections": [
-        {
-          "id": "availability",
-          "title": "Read the financial context",
-          "paragraphs": [
-            "No royalty imports, ledger or agreement-based calculations are connected. There is no balance to display."
-          ]
-        },
-        {
-          "id": "guidance",
-          "title": "Read the guidance",
-          "paragraphs": [
-            "Understand the current process before sharing information."
-          ],
-          "links": [
-            {
-              "label": "Open artist guidance",
-              "url": "https://docs.artanrecords.com/royalties/"
-            }
-          ]
-        }
-      ],
+      "sections": [],
       "status": "Not connected"
     },
     {
       "path": "/statements/",
       "title": "Statements",
-      "description": "No private statements are hosted here. Ask the label about a statement through a confirmed contact channel.",
+      "description": "Your statements appear here when statement services are connected.",
       "category": "Workspace",
-      "sections": [
-        {
-          "id": "availability",
-          "title": "Keep a clear record",
-          "paragraphs": [
-            "No private statements are hosted here. Ask the label about a statement through a confirmed contact channel."
-          ]
-        },
-        {
-          "id": "guidance",
-          "title": "Read the guidance",
-          "paragraphs": [
-            "Understand the current process before sharing information."
-          ],
-          "links": [
-            {
-              "label": "Open artist guidance",
-              "url": "https://docs.artanrecords.com/royalties/"
-            }
-          ]
-        }
-      ],
+      "sections": [],
       "status": "Not connected"
     },
     {
       "path": "/payouts/",
       "title": "Payouts",
-      "description": "There is no payment provider or payout workflow connected. Do not send bank details through public enquiries.",
+      "description": "Request and track withdrawals when payout services are connected.",
       "category": "Workspace",
-      "sections": [
-        {
-          "id": "availability",
-          "title": "Payment information stays private",
-          "paragraphs": [
-            "There is no payment provider or payout workflow connected. Do not send bank details through public enquiries."
-          ]
-        },
-        {
-          "id": "guidance",
-          "title": "Read the guidance",
-          "paragraphs": [
-            "Understand the current process before sharing information."
-          ],
-          "links": [
-            {
-              "label": "Open artist guidance",
-              "url": "https://docs.artanrecords.com/payments/"
-            }
-          ]
-        }
-      ],
+      "sections": [],
       "status": "Not connected"
     },
     {
       "path": "/agreements/",
       "title": "Agreements",
-      "description": "No signed agreements or digital-signature service are available in this foundation.",
+      "description": "Review agreements shared with your account.",
       "category": "Workspace",
-      "sections": [
-        {
-          "id": "availability",
-          "title": "Review before signing",
-          "paragraphs": [
-            "No signed agreements or digital-signature service are available in this foundation."
-          ]
-        },
-        {
-          "id": "guidance",
-          "title": "Read the guidance",
-          "paragraphs": [
-            "Understand the current process before sharing information."
-          ],
-          "links": [
-            {
-              "label": "Open artist guidance",
-              "url": "https://docs.artanrecords.com/agreements/"
-            }
-          ]
-        }
-      ],
+      "sections": [],
       "status": "Not connected"
     },
     {
       "path": "/profile/",
       "title": "Artist profile",
-      "description": "Approved artist profiles are published by the label. Self-service profile editing is not yet available.",
+      "description": "Manage your artist identity and account information.",
       "category": "Workspace",
-      "sections": [
-        {
-          "id": "availability",
-          "title": "Your public identity",
-          "paragraphs": [
-            "Approved artist profiles are published by the label. Self-service profile editing is not yet available."
-          ]
-        },
-        {
-          "id": "guidance",
-          "title": "Read the guidance",
-          "paragraphs": [
-            "Understand the current process before sharing information."
-          ],
-          "links": [
-            {
-              "label": "Open artist guidance",
-              "url": "https://docs.artanrecords.com/metadata/"
-            }
-          ]
-        }
-      ],
+      "sections": [],
       "status": "Not connected"
     },
     {
       "path": "/settings/",
       "title": "Settings",
-      "description": "Manage appearance, privacy and account access, and review workspace connections.",
+      "description": "Manage your workspace preferences.",
       "category": "Workspace",
-      "sections": [
-        {
-          "id": "availability",
-          "title": "A secure account comes first",
-          "paragraphs": [
-            "Account registration, sign-in, password management and tax onboarding are not available. Theme controls affect this browser only."
-          ]
-        },
-        {
-          "id": "guidance",
-          "title": "Read the guidance",
-          "paragraphs": [
-            "Understand the current process before sharing information."
-          ],
-          "links": [
-            {
-              "label": "Open artist guidance",
-              "url": "https://docs.artanrecords.com/studio/"
-            }
-          ]
-        }
-      ],
+      "sections": [],
       "status": "Not connected"
     }
   ]

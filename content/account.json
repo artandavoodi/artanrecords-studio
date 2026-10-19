@@ -1,6 +1,6 @@
 {
   "supabase":{"url":"","publishableKey":""},
-  "preferences":{"choiceKey":"artanrecords-studio-preferences","themeKey":"artanrecords-studio-theme","validDays":180},
+  "preferences":{"choiceKey":"artanrecords-studio-preferences","themeKey":"artanrecords-studio-theme","railKey":"artanrecords-studio-rail","validDays":180},
   "providers":{"google":false,"phone":false},
   "search":{"pageSize":20,"moreLabel":"Show more","prompt":"Search your workspace or guidance.","categories":[{"id":"all","label":"All"},{"id":"workspace","label":"Workspace"},{"id":"account","label":"Account"},{"id":"legal","label":"Legal"}]},
   "payments":{"enabled":false,"provider":"stripe-connect","onboardingEndpoint":null},
@@ -22,6 +22,6 @@
   "unavailable":"Studio accounts are being prepared. Sign-in is not available yet.",
   "phoneNotice":"Phone verification is not available yet. No verification text has been sent.",
   "placeholderIcon":"core/commerce/shopping/collection-placeholder.svg",
-  "effectiveDate":"2026-10-18",
+  "effectiveDate":"2026-10-19",
   "icons":{"dashboard":"core/navigation/dashboard/dashboard.svg","release":"layers/software/releases/release.svg","analytics":"core/system/analytics/analytics.svg","finance":"core/commerce/finance/finance.svg","document":"core/files/document/document.svg","payment":"core/commerce/finance/payment.svg","contract":"core/legal/contracts/contract.svg","settings":"core/system/settings/settings.svg","appearance":"core/system/settings/theme.svg","panel":"core/navigation/panel/panel-left-activated.svg","panel-collapsed":"core/navigation/panel/panel-left-deactivated.svg","signin":"core/identity/signin/signin.svg","signout":"core/identity/signout/signout.svg","google":"layers/website/auth/signin/google-signin.svg","password":"core/identity/password/password.svg","account":"core/identity/account/account.svg","profile":"core/identity/profile/profile.svg","visibility-on":"core/identity/access/visibility-on.svg","visibility-off":"core/identity/access/visibility-off.svg","search":"core/actions/search/search.svg","camera":"core/media/camera/camera.svg","check":"core/actions/check/check.svg","close":"core/actions/close/close.svg","cookies":"core/interface/cookies/cookies.svg"}
 }

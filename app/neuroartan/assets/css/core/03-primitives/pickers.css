@@ -1,0 +1,72 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) COLOR PICKER PRIMITIVE TOKENS
+   03) COLOR PICKER PRIMITIVE
+   04) COLOR PICKER STATES
+   05) COLOR PICKER SWATCHES
+   06) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/pickers.css */
+
+/* =============================================================================
+   02) COLOR PICKER PRIMITIVE TOKENS
+============================================================================= */
+:root{
+  --picker-input-size:1.20rem;
+  --picker-input-padding:0;
+  --picker-input-border-width:1px;
+  --picker-input-border-color:var(--control-border);
+  --picker-input-radius:50%;
+  --picker-input-bg:transparent;
+
+  --picker-swatch-wrapper-padding:0;
+  --picker-swatch-border:0;
+  --picker-swatch-radius:50%;
+}
+
+/* =============================================================================
+   03) COLOR PICKER PRIMITIVE
+============================================================================= */
+.na-color-picker{
+  width:var(--picker-input-size);
+  height:var(--picker-input-size);
+  padding:var(--picker-input-padding);
+  border:var(--picker-input-border-width) solid var(--picker-input-border-color);
+  border-radius:var(--picker-input-radius);
+  background:var(--picker-input-bg);
+  appearance:none;
+  -webkit-appearance:none;
+}
+
+/* =============================================================================
+   04) COLOR PICKER STATES
+============================================================================= */
+.na-color-picker:focus-visible{
+  outline:none;
+}
+
+/* =============================================================================
+   05) COLOR PICKER SWATCHES
+============================================================================= */
+.na-color-picker::-webkit-color-swatch-wrapper{
+  padding:var(--picker-swatch-wrapper-padding);
+}
+
+.na-color-picker::-webkit-color-swatch{
+  border:var(--picker-swatch-border);
+  border-radius:var(--picker-swatch-radius);
+}
+
+.na-color-picker::-moz-color-swatch{
+  border:var(--picker-swatch-border);
+  border-radius:var(--picker-swatch-radius);
+}
+
+/* =============================================================================
+   06) END OF FILE
+============================================================================= */

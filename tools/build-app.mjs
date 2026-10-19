@@ -3,6 +3,7 @@ import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 const config=JSON.parse(await readFile('content/account.json','utf8'));
+execFileSync(process.execPath,['tools/sync-platform.mjs'],{stdio:'inherit'});
 const existing=JSON.parse(await readFile('app/icon-manifest.json','utf8').catch(()=>'{"files":{}}'));
 const primitives=['buttons.css','password-field.css','close-button.css','close-button.js','search.js','dialogs.js','store-surfaces.css'];
 if(process.argv.includes('--sync-design')){
@@ -41,3 +42,4 @@ if(process.argv.includes('--sync-icons')){
 }
 await build({entryPoints:['app/main.js'],bundle:true,format:'esm',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/studio.js',minify:true});
 await build({entryPoints:['app/appearance-startup.js'],bundle:true,format:'iife',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/appearance.js',minify:true});
+await build({entryPoints:['app/studio.css'],bundle:true,target:['safari16','chrome110'],outfile:'app/dist/studio.css',minify:true,external:['/registry/*','/assets/*','/app/*']});

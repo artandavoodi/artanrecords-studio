@@ -1,0 +1,186 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) SURFACE ROOT
+   02) PANEL
+   03) BODY
+   04) ARTICLE SURFACE
+   05) TYPOGRAPHY
+   06) RESPONSIVE
+============================================================================= */
+
+/* =============================================================================
+   01) SURFACE ROOT
+============================================================================= */
+:root{
+  --cookie-learning-overlay-panel-width: var(--cookie-language-overlay-width);
+  --cookie-learning-overlay-panel-max-height: var(--cookie-language-overlay-max-height);
+  --cookie-learning-overlay-radius: var(--cookie-language-overlay-radius);
+  --cookie-learning-overlay-back-icon-size:var(--close-control-line-width);
+  --cookie-learning-overlay-back-icon-filter:var(--icon-image-filter, none);
+  --cookie-learning-overlay-divider:var(--cookie-language-overlay-divider, var(--panel-border-unified));
+  --cookie-learning-overlay-surface:var(--cookie-language-overlay-surface, var(--panel-surface-unified));
+  --cookie-consent-learning-shell-min-height:calc(10.5rem * var(--accessibility-density-scale));
+  --cookie-consent-learning-shell-radius:var(--shape-card-radius);
+  --cookie-consent-learning-shell-padding:var(--space-4);
+  --cookie-consent-learning-section-spacing:var(--spacing-none);
+  --cookie-consent-learning-panel-inset:var(--spacing-none);
+  --cookie-consent-learning-icon-size:calc(1.68rem * var(--accessibility-icon-scale));
+  --cookie-consent-learning-card-gap:var(--space-3);
+  --cookie-consent-learning-copy-gap:var(--spacing-3xs);
+  --cookie-learning-overlay-body-padding-top:calc(1.02rem * var(--accessibility-density-scale));
+  --cookie-learning-overlay-point-gap:var(--spacing-2xs);
+  --cookie-learning-overlay-title-size:var(--type-body-sm-size);
+  --cookie-learning-overlay-title-weight:var(--type-body-regular-weight);
+  --cookie-learning-overlay-title-tracking:var(--type-body-tracking);
+  --cookie-learning-overlay-title-line-height:var(--type-body-sm-line-height);
+  --cookie-learning-overlay-copy-size:calc(0.86rem * var(--accessibility-typography-scale));
+  --cookie-learning-overlay-copy-weight:300;
+  --cookie-learning-overlay-copy-tracking:-0.012em;
+  --cookie-learning-overlay-copy-line-height:1.65;
+  --cookie-learning-overlay-body-padding-top-mobile:calc(0.82rem * var(--accessibility-density-scale));
+}
+
+html[data-theme-effective="light"]{
+  --cookie-learning-overlay-back-icon-filter:var(--icon-image-filter, none);
+  --cookie-learning-overlay-divider:var(--cookie-language-overlay-divider, var(--panel-border-unified));
+  --cookie-learning-overlay-surface:var(--cookie-language-overlay-surface, var(--panel-surface-unified));
+}
+
+html[data-theme-effective="dark"]{
+  --cookie-learning-overlay-back-icon-filter:var(--icon-image-filter, none);
+  --cookie-learning-overlay-divider:var(--cookie-language-overlay-divider, var(--panel-border-unified));
+  --cookie-learning-overlay-surface:var(--cookie-language-overlay-surface, var(--panel-surface-unified));
+}
+
+.cookie-learning-overlay{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: var(--size-full);
+  min-width: var(--spacing-none);
+  min-height: var(--spacing-none);
+  height: var(--size-full);
+  max-height: var(--size-full);
+  margin: var(--spacing-none);
+  padding: var(--spacing-none);
+  overflow: hidden;
+  background: transparent;
+}
+
+/* =============================================================================
+   02) PANEL
+============================================================================= */
+.cookie-learning-overlay-panel{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: var(--size-full);
+  min-width: var(--spacing-none);
+  min-height: var(--spacing-none);
+  height: var(--size-full);
+  max-width: none;
+  max-height: var(--size-full);
+  margin: var(--spacing-none);
+  padding: var(--spacing-none);
+  border: var(--spacing-none);
+  border-radius: var(--radius-none);
+  background: transparent;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+/* =============================================================================
+   03) BODY
+============================================================================= */
+.cookie-learning-overlay-body{
+  flex: 1 1 auto;
+  min-width: var(--spacing-none);
+  min-height: var(--spacing-none);
+  margin: var(--spacing-none);
+  padding: var(--cookie-learning-overlay-body-padding-top) var(--spacing-none) var(--spacing-none);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* =============================================================================
+   04) ARTICLE SURFACE
+============================================================================= */
+.cookie-learning-overlay-article{
+  display: flex;
+  flex-direction: column;
+  gap: var(--cookie-consent-learning-shell-padding);
+  width: var(--size-full);
+  min-width: var(--spacing-none);
+  min-height: var(--spacing-none);
+  margin: var(--spacing-none);
+}
+
+.cookie-learning-overlay-article[hidden]{
+  display: none;
+}
+
+.cookie-learning-overlay-article-topline{
+  display: none;
+}
+
+.cookie-learning-overlay-article-body{
+  display: flex;
+  flex-direction: column;
+  gap: var(--cookie-consent-learning-shell-padding);
+  padding-top: var(--spacing-none);
+}
+
+.cookie-learning-overlay-points{
+  display: flex;
+  flex-direction: column;
+  gap: var(--cookie-consent-learning-shell-padding);
+}
+
+.cookie-learning-overlay-point{
+  display: flex;
+  flex-direction: column;
+  gap: var(--cookie-learning-overlay-point-gap);
+}
+
+/* =============================================================================
+   05) TYPOGRAPHY
+============================================================================= */
+.cookie-learning-overlay-article-topline strong,
+.cookie-learning-overlay-point strong{
+  color: var(--text-primary-color);
+  font-size: var(--cookie-learning-overlay-title-size);
+  font-weight: var(--cookie-learning-overlay-title-weight);
+  letter-spacing: var(--cookie-learning-overlay-title-tracking);
+  line-height: var(--cookie-learning-overlay-title-line-height);
+}
+
+.cookie-learning-overlay-article-body p,
+.cookie-learning-overlay-point p{
+  margin: var(--spacing-none);
+  color: var(--text-secondary-color);
+  font-size: var(--cookie-learning-overlay-copy-size);
+  font-weight: var(--cookie-learning-overlay-copy-weight);
+  letter-spacing: var(--cookie-learning-overlay-copy-tracking);
+  line-height: var(--cookie-learning-overlay-copy-line-height);
+}
+
+/* =============================================================================
+   06) RESPONSIVE
+============================================================================= */
+@media (max-width: 768px){
+  .cookie-learning-overlay-panel{
+    flex: 1 1 auto;
+    min-height: var(--spacing-none);
+    height: var(--size-full);
+    padding: var(--spacing-none);
+  }
+
+  .cookie-learning-overlay-body{
+    padding-top: var(--cookie-learning-overlay-body-padding-top-mobile);
+  }
+}

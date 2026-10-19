@@ -1,0 +1,296 @@
+{
+  "destinations": [
+    {
+      "id": "home",
+      "eyebrow": "Home",
+      "default_subdestination": "overview",
+      "subdestinations": [
+        {
+          "id": "overview",
+          "label": "Overview",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/home/overview-canvas.html",
+          "module": "/assets/js/layers/website/home/platform-menu/home/overview-canvas.js"
+        }
+      ]
+    },
+    {
+      "id": "continuity",
+      "eyebrow": "Continuity",
+      "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/continuity/platform-menue-continuity-.svg",
+      "default_subdestination": "continuity-actions",
+      "subdestinations": [
+        {
+          "id": "continuity-actions",
+          "label": "Continuity",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/continuity/platform-menue-continuity-actions.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/continuity/continuity-actions.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/continuity/continuity-actions.css",
+          "module": "/assets/js/layers/website/home/platform-menu/continuity/continuity-actions.js"
+        }
+      ]
+    },
+    {
+      "id": "workspace",
+      "eyebrow": "Workspace",
+      "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/workspace/platform-menue-workspace-.svg",
+      "default_subdestination": "dashboard",
+      "subdestinations": [
+        {
+          "id": "dashboard",
+          "label": "Dashboard",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-dashboard.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/workspace/dashboard/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/workspace/dashboard/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/workspace/dashboard/index.js",
+          "auth_visible": "signed-in"
+        },
+        {
+          "id": "model-training",
+          "label": "Training",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/workspace/platform-menue-workspace-training.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/workspace/model-training.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/workspace/model-training.css",
+          "module": "/assets/js/layers/website/home/platform-menu/workspace/model-training.js"
+        },
+        {
+          "id": "developer-mode",
+          "label": "Developer",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/workspace/platform-menue-workspace-developer-mode.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/workspace/developer-mode.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/workspace/developer-mode.css",
+          "module": "/assets/js/layers/website/home/platform-menu/workspace/developer-mode.js"
+        }
+      ]
+    },
+    {
+      "id": "profile",
+      "eyebrow": "Profile",
+      "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/profile/platform-menue-profile-.svg",
+      "default_subdestination": "overview",
+      "subdestinations": [
+        {
+          "id": "overview",
+          "label": "Account Control",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/profile/platform-menue-profile-account-control.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/profile/overview.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/profile/overview.css",
+          "module": "/assets/js/layers/website/home/platform-menu/profile/overview.js"
+        },
+        {
+          "id": "subscription",
+          "label": "Subscription",
+          "icon": "/registry/icons/public/assets/layers/website/profile/actions/subscription-amp-plan.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/profile/subscription.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/profile/subscription.css",
+          "module": "/assets/js/layers/website/home/platform-menu/profile/subscription.js",
+          "auth_visible": "signed-in"
+        }
+      ]
+    },
+    {
+      "id": "settings",
+      "eyebrow": "Settings",
+      "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menu-settings.svg",
+      "default_subdestination": "general",
+      "subdestinations": [
+        {
+          "id": "general",
+          "label": "General",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-general.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/general/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/general/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/general/index.js"
+        },
+        {
+          "id": "home",
+          "label": "Home",
+          "icon": "/registry/icons/public/assets/core/navigation/primary/home.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/home/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/home/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/home/index.js",
+          "auth_visible": "signed-in"
+        },
+        {
+          "id": "dashboard",
+          "label": "Dashboard",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-dashboard.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/dashboard/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/dashboard/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/dashboard/index.js",
+          "auth_visible": "signed-in"
+        },
+        {
+          "id": "account",
+          "label": "Account",
+          "icon": "/registry/icons/public/assets/core/identity/account/account.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/account/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/account/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/account/index.js",
+          "auth_visible": "signed-in"
+        },
+        {
+          "id": "notifications",
+          "label": "Notifications",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-notifications.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/notifications/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/notifications/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/notifications/index.js"
+        },
+        {
+          "id": "language",
+          "label": "Language",
+          "icon": "/registry/icons/public/assets/core/navigation/language/language.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/language/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/language/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/language/index.js",
+          "subnav_visible": false
+        },
+        {
+          "id": "appearance",
+          "label": "Appearance",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-appearance.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/appearance/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/appearance/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/appearance/index.js"
+        },
+        {
+          "id": "voice",
+          "label": "Voice",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-voice.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/voice/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/voice/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/voice/index.js"
+        },
+        {
+          "id": "permissions",
+          "label": "Permissions",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-permissions.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/permissions/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/permissions/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/permissions/index.js"
+        },
+        {
+          "id": "privacy",
+          "label": "Privacy",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-privacy.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/privacy/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/privacy/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/privacy/index.js"
+        },
+        {
+          "id": "accessibility",
+          "label": "Accessibility",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-accessibility.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/accessibility/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/accessibility/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/accessibility/index.js"
+        },
+        {
+          "id": "configuration",
+          "label": "Configuration",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-configuration.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/configuration/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/configuration/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/configuration/index.js",
+          "auth_visible": "signed-in"
+        },
+        {
+          "id": "connectors",
+          "label": "Connectors",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-connectors.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/connectors/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/connectors/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/connectors/index.js",
+          "auth_visible": "signed-in"
+        },
+        {
+          "id": "personalization",
+          "label": "Personalization",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-personalization.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/personalization/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/personalization/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/personalization/index.js",
+          "auth_visible": "signed-in"
+        },
+        {
+          "id": "model",
+          "label": "Model",
+          "icon": "/registry/icons/public/assets/core/cognition/model/model.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/model/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/model/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/model/index.js",
+          "auth_visible": "signed-in"
+        },
+        {
+          "id": "storage-backup",
+          "label": "Storage & Backup",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-storage-backup.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/storage-backup/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/storage-backup/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/storage-backup/index.js",
+          "auth_visible": "signed-in"
+        },
+        {
+          "id": "security",
+          "label": "Security",
+          "icon": "/registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-security.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/security/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/security/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/security/index.js",
+          "auth_visible": "signed-in"
+        },
+        {
+          "id": "changelog",
+          "label": "Changelog",
+          "icon": "/registry/icons/public/assets/layers/website/settings/changelog/changelog.svg",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/settings/changelog/index.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/settings/changelog/index.css",
+          "module": "/assets/js/layers/website/home/platform-menu/settings/changelog/index.js",
+          "auth_visible": "signed-in"
+        }
+      ]
+    },
+    {
+      "id": "messaging",
+      "eyebrow": "Messaging",
+      "default_subdestination": "overview",
+      "subdestinations": [
+        {
+          "id": "overview",
+          "label": "Overview",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/messaging/overview.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/messaging/overview.css",
+          "module": "/assets/js/layers/website/home/platform-menu/messaging/overview.js"
+        }
+      ]
+    },
+    {
+      "id": "notifications",
+      "eyebrow": "Notifications",
+      "default_subdestination": "overview",
+      "subdestinations": [
+        {
+          "id": "overview",
+          "label": "Overview",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/notifications/overview.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/notifications/overview.css",
+          "module": "/assets/js/layers/website/home/platform-menu/notifications/overview.js"
+        }
+      ]
+    },
+    {
+      "id": "more",
+      "eyebrow": "More",
+      "default_subdestination": "overview",
+      "subdestinations": [
+        {
+          "id": "overview",
+          "label": "Overview",
+          "fragment": "/assets/fragments/layers/website/home/platform-menu/more/overview.html",
+          "stylesheet": "/assets/css/layers/website/home/platform-menu/more/overview.css",
+          "module": "/assets/js/layers/website/home/platform-menu/more/overview.js"
+        }
+      ]
+    }
+  ]
+}

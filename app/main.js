@@ -9,7 +9,7 @@ import {bindSearch} from './search.js';
 import {bindBilling} from './billing.js';
 import {bindChrome} from './chrome.js';
 import {bindPlatform} from './platform.js';
-bindPreferences();
+await bindPreferences();
 bindSearch();
 const chrome=bindChrome();
 document.querySelectorAll('.studio-account input:not([type=checkbox]):not([type=file]),.studio-account textarea,.studio-account select').forEach(field=>field.classList.add('ui-field'));
@@ -23,7 +23,10 @@ const accountCallback=new URLSearchParams(location.search).has('code')||new URLS
 client?.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){document.querySelectorAll('[data-profile-form],[data-submissions-list],[data-contracts-list]').forEach(element=>element.replaceChildren());document.querySelector('[data-avatar]')?.removeAttribute('src');location.replace('/account/');}});
 await bindAccount(context);await bindProfile(context);
 if(client)try{chrome.setUser(await resolveUser(client));}catch{console.error('[studio] Account verification unavailable');}
-if(location.pathname==='/account/')chrome.openAccount(accountCallback);
+if(location.pathname==='/account/')requestAnimationFrame(()=>{
+  if(document.body.classList.contains('cookie-consent-open'))document.addEventListener('cookie-consent:closed',()=>chrome.openAccount(accountCallback),{once:true});
+  else chrome.openAccount(accountCallback);
+});
 await bindBilling(context);
 await bindWorkspace(context);
 document.querySelectorAll('[data-signout]').forEach(button=>button.addEventListener('click',async()=>{button.disabled=true;try{const result=await client.auth.signOut();if(result.error)throw result.error;}catch{button.disabled=false;button.textContent='Try signing out again';}}));

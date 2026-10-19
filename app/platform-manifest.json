@@ -1,0 +1,32 @@
+{
+  "source": "artandavoodi/website",
+  "revision": "8682814233b3377f8b475f76609129581627bbe0",
+  "files": {
+    "assets/data/platform/home-platform-shell.json": "7d173fa6c37a531e3698f25b002de29790b16e8b33b849a08d220a448af34412",
+    "registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-appearance.svg": "b480d1a13e0c18fce160b15809298c5b5ace274d29d1816e43d82312e000f1a3",
+    "registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-privacy.svg": "8677713dd553123aa141d1e04b0d131ff4da3e138d79c02e39512122c4fbfe57",
+    "registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-security.svg": "a0bf0d55cdc0a10661a6afa6826324d202f8198bcfc6bdf0c57259118b0d2111",
+    "assets/js/core/02-systems/theme.js": "5698e16826265da8a02b4df7d149abf273e5c481659373b2672bd70731258e15",
+    "assets/js/core/01-foundation/toggle.js": "6097773948c6265680bb2e25a8698d1146deeb3853a6e8e45eb0294a5044ca7a",
+    "assets/js/layers/website/overlays/cookie/cookie-consent.js": "2e4ca3f200e381b4bc555f3f6fe7e1013d4988fd8e91ada38e2d1520fa07403f",
+    "assets/css/core/03-primitives/radio-list.css": "ee8a4f19a799bc1d3a45f28e2a16809bde19f01a1bac0f0d6999f963aad13aa0",
+    "assets/css/core/03-primitives/toggle.css": "612aa8b0cc31c9554db52d7761b272c68f29840c5aae5ad2c7f5069e9517e541",
+    "assets/css/core/03-primitives/dropdown.css": "c68b3911241fd06326c546ede137c544464e2e7f32c19244a5b542b7feddf63b",
+    "assets/css/core/03-primitives/pickers.css": "e80771d6c3975e7743bcbdd1a31c485ee40516cb945de4b1b7201c356df7f9a1",
+    "assets/css/layers/website/home/platform-menu/settings/_shared/settings-category.css": "9d88720fc35067e382dc4d122f9bfc6f898f806f7b81655217b070cc20a89ae5",
+    "assets/css/layers/website/overlays/cookie/cookie-consent.css": "c42abe4cc5b4be2cc950ac2e19fe4312e071fec0f63a8945a566a13052afd16b",
+    "assets/css/layers/website/overlays/cookie/cookie-learning-overlay.css": "a7681306dbcbc8403873c6cd2690466d59dab1bf78b35ecff17272ff88e92f52",
+    "assets/css/layers/website/home/platform-menu/settings/appearance/index.css": "1bc0ac3b12966b7af2c63dd7646df61ecb839b0059f5ef29398ee4d26d8cca00",
+    "assets/fragments/layers/website/cookie/cookie-consent.html": "7cec3722e13cf12c770954989fd80f244753025264246ac131b4243b722d9a3a",
+    "assets/fragments/layers/website/cookie/cookie-learning-overlay.html": "ebd631371b721b39f494fd58a971f7c270e110fd175fc2ac6254b412252461c7",
+    "assets/fragments/layers/website/home/platform-menu/settings/appearance/index.html": "e9f57105e965404b890f5fa21ef856b70b101636d00b4acfb2a4bd80a8b67304",
+    "registry/icons/public/assets/core/interface/cookies/cookies.svg": "2d9260b8fd642aaf72d428eed614ff92aee24a639154214d3fa19d19cc5bc9e7",
+    "registry/icons/public/assets/core/navigation/global/globe.svg": "b4693a9829c4d5915df2546696c3fd0afffe41717b913651970e5fe758036b94",
+    "registry/icons/public/assets/core/navigation/direction/back.svg": "78d015c37800e318e22b1afbafdc0f0d5a561e90646ad55d9475898f08cb43d6",
+    "registry/icons/public/assets/core/interface/status/essential.svg": "0c44d091d0e18c0b0d02b6b43ddae591cb38fa87528c5c694445c912a93ed406",
+    "registry/icons/public/assets/core/interface/navigation/drop-down.svg": "1aa34a52ef2e911b2aac3083a2b1f6931ccf3e0ba62d87e71fba3eeedcf3a1b9",
+    "registry/icons/public/assets/layers/website/cookie/categories/cookie-analytics.svg": "28980d3377240defd2a33ac3afdcc464a3aa3fefb8d0f615927c10b0c2b0e6e5",
+    "registry/icons/public/assets/layers/website/cookie/categories/cookie-experience.svg": "f305bf026bd84f0047d481c2c37a805151af0fb58c7bffda32b5f49b11857ec9",
+    "registry/icons/public/assets/core/navigation/chevron/chevron-down.svg": "267f15b40d1f468dd67aa683522be1166bed34488003b70181d9f6ab00da01a6"
+  }
+}
