@@ -69,6 +69,8 @@ test('public platform metadata identifies the app without inventing reviews or f
   const html=await readFile('index.html','utf8'),manifest=JSON.parse(await readFile('manifest.webmanifest','utf8'));
   assert.match(html,/"@type":"SoftwareApplication"/);assert.match(html,/content="index,follow"/);assert.match(html,/rel="manifest"/);
   assert.doesNotMatch(html,/aggregateRating|ratingValue/);assert.equal(manifest.display,'standalone');assert.equal(manifest.start_url,'/');
+  assert.match(html,/<title>Artanrecords Studio<\/title>/);
+  assert.doesNotMatch(html,/Artan\s+Records/);
 });
 test('prepared partnership terms are agreement-owned and never client-writable',async()=>{
   const sql=await readFile('supabase/migrations/202610190001_studio_partnerships.sql','utf8');
