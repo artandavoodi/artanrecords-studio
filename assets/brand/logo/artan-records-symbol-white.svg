@@ -7,24 +7,43 @@
    viewBox="0 0 79.374992 79.374237"
    version="1.1"
    id="svg1"
+   sodipodi:docname="artan-records-symbol-white.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.0866675"
+     inkscape:cx="149.99856"
+     inkscape:cy="149.99856"
+     inkscape:window-width="1472"
+     inkscape:window-height="923"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
   <defs
      id="defs1" />
-  <g
-     id="layer1"
-     transform="translate(88.677444,1014.3905)">
-    <path
-       id="rect127-2-3-8-3-9-37"
-       style="fill:#ffffff;stroke:none;stroke-width:0.0666684;stroke-linecap:round;stroke-miterlimit:10;paint-order:fill markers stroke"
-       d="m -15466.019,7176.0825 0,10.9998 a 8,8 45 0 0 8,8 h 4.001 a 8,8 135 0 0 8,-8 v -10.9998 a 1,1 45 0 0 -1,-1 h -18.001 a 1,1 135 0 0 -1,1 z"
-       transform="matrix(3.9685516,0,0,3.96875,61289.017,-29490.499)" />
-    <ellipse
-       style="font-variation-settings:'wght' 400;fill:#ff2a2a;stroke-width:0.264584;stroke-linecap:round;stroke-miterlimit:10;paint-order:fill markers stroke"
-       id="path142-2-2-2-8-15"
-       cx="-48.990543"
-       cy="-974.70093"
-       rx="19.842758"
-       ry="19.84375" />
-  </g>
+  <ellipse
+     style="font-variation-settings:'wght' 400;fill:#ff2a2a;stroke-width:0.264579;stroke-linecap:round;stroke-miterlimit:10;paint-order:fill markers stroke"
+     id="path142-2-2-2-4-4-9"
+     cx="-0.0014547865"
+     cy="-56.126324"
+     transform="matrix(-0.70709174,0.70712182,-0.70709174,-0.70712182,0,0)"
+     rx="22.538822"
+     ry="22.541075" />
+  <path
+     id="rect143-9-1-6-1-0-1-5-0-3-7-5"
+     style="fill:#ffffff;stroke:none;stroke-width:5.29163;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:none;paint-order:fill markers stroke"
+     d="M 39.685616,2.1871185 2.1874962,39.687299 39.689376,77.187119 77.187496,39.687299 Z m 0,15.0018705 a 22.501132,22.498687 56.512608 0 1 15.9075,6.59306 22.501132,22.498687 56.512608 0 1 0,31.82044 22.501132,22.498687 56.512608 0 1 -31.82062,0 22.501132,22.498687 56.512608 0 1 0,-31.82381 22.501132,22.498687 56.512608 0 1 15.90938,-6.58782 z" />
 </svg>

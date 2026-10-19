@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "preferences":{"title":"Cookies & preferences","description":"Browser storage remembers your privacy choice. Allow saves your appearance for future visits; Skip leaves optional preference storage off. Forms use necessary verification technologies when you open them.","allow":"Allow","skip":"Skip","settings":"Cookies & preferences","notice":"Legal information","storage":{"choiceKey":"artanrecords-preferences","themeKey":"artanrecords-theme","validDays":180,"version":1}},
-  "name": "Artan Records",
+  "name": "Artanrecords",
   "foundingDate": "2025",
   "foundingLabel": "Founded",
-  "logoAlt": "Artan Records logo",
-  "shareImage": {"src":"assets/brand/logo/artan-records-wordmark.png","alt":"Artan Records — independent record label"},
+  "logoAlt": "Artanrecords logo",
+  "shareImage": {"src":"assets/brand/logo/artan-records-wordmark.png","alt":"Artanrecords — independent record label"},
   "domain": "https://artanrecords.com",
   "description": "An independent record label for artists, recordings and creative collaboration. Music first. A lasting home for the work.",
   "introduction": [
@@ -44,18 +44,18 @@
     { "label": "About", "path": "/about/", "fragment": "about" },
     { "label": "Contact", "path": "/contact/", "fragment": "contact" }
   ],
-  "about": "Artan Records is an independent record label built around artists and their recordings. We bring music, credits, artwork and release information together, giving the work a clear and lasting home.",
+  "about": "Artanrecords is an independent record label built around artists and their recordings. We bring music, credits, artwork and release information together, giving the work a clear and lasting home.",
   "principle": "The infrastructure serves the art. We welcome music and creative collaborations through a considered, human-reviewed process. Each project begins with the work and the person behind it, not an automatic upload pipeline.",
-  "history": "Founded in 2025 by Artan Davoodi, Artan Records began with his recordings and is opening a wider conversation with artists and collaborators. The catalog is a beginning, not a boundary.",
+  "history": "Founded in 2025 by Artan Davoodi, Artanrecords began with his recordings and is opening a wider conversation with artists and collaborators. The catalog is a beginning, not a boundary.",
   "aboutPage": {
     "tabs": [{"id":"about","label":"About"},{"id":"mission","label":"Mission"},{"id":"leadership","label":"Leadership"}],
-    "description":"About Artan Records: an independent label founded in 2025, its artist-first mission and founder Artan Davoodi.",
+    "description":"About Artanrecords: an independent label founded in 2025, its artist-first mission and founder Artan Davoodi.",
     "aboutDetails":"Our public catalogue connects recordings with the people who made them. Dedicated artist and release pages bring together artwork, credits, release information and links to streaming services. Artist introductions and creative proposals are reviewed individually before any engagement is agreed.",
     "missionDetails":"Our mission is to give artists and collaborators a clear, considered way to develop and present their work. We value accurate credits, coherent release information and respectful collaboration across music and visual practice.\n\nWe begin with listening and conversation. Release preparation and creative support are discussed for each project, with responsibilities and terms agreed before work begins. We do not treat every artist or recording as the same kind of project.",
-    "leadershipIntroduction":"Artan Records is founder-led. This section introduces the people responsible for the label and its direction.",
+    "leadershipIntroduction":"Artanrecords is founder-led. This section introduces the people responsible for the label and its direction.",
     "leadership":[{"id":"artan-davoodi","artistId":"artan-davoodi","role":"Founder","portrait":{
       "src": "assets/media/leadership/artan-davoodi/artan-davoodi-artan-records-founder.jpeg",
-      "alt": "Artan Davoodi, founder of Artan Records",
+      "alt": "Artan Davoodi, founder of Artanrecords",
       "width": 2186,
       "height": 2186,
       "variants": [
@@ -77,7 +77,7 @@
         }
       ],
       "sizes": "(max-width: 860px) 100vw, 50vw"
-    },"biography":"Artan Davoodi founded Artan Records in 2025 to create an independent home for recordings and creative collaboration. A musician, songwriter and producer, he brings an artist's perspective to the label's direction and the way projects are reviewed and presented."}]
+    },"biography":"Artan Davoodi founded Artanrecords in 2025 to create an independent home for recordings and creative collaboration. A musician, songwriter and producer, he brings an artist's perspective to the label's direction and the way projects are reviewed and presented."}]
   },
   "labels": {
     "skip": "Skip to content", "menuOpen": "Open site menu", "menuClose": "Close site menu",

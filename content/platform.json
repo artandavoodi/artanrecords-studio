@@ -1,13 +1,13 @@
 {
-  "name":"Artan Records Studio",
-  "summary":"The artist platform being developed by Artan Records for release preparation, agreements and royalty reporting.",
+  "name":"Artanrecords Studio",
+  "summary":"The artist platform being developed by Artanrecords for release preparation, agreements and royalty reporting.",
   "groups":[
     {"label":"Workspace","items":[{"path":"/","label":"Overview","icon":"dashboard"},{"path":"/releases/","label":"Releases","icon":"release"},{"path":"/analytics/","label":"Analytics","icon":"analytics"}]},
     {"label":"Business","items":[{"path":"/royalties/","label":"Royalties","icon":"finance"},{"path":"/statements/","label":"Statements","icon":"document"},{"path":"/payouts/","label":"Payouts","icon":"payment"},{"path":"/agreements/","label":"Agreements","icon":"contract"}]},
     {"label":"Account","items":[{"path":"/profile/","label":"Artist profile","icon":"account"},{"path":"/settings/","label":"Settings","icon":"settings"}]}
   ],
   "settings":[{"id":"appearance","label":"Appearance","icon":"appearance"},{"id":"privacy","label":"Privacy","icon":"cookies"},{"id":"security","label":"Security","icon":"password"},{"id":"connections","label":"Connections","icon":"analytics"}],
-  "menu":[{"path":"https://artanrecords.com/","label":"Artan Records","icon":"release"},{"path":"https://docs.artanrecords.com/","label":"Artist guidance","icon":"document"},{"path":"https://artanrecords.com/contact/","label":"Contact the label","icon":"account"},{"path":"/privacy/","label":"Privacy and cookies","icon":"cookies"},{"path":"/terms/","label":"Studio terms","icon":"contract"}],
+  "menu":[{"path":"https://artanrecords.com/","label":"Artanrecords","icon":"release"},{"path":"https://docs.artanrecords.com/","label":"Artist guidance","icon":"document"},{"path":"https://artanrecords.com/contact/","label":"Contact the label","icon":"account"},{"path":"/privacy/","label":"Privacy and cookies","icon":"cookies"},{"path":"/terms/","label":"Studio terms","icon":"contract"}],
   "overview":{"title":"Where your next release begins","description":"Start with your music. Explore release preparation, agreements and reporting, or read the artist guidance before your next step.","action":"Explore release preparation","href":"/releases/","secondary":"Artist guidance","secondaryHref":"https://docs.artanrecords.com/","statusTitle":"Before you begin","statusText":"Private workspaces are not connected yet. You can explore Studio and its guidance; account access, reporting, signing and payouts are not available."},
   "features":[{"path":"/releases/","title":"Release preparation","description":"Keep titles, credits and release notes together. Private draft storage becomes available when account services are connected.","icon":"release"},{"path":"/agreements/","title":"Agreements","description":"A dedicated place for agreements shared by the label. Signing remains unavailable until the secure signing service is connected.","icon":"contract"},{"path":"/analytics/","title":"Listening and reporting","description":"Listening data and royalty statements have separate places, without treating streaming counts as earnings.","icon":"analytics"}]
 }

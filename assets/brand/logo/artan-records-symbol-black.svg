@@ -7,24 +7,48 @@
    viewBox="0 0 79.374992 79.374237"
    version="1.1"
    id="svg1"
+   sodipodi:docname="artan-records-symbol-black.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.0866675"
+     inkscape:cx="149.99856"
+     inkscape:cy="149.99856"
+     inkscape:window-width="1472"
+     inkscape:window-height="923"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
   <defs
      id="defs1" />
   <g
-     id="layer1"
-     transform="translate(88.677444,1014.3905)">
-    <path
-       id="rect127-2-3-8-3-9-37"
-       style="fill:#1a1a1a;stroke:none;stroke-width:0.0666684;stroke-linecap:round;stroke-miterlimit:10;paint-order:fill markers stroke"
-       d="m -15466.019,7176.0825 0,10.9998 a 8,8 45 0 0 8,8 h 4.001 a 8,8 135 0 0 8,-8 v -10.9998 a 1,1 45 0 0 -1,-1 h -18.001 a 1,1 135 0 0 -1,1 z"
-       transform="matrix(3.9685516,0,0,3.96875,61289.017,-29490.499)" />
+     id="g147"
+     transform="matrix(1.875,0,0,1.875,28744.58,-14272.646)"
+     style="stroke-width:0.533333">
     <ellipse
-       style="font-variation-settings:'wght' 400;fill:#ff2a2a;stroke-width:0.264584;stroke-linecap:round;stroke-miterlimit:10;paint-order:fill markers stroke"
-       id="path142-2-2-2-8-15"
-       cx="-48.990543"
-       cy="-974.70093"
-       rx="19.842758"
-       ry="19.84375" />
+       style="font-variation-settings:'wght' 400;fill:#ff2a2a;stroke-width:0.141109;stroke-linecap:round;stroke-miterlimit:10;paint-order:fill markers stroke"
+       id="path142-2-2-2-4-4-9"
+       cx="16222.927"
+       cy="5428.1191"
+       transform="matrix(-0.70709176,0.70712181,-0.70709176,-0.70712181,0,0)"
+       rx="12.020705"
+       ry="12.021907" />
+    <path
+       id="rect143-9-1-6-1-0-1-5-0-3-7-5"
+       style="fill:#000000;stroke:none;stroke-width:2.8222;stroke-linecap:round;stroke-miterlimit:10;stroke-dasharray:none;paint-order:fill markers stroke"
+       d="m -15309.277,7613.2442 -19.999,20.0001 20.001,19.9999 19.999,-19.9999 z m 0,8.001 a 12.000604,11.9993 56.512608 0 1 8.484,3.5163 12.000604,11.9993 56.512608 0 1 0,16.9709 12.000604,11.9993 56.512608 0 1 -16.971,0 12.000604,11.9993 56.512608 0 1 0,-16.9727 12.000604,11.9993 56.512608 0 1 8.485,-3.5135 z" />
   </g>
 </svg>
