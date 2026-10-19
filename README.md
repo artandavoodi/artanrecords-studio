@@ -4,6 +4,10 @@
 
 Studio owns its stationary header and copyright-only footer in
 `app/shell-render.mjs`; marketing navigation does not own platform identity.
+Workspace column dividers belong to the full-height rail, not its inner sticky
+scroller. Studio hides scrollbar tracks while preserving native scrolling.
+Search artwork travels to the menu position before registered close artwork is
+revealed; primitive normalization must never discard that artwork.
 Public Studio notices are authored in Artanrecords website's
 `docs/assets/data/studio-legal.json`, published there, and imported through the
 foundation manifest. Legacy Studio notice routes read that same source and are
