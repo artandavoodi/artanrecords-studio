@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "a05ad13e27ed4d35faddbc656cb21ebfdbcdd041",
+  "commit": "a089bf985d42c4fe12e4c8a37d06c1feb1a7b07d",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "faaac582c9cccdc7447cc29a16258787214d3a9e77f231e4f33ae1a427563011",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -24,12 +24,12 @@
     "assets/css/layers/site/hub/index.css": "1e56134c5c3aa52017f455a3ed6e281f2e31c9ba8215325dc24f72c519f5a36f",
     "assets/css/layers/site/label/enquiry-response.css": "d47608a69429ad06288ca5949f46a3c72d938564f5c6500c462084a8d8e604e6",
     "assets/css/layers/site/label/home-showcase.css": "4fc731c42ccfd6f8c98927722a3b4033ef389deb1dd04e609c885a57fcb0fa13",
-    "assets/css/layers/site/label/index.css": "5555e1777b24982d8906ddd0e8aa9933d5a0e5b99b2f0733be361e1d4a039e0d",
+    "assets/css/layers/site/label/index.css": "849bf0a4eb62a138d14901bac1faa8f89305fdf12f522715e55b18301d2dd5b8",
     "assets/css/layers/site/navigation.css": "b93be75b7d311a733a42b9d22cffea537b9ac10cb8f06c1deb952f7b797c391b",
     "assets/css/layers/site/site.css": "1fe324dc08e2a5f4e98b6cf1f0acb5612cd473b25ec1c5b037e0ab4436fe65ce",
     "assets/css/layers/site/submission/index.css": "3249ad0f7519a091c2acb7ace5473b7c90ee77430dc31b53c6d08fdb42c1ede8",
     "assets/css/layers/site/theme-menu.css": "9570198870280d8ab0843cbcbd95c0b5e13ab74cffa3088ea9df3a3067cc7d43",
-    "assets/css/site.generated.css": "70462d77dc948f88c3595cc2180dc4d3dc74c67d5c9b92bca50d0321191b714d",
+    "assets/css/site.generated.css": "13e637099dfaedf7c708ac5b400bfc30fb9cb14d9dd6401b5ee35137491a659f",
     "assets/brand/logo/artan-records-symbol-black.svg": "3df4c9471e7c952a8108d903eedc40583428fdbdef3760518babd50dc03d0a26",
     "assets/brand/logo/artan-records-symbol-white.svg": "d369d87b98b4282a57945450b2d0b4d677e81f765c718fce234f5ae51c5dbbe7",
     "assets/brand/logo/artan-records-wordmark-black.svg": "3a618e0c94da7a6c3f18676cbf674aba1b77c446a87e27b3d1496b5882ebcac9",
