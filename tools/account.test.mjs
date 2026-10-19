@@ -109,6 +109,9 @@ test('settings use labelled selection panels without dropdowns and the primary m
   const html=await readFile('settings/index.html','utf8');
   assert.equal((html.match(/role="tab"/g)||[]).length,platform.settings.length);
   assert.equal((html.match(/role="tabpanel"/g)||[]).length,platform.settings.length);
+  assert.match(html,/class="studio-settings-surface surface studio-surface"/);
+  const navigation=html.match(/class="studio-settings-navigation"[\s\S]*?<\/div>/)?.[0];
+  assert.equal((navigation?.match(/class="studio-icon"/g)||[]).length,platform.settings.length);
   for(const item of platform.settings){assert.ok(html.includes(`aria-controls="settings-${item.id}"`));assert.ok(html.includes(`aria-labelledby="settings-tab-${item.id}"`));}
   assert.doesNotMatch(html,/<details class="studio-settings-group"|<summary>|<p class="eyebrow">Artanrecords Studio/);
   assert.match(html,/appearance.js\?v=/);

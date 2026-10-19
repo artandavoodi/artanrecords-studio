@@ -1,7 +1,7 @@
 /* Studio composition uses Neuroartan's canonical platform layout tokens. */
 .studio-platform { display:grid; grid-template-columns:var(--layout-home-platform-rail-width) minmax(0,1fr); gap:var(--spacing-xl); align-items:start; }
 .studio-platform-content { min-inline-size:0; }
-.studio-platform-rail { position:sticky; inset-block-start:var(--site-header-height); padding-block:var(--spacing-xl); }
+.studio-platform-rail { position:sticky; inset-block-start:var(--site-header-height); padding-block:var(--spacing-lg); max-block-size:calc(100dvh - var(--site-header-height)); overflow-y:auto; box-sizing:border-box; border-inline-end:var(--border-width-hairline) solid var(--cv-border); padding-inline-end:var(--spacing-lg); }
 .studio-platform-rail > button { justify-content:start; }
 .label-navigation .studio-header-mobile { display:none; }
 .site-menu__links .studio-menu-workspace { display:none; }
@@ -22,14 +22,19 @@
 .studio-platform-connection { color:var(--text-secondary-color); }
 .studio-platform-connection a { display:inline-flex; gap:var(--spacing-sm); align-items:center; color:var(--text-primary-color); text-decoration:none; }
 .studio-settings { display:grid; grid-template-columns:var(--layout-home-platform-rail-width) minmax(0,1fr); gap:var(--spacing-xl); align-items:start; }
+.studio-settings-surface { padding-block:var(--spacing-lg); gap:var(--spacing-lg); }
+.studio-settings-surface > header { gap:var(--spacing-xs); }
+.studio-settings-surface > header h1 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
+.studio-settings-surface > header p { margin:0; color:var(--text-secondary-color); font-size:var(--site-type-caption-size); }
 .studio-settings-navigation { display:grid; gap:var(--layout-home-platform-nav-gap); position:sticky; inset-block-start:var(--site-header-height); }
-.studio-settings-navigation button { border:0; background:none; color:inherit; text-align:start; font:inherit; min-block-size:var(--control-height-md); padding:var(--spacing-sm) 0; cursor:pointer; opacity:var(--state-opacity-muted); transition:opacity var(--duration-base) var(--ease-standard); }
+.studio-settings-navigation button { display:flex; align-items:center; gap:var(--layout-home-platform-nav-item-gap); border:0; background:none; color:inherit; text-align:start; font:inherit; min-block-size:var(--control-height-md); padding:var(--spacing-sm) 0; cursor:pointer; opacity:var(--state-opacity-muted); transition:opacity var(--duration-base) var(--ease-standard); }
+.studio-settings-navigation .studio-icon { inline-size:var(--layout-home-platform-nav-icon-size); block-size:var(--layout-home-platform-nav-icon-size); }
 .studio-settings-navigation button:is([aria-selected=true],:hover,:focus-visible) { opacity:var(--overlay-opacity-open); }
 .studio-settings-content { min-inline-size:0; }
 .studio-settings-group { display:grid; gap:var(--spacing-lg); }
 .studio-settings-group[hidden] { display:none; }
 .studio-settings-group h2 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
-@media(max-width:1024px){.studio-settings { grid-template-columns:minmax(0,1fr); }.studio-settings-navigation { position:static; display:flex; flex-wrap:wrap; column-gap:var(--spacing-lg); row-gap:var(--spacing-xs); }}
+@media(max-width:1024px){.studio-settings { grid-template-columns:minmax(0,1fr); }.studio-settings-navigation { position:static; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:var(--spacing-md); row-gap:var(--spacing-xs); }}
 .studio-settings .ui-button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); min-block-size:var(--control-height-md); padding:var(--spacing-sm) var(--spacing-lg); border:0; border-radius:var(--account-field-radius); background:var(--control-bg-hover); color:inherit; font:inherit; cursor:pointer; }
 .studio-setting-options { display:grid; }
 .studio-setting-options button { display:flex; justify-content:space-between; align-items:center; gap:var(--spacing-lg); font:inherit; text-align:start; padding:var(--spacing-md) 0; border:0; background:none; color:inherit; cursor:pointer; opacity:var(--state-opacity-muted); }
