@@ -7227,6 +7227,14 @@ html:has(main[data-fragment="artist"]) .site-footer > .hub { display: none; }
 .partnership-comparison caption { text-align:start; padding-block-end:var(--spacing-lg); }
 .partnership-comparison :is(th,td) { text-align:start; vertical-align:top; padding:var(--spacing-md); }
 .partnership-comparison tbody tr + tr { border-block-start:var(--border-width-hairline) solid var(--cv-border); }
+.partnership-comparison :is(th,td) + :is(th,td) { border-inline-start:var(--border-width-hairline) solid var(--cv-border); }
+.partnership-comparison thead th { vertical-align:bottom; padding-block:var(--spacing-lg); }
+.partnership-comparison tbody tr:hover { background:var(--control-bg-hover); }
+.partnership-cell { display:flex; align-items:flex-start; gap:var(--spacing-sm); }
+.partnership-cell > img { inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); flex-shrink:0; }
+.partnership-cell > span { display:grid; gap:var(--spacing-xs); }
+.partnership-state { font-weight:var(--font-weight-semibold); }
+.partnership-cell > span > span + span { color:var(--cv-text-secondary); }
 .leadership-card { display: grid; gap: var(--spacing-md); min-inline-size: 0; }
 .leadership-card figure { inline-size: min(100%, var(--featured-card-width)); margin: 0; }
 .leadership-card figure img { inline-size: 100%; block-size: auto; border-radius: var(--radius-md); }

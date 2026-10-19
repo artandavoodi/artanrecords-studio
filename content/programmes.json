@@ -1,0 +1,7 @@
+{
+  "schemaVersion":1,
+  "referrals":{"enabled":false,"unit":"service_credit","awardAmount":null,"qualifyingMilestone":null,"expiryDays":null,"transferable":false,"cashRedemptionEnabled":false,"eligibleServices":["promotion","artwork","website"],"reviewRequired":true},
+  "payments":{"enabled":false,"provider":"stripe","checkoutEndpoint":null,"customerPortalEndpoint":null,"webhookConfigured":false},
+  "royaltyWithdrawals":{"enabled":false,"provider":"stripe-connect","onboardingEndpoint":null,"requestEndpoint":null},
+  "activationRequirements":["approved programme terms and qualifying milestone","approved award values and redemption rules","dedicated secure backend and isolation tests","verified Stripe merchant and Connect eligibility","idempotent signed webhooks and reconciliation","privacy and retention review"]
+}

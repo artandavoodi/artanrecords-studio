@@ -1,4 +1,6 @@
 /* Surface layout only. The label owns all brand values and scales. */
+@import url('../assets/css/core/01-tokens/document-reader.tokens.css');
+@import url('../assets/css/core/04-systems/document-reader.css');
 .surface header, .surface-section, .surface-card, .surface-search { display: grid; gap: var(--spacing-md); min-inline-size: 0; }
 .surface-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--featured-card-width)), 1fr)); gap: var(--spacing-xl); }
 .surface-card { align-content: start; padding-block: var(--spacing-lg); border-block-start: var(--border-width-hairline) solid var(--cv-border); }

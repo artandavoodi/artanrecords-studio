@@ -1,5 +1,7 @@
 import {initializeTheme,bindTheme} from '../assets/js/core/theme.js';
 import {bindNavigation} from '../assets/js/layers/site/navigation.js';
+import {bindDocumentReaders} from '../assets/js/core/02-systems/document-reader.js';
+bindDocumentReaders();
 initializeTheme();
 try {
   const response=await fetch('/assets/data/site.json');

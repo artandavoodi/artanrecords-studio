@@ -80,3 +80,13 @@ test('prepared partnership terms are agreement-owned and never client-writable',
   assert.match(sql,/c.account_id=\(select auth.uid\(\)\)/);
   assert.doesNotMatch(sql,/grant (?:insert|update|delete|all)/i);
 });
+test('referrals and Stripe foundations remain inactive and cannot create client credits',async()=>{
+  const programmes=JSON.parse(await readFile('content/programmes.json','utf8'));
+  for(const name of ['referrals','payments','royaltyWithdrawals'])assert.equal(programmes[name].enabled,false);
+  assert.equal(programmes.referrals.awardAmount,null);
+  assert.equal(programmes.referrals.cashRedemptionEnabled,false);
+  const sql=await readFile('supabase/migrations/202610190002_studio_referral_foundation.sql','utf8');
+  assert.equal((sql.match(/enable row level security/g)||[]).length,2);
+  assert.match(sql,/idempotency_key text not null unique/);
+  assert.doesNotMatch(sql,/grant (?:insert|update|delete|all)/i);
+});

@@ -4,6 +4,8 @@ import {renderIcon} from './icon-render.mjs';
 export {renderMenu} from './platform-render.mjs';
 export {renderActions,renderDialogs} from './dialog-render.mjs';
 const settings=JSON.parse(await readFile(new URL('../content/account.json',import.meta.url),'utf8'));
+const programmes=JSON.parse(await readFile(new URL('../content/programmes.json',import.meta.url),'utf8'));
+if(programmes.referrals.enabled||programmes.payments.enabled||programmes.royaltyWithdrawals.enabled)throw Error('Programme activation requires verified backend implementation');
 export async function render(page,{config,e,search}){
   const icon=name=>renderIcon(name,e);
   const header=`<header><p class="eyebrow">${e(config.name)}</p><h1>${e(page.heading||page.title)}</h1><p class="reading">${e(page.description)}</p></header>`;
