@@ -1,7 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {configured,resolveUser,profileValues,validPhoto} from '../app/account.js';
+import {configured,resolveUser,profileValues,validPhoto,requestGoogleSignIn} from '../app/account.js';
+test('Google uses the shared Studio account callback and propagates provider failures',async()=>{
+  let called=false;
+  const client={auth:{signInWithOAuth:async input=>{called=true;assert.deepEqual(input,{provider:'google',options:{redirectTo:'https://studio.artanrecords.com/account/'}});return {data:{url:'https://accounts.google.com/'},error:null};}}};
+  await assert.rejects(requestGoogleSignIn(client,{providers:{google:false}},'https://studio.artanrecords.com/account/'));
+  assert.equal(called,false);
+  assert.equal((await requestGoogleSignIn(client,{providers:{google:true}},'https://studio.artanrecords.com/account/')).url,'https://accounts.google.com/');
+  await assert.rejects(requestGoogleSignIn({auth:{signInWithOAuth:async()=>({error:new Error('Provider unavailable')})}},{providers:{google:true}},'https://studio.artanrecords.com/account/'),/Provider unavailable/);
+  await assert.rejects(requestGoogleSignIn({auth:{signInWithOAuth:async()=>{throw Error('Network unavailable');}}},{providers:{google:true}},'https://studio.artanrecords.com/account/'),/Network unavailable/);
+});
 test('unconfigured Studio stays disconnected and rejects other ecosystem backends',()=>{
   assert.equal(configured({supabase:{url:'',publishableKey:''}}),false);
   for(const host of ['hahtbepdrjkjluhespbs','dwlgvujubkpycrvhngku'])assert.throws(()=>configured({supabase:{url:`https://${host}.supabase.co`,publishableKey:'public'}}));

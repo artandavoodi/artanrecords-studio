@@ -1,5 +1,43 @@
 # Studio Backend Activation
 
+## Shared Store project review
+
+Reviewed 2026-10-20 at the owner's request; this is an option, not an activated
+backend or permission to apply the dedicated-project migrations to Store.
+The existing Store project can technically serve a second first-party application
+without creating a third project, subject to its shared free-plan quotas.
+Supabase supports explicit per-application redirect URLs:
+https://supabase.com/docs/guides/auth/redirect-urls
+
+Required decisions and checks before enabling this option:
+
+- Store and Studio would share auth.users identities, credentials, provider
+  configuration, email templates, quotas and backend availability. Browser
+  sessions are still origin-scoped; the website should continue sending users
+  to Studio's single account entry rather than copying sessions in URLs.
+- Password changes, recovery, global sign-out and deletion need an account-wide
+  policy. A Store deletion workflow must not silently delete an artist identity,
+  contracts or legally retained financial records.
+- Keep Store tables and buckets unchanged. Prepare a separately reviewed,
+  additive Studio migration, separate profile/billing/avatar ownership and
+  staff-managed artist memberships. Do not apply the existing dedicated-only
+  migration blindly and do not reuse Store checkout privileges for royalties.
+- RLS restricts records by identity, not the website from which a token came.
+  A shared first-party token may access that same customer's permitted data in
+  either application; this is not equivalent to separate-project isolation.
+  Never treat client-editable metadata as staff or artist approval.
+- Preserve the Store Site URL, Google callback and recovery routes. Add only
+  reviewed exact Studio callback/recovery URLs. Review shared confirmation,
+  recovery and Google consent wording so it accurately names both applications.
+- Review privacy disclosures, then run real two-user isolation tests and hosted
+  signup, Google return, recovery and logout journeys for both applications.
+
+No hosted database, provider, redirect, billing or account changes were made
+during this review. The disconnected configuration and project-isolation guard
+remain in place pending approval of the shared-identity model and migration.
+
+## Dedicated project path
+
 This is a separate project, not the Store or Neuroartan project. No hosted migration has been applied and no project credentials are configured.
 
 1. The owner reviews and purchases a plan if desired, then creates a dedicated project and enters its database password privately.

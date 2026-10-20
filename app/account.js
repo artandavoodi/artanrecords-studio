@@ -13,6 +13,12 @@ export async function resolveUser(client){
   const result=await client.auth.getUser();if(result.error||!result.data.user)throw Error('Could not verify your session. Please retry.');
   return result.data.user;
 }
+export async function requestGoogleSignIn(client,config,redirectTo){
+  if(!client||!config.providers.google)throw Error('Google sign-in is not connected.');
+  const result=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo}});
+  if(result.error)throw result.error;
+  return result.data;
+}
 export function profileValues(form){
   const fields={display_name:100,artist_name:100,biography:2000,website:500};const result={};
   for(const [name,max] of Object.entries(fields)){const value=String(form.get(name)||'').trim();if(value.length>max)throw Error('Please shorten your profile information.');result[name]=value;}

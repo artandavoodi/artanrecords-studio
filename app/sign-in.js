@@ -1,11 +1,17 @@
 import publication from '../assets/data/studio-legal.json';
+import {requestGoogleSignIn} from './account.js';
 const noticeUrl=path=>publication.domain+publication.notices.find(notice=>notice.legacyPath===path).path;
 export async function bindAccount({client,config,resolveUser}){
   const view=document.querySelector('[data-account-view]');if(!view)return;
   const status=view.querySelector('[data-account-status]'),form=view.querySelector('[data-auth-form]'),submit=view.querySelector('[data-auth-submit]'),recovery=view.querySelector('[data-recovery-form]');
   const google=document.createElement('button');google.type='button';google.className='ui-button studio-provider';google.disabled=!client||!config.providers.google;
   const googleIcon=document.createElement('img');googleIcon.className='studio-icon';googleIcon.src='/app/icons/google.svg';googleIcon.alt='';google.append(googleIcon,document.createTextNode('Continue with Google'));form.before(google);
-  google.addEventListener('click',async()=>{google.disabled=true;const {error}=await client.auth.signInWithOAuth({provider:'google',options:{redirectTo:location.origin+'/account/'}});if(error){status.textContent='Google sign-in could not be opened. Try again.';google.disabled=false;}});
+  google.addEventListener('click',async()=>{
+    if(!client||!config.providers.google)return;
+    google.disabled=true;
+    try{await requestGoogleSignIn(client,config,location.origin+'/account/');}
+    catch{status.textContent='Google sign-in could not be opened. Try again.';google.disabled=false;}
+  });
   if(google.disabled)google.title='Google sign-in will be available when Studio account services are connected.';
   view.querySelectorAll('input[type=password]').forEach(input=>{
     const label=input.closest('label'),wrapper=document.createElement('div');wrapper.className='ui-password-field';input.before(wrapper);wrapper.append(input);input.classList.add('ui-password-field__input');
@@ -28,6 +34,7 @@ export async function bindAccount({client,config,resolveUser}){
     const params=new URLSearchParams(location.search),code=params.get('code'),token=params.get('token_hash'),type=params.get('type');
     if(code||token){history.replaceState(null,'','/account/');let result;if(token){if(!['signup','recovery','invite','email_change','email'].includes(type))throw Error('Unsupported confirmation link');result=await client.auth.verifyOtp({token_hash:token,type});}else result=await client.auth.exchangeCodeForSession(code);if(result.error)throw result.error;const user=await resolveUser(client);if(!user)throw Error('The link could not be confirmed.');form.hidden=true;view.querySelector('.studio-auth-tabs').hidden=true;if(params.get('flow')==='recovery'||type==='recovery'){recovery.hidden=false;status.textContent='Choose a new password.';}else{status.textContent='Email confirmed. Your account is ready.';view.querySelector('[data-authenticated]').hidden=false;}}
     else if(await resolveUser(client)){form.hidden=true;view.querySelector('[data-authenticated]').hidden=false;status.textContent='You are signed in.';}else status.textContent='Use your email to access Studio.';
+    if(form.hidden){google.hidden=true;view.querySelector('.studio-auth-tabs').hidden=true;}
     submit.disabled=false;
   }catch{status.textContent='We could not confirm your session or link. Request a new link or try again.';submit.disabled=false;}
   form.addEventListener('submit',async event=>{

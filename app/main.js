@@ -29,5 +29,5 @@ if(location.pathname==='/account/')requestAnimationFrame(()=>{
 });
 await bindBilling(context);
 await bindWorkspace(context);
-document.querySelectorAll('[data-signout]').forEach(button=>button.addEventListener('click',async()=>{button.disabled=true;try{const result=await client.auth.signOut();if(result.error)throw result.error;}catch{button.disabled=false;button.textContent='Try signing out again';}}));
+document.querySelectorAll('[data-signout]').forEach(button=>{button.disabled=!client;button.addEventListener('click',async()=>{if(!client)return;button.disabled=true;try{const result=await client.auth.signOut();if(result.error)throw result.error;}catch{button.disabled=false;button.setAttribute('aria-label','Try signing out again');}});});
 if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){entry.target.dataset.studioVisible='true';observer.unobserve(entry.target);}});document.querySelectorAll('.studio-surface header,.surface-card').forEach(item=>{item.dataset.studioReveal='';observer.observe(item);});}
