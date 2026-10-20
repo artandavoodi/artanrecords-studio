@@ -2,7 +2,7 @@
   "supabase":{"url":"https://hahtbepdrjkjluhespbs.supabase.co","publishableKey":"sb_publishable_1o9cpj-PrPKPt5cmOWSVyQ_pzdLR4Im","identityMode":"shared-store"},
   "preferences":{"choiceKey":"artanrecords-studio-preferences","themeKey":"artanrecords-studio-theme","railKey":"artanrecords-studio-rail","validDays":180},
   "providers":{"google":true,"phone":false},
-  "workspace":{"submissions":false,"contracts":false},
+  "workspace":{"submissions":false,"contracts":false,"metadata":true},
   "search":{"pageSize":20,"moreLabel":"Show more","prompt":"Search your workspace or guidance.","categories":[{"id":"all","label":"All"},{"id":"workspace","label":"Workspace"},{"id":"account","label":"Account"},{"id":"legal","label":"Legal"}]},
   "payments":{"enabled":false,"provider":"stripe-connect","onboardingEndpoint":null},
   "profileFields":[

@@ -6,6 +6,7 @@ const access=[{alg:'HS256',typ:'JWT'},{sub:id,role:'authenticated',aud:'authenti
 const session={access_token:access,refresh_token:'test-refresh-not-a-real-credential',token_type:'bearer',expires_in:3600,user};
 async function mockBackend(page){
   const requests=[];
+  let artistMetadata=null;const drafts=new Map();
   await page.route('https://hahtbepdrjkjluhespbs.supabase.co/**',async route=>{
     const request=route.request(),url=new URL(request.url());
     requests.push({path:url.pathname,query:url.search,body:request.postDataJSON(),method:request.method()});
@@ -15,6 +16,14 @@ async function mockBackend(page){
     else if(url.pathname.endsWith('/signup'))body={user,session:null};
     else if(url.pathname.endsWith('/recover'))body={};
     else if(url.pathname.endsWith('/logout'))status=204;
+    else if(url.pathname.endsWith('/studio_artist_metadata')){
+      if(request.method()==='GET')body=artistMetadata?[{account_id:id,metadata:artistMetadata}]:[];
+      else{artistMetadata=request.postDataJSON().metadata;body=null;status=201;}
+    }
+    else if(url.pathname.endsWith('/studio_release_drafts')){
+      if(request.method()==='GET'){const selected=url.searchParams.get('id')?.replace('eq.','');body=selected?{metadata:drafts.get(selected)?.metadata}:[...drafts].map(([id,draft])=>({id,title:draft.title}));}
+      else{const selected=url.searchParams.get('id')?.replace('eq.','')||'94000000-0000-0000-0000-000000000001';drafts.set(selected,request.postDataJSON());body={id:selected};status=201;}
+    }
     else if(url.pathname.includes('/rest/v1/studio_')){body=request.method()==='GET'?[]:null;status=request.method()==='POST'?201:200;}
     else if(url.pathname.includes('/storage/v1/object/list/'))body=[];
     else throw Error('Unexpected mocked request: '+url.pathname);
@@ -45,6 +54,9 @@ test('signup and recovery keep distinct fields, required consent and usable clos
   const requests=await mockBackend(page),dialog=await openAccount(page);
   await expect(dialog.locator('[name=email]')).toBeFocused();
   await dialog.locator('[data-auth-action=signup]').click();
+  const consent=dialog.locator('.studio-consent');
+  const checkboxBox=await consent.locator('input').boundingBox(),textBox=await consent.locator('span').boundingBox();
+  expect(checkboxBox.x+checkboxBox.width).toBeLessThan(textBox.x);expect(Math.abs(checkboxBox.y-textBox.y)).toBeLessThan(10);
   await dialog.locator('[name=email]').fill(user.email);
   await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');
   await dialog.locator('[data-auth-submit]').click();
@@ -94,4 +106,40 @@ test('email recovery token is consumed, scrubbed and opens only password recover
   await expect(page.locator('[data-auth-form]')).toBeHidden();
   await expect(page).toHaveURL(/\/account\/$/);
   expect(requests.find(request=>request.path.endsWith('/verify')).body).toMatchObject({token_hash:'mock-recovery-token',type:'recovery'});
+});
+test('catalogue metadata saves field visibility without changing account identity',async({page})=>{
+  const requests=await mockBackend(page),dialog=await openAccount(page);
+  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+  const view=page.locator('[data-artist-metadata]');await expect(view).toBeVisible();
+  await view.getByText('Streaming profiles',{exact:true}).click();
+  await view.locator('[name=spotify]').fill('https://open.spotify.com/artist/test');
+  await view.locator('[data-visibility-key=spotify]').check();
+  await view.getByRole('button',{name:'Save catalogue information'}).click();
+  await expect(view.locator('[data-metadata-status]')).toContainText('visibility saved');
+  const saved=requests.find(request=>request.path.endsWith('/studio_artist_metadata')&&request.method==='POST').body;
+  expect(saved.metadata.visibility.spotify).toBe('public');expect(saved.metadata.visibility.biography).toBe('private');expect(saved.metadata.email).toBeUndefined();
+});
+test('Google photo is used as a fallback for a verified Google provider',async({page})=>{
+  await mockBackend(page);
+  await page.route('https://hahtbepdrjkjluhespbs.supabase.co/auth/v1/user',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({...user,app_metadata:{provider:'google'},user_metadata:{picture:'https://lh3.googleusercontent.com/test-photo'}})}));
+  await page.route('https://lh3.googleusercontent.com/test-photo',route=>route.fulfill({status:200,contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aDV8AAAAASUVORK5CYII=','base64')}));
+  const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+  await expect(page.locator('[data-avatar]')).toBeVisible();await expect(page.locator('[data-avatar-placeholder]')).toBeHidden();
+});
+test('release drafts preserve stories, lyrics and contributors without submission',async({page})=>{
+  const requests=await mockBackend(page),dialog=await openAccount(page);
+  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+  await expect(page).toHaveURL(/\/profile\/$/);await expect(page.locator('[data-profile-form]')).toBeVisible();
+  await page.goto('/releases/');const view=page.locator('[data-release-metadata]');
+  await expect(view.locator('[data-release-controls]')).toBeVisible();
+  await view.locator('form > details').first().locator('[name=title]').fill('Test single');
+  await view.getByText('Release story',{exact:true}).click();await view.locator('form > details').filter({has:page.locator('[name=description]')}).locator('[name=story]').fill('Release story');
+  const track=view.locator('[data-track]');await track.locator('[name=title]').fill('Test song');await track.locator('[name=lyrics]').fill('Test lyrics');
+  await track.locator('[data-add-contributor]').click();await track.locator('[name=contributor_name]').fill('Test writer');
+  await view.getByText('Publication choices',{exact:true}).click();await view.locator('[data-visibility-key=story]').check();
+  await view.getByRole('button',{name:'Save release draft'}).click();await expect(view.locator('[data-metadata-status]')).toContainText('Nothing is submitted');
+  const saved=requests.find(request=>request.path.endsWith('/studio_release_drafts')&&request.method==='POST').body;
+  expect(saved.metadata.tracks[0].lyrics).toBe('Test lyrics');expect(saved.metadata.tracks[0].contributors[0].name).toBe('Test writer');expect(saved.metadata.visibility.story).toBe('public');
+  await view.locator('[data-new-draft]').click();await view.locator('[data-draft-picker]').selectOption('94000000-0000-0000-0000-000000000001');
+  await expect(view.locator('[data-track] [name=lyrics]')).toHaveValue('Test lyrics');
 });

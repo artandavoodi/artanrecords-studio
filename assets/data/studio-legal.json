@@ -57,6 +57,11 @@
           ]
         },
         {
+          "id":"catalogue",
+          "title":"Artist catalogue information and release drafts",
+          "paragraphs":["Studio stores artist catalogue details and release metadata drafts with access restricted to the account that created them. These may include biographies, streaming and social links, chosen public contact addresses, years active, credits, contributor names, release dates, recording identifiers, stories and lyrics. Account email, phone and billing details are separate and are not exposed by a catalogue visibility choice.","Catalogue fields default to private. You can select information to be public after artist or release approval; saving a choice does not itself publish, distribute or approve a release. Contributor legal-name records and private listening reference links are not included in the public selection. Submit only information and material you have permission to provide. For a correction or withdrawal of information already published, contact the label; editing a private draft does not itself remove an existing public version.","If you sign in with Google, Studio can display the profile-photo URL supplied by Google. Loading that image connects your browser to Google's image service. A separately uploaded private Studio photo takes precedence; a neutral placeholder appears if neither image is available. A profile photo is not automatically an approved public artist portrait."]
+        },
+        {
           "id": "storage",
           "title": "Cookies and similar technologies",
           "paragraphs": [

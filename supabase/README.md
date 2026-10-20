@@ -2,6 +2,17 @@
 
 ## Active shared identity
 
+Artist catalogue metadata and release/track drafts were added on 2026-10-20 by
+the Store-owned `202610200002_studio_metadata.sql` migration. Hosted tests verified
+owner-only reads/updates, immutable ownership, schema constraints and anonymous
+denial, including rows with requested public visibility. All synthetic fixtures
+were rolled back. These are private records, not direct publishing or distribution.
+`content/metadata.json` owns field definitions and publication allowlists.
+`tools/export-catalogue.mjs` is an owner-run, documented-review export; it never
+updates a public catalogue automatically. Visibility changes to already published
+material need a coordinated catalogue update. No account email, phone, billing,
+private listening references or contributor legal-name records are exported.
+
 On 2026-10-20 the owner approved reusing the existing Store Supabase project.
 No project, organization, customer record or existing service was removed or
 paused. Store owns the additive migration

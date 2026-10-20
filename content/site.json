@@ -107,14 +107,14 @@
     {
       "path": "/releases/",
       "title": "Releases",
-      "description": "Release submission and private asset storage are not available. Start with a reviewed enquiry on the label website.",
+      "description": "Prepare release and track information in a private draft. Submission, file delivery and publication require a separate review.",
       "category": "Workspace",
       "sections": [
         {
           "id": "availability",
           "title": "Prepare a release",
           "paragraphs": [
-            "Release submission and private asset storage are not available. Start with a reviewed enquiry on the label website."
+            "Prepare release and track information in a private draft. Submission, file delivery and publication require a separate review."
           ]
         },
         {
