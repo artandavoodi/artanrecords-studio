@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "7907044f48dc62a751525448455c13c97ef17b22",
+  "commit": "c4ff71c867c68f6007f90289684ee83b4745be52",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "250d1b0f8b81d171e56e385f2c36f5530a867525f1286b1301292632cfed8626",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -70,7 +70,7 @@
     "assets/js/core/menu.js": "22521f98c9e38ae5d70ec2ce63ced6127b5cfdb4918d0040d8b634e802645239",
     "assets/js/core/close-button.js": "3f5bde8e08d4f1e18cad86394b6d16ac083faa66edb00e0a63e0a8d86f074e01",
     "assets/js/core/search.js": "41d1e23049bbe9447e2292544ce2fed669cae4b59c8aa61a00099e173555a768",
-    "assets/js/core/dialogs.js": "c937f4c0a419193662233f84549ea0ed009386be060af082b0a950e7fde37ea0",
+    "assets/js/core/dialogs.js": "7097bbd9d4963bbf81c55a696787f42d743cb6f5e18889e33feb9bd86f80cb64",
     "assets/js/layers/site/navigation.js": "293b014f562dcd257513c17ee3359602c9be2551987847f494cc8414da5ea18d",
     "assets/fragments/navigation/index.html": "4f1e7a8bb19c8447c913c16ec544d967ca9a6a34fae20b46fcda6e5de7d95a2b",
     "assets/data/site.json": "996db42699ba7396d7016793b052dfc32f8673ddc6ba583951211aa060648716",
