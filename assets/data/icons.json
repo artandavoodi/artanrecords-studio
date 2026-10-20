@@ -120,6 +120,12 @@
       "src": "assets/icons/actions/search.svg",
       "alt": "",
       "monochrome": true
+    },
+    {
+      "id": "account",
+      "src": "assets/icons/actions/account.svg",
+      "alt": "",
+      "monochrome": true
     }
   ]
 }
