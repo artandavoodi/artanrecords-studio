@@ -6831,6 +6831,175 @@ h3, h4, h5, h6 { font-size: var(--site-type-heading-size); }
    06) END OF FILE
 ============================================================================= */
 
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) GLOBAL CLOSE BUTTON TOKENS
+   03) GLOBAL CLOSE BUTTON BASE
+   04) CLOSE BUTTON LINE SYSTEM
+   05) HOVER STATES
+   06) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/04-systems/close-button.css */
+
+/* =============================================================================
+   02) GLOBAL CLOSE BUTTON TOKENS
+============================================================================= */
+:root{
+  --global-close-button-size:var(--close-control-size);
+  --global-close-button-line-width:var(--close-control-line-width);
+  --global-close-button-line-size:var(--close-control-line-height);
+  --global-close-button-line-radius:var(--close-control-line-radius);
+  --global-close-button-surface:var(--close-control-surface);
+  --global-close-button-surface-hover:transparent;
+  --global-close-button-border:var(--close-control-border);
+  --global-close-button-border-hover:transparent;
+  --global-close-button-radius:var(--close-control-radius);
+  --global-close-button-color:var(--close-control-color);
+  --global-close-button-hover-color:var(--close-control-color-hover);
+  --global-close-button-duration:var(--interaction-motion-medium);
+  --global-close-button-ease:var(--interaction-ease-standard);
+  --global-close-button-optical-end-offset:calc((var(--global-close-button-line-width) - var(--global-close-button-size)) / 2);
+}
+
+/* =============================================================================
+   03) GLOBAL CLOSE BUTTON BASE
+============================================================================= */
+.global-close-button{
+  -webkit-appearance:none;
+  appearance:none;
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:var(--global-close-button-size);
+  height:var(--global-close-button-size);
+  padding:var(--spacing-none);
+  margin:var(--spacing-none);
+  border:0;
+  border-radius:var(--global-close-button-radius);
+  background:var(--global-close-button-surface);
+  color:var(--global-close-button-color);
+  font-size:var(--global-close-button-size);
+  font-weight:var(--type-body-regular-weight);
+  line-height:var(--control-line-height);
+  opacity:var(--state-opacity-strong);
+  transform:none;
+  pointer-events:auto;
+  transition:
+    background-color var(--global-close-button-duration) var(--global-close-button-ease),
+    border-color var(--global-close-button-duration) var(--global-close-button-ease),
+    color var(--global-close-button-duration) var(--global-close-button-ease),
+    transform var(--global-close-button-duration) var(--global-close-button-ease);
+}
+
+/* =============================================================================
+   04) CLOSE BUTTON LINE SYSTEM
+============================================================================= */
+.global-close-button > img{
+  display:block;
+  inline-size:var(--global-close-button-line-width);
+  block-size:var(--global-close-button-line-width);
+  object-fit:contain;
+  pointer-events:none;
+  transition:transform var(--global-close-button-duration) var(--global-close-button-ease),opacity var(--global-close-button-duration) var(--global-close-button-ease);
+}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+  .global-close-button:hover > img{transform:scale(var(--effect-scale-strong));}
+}
+.global-close-button__line,
+.global-close-button span{
+  position:absolute;
+  top:50%;
+  left:50%;
+  display:block;
+  width:var(--global-close-button-line-width);
+  height:var(--global-close-button-line-size);
+  border-radius:var(--global-close-button-line-radius);
+  background-color:currentColor;
+  transform-origin:center;
+  transition:
+    background-color var(--global-close-button-duration) var(--global-close-button-ease),
+    transform var(--global-close-button-duration) var(--global-close-button-ease);
+}
+
+.global-close-button__line--first,
+.global-close-button span:nth-child(1){
+  transform:translate(-50%, -50%) rotate(45deg);
+}
+
+.global-close-button__line--second,
+.global-close-button span:nth-child(2){
+  transform:translate(-50%, -50%) rotate(-45deg);
+}
+
+/* =============================================================================
+   05) HOVER STATES
+============================================================================= */
+.global-close-button:hover,
+.global-close-button:focus-visible{
+  background:transparent;
+  border-color:transparent;
+  color:var(--global-close-button-hover-color);
+  transform:none;
+  outline:none;
+}
+
+@media (hover:hover) and (pointer:fine){
+.global-close-button:hover .global-close-button__line--first,
+.global-close-button:hover span:nth-child(1){
+  transform:translate(-50%, -50%) rotate(0deg);
+}
+
+.global-close-button:hover .global-close-button__line--second,
+.global-close-button:hover span:nth-child(2){
+  transform:translate(-50%, -50%) rotate(0deg);
+}
+}
+
+/* =============================================================================
+   06) END OF FILE
+============================================================================= */
+
+dialog { inline-size:min(var(--layout-account-drawer-panel-width), calc(100% - var(--spacing-lg))); max-block-size:calc(100dvh - var(--spacing-xl)); padding:var(--spacing-xl); border:0; border-radius:var(--dialog-radius-unified); background:var(--glass-overlay-drawer-shell-bg); backdrop-filter:blur(var(--glass-overlay-shell-blur)) saturate(var(--glass-overlay-shell-saturate)); -webkit-backdrop-filter:blur(var(--glass-overlay-shell-blur)) saturate(var(--glass-overlay-shell-saturate)); color:var(--text-color); overflow:auto; }
+dialog::backdrop { background:var(--glass-overlay-backdrop-bg); backdrop-filter:blur(var(--glass-overlay-backdrop-blur)) saturate(var(--glass-overlay-backdrop-saturate)); -webkit-backdrop-filter:blur(var(--glass-overlay-backdrop-blur)) saturate(var(--glass-overlay-backdrop-saturate)); }
+dialog { scrollbar-width:none; max-inline-size:calc(100% - var(--spacing-lg)); }
+dialog::-webkit-scrollbar { display:none; }
+dialog [hidden] { display:none; }
+button.account-switch.ui-button { border:0; background:transparent; padding-inline:0; }
+dialog form { max-inline-size:none; }
+
+#account-close,.dialog-close { position:absolute; inset-block-start:var(--layout-account-drawer-close-offset); inset-inline-end:var(--layout-account-drawer-close-offset); }
+
+.store-search { max-inline-size:var(--reading-width-md); margin-inline:auto; }
+.store-search form { max-inline-size:none; }
+.store-search-field { display:flex; align-items:center; gap:var(--nav-institutional-search-shell-gap); min-block-size:var(--nav-institutional-search-shell-min-height); }
+.store-search-field img { inline-size:var(--nav-institutional-search-icon-size); block-size:var(--nav-institutional-search-icon-size); }
+.store-search-field .ui-field { min-inline-size:0; border:0; background:transparent; font-size:var(--nav-institutional-search-input-size); font-weight:var(--nav-institutional-search-input-weight); line-height:var(--nav-institutional-search-input-line-height); }
+.store-search-field input::-webkit-search-cancel-button,.store-search-field input::-webkit-search-decoration { -webkit-appearance:none; display:none; }
+.store-search-field .global-close-button { flex:0 0 auto; }
+[data-search-results] { display:grid; gap:var(--nav-institutional-search-list-gap); }
+[data-search-results] > a { display:block; padding-block:var(--nav-institutional-search-list-padding-y); }
+[data-search-results] h2 { font-size:var(--nav-institutional-search-result-title-size); font-weight:var(--nav-institutional-search-result-title-weight); line-height:var(--nav-institutional-search-result-title-line-height); }
+[data-search-results] p { font-size:var(--nav-institutional-search-result-meta-size); color:var(--text-secondary-color); }
+.store-search-filters { display:flex; flex-wrap:wrap; justify-content:center; gap:var(--spacing-md); margin-block:var(--spacing-lg); }
+.store-search-filters button { appearance:none; border:0; background:transparent; color:inherit; padding:var(--spacing-xs); font:inherit; cursor:pointer; opacity:var(--state-opacity-muted); }
+.store-search-filters button[aria-pressed="true"],.store-search-filters button:hover,.store-search-filters button:focus-visible { opacity:1; }
+.search-result-type { font-size:var(--site-type-caption-size); color:var(--text-secondary-color); }
+
+#store-search-dialog { inline-size:100%; max-inline-size:100%; block-size:100dvh; max-block-size:100dvh; border-radius:0; margin:0; padding:var(--cv-page-padding-block) var(--spacing-lg); }
+#store-search-dialog .store-search { padding-block:var(--spacing-xl); transition:opacity var(--site-theme-arrive-duration) var(--ease-standard); }
+#store-search-dialog[data-search-phase="chrome"],#store-search-dialog[data-search-phase="chrome"]::backdrop { background:transparent; backdrop-filter:none; -webkit-backdrop-filter:none; }
+#store-search-dialog[data-search-phase="chrome"] .store-search { opacity:var(--cv-opacity-none); pointer-events:none; }
+#store-search-dialog [data-search-close] { position:absolute; inset-block-start:var(--search-close-top,var(--layout-account-drawer-close-offset)); inset-inline-end:var(--search-close-end,var(--layout-account-drawer-close-offset)); }
+#store-search-dialog [data-search-close].is-arriving .global-close-button__line { transform:translate(-50%,-50%) rotate(0deg) scale(0); }
+.search-arrival-icon { display:block; inline-size:var(--icon-size-md); block-size:var(--icon-size-md); object-fit:contain; }
+html[data-theme="dark"] .search-arrival-icon { filter:brightness(0) invert(1); }
+
 /* ARTANDAVOODI · Shared rails, navigation and catalogue controls. */
 .site-navigation, main, .site-footer, .site-status {
   inline-size: var(--cv-page-width);
@@ -7120,6 +7289,7 @@ html[data-menu-open] [data-menu-theme] {
 .label-account-access:is(:hover,:focus-visible) { opacity:var(--cv-opacity-full); }
 html[data-menu-open] .label-header-logo { visibility: hidden; opacity: 0; transform: scale(0); transition: opacity var(--duration-base) var(--ease-standard) calc(var(--label-logo-collapse-duration) * 0.8), transform var(--label-logo-collapse-duration) var(--ease-standard), visibility var(--label-logo-collapse-duration); }
 .label-header-logo .label-wordmark { inline-size: 100%; }
+@media(min-width:1025px) and (hover:hover) and (pointer:fine){.label-header-logo { inline-size:calc(var(--artanrecords-wordmark-header-width) / 2); }}
 .label-footer-groups { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:var(--spacing-xl); inline-size:100%; text-align:start; }
 .label-footer-group { min-inline-size:0; display:grid; align-content:start; gap:var(--spacing-md); }
 .label-footer-group h2 { margin:0; color:var(--cv-text-primary); font-size:var(--site-type-caption-size); font-weight:var(--font-weight-semibold); }
@@ -7248,16 +7418,22 @@ html[data-theme-effective="dark"] .label-wordmark--light { display: none; }
 .partnership-comparison tbody tr + tr > * { border-block-start:var(--border-width-hairline) solid var(--cv-border); }
 .partnership-comparison :is(th,td) + :is(th,td) { border-inline-start:var(--border-width-hairline) solid var(--cv-border); }
 .partnership-comparison thead th { vertical-align:bottom; padding-block:var(--spacing-lg); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
-.partnership-cell { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:start; gap:var(--spacing-sm); }
+.partnership-cell { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:start; gap:var(--spacing-sm); inline-size:100%; padding:0; border:0; background:transparent; color:inherit; font:inherit; text-align:start; cursor:pointer; }
+.partnership-cell:focus-visible { outline:none; background:var(--control-bg-hover); border-radius:var(--radius-xs); }
 .partnership-status-icon { display:block; inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); flex-shrink:0; background:var(--status-success-color); mask:var(--partnership-status-artwork) center / contain no-repeat; -webkit-mask:var(--partnership-status-artwork) center / contain no-repeat; }
 [data-inclusion="excluded"] .partnership-status-icon { background:var(--status-danger-color); }
 .partnership-cell > span:not(.partnership-status-icon) { display:grid; gap:var(--spacing-xs); }
 .partnership-cell:not(:has(.partnership-status-icon)) { grid-template-columns:minmax(0,1fr); }
 .partnership-status-icon { margin-block-start:calc((1lh - var(--icon-size-sm)) / 2); }
-.partnership-detail-trigger { display:none; padding:0; border:0; background:none; color:var(--cv-text-secondary); text-align:start; text-decoration:none; cursor:pointer; }
+.partnership-detail-trigger { display:none; color:var(--cv-text-secondary); }
 .partnership-detail-dialog { padding-block-start:calc(var(--layout-account-drawer-close-offset) + var(--control-height-md)); }
 .partnership-detail-dialog h2 { font-size:var(--font-size-h3); }
 .partnership-detail-dialog p { margin-block-start:var(--spacing-lg); }
+.partnership-detail-scope { color:var(--cv-text-secondary); font-size:var(--site-type-caption-size); }
+@media(prefers-reduced-motion:no-preference){
+  .partnership-detail-dialog[open] { animation:partnership-dialog-arrive var(--overlay-motion-duration) var(--overlay-motion-ease) both; }
+}
+@keyframes partnership-dialog-arrive { from{opacity:0;transform:var(--dialog-overlay-transform-closed);}to{opacity:1;transform:var(--dialog-overlay-transform-open);} }
 @media(max-width:1024px){
   [data-partnership-enhanced] .partnership-cell-note { display:none; }
   [data-partnership-enhanced] .partnership-detail-trigger { display:inline-block; margin-block-start:var(--spacing-sm); }

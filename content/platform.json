@@ -1,6 +1,7 @@
 {
   "name":"Artanrecords Studio",
   "chrome":{"label":"Studio"},
+  "securityNotice":"Use your shared Store and Studio identity to sign in or request password recovery. A password change affects both services. Phone verification is not active; no verification text is sent.",
   "summary":"The artist platform being developed by Artanrecords for release preparation, agreements and royalty reporting.",
   "groups":[
     {"label":"Workspace","items":[{"path":"/","label":"Overview","icon":"dashboard"},{"path":"/releases/","label":"Releases","icon":"release"},{"path":"/analytics/","label":"Analytics","icon":"analytics"}]},
@@ -10,6 +11,6 @@
   "settings":[{"id":"appearance","label":"Appearance","icon":"appearance"},{"id":"privacy","label":"Privacy","icon":"cookies"},{"id":"security","label":"Account security","icon":"password"},{"id":"connections","label":"Connections","icon":"analytics"}],
   "visualLayers":{"enabled":false,"notice":"Custom visual layers are not connected in Studio yet."},
   "menu":[{"path":"https://artanrecords.com/","label":"Artanrecords","icon":"release"},{"path":"https://docs.artanrecords.com/","label":"Artist guidance","icon":"document"},{"path":"https://artanrecords.com/contact/","label":"Contact the label","icon":"account"}],
-  "overview":{"title":"Where your next release begins","description":"Start with your music. Explore release preparation, agreements and reporting, or read the artist guidance before your next step.","action":"Explore release preparation","href":"/releases/","secondary":"Artist guidance","secondaryHref":"https://docs.artanrecords.com/","statusTitle":"Before you begin","statusText":"Private workspaces are not connected yet. You can explore Studio and its guidance; account access, reporting, signing and payouts are not available."},
+  "overview":{"title":"Your artist profile starts here","description":"Sign in with your shared Artan account and make your artist profile your own. Read the guidance for your next release when you are ready.","action":"Manage artist profile","href":"/profile/","secondary":"Artist guidance","secondaryHref":"https://docs.artanrecords.com/","statusTitle":"What is available","statusText":"Account access and private artist profiles are connected. Release submissions, streaming reports, contract signing and payouts are not available yet. Creating an account does not approve an artist agreement."},
   "features":[{"path":"/releases/","title":"Release preparation","description":"Keep titles, credits and release notes together. Private draft storage becomes available when account services are connected.","icon":"release"},{"path":"/agreements/","title":"Agreements","description":"A dedicated place for agreements shared by the label. Signing remains unavailable until the secure signing service is connected.","icon":"contract"},{"path":"/analytics/","title":"Listening and reporting","description":"Listening data and royalty statements have separate places, without treating streaming counts as earnings.","icon":"analytics"}]
 }

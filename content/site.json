@@ -92,16 +92,16 @@
       "indexable": true,
       "title": "Artanrecords Studio",
       "heading": "Overview",
-      "description": "An artist platform being developed by Artanrecords for release preparation, artist agreements and royalty reporting. Explore the workspace and account guidance.",
+      "description": "Manage your private artist profile with Artanrecords. Explore guidance for release preparation, agreements and reporting.",
       "application": {
         "@type": "SoftwareApplication",
         "name": "Artanrecords Studio",
         "url": "https://studio.artanrecords.com/",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "Web browser",
-        "description": "Artist workspace foundation for Artanrecords. Account, reporting, payment and signing services require separate activation."
+        "description": "Artist account and private-profile management for Artanrecords. Release reporting, payments, payouts and signing are not active."
       },
-      "status": "Public foundation · Not an authenticated dashboard",
+      "status": "Artist accounts available · Financial services not active",
       "sections": []
     },
     {

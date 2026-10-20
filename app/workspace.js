@@ -2,6 +2,7 @@ export async function bindWorkspace({client,resolveUser,config}){
   for(const [type,table,fields]of[['submissions','studio_submissions','id,title,status,created_at'],['contracts','studio_contracts','id,title,version,status,created_at']]){
     const view=document.querySelector(`[data-${type}-view]`);if(!view)continue;
     const status=view.querySelector(`[data-${type}-status]`),list=view.querySelector(`[data-${type}-list]`);
+    if(!config.workspace?.[type]){status.textContent=type==='contracts'?'Contract management is not available yet.':'Release submissions are not available in Studio yet. Your artist profile is available from Account.';continue;}
     if(!client){status.textContent=config.unavailable;continue;}
     try{
       const user=await resolveUser(client);if(!user){status.textContent='Sign in to view your '+type+'.';continue;}

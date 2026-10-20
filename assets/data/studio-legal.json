@@ -8,13 +8,13 @@
       "title": "Cookie Policy",
       "description": "Storage and preference choices in Artanrecords Studio.",
       "effectiveDate": "2026-10-19",
-      "lastUpdated": "2026-10-19",
+      "lastUpdated": "2026-10-20",
       "sections": [
         {
           "id": "essential",
           "title": "Essential storage",
           "paragraphs": [
-            "Consent choices and account security use necessary browser storage. Essential storage is always active. Studio account services are not connected yet; authentication storage becomes necessary when sign-in is available."
+            "Consent choices and account security use necessary browser storage. Essential storage is always active. Studio uses session storage to keep your sign-in within this browser tab; account access does not require consent to optional preference memory."
           ]
         },
         {
@@ -47,13 +47,13 @@
       "title": "Privacy and cookies",
       "description": "How Artanrecords Studio handles account information and your choices.",
       "effectiveDate": "2026-10-19",
-      "lastUpdated": "2026-10-19",
+      "lastUpdated": "2026-10-20",
       "sections": [
         {
           "id": "account",
           "title": "Your account",
           "paragraphs": [
-            "Studio account information is used to provide access, maintain your artist profile and respond to your requests. Creating an account does not grant access to another artist's work or financial records. Profile photographs and unreleased submissions are not public catalogue content."
+            "Studio and Artan Store use a shared Supabase account identity, including your email, password or Google sign-in and verification status. You can use the same credentials for both services. A password change affects this shared identity; signing out of Studio ends its session without deliberately signing out your other devices or Store sessions. Studio profile information, private profile photographs and billing addresses are stored separately from Store purchase records and are restricted to your account. Creating an account is not artist approval and does not grant access to another artist's work or financial records."
           ]
         },
         {
@@ -67,7 +67,7 @@
           "id": "rights",
           "title": "Your choices",
           "paragraphs": [
-            "For access, correction, deletion or privacy questions, contact contact@artanrecords.com. Some records may need to be retained to meet contractual or legal obligations. Account and payment services will be described here when connected; no banking or tax information should be submitted through public forms."
+            "For access, correction, deletion or privacy questions, contact contact@artanrecords.com. Identify whether your request concerns your Studio profile or the shared Store and Studio identity. Deleting that shared identity can affect access to both services; requests require review before action. Some records may need to be retained to meet contractual or legal obligations. Studio payments and payouts are not active; no banking or tax information should be submitted through profile or public enquiry fields."
           ]
         }
       ]
@@ -79,13 +79,13 @@
       "title": "Studio terms",
       "description": "Access to Artanrecords Studio and artist services.",
       "effectiveDate": "2026-10-19",
-      "lastUpdated": "2026-10-19",
+      "lastUpdated": "2026-10-20",
       "sections": [
         {
           "id": "access",
           "title": "Accounts and artist access",
           "paragraphs": [
-            "Use accurate account information and protect your credentials. An account is separate from an artist agreement; label-managed approval determines access to artist workspaces. Do not access another person's records or submit work without permission."
+            "Use accurate account information and protect your credentials. Studio uses the same account identity as Artan Store; password changes and shared-identity deletion affect access to both services. Your Studio artist profile is separate from Store purchases. Creating an account is separate from an artist agreement and does not confer artist approval, a release deal or access to another person's records. Payments, payouts and contract signing remain unavailable until separately activated and disclosed."
           ]
         },
         {

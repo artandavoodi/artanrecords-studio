@@ -1,7 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {configured,resolveUser,profileValues,validPhoto,requestGoogleSignIn} from '../app/account.js';
+import {configured,resolveUser,profileValues,validPhoto,requestGoogleSignIn,readAccountCallback} from '../app/account.js';
+test('account callbacks support same-tab Google and cross-tab email token hashes',()=>{
+  assert.equal(readAccountCallback(new URL('https://studio.artanrecords.com/account/?code=test-code')).code,'test-code');
+  assert.deepEqual(readAccountCallback(new URL('https://studio.artanrecords.com/account/?flow=recovery#token_hash=test-hash&type=recovery')),{code:null,token:'test-hash',type:'recovery',recovery:true,error:false});
+  assert.equal(readAccountCallback(new URL('https://studio.artanrecords.com/account/?error=access_denied')).error,true);
+});
 test('Google uses the shared Studio account callback and propagates provider failures',async()=>{
   let called=false;
   const client={auth:{signInWithOAuth:async input=>{called=true;assert.deepEqual(input,{provider:'google',options:{redirectTo:'https://studio.artanrecords.com/account/'}});return {data:{url:'https://accounts.google.com/'},error:null};}}};
@@ -15,6 +20,10 @@ test('unconfigured Studio stays disconnected and rejects other ecosystem backend
   assert.equal(configured({supabase:{url:'',publishableKey:''}}),false);
   for(const host of ['hahtbepdrjkjluhespbs','dwlgvujubkpycrvhngku'])assert.throws(()=>configured({supabase:{url:`https://${host}.supabase.co`,publishableKey:'public'}}));
   const payload=btoa(JSON.stringify({role:'service_role'}));assert.throws(()=>configured({supabase:{url:'https://studio-only.supabase.co',publishableKey:`x.${payload}.x`}}));
+});
+test('approved shared identity is explicit and cannot point at Neuroartan',()=>{
+  assert.equal(configured({supabase:{url:'https://hahtbepdrjkjluhespbs.supabase.co',publishableKey:'sb_publishable_public',identityMode:'shared-store'}}),true);
+  assert.throws(()=>configured({supabase:{url:'https://dwlgvujubkpycrvhngku.supabase.co',publishableKey:'sb_publishable_public',identityMode:'shared-store'}}));
 });
 test('a failed verification never resolves as a guest',async()=>{
   assert.equal(await resolveUser({auth:{getSession:async()=>({data:{session:null}})}}),null);

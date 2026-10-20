@@ -1,9 +1,31 @@
 # Studio Backend Activation
 
+## Active shared identity
+
+On 2026-10-20 the owner approved reusing the existing Store Supabase project.
+No project, organization, customer record or existing service was removed or
+paused. Store owns the additive migration
+`supabase/migrations/202610200001_shared_studio_profiles.sql`; it creates only
+private Studio profiles, billing addresses and the private studio-avatars bucket.
+The migration was applied through the hosted SQL editor. Two synthetic identities
+verified own-record updates, cross-account denial, anonymous denial and avatar
+isolation in a transaction that was fully rolled back.
+
+Store's Site URL and existing callback URLs were preserved. Exact hosted Studio
+account/recovery callbacks and the local 127.0.0.1:9038 equivalents were added.
+Google and email registration were verified as enabled in the existing provider
+settings. Studio uses its own session-storage key and local-scope sign-out;
+password changes still affect the shared identity. Payments, signing, financial
+records, submissions and automatic artist approval remain disabled.
+
+The dedicated-project migrations below are a separate future deployment path;
+do not apply them to Store. Email delivery and recovery must be checked with a
+real new registration/recovery journey before claiming those journeys verified.
+
 ## Shared Store project review
 
-Reviewed 2026-10-20 at the owner's request; this is an option, not an activated
-backend or permission to apply the dedicated-project migrations to Store.
+Reviewed 2026-10-20 at the owner's request; the narrow profile activation above
+was subsequently approved, not a blanket migration of all Studio services.
 The existing Store project can technically serve a second first-party application
 without creating a third project, subject to its shared free-plan quotas.
 Supabase supports explicit per-application redirect URLs:
@@ -32,9 +54,9 @@ Required decisions and checks before enabling this option:
 - Review privacy disclosures, then run real two-user isolation tests and hosted
   signup, Google return, recovery and logout journeys for both applications.
 
-No hosted database, provider, redirect, billing or account changes were made
-during this review. The disconnected configuration and project-isolation guard
-remain in place pending approval of the shared-identity model and migration.
+The review itself made no hosted changes. The later approved profile and redirect
+activation is recorded above; Neuroartan is still explicitly rejected as a Studio
+backend, and Store identity is accepted only in explicit shared-store mode.
 
 ## Dedicated project path
 

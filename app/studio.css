@@ -52,6 +52,7 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 .studio-account .studio-auth-tabs button { background:transparent; padding-inline:0; }
 .studio-auth-tabs [aria-pressed=false] { opacity:var(--opacity-muted); }
 .studio-account-notices { display:flex; flex-wrap:wrap; justify-content:center; gap:var(--spacing-md) var(--spacing-lg); font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
+.studio-account-identity { font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); line-height:var(--line-height-body); }
 #account-dialog > h2 { padding-inline-end:var(--global-close-button-size); margin-block-end:var(--spacing-lg); }
 .studio-account .studio-provider { inline-size:100%; }
 .studio-account label:has(> input[type=checkbox]) { display:flex; align-items:flex-start; gap:var(--spacing-sm); }

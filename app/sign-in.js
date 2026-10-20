@@ -1,5 +1,5 @@
 import publication from '../assets/data/studio-legal.json';
-import {requestGoogleSignIn} from './account.js';
+import {requestGoogleSignIn,readAccountCallback} from './account.js';
 const noticeUrl=path=>publication.domain+publication.notices.find(notice=>notice.legacyPath===path).path;
 export async function bindAccount({client,config,resolveUser}){
   const view=document.querySelector('[data-account-view]');if(!view)return;
@@ -23,6 +23,7 @@ export async function bindAccount({client,config,resolveUser}){
     button.addEventListener('click',()=>{const showing=input.type==='password';input.type=showing?'text':'password';button.setAttribute('aria-label',showing?'Hide password':'Show password');button.setAttribute('aria-pressed',String(showing));icon.src=showing?'/app/icons/visibility-off.svg':'/app/icons/visibility-on.svg';});
   });
   let action='signin',busy=false;
+  view.addEventListener('click',event=>{const target=event.target.closest('[data-auth-action]');if(target&&!busy)form.elements.password.minLength=target.dataset.authAction==='signup'?12:1;});
   const actions=view.querySelector('.studio-auth-tabs');form.after(actions);actions.querySelector('[data-auth-action=signin]').hidden=true;
   const acknowledgement=document.createElement('label');acknowledgement.hidden=true;const accepted=document.createElement('input');accepted.type='checkbox';accepted.name='terms';acknowledgement.append(accepted,document.createTextNode('I agree to the Studio terms and have read the privacy notice.'));form.insertBefore(acknowledgement,submit);
   const notices=document.createElement('p');notices.className='studio-account-notices';for(const [href,label]of[['/terms/','Studio terms'],['/privacy/','Privacy notice']]){const a=document.createElement('a');a.href=noticeUrl(href);a.textContent=label;notices.append(a);}view.append(notices);
@@ -31,8 +32,8 @@ export async function bindAccount({client,config,resolveUser}){
   if(new URLSearchParams(location.search).get('mode')==='signup')view.querySelector('[data-auth-action=signup]').click();
   if(!client){status.textContent=config.unavailable;return;}
   try{
-    const params=new URLSearchParams(location.search),code=params.get('code'),token=params.get('token_hash'),type=params.get('type');
-    if(code||token){history.replaceState(null,'','/account/');let result;if(token){if(!['signup','recovery','invite','email_change','email'].includes(type))throw Error('Unsupported confirmation link');result=await client.auth.verifyOtp({token_hash:token,type});}else result=await client.auth.exchangeCodeForSession(code);if(result.error)throw result.error;const user=await resolveUser(client);if(!user)throw Error('The link could not be confirmed.');form.hidden=true;view.querySelector('.studio-auth-tabs').hidden=true;if(params.get('flow')==='recovery'||type==='recovery'){recovery.hidden=false;status.textContent='Choose a new password.';}else{status.textContent='Email confirmed. Your account is ready.';view.querySelector('[data-authenticated]').hidden=false;}}
+    const {code,token,type,recovery:recovering,error}=readAccountCallback(new URL(location.href));
+    if(code||token||error){history.replaceState(null,'','/account/');if(error)throw Error('Provider sign-in was not completed.');let result;if(token){if(!['signup','recovery','invite','email_change','email'].includes(type))throw Error('Unsupported confirmation link');result=await client.auth.verifyOtp({token_hash:token,type});}else result=await client.auth.exchangeCodeForSession(code);if(result.error)throw result.error;const user=await resolveUser(client);if(!user)throw Error('The link could not be confirmed.');form.hidden=true;view.querySelector('.studio-auth-tabs').hidden=true;if(recovering){recovery.hidden=false;status.textContent='Choose a new password.';}else{location.replace('/profile/');return;}}
     else if(await resolveUser(client)){form.hidden=true;view.querySelector('[data-authenticated]').hidden=false;status.textContent='You are signed in.';}else status.textContent='Use your email to access Studio.';
     if(form.hidden){google.hidden=true;view.querySelector('.studio-auth-tabs').hidden=true;}
     submit.disabled=false;
