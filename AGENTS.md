@@ -11,7 +11,9 @@ this repository as the explicit target. Commit the source first so the manifest
 identifies its exact revision. Do not add independent icons, colors or fonts.
 Run npm run build and npm run check before committing. CI verifies regeneration.
 Never commit private artist data, Business.md, contracts, secrets or financial data.
-Studio is a public foundation, not a secure account platform.
+Accounts and private profiles use the approved shared Store identity with owner-only
+access. Artist acceptance, submissions, signing and financial services remain gated;
+never infer those permissions from account creation or editable profile metadata.
 Studio-owned application code belongs in app/, configuration in content/, and
 isolated backend migrations in supabase/. Do not edit foundation/ or assets/
 directly. Account activation requires a dedicated configured project, applied

@@ -7,7 +7,14 @@
   "logoAlt": "Artanrecords logo",
   "shareImage": {"src":"assets/brand/logo/artan-records-wordmark.png","alt":"Artanrecords — independent record label"},
   "domain": "https://artanrecords.com",
-  "description": "An independent record label for artists, recordings and creative collaboration. Music first. A lasting home for the work.",
+  "description": "Artanrecords is a curated independent record label. Accepted standard releases have no upfront base distribution fee, and artists retain their masters. Silver, Gold and Platinum define our agreed involvement.",
+  "companyDescriptions": {
+    "short":"A curated independent record label. Human review, artist-owned masters and release support with an agreed scope.",
+    "medium":"Artanrecords is an independent record label founded by artist Artan Davoodi in 2025. We listen first. Accepted standard releases have no upfront base distribution fee, and artists retain their masters. Silver, Gold and Platinum describe different levels of agreed label involvement, not automatic acceptance or guaranteed results.",
+    "long":"Artanrecords is building an independent label from the artist side outward: the work, and the infrastructure behind it. Founded by Artan Davoodi in 2025, the label considers human-made music through individual review rather than an unrestricted upload pipeline.\n\nAccepted standard releases have no upfront base distribution fee. Artists retain their master recordings; a written agreement defines the licence, responsibilities, recording-income shares and any approved expenses. Silver, Gold and Platinum describe progressively closer involvement, subject to project fit and capacity. Additional production, advertising, domains and other external services are not automatically included.\n\nThe website presents the label, artists, releases and partnerships. Docs explains the process in detail. Studio currently supports accounts and private artist profiles; release submissions, signing, financial reporting and payouts are not active. No partnership guarantees streams, playlists, press coverage or income."
+  },
+  "companyPage":{"path":"/company/","title":"About the company","brandTitle":"One name. Artanrecords.","brandText":"Write Artanrecords as one word. Use the approved identity without altering its proportions. Ask before using imagery, implying an endorsement or presenting a commercial relationship.","links":[{"label":"Press and company enquiries","url":"/contact/"},{"label":"Meet the founder","url":"/about/#leadership"},{"label":"Artists","url":"/artists/"},{"label":"Releases","url":"/releases/"},{"label":"Working together","url":"/working-together/"},{"label":"Black wordmark","url":"/assets/brand/logo/artan-records-wordmark-black.svg"},{"label":"White wordmark","url":"/assets/brand/logo/artan-records-wordmark-white.svg"}]},
+  "proposition": {"text":"We listen first. Accepted standard releases have no upfront base distribution fee. You retain your masters; our role and recording-income share are agreed in writing.","links":[{"label":"Compare partnerships","url":"/partnerships/"},{"label":"How we work","url":"/how-we-work/"}]},
   "introduction": [
     "Music first",
     {"prefix":"A record label for","phrases":["artists","recordings","creative collaboration"],"motion":{"hold":2200,"type":65,"erase":35}},
@@ -44,7 +51,7 @@
     { "label": "About", "path": "/about/", "fragment": "about" },
     { "label": "Contact", "path": "/contact/", "fragment": "contact" }
   ],
-  "about": "Artanrecords is an independent record label built around artists and their recordings. We bring music, credits, artwork and release information together, giving the work a clear and lasting home.",
+  "about": "Artanrecords is a curated independent record label founded by Artan Davoodi in 2025. We listen first, then agree the right scope of release support. Artists retain their masters; accepted standard releases have no upfront base distribution fee.",
   "principle": "The infrastructure serves the art. We welcome music and creative collaborations through a considered, human-reviewed process. Each project begins with the work and the person behind it, not an automatic upload pipeline.",
   "history": "Founded in 2025 by Artan Davoodi, Artanrecords supports artists through release administration, catalogue presentation and creative collaboration. Each partnership begins with human review and an agreed scope of work.",
   "aboutPage": {

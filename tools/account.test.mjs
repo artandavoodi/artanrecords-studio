@@ -158,6 +158,14 @@ test('Studio footer is copyright-only and public notices retain a single website
   for(const notice of publication.notices){assert.equal(site.pages.find(page=>page.path===notice.legacyPath).sections.length,0);assert.ok(html.includes(publication.domain+notice.path));}
   const preferences=await readFile('app/preferences.js','utf8');assert.doesNotMatch(preferences,/information-links|append\(settings\)/);
 });
+test('overview distinguishes active private profiles from inactive artist operations',async()=>{
+  const platform=JSON.parse(await readFile('content/platform.json','utf8'));
+  const cards=platform.features.map(item=>item.description).join(' ');
+  assert.match(cards,/Available now/);assert.match(cards,/Prepared, not active/);assert.match(cards,/Requires activation/);
+  assert.doesNotMatch(cards,/when account services are connected/);
+  const account=JSON.parse(await readFile('content/account.json','utf8'));
+  assert.equal(account.workspace.submissions,false);assert.equal(account.workspace.contracts,false);assert.equal(account.payments.enabled,false);
+});
 test('scroll containers do not own column borders and registered close artwork is preserved',async()=>{
   const html=await readFile('settings/index.html','utf8');assert.match(html,/studio-platform-rail-scroll/);assert.match(html,/studio-settings-navigation-items/);
   const css=await readFile('app/platform.css','utf8');assert.match(css,/\.studio-platform-rail \{[^}]*border-inline-end/);assert.match(css,/\.studio-settings-navigation \{[^}]*border-inline-end/);
