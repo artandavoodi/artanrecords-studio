@@ -6,7 +6,7 @@ const access=[{alg:'HS256',typ:'JWT'},{sub:id,role:'authenticated',aud:'authenti
 const session={access_token:access,refresh_token:'test-refresh-not-a-real-credential',token_type:'bearer',expires_in:3600,user};
 async function mockBackend(page){
   const requests=[];
-  let artistMetadata=null;const drafts=new Map();
+  let artistMetadata=null,handle=null,application=null;const drafts=new Map();
   await page.route('https://hahtbepdrjkjluhespbs.supabase.co/**',async route=>{
     const request=route.request(),url=new URL(request.url());
     requests.push({path:url.pathname,query:url.search,body:request.postDataJSON(),method:request.method()});
@@ -24,6 +24,11 @@ async function mockBackend(page){
       if(request.method()==='GET'){const selected=url.searchParams.get('id')?.replace('eq.','');body=selected?{metadata:drafts.get(selected)?.metadata}:[...drafts].map(([id,draft])=>({id,title:draft.title}));}
       else{const selected=url.searchParams.get('id')?.replace('eq.','')||'94000000-0000-0000-0000-000000000001';drafts.set(selected,request.postDataJSON());body={id:selected};status=201;}
     }
+    else if(url.pathname.endsWith('/studio_artist_handles'))body=handle?[handle]:[];
+    else if(url.pathname.endsWith('/studio_artist_applications'))body=application?[application]:[];
+    else if(url.pathname.endsWith('/rpc/studio_username_check'))body='available';
+    else if(url.pathname.endsWith('/rpc/studio_request_username')){handle={requested_username:request.postDataJSON().candidate,approved_username:null,status:'pending',notice:'Your username is awaiting label review.'};body=null;}
+    else if(url.pathname.endsWith('/rpc/studio_apply_partnership')){application={requested_tier:request.postDataJSON().tier,approved_tier:null,status:'pending',decision_note:''};body=null;}
     else if(url.pathname.includes('/rest/v1/studio_')){body=request.method()==='GET'?[]:null;status=request.method()==='POST'?201:200;}
     else if(url.pathname.includes('/storage/v1/object/list/'))body=[];
     else throw Error('Unexpected mocked request: '+url.pathname);
@@ -118,6 +123,12 @@ test('catalogue metadata saves field visibility without changing account identit
   await expect(view.locator('[data-metadata-status]')).toContainText('visibility saved');
   const saved=requests.find(request=>request.path.endsWith('/studio_artist_metadata')&&request.method==='POST').body;
   expect(saved.metadata.visibility.spotify).toBe('public');expect(saved.metadata.visibility.biography).toBe('private');expect(saved.metadata.email).toBeUndefined();
+});
+test('username and tier requests remain pending without client approval powers',async({page})=>{
+ const requests=await mockBackend(page),dialog=await openAccount(page);
+ await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+ const identity=page.locator('[data-artist-identity]');await expect(identity).toBeVisible();await identity.locator('[name=username]').fill('testmusician95');await identity.getByRole('button',{name:'Request username'}).click();await expect(identity.locator('[data-handle-notice]')).toContainText('awaiting label review');await expect(identity.locator('[data-publish-profile]')).toBeDisabled();
+ const application=page.locator('[data-partnership-application]');await expect(application).toBeVisible();await application.locator('[name=tier]').selectOption('platinum');await application.getByRole('button',{name:'Send application'}).click();await expect(application.getByRole('status')).toContainText('Requested: platinum. Status: pending.');expect(requests.some(request=>/review_username|review_tier/.test(request.path))).toBe(false);
 });
 test('Google photo is used as a fallback for a verified Google provider',async({page})=>{
   await mockBackend(page);

@@ -4,6 +4,9 @@ import {createHash} from 'node:crypto';
 import {dirname} from 'node:path';
 const source='../website';
 const files=[
+  'assets/data/account/username/username-policy.json',
+  'assets/data/account/username/reserved-usernames.json',
+  'assets/js/layers/website/system/account/username/account-username-policy.js',
   'assets/data/platform/home-platform-shell.json',
   'registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-appearance.svg',
   'registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-privacy.svg',

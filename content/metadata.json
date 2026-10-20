@@ -1,17 +1,557 @@
 {
-  "schemaVersion":1,
-  "publication":{"artistBaseFields":["artist_name","biography","website"],"releaseFields":["title","type","version","primary_artist","release_date","language","genre","secondary_genre","description","story","production_process","links","tracks"],"trackFields":["number","title","version","primary_artist","featured_artists","language","explicit","instrumental","duration","story","lyrics"]},
-  "artist":{"title":"Artist catalogue information","notice":"Save information for a future artist page. This is private draft information, not automatic publication. Your sign-in email stays separate from any public contact address.","groups":[
-    {"id":"identity","title":"Artist details","fields":[{"name":"years_active_start","label":"Active since","type":"number","min":1900,"max":2100},{"name":"years_active_end","label":"Active until (leave blank if current)","type":"number","min":1900,"max":2100},{"name":"genre","label":"Genres","maxLength":200},{"name":"location","label":"Public location or region","maxLength":200},{"name":"pronouns","label":"Pronouns","maxLength":100},{"name":"short_biography","label":"Short biography","type":"textarea","maxLength":500}]},
-    {"id":"streaming","title":"Streaming profiles","fields":[{"name":"apple_music","label":"Apple Music","type":"url","hosts":["music.apple.com"]},{"name":"spotify","label":"Spotify","type":"url","hosts":["open.spotify.com"]},{"name":"youtube_music","label":"YouTube Music","type":"url","hosts":["music.youtube.com"]},{"name":"amazon_music","label":"Amazon Music","type":"url","hosts":["music.amazon.com","music.amazon.de","music.amazon.co.uk"]},{"name":"deezer","label":"Deezer","type":"url","hosts":["deezer.com","link.deezer.com"]},{"name":"tidal","label":"TIDAL","type":"url","hosts":["tidal.com"]},{"name":"bandcamp","label":"Bandcamp","type":"url","hosts":["bandcamp.com"]},{"name":"soundcloud","label":"SoundCloud","type":"url","hosts":["soundcloud.com"]}]},
-    {"id":"social","title":"Social profiles","fields":[{"name":"instagram","label":"Instagram","type":"url","hosts":["instagram.com"]},{"name":"youtube","label":"YouTube channel","type":"url","hosts":["youtube.com"]},{"name":"tiktok","label":"TikTok","type":"url","hosts":["tiktok.com"]},{"name":"facebook","label":"Facebook","type":"url","hosts":["facebook.com"]},{"name":"x","label":"X","type":"url","hosts":["x.com","twitter.com"]},{"name":"threads","label":"Threads","type":"url","hosts":["threads.net","threads.com"]}]},
-    {"id":"contact","title":"Public contact and websites","fields":[{"name":"public_email","label":"Public artist contact email","type":"email","maxLength":254},{"name":"booking_email","label":"Booking contact email","type":"email","maxLength":254},{"name":"management_email","label":"Management contact email","type":"email","maxLength":254},{"name":"concerts_url","label":"Concerts or tour page","type":"url"},{"name":"public_hub","label":"Artist hub","type":"url"},{"name":"press_url","label":"Press kit","type":"url"},{"name":"store_url","label":"Official artist store","type":"url"},{"name":"other_platforms","label":"Other platforms and links","type":"textarea","maxLength":2000}]},
-    {"id":"presentation","title":"Portrait and presentation","fields":[{"name":"portrait_alt","label":"Portrait description","maxLength":300},{"name":"portrait_credit","label":"Photographer credit","maxLength":300},{"name":"portrait_permission","label":"Portrait permission or credit notes","type":"textarea","maxLength":1000}]}
-  ]},
-  "release":{"title":"Prepare a release","notice":"Save a private metadata draft for a single, EP or album. Saving does not submit music, create an agreement, publish a page or deliver to streaming services. Do not enter banking information or upload masters here.","fields":[{"name":"title","label":"Release title","required":true,"maxLength":200},{"name":"type","label":"Release type","type":"select","options":["Single","EP","Album"]},{"name":"version","label":"Version (for example Live Acoustic)","maxLength":100},{"name":"primary_artist","label":"Primary artist or group","maxLength":200},{"name":"release_date","label":"Requested release date","type":"date"},{"name":"original_date","label":"Original release date, if previously released","type":"date"},{"name":"language","label":"Primary language","maxLength":100},{"name":"genre","label":"Primary genre","maxLength":100},{"name":"secondary_genre","label":"Secondary genre","maxLength":100},{"name":"upc","label":"Existing UPC or EAN (if assigned)","maxLength":13},{"name":"description","label":"Release description","type":"textarea","maxLength":2000},{"name":"story","label":"Story behind the release","type":"textarea","maxLength":5000},{"name":"production_process","label":"How the recording was made, including any AI involvement","type":"textarea","maxLength":5000},{"name":"copyright_owner","label":"Copyright owner","maxLength":200},{"name":"phonographic_owner","label":"Master recording owner","maxLength":200},{"name":"artwork_url","label":"Private artwork reference link","type":"url"},{"name":"artwork_credit","label":"Artwork credit and AI disclosure","maxLength":1000},{"name":"rights_notes","label":"Rights, samples and cover-song permissions to review","type":"textarea","maxLength":2000}],
-  "trackFields":[{"name":"title","label":"Track title","required":true,"maxLength":200},{"name":"version","label":"Track version","maxLength":100},{"name":"primary_artist","label":"Primary artist","maxLength":200},{"name":"featured_artists","label":"Featured artists","maxLength":500},{"name":"language","label":"Lyrics language","maxLength":100},{"name":"explicit","label":"Explicit content","type":"select","options":["Not specified","Clean","Explicit"]},{"name":"instrumental","label":"Instrumental (no lyrics)","type":"checkbox"},{"name":"isrc","label":"Existing ISRC (if assigned)","maxLength":12},{"name":"duration","label":"Duration (minutes:seconds)","maxLength":8},{"name":"audio_url","label":"Private listening reference","type":"url"},{"name":"story","label":"Track story","type":"textarea","maxLength":5000},{"name":"lyrics","label":"Lyrics","type":"textarea","maxLength":20000}],
-  "roles":["Songwriter","Composer","Lyricist","Producer","Performer","Featured artist","Mixing engineer","Mastering engineer"],
-  "linkFields":[{"name":"apple_music","label":"Apple Music release","type":"url"},{"name":"spotify","label":"Spotify release","type":"url"},{"name":"youtube_music","label":"YouTube Music release","type":"url"},{"name":"amazon_music","label":"Amazon Music release","type":"url"},{"name":"deezer","label":"Deezer release","type":"url"},{"name":"tidal","label":"TIDAL release","type":"url"},{"name":"video","label":"Official video","type":"url"}],
-  "groups":[{"title":"Release details","fields":["title","type","version","primary_artist"]},{"title":"Schedule and classification","fields":["release_date","original_date","language","genre","secondary_genre","upc"]},{"title":"Release story","fields":["description","story","production_process"]},{"title":"Rights and artwork","fields":["copyright_owner","phonographic_owner","artwork_url","artwork_credit","rights_notes"]}],
-  "maxTracks":20,"maxContributors":30}
+  "schemaVersion": 1,
+  "publication": {
+    "artistPrivateFields": ["portrait_permission"],
+    "artistBaseFields": [
+      "artist_name",
+      "biography",
+      "website"
+    ],
+    "releaseFields": [
+      "title",
+      "type",
+      "version",
+      "primary_artist",
+      "release_date",
+      "language",
+      "genre",
+      "secondary_genre",
+      "description",
+      "story",
+      "production_process",
+      "links",
+      "tracks"
+    ],
+    "trackFields": [
+      "number",
+      "title",
+      "version",
+      "primary_artist",
+      "featured_artists",
+      "language",
+      "explicit",
+      "instrumental",
+      "duration",
+      "story",
+      "lyrics"
+    ]
+  },
+  "artist": {
+    "title": "Artist catalogue information",
+    "notice": "Save information for a future artist page. This is private draft information, not automatic publication. Your sign-in email stays separate from any public contact address.",
+    "groups": [
+      {
+        "id": "identity",
+        "title": "Artist details",
+        "fields": [
+          {
+            "name": "years_active_start",
+            "label": "Active since",
+            "type": "number",
+            "min": 1900,
+            "max": 2100
+          },
+          {
+            "name": "years_active_end",
+            "label": "Active until (leave blank if current)",
+            "type": "number",
+            "min": 1900,
+            "max": 2100
+          },
+          {
+            "name": "genre",
+            "label": "Genres",
+            "maxLength": 200
+          },
+          {
+            "name": "location",
+            "label": "Public location or region",
+            "maxLength": 200
+          },
+          {
+            "name": "pronouns",
+            "label": "Pronouns",
+            "maxLength": 100
+          },
+          {
+            "name": "short_biography",
+            "label": "Short biography",
+            "type": "textarea",
+            "maxLength": 500
+          }
+        ],
+        "icon": "profile"
+      },
+      {
+        "id": "streaming",
+        "title": "Streaming profiles",
+        "fields": [
+          {
+            "name": "apple_music",
+            "label": "Apple Music",
+            "type": "url",
+            "hosts": [
+              "music.apple.com"
+            ]
+          },
+          {
+            "name": "spotify",
+            "label": "Spotify",
+            "type": "url",
+            "hosts": [
+              "open.spotify.com"
+            ]
+          },
+          {
+            "name": "youtube_music",
+            "label": "YouTube Music",
+            "type": "url",
+            "hosts": [
+              "music.youtube.com"
+            ]
+          },
+          {
+            "name": "amazon_music",
+            "label": "Amazon Music",
+            "type": "url",
+            "hosts": [
+              "music.amazon.com",
+              "music.amazon.de",
+              "music.amazon.co.uk"
+            ]
+          },
+          {
+            "name": "deezer",
+            "label": "Deezer",
+            "type": "url",
+            "hosts": [
+              "deezer.com",
+              "link.deezer.com"
+            ]
+          },
+          {
+            "name": "tidal",
+            "label": "TIDAL",
+            "type": "url",
+            "hosts": [
+              "tidal.com"
+            ]
+          },
+          {
+            "name": "bandcamp",
+            "label": "Bandcamp",
+            "type": "url",
+            "hosts": [
+              "bandcamp.com"
+            ]
+          },
+          {
+            "name": "soundcloud",
+            "label": "SoundCloud",
+            "type": "url",
+            "hosts": [
+              "soundcloud.com"
+            ]
+          }
+        ],
+        "icon": "music"
+      },
+      {
+        "id": "social",
+        "title": "Social profiles",
+        "fields": [
+          {
+            "name": "instagram",
+            "label": "Instagram",
+            "type": "url",
+            "hosts": [
+              "instagram.com"
+            ]
+          },
+          {
+            "name": "youtube",
+            "label": "YouTube channel",
+            "type": "url",
+            "hosts": [
+              "youtube.com"
+            ]
+          },
+          {
+            "name": "tiktok",
+            "label": "TikTok",
+            "type": "url",
+            "hosts": [
+              "tiktok.com"
+            ]
+          },
+          {
+            "name": "facebook",
+            "label": "Facebook",
+            "type": "url",
+            "hosts": [
+              "facebook.com"
+            ]
+          },
+          {
+            "name": "x",
+            "label": "X",
+            "type": "url",
+            "hosts": [
+              "x.com",
+              "twitter.com"
+            ]
+          },
+          {
+            "name": "threads",
+            "label": "Threads",
+            "type": "url",
+            "hosts": [
+              "threads.net",
+              "threads.com"
+            ]
+          }
+        ],
+        "icon": "social"
+      },
+      {
+        "id": "contact",
+        "title": "Public contact and websites",
+        "fields": [
+          {
+            "name": "public_email",
+            "label": "Public artist contact email",
+            "type": "email",
+            "maxLength": 254
+          },
+          {
+            "name": "booking_email",
+            "label": "Booking contact email",
+            "type": "email",
+            "maxLength": 254
+          },
+          {
+            "name": "management_email",
+            "label": "Management contact email",
+            "type": "email",
+            "maxLength": 254
+          },
+          {
+            "name": "concerts_url",
+            "label": "Concerts or tour page",
+            "type": "url"
+          },
+          {
+            "name": "public_hub",
+            "label": "Artist hub",
+            "type": "url"
+          },
+          {
+            "name": "press_url",
+            "label": "Press kit",
+            "type": "url"
+          },
+          {
+            "name": "store_url",
+            "label": "Official artist store",
+            "type": "url"
+          },
+          {
+            "name": "other_platforms",
+            "label": "Other platforms and links",
+            "type": "textarea",
+            "maxLength": 2000
+          }
+        ],
+        "icon": "email"
+      },
+      {
+        "id": "presentation",
+        "title": "Portrait and presentation",
+        "fields": [
+          {
+            "name": "portrait_alt",
+            "label": "Portrait description",
+            "maxLength": 300
+          },
+          {
+            "name": "portrait_credit",
+            "label": "Photographer credit",
+            "maxLength": 300
+          },
+          {
+            "name": "portrait_permission",
+            "label": "Portrait permission or credit notes",
+            "type": "textarea",
+            "maxLength": 1000
+          }
+        ],
+        "icon": "image"
+      }
+    ]
+  },
+  "release": {
+    "title": "Prepare a release",
+    "notice": "Save a private metadata draft for a single, EP or album. Saving does not submit music, create an agreement, publish a page or deliver to streaming services. Do not enter banking information or upload masters here.",
+    "fields": [
+      {
+        "name": "title",
+        "label": "Release title",
+        "required": true,
+        "maxLength": 200
+      },
+      {
+        "name": "type",
+        "label": "Release type",
+        "type": "select",
+        "options": [
+          "Single",
+          "EP",
+          "Album"
+        ]
+      },
+      {
+        "name": "version",
+        "label": "Version (for example Live Acoustic)",
+        "maxLength": 100
+      },
+      {
+        "name": "primary_artist",
+        "label": "Primary artist or group",
+        "maxLength": 200
+      },
+      {
+        "name": "release_date",
+        "label": "Requested release date",
+        "type": "date"
+      },
+      {
+        "name": "original_date",
+        "label": "Original release date, if previously released",
+        "type": "date"
+      },
+      {
+        "name": "language",
+        "label": "Primary language",
+        "maxLength": 100
+      },
+      {
+        "name": "genre",
+        "label": "Primary genre",
+        "maxLength": 100
+      },
+      {
+        "name": "secondary_genre",
+        "label": "Secondary genre",
+        "maxLength": 100
+      },
+      {
+        "name": "upc",
+        "label": "Existing UPC or EAN (if assigned)",
+        "maxLength": 13
+      },
+      {
+        "name": "description",
+        "label": "Release description",
+        "type": "textarea",
+        "maxLength": 2000
+      },
+      {
+        "name": "story",
+        "label": "Story behind the release",
+        "type": "textarea",
+        "maxLength": 5000
+      },
+      {
+        "name": "production_process",
+        "label": "How the recording was made, including any AI involvement",
+        "type": "textarea",
+        "maxLength": 5000
+      },
+      {
+        "name": "copyright_owner",
+        "label": "Copyright owner",
+        "maxLength": 200
+      },
+      {
+        "name": "phonographic_owner",
+        "label": "Master recording owner",
+        "maxLength": 200
+      },
+      {
+        "name": "artwork_url",
+        "label": "Private artwork reference link",
+        "type": "url"
+      },
+      {
+        "name": "artwork_credit",
+        "label": "Artwork credit and AI disclosure",
+        "maxLength": 1000
+      },
+      {
+        "name": "rights_notes",
+        "label": "Rights, samples and cover-song permissions to review",
+        "type": "textarea",
+        "maxLength": 2000
+      }
+    ],
+    "trackFields": [
+      {
+        "name": "title",
+        "label": "Track title",
+        "required": true,
+        "maxLength": 200
+      },
+      {
+        "name": "version",
+        "label": "Track version",
+        "maxLength": 100
+      },
+      {
+        "name": "primary_artist",
+        "label": "Primary artist",
+        "maxLength": 200
+      },
+      {
+        "name": "featured_artists",
+        "label": "Featured artists",
+        "maxLength": 500
+      },
+      {
+        "name": "language",
+        "label": "Lyrics language",
+        "maxLength": 100
+      },
+      {
+        "name": "explicit",
+        "label": "Explicit content",
+        "type": "select",
+        "options": [
+          "Not specified",
+          "Clean",
+          "Explicit"
+        ]
+      },
+      {
+        "name": "instrumental",
+        "label": "Instrumental (no lyrics)",
+        "type": "checkbox"
+      },
+      {
+        "name": "isrc",
+        "label": "Existing ISRC (if assigned)",
+        "maxLength": 12
+      },
+      {
+        "name": "duration",
+        "label": "Duration (minutes:seconds)",
+        "maxLength": 8
+      },
+      {
+        "name": "audio_url",
+        "label": "Private listening reference",
+        "type": "url"
+      },
+      {
+        "name": "story",
+        "label": "Track story",
+        "type": "textarea",
+        "maxLength": 5000
+      },
+      {
+        "name": "lyrics",
+        "label": "Lyrics",
+        "type": "textarea",
+        "maxLength": 20000
+      }
+    ],
+    "roles": [
+      "Songwriter",
+      "Composer",
+      "Lyricist",
+      "Producer",
+      "Performer",
+      "Featured artist",
+      "Mixing engineer",
+      "Mastering engineer"
+    ],
+    "linkFields": [
+      {
+        "name": "apple_music",
+        "label": "Apple Music release",
+        "type": "url"
+      },
+      {
+        "name": "spotify",
+        "label": "Spotify release",
+        "type": "url"
+      },
+      {
+        "name": "youtube_music",
+        "label": "YouTube Music release",
+        "type": "url"
+      },
+      {
+        "name": "amazon_music",
+        "label": "Amazon Music release",
+        "type": "url"
+      },
+      {
+        "name": "deezer",
+        "label": "Deezer release",
+        "type": "url"
+      },
+      {
+        "name": "tidal",
+        "label": "TIDAL release",
+        "type": "url"
+      },
+      {
+        "name": "video",
+        "label": "Official video",
+        "type": "url"
+      }
+    ],
+    "groups": [
+      {
+        "title": "Release details",
+        "fields": [
+          "title",
+          "type",
+          "version",
+          "primary_artist"
+        ]
+      },
+      {
+        "title": "Schedule and classification",
+        "fields": [
+          "release_date",
+          "original_date",
+          "language",
+          "genre",
+          "secondary_genre",
+          "upc"
+        ]
+      },
+      {
+        "title": "Release story",
+        "fields": [
+          "description",
+          "story",
+          "production_process"
+        ]
+      },
+      {
+        "title": "Rights and artwork",
+        "fields": [
+          "copyright_owner",
+          "phonographic_owner",
+          "artwork_url",
+          "artwork_credit",
+          "rights_notes"
+        ]
+      }
+    ],
+    "maxTracks": 20,
+    "maxContributors": 30
+  }
 }

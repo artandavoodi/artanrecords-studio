@@ -1,7 +1,10 @@
 {
   "source": "artandavoodi/website",
-  "revision": "8682814233b3377f8b475f76609129581627bbe0",
+  "revision": "dd328e1c6247eaf199ed52641f9a8f2671613989",
   "files": {
+    "assets/data/account/username/username-policy.json": "ce4117e44370290fbcd1b8c663c68313db4efb44db925603aafd12af19d609aa",
+    "assets/data/account/username/reserved-usernames.json": "87a8a2824b2b92abe6062aded5d4138c8d04ad97143b77fb508dc3801ea6be3c",
+    "assets/js/layers/website/system/account/username/account-username-policy.js": "3b170a6eb9b0304b23799c4053c2ed7c07cc67ae085b5462f8f000b64e9c87eb",
     "assets/data/platform/home-platform-shell.json": "7d173fa6c37a531e3698f25b002de29790b16e8b33b849a08d220a448af34412",
     "registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-appearance.svg": "b480d1a13e0c18fce160b15809298c5b5ace274d29d1816e43d82312e000f1a3",
     "registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-privacy.svg": "8677713dd553123aa141d1e04b0d131ff4da3e138d79c02e39512122c4fbfe57",

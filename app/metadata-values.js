@@ -51,7 +51,7 @@ export function googlePhoto(user){
 }
 // Publication tooling may use these allowlists after approval; drafts never publish themselves.
 export function catalogueSelection(profile,metadata,schema){
-  const allowed=[...schema.artist.groups.flatMap(group=>group.fields.map(field=>field.name)),...schema.publication.artistBaseFields];
+  const allowed=[...schema.artist.groups.flatMap(group=>group.fields.map(field=>field.name)),...schema.publication.artistBaseFields].filter(key=>!schema.publication.artistPrivateFields?.includes(key));
   return Object.fromEntries(allowed.filter(key=>metadata.visibility?.[key]==='public').map(key=>[key,schema.publication.artistBaseFields.includes(key)?profile[key]||'':metadata[key]||'']));
 }
 export function releaseSelection(metadata,schema){

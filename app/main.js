@@ -10,6 +10,7 @@ import {bindBilling} from './billing.js';
 import {bindChrome} from './chrome.js';
 import {bindPlatform} from './platform.js';
 import {bindArtistMetadata,bindReleaseMetadata} from './metadata.js';
+import {bindArtistIdentity,bindArtistApplication} from './artist-identity.js';
 await bindPreferences();
 bindSearch();
 const chrome=bindChrome();
@@ -31,6 +32,8 @@ if(location.pathname==='/account/')requestAnimationFrame(()=>{
 });
 await bindBilling(context);
 await bindArtistMetadata(context);
+await bindArtistIdentity(context);
+await bindArtistApplication(context);
 await bindReleaseMetadata(context);
 await bindWorkspace(context);
 document.querySelectorAll('[data-signout]').forEach(button=>{button.disabled=!client;button.addEventListener('click',async()=>{if(!client)return;button.disabled=true;try{const result=await client.auth.signOut({scope:'local'});if(result.error)throw result.error;}catch{button.disabled=false;button.setAttribute('aria-label','Try signing out again');}});});
