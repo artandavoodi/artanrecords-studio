@@ -161,6 +161,6 @@ test('Studio footer is copyright-only and public notices retain a single website
 test('scroll containers do not own column borders and registered close artwork is preserved',async()=>{
   const html=await readFile('settings/index.html','utf8');assert.match(html,/studio-platform-rail-scroll/);assert.match(html,/studio-settings-navigation-items/);
   const css=await readFile('app/platform.css','utf8');assert.match(css,/\.studio-platform-rail \{[^}]*border-inline-end/);assert.match(css,/\.studio-settings-navigation \{[^}]*border-inline-end/);
-  const primitive=await readFile('app/shared/close-button.js','utf8');assert.match(primitive,/!node.querySelector\('img'\)/);
-  const chrome=await readFile('app/chrome.js','utf8');assert.ok(chrome.indexOf('closeArtwork.hidden=animate')<chrome.indexOf('openDialog(search)'));
+  const primitive=await readFile('app/shared/close-button.js','utf8');assert.match(primitive,/if \(!hasGlobalLineSystem\)/);
+  const chrome=await readFile('app/chrome.js','utf8');assert.ok(chrome.indexOf("classList.toggle('is-arriving',animate)")<chrome.indexOf('openDialog(search)'));
 });

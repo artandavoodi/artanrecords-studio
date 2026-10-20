@@ -6908,9 +6908,6 @@ h3, h4, h5, h6 { font-size: var(--site-type-heading-size); }
   pointer-events:none;
   transition:transform var(--global-close-button-duration) var(--global-close-button-ease),opacity var(--global-close-button-duration) var(--global-close-button-ease);
 }
-@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
-  .global-close-button:hover > img{transform:scale(var(--effect-scale-strong));}
-}
 .global-close-button__line,
 .global-close-button span{
   position:absolute;
@@ -6953,6 +6950,20 @@ h3, h4, h5, h6 { font-size: var(--site-type-heading-size); }
 .global-close-button:hover .global-close-button__line--first,
 .global-close-button:hover span:nth-child(1){
   transform:translate(-50%, -50%) rotate(0deg);
+}
+
+/* An open menu is the same close control; its resting hamburger stays menu-owned. */
+:is(.site-menu-toggle,.cv-menu-button)[aria-expanded="true"] > :is(.site-menu-toggle__line,.cv-menu-button__line){
+  transition:transform var(--global-close-button-duration) var(--global-close-button-ease);
+}
+@media (hover:hover) and (pointer:fine){
+  :is(.site-menu-toggle,.cv-menu-button)[aria-expanded="true"]:hover > :is(.site-menu-toggle__line,.cv-menu-button__line){
+    transform:rotate(0deg);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .global-close-button,.global-close-button__line,
+  :is(.site-menu-toggle,.cv-menu-button)[aria-expanded="true"] > span{transition:none;}
 }
 
 .global-close-button:hover .global-close-button__line--second,
@@ -7249,6 +7260,9 @@ html[data-menu-open] [data-menu-theme] {
   --artanrecords-wordmark-header-width: calc(var(--site-menu-button-size) * 16);
   --artanrecords-wordmark-showcase-width: 15rem;
 }
+@media(min-width:1025px){
+  :root { --artanrecords-wordmark-showcase-width:20rem; }
+}
 
 :root {
   --label-artwork-motion-duration: var(--nav-institutional-motion-panel-slow);
@@ -7289,7 +7303,6 @@ html[data-menu-open] [data-menu-theme] {
 .label-account-access:is(:hover,:focus-visible) { opacity:var(--cv-opacity-full); }
 html[data-menu-open] .label-header-logo { visibility: hidden; opacity: 0; transform: scale(0); transition: opacity var(--duration-base) var(--ease-standard) calc(var(--label-logo-collapse-duration) * 0.8), transform var(--label-logo-collapse-duration) var(--ease-standard), visibility var(--label-logo-collapse-duration); }
 .label-header-logo .label-wordmark { inline-size: 100%; }
-@media(min-width:1025px) and (hover:hover) and (pointer:fine){.label-header-logo { inline-size:calc(var(--artanrecords-wordmark-header-width) / 2); }}
 .label-footer-groups { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:var(--spacing-xl); inline-size:100%; text-align:start; }
 .label-footer-group { min-inline-size:0; display:grid; align-content:start; gap:var(--spacing-md); }
 .label-footer-group h2 { margin:0; color:var(--cv-text-primary); font-size:var(--site-type-caption-size); font-weight:var(--font-weight-semibold); }

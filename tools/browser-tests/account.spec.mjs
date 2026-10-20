@@ -30,6 +30,17 @@ async function openAccount(page){
   await expect(dialog).toBeVisible();
   return dialog;
 }
+test('search keeps branded close controls and focuses typing immediately',async({page})=>{
+  await mockBackend(page);
+  await page.goto('/');
+  await page.locator('[data-studio-search-open]').first().click();
+  const dialog=page.locator('#store-search-dialog');
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator('input')).toBeFocused();
+  await expect(dialog.locator('[data-search-close] .global-close-button__line')).toHaveCount(2);
+  await dialog.locator('[data-search-close]').click();
+  await expect(dialog).toBeHidden();
+});
 test('signup and recovery keep distinct fields, required consent and usable close controls',async({page})=>{
   const requests=await mockBackend(page),dialog=await openAccount(page);
   await expect(dialog.locator('[name=email]')).toBeFocused();
@@ -59,6 +70,14 @@ test('sign-in opens a private profile and sign-out does not revoke other applica
   await expect(page).toHaveURL(/\/profile\/$/);
   const form=page.locator('[data-profile-form]');
   await expect(form).toBeVisible();
+  const billing=page.locator('.studio-billing');
+  await expect(billing).toBeVisible();
+  await billing.locator('summary').click();
+  const profileField=await form.locator('[name=display_name]').boundingBox();
+  const addressField=await billing.locator('input').first().boundingBox();
+  expect(Math.abs(profileField.x-addressField.x)).toBeLessThan(1);
+  expect(Math.abs(profileField.width-addressField.width)).toBeLessThan(1);
+  await billing.locator('summary').click();
   await form.locator('[name=artist_name]').fill('Test artist');
   await form.locator('[type=submit]').click();
   await expect(page.locator('[data-profile-status]')).toHaveText('Profile saved.');

@@ -3,3 +3,6 @@
   --artanrecords-wordmark-header-width: calc(var(--site-menu-button-size) * 16);
   --artanrecords-wordmark-showcase-width: 15rem;
 }
+@media(min-width:1025px){
+  :root { --artanrecords-wordmark-showcase-width:20rem; }
+}

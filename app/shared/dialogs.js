@@ -1,4 +1,5 @@
 export function openDialog(dialog){
+  window.NeuroartanCloseButtons?.initCloseButtonPrimitive(dialog);
   if(dialog.open)return;
   const opener=document.activeElement;
   const scrollY=window.scrollY;

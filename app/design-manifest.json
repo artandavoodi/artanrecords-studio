@@ -1,13 +1,13 @@
 {
   "source": "artandavoodi/artan-store",
-  "revision": "fd39aa6e041b9411f700735b5586e242489803c3",
+  "revision": "389ded69a69c58ed4125a276230e1f23c078a26e",
   "files": {
     "buttons.css": "983ee7f5b342c3b26d79da020f4696f8c3fe65c699be3cc025235b039ff65508",
     "password-field.css": "2f6bad49c2e0ffcb7f1125ea71e4a21532cfec9ee9530ccebe2f8247cfe522a1",
-    "close-button.css": "780627b1bd8280759eca7bd53bb52f9f367e51e85483155f09a392c10af22d44",
-    "close-button.js": "0279ce20e6020936d0daf530f9ade03d397826f710519e6dbeb0ae011e5bf6fc",
+    "close-button.css": "b5ad572ef1c8bad5d0c36107b80d6293bc08c511f68838ec981b9dd1ec38d60e",
+    "close-button.js": "3f5bde8e08d4f1e18cad86394b6d16ac083faa66edb00e0a63e0a8d86f074e01",
     "search.js": "41d1e23049bbe9447e2292544ce2fed669cae4b59c8aa61a00099e173555a768",
-    "dialogs.js": "c937f4c0a419193662233f84549ea0ed009386be060af082b0a950e7fde37ea0",
+    "dialogs.js": "7097bbd9d4963bbf81c55a696787f42d743cb6f5e18889e33feb9bd86f80cb64",
     "store-surfaces.css": "0bca5f2c19d29f75fe01efd290ce8f9362fbcf0e8ba4b82c84ee87be7bb4ee51"
   }
 }
