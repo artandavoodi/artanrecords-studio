@@ -28,6 +28,7 @@ export function readAccountCallback(url){
 export function profileValues(form){
   const fields={display_name:100,artist_name:100,biography:2000,website:500};const result={};
   for(const [name,max] of Object.entries(fields)){const value=String(form.get(name)||'').trim();if(value.length>max)throw Error('Please shorten your profile information.');result[name]=value;}
+  const phone=String(form.get('phone')||'').replace(/[\s()-]/g,'');if(phone&&!/^\+[1-9]\d{6,14}$/.test(phone))throw Error('Enter a phone number with its country code.');result.contact_phone=phone;
   if(result.website&&new URL(result.website).protocol!=='https:')throw Error('Use an HTTPS website address.');return result;
 }
 export function validPhoto(file){return file&&['image/jpeg','image/png','image/webp'].includes(file.type)&&file.size>0&&file.size<=2*1024*1024;}

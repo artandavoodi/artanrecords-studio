@@ -12,7 +12,7 @@ export async function bindArtistIdentity({client,config,resolveUser}){
  const refresh=async()=>{
   const response=await client.from('studio_artist_handles').select('requested_username,approved_username,status,notice').eq('account_id',user.id).maybeSingle();
   if(response.error)throw Error('Artist addresses could not be loaded. Please refresh.');
-  approved=response.data?.approved_username||null;notice.textContent=response.data?.notice||'Choose a username for label review.';
+  approved=response.data?.approved_username||null;notice.textContent=(approved?'Username approved. ':'')+(response.data?.notice||'Choose a username for label review.');notice.dataset.approved=String(Boolean(approved));
   if(response.data)input.value=response.data.requested_username;
   input.readOnly=Boolean(approved);form.querySelector('button').disabled=Boolean(approved);publish.disabled=!approved;
   if(approved){link.href='https://artanrecords.com/artists/profile/?username='+encodeURIComponent(approved);const page=await client.from('studio_artist_pages').select('username').eq('username',approved).maybeSingle();if(page.error)throw Error('The public page status could not be checked.');link.hidden=!page.data;hide.disabled=!page.data;}

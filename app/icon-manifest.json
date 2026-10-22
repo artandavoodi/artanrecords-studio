@@ -1,8 +1,9 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "9256df438c37ae238588b8f743c6e603e1336547",
+  "revision": "b0058bafd4c57a4df9a248ae213750d5612b884d",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
+    "notifications": "9ca074cf45e6f835368b937965630e25e37db7c6db3f2c04299290cc86019670",
     "dashboard": "cac757105f85465cc22a6a74cbed2e8b1f3f1f7b91330cedb0b975a95a99d7dc",
     "release": "eca84ef9d1f8557f75cfcb9208256e7b23fd356f73f82693c12deccbfe4412d7",
     "analytics": "767765ece516a6c3f94703c2d378379f945cb0489822c1e4df8d890095cae210",
@@ -37,6 +38,7 @@
   },
   "available": {
     "placeholder": true,
+    "notifications": true,
     "dashboard": true,
     "release": true,
     "analytics": true,

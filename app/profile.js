@@ -2,10 +2,17 @@ import {googlePhoto} from './metadata-values.js';
 export async function bindProfile({client,config,resolveUser,profileValues,validPhoto}){
   const view=document.querySelector('[data-profile-view]');if(!view)return;
   const status=view.querySelector('[data-profile-status]'),form=view.querySelector('form'),guest=view.querySelector('[data-profile-guest]');
-  form.elements.phone.readOnly=true;
+  form.elements.phone.readOnly=false;
   if(!client){status.textContent=config.unavailable;guest.hidden=false;return;}
   let user;
-  try{user=await resolveUser(client);if(!user){status.textContent='';guest.hidden=false;return;}const result=await client.from('studio_profiles').select('display_name,artist_name,biography,website').eq('id',user.id).maybeSingle();if(result.error)throw result.error;for(const [name,value] of Object.entries(result.data||{}))if(form.elements[name])form.elements[name].value=value||'';view.querySelector('[data-profile-email]').value=user.email||'';view.querySelector('[data-verification]').textContent=user.email_confirmed_at?'Email verified':'Email confirmation required';form.elements.phone.value=user.phone||'';form.hidden=false;status.textContent='';}catch{status.textContent='Your profile could not be loaded. Refresh to try again.';return;}
+  try{
+    user=await resolveUser(client);if(!user){status.textContent='';guest.hidden=false;return;}
+    const result=await client.from('studio_profiles').select('display_name,artist_name,biography,website,contact_phone').eq('id',user.id).maybeSingle();if(result.error)throw result.error;
+    for(const [name,value] of Object.entries(result.data||{}))if(form.elements[name])form.elements[name].value=value||'';
+    view.querySelector('[data-profile-email]').value=user.email||'';
+    view.querySelector('[data-verification]').textContent=user.email_confirmed_at?'Email verified':'Email confirmation required';
+    form.elements.phone.value=result.data?.contact_phone||user.phone||'';form.hidden=false;status.textContent='';
+  }catch{status.textContent='Your profile could not be loaded. Refresh to try again.';return;}
   // Recheck record existence when saving so empty profiles and other tabs are handled correctly.
   if(!form.elements.display_name.value)form.elements.display_name.value=user.user_metadata?.full_name||user.user_metadata?.name||'';
   const avatar=view.querySelector('[data-avatar]'),placeholder=view.querySelector('[data-avatar-placeholder]');

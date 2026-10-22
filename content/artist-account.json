@@ -1,5 +1,6 @@
 {
  "tiers":[{"id":"silver","label":"Silver"},{"id":"gold","label":"Gold"},{"id":"platinum","label":"Platinum"}],
+ "usernameNotice":"One pending request at a time. Up to 3 requests in 24 hours, with 10 minutes between requests. Approved usernames require label review to change. Username approval is not an identity-verification badge.",
  "applicationTitle":"Partnership application",
  "applicationNotice":"Choose the partnership you would like us to consider. The label decides the offered scope; approval here does not create a signed agreement."
 }

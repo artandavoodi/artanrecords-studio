@@ -27,6 +27,13 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 .studio-brand-wordmark .label-wordmark { inline-size:100%; }
 .studio-brand-label { font-size:var(--site-type-caption-size); font-weight:var(--font-weight-semibold); white-space:nowrap; }
 .studio-header-tools { display:flex; align-items:center; gap:var(--spacing-xs); }
+.studio-notifications { position:fixed; inset:auto var(--spacing-lg) auto auto; top:var(--site-header-height); margin:0; padding:var(--spacing-lg); inline-size:min(var(--reading-width-md),calc(100vw - var(--spacing-lg) * 2)); max-block-size:65svh; overflow:auto; border:var(--border-width-hairline) solid var(--cv-border); border-radius:var(--panel-radius-unified); background:var(--cv-page-bg); color:var(--cv-text-primary); box-shadow:var(--shadow-medium); }
+.studio-notifications article { display:grid; gap:var(--spacing-sm); padding-block:var(--spacing-lg); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
+.studio-notifications article:last-child { border-block-end:0; }
+.studio-notifications time { font-size:var(--text-caption-size); color:var(--cv-text-secondary); }
+[data-studio-notifications][data-unread=true] { color:var(--color-primary7); }
+[data-studio-notifications] { position:relative; }
+[data-studio-notification-count] { position:absolute; inset-block-start:0; inset-inline-end:0; display:grid; place-items:center; min-inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); padding-inline:var(--spacing-xs); border-radius:var(--radius-circle); font-size:var(--text-caption-size); line-height:1; background:var(--color-primary7); color:var(--cv-page-bg); }
 .studio-footer { inline-size:100%; padding-block:var(--spacing-lg); border-block-start:var(--border-width-hairline) solid var(--cv-border); color:var(--cv-text-secondary); text-align:center; font-size:var(--site-type-caption-size); }
 .studio-footer p { margin:0; }
 .studio-header-control { display:grid; place-items:center; inline-size:var(--control-height-sm); block-size:var(--control-height-sm); border:0; padding:0; background:transparent; cursor:pointer; }

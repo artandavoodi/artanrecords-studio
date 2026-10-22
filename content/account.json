@@ -132,6 +132,7 @@
   "placeholderIcon": "core/commerce/shopping/collection-placeholder.svg",
   "effectiveDate": "2026-10-19",
   "icons": {
+    "notifications": "core/system/notifications/bell.svg",
     "dashboard": "core/navigation/dashboard/dashboard.svg",
     "release": "layers/software/releases/release.svg",
     "analytics": "core/system/analytics/analytics.svg",

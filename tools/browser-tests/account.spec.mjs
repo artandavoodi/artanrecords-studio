@@ -44,6 +44,16 @@ async function openAccount(page){
   await expect(dialog).toBeVisible();
   return dialog;
 }
+test('artist notifications retain decisions and mark only the selected item read',async({page})=>{
+ await mockBackend(page);let read=false;
+ const notification='95000000-0000-4000-8000-000000000001';
+ await page.route('https://hahtbepdrjkjluhespbs.supabase.co/rest/v1/studio_notifications*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify([{id:notification,kind:'username',status:'approved',message:'Your username is approved.',created_at:'2026-10-22T10:00:00Z',read_at:read?'2026-10-22T10:01:00Z':null}])}));
+ await page.route('https://hahtbepdrjkjluhespbs.supabase.co/rest/v1/rpc/studio_read_notification',route=>{expect(route.request().postDataJSON()).toEqual({notification});read=true;return route.fulfill({status:200,contentType:'application/json',body:'null'});});
+ const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+ const trigger=page.getByRole('button',{name:'Notifications, 1 unread',exact:true});await expect(trigger).toBeVisible();await trigger.click();
+ const notices=page.getByRole('dialog',{name:'Notifications',exact:true});await expect(notices).toContainText('Your username is approved.');await notices.getByRole('button',{name:'Mark as read',exact:true}).click();
+ await expect(page.getByRole('button',{name:'Notifications',exact:true})).toBeVisible();await expect(notices).toContainText('Your username is approved.');await expect(notices.getByRole('button',{name:'Mark as read'})).toHaveCount(0);
+});
 test('search keeps branded close controls and focuses typing immediately',async({page})=>{
   await mockBackend(page);
   await page.goto('/');
