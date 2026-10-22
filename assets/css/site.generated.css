@@ -7542,15 +7542,9 @@ main[data-fragment="artists"] > .site-section { padding-block-start: 0; gap: 0; 
 html:has(main[data-fragment="artist"]) body { isolation: isolate; }
 html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior: auto; overscroll-behavior-y: none; background: var(--cv-page-bg); }
 .artist-profile > section { display: grid; align-content: center; gap: var(--spacing-xl); box-sizing: border-box; padding-block: var(--cv-page-padding-block); }
-@media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
-  html:has(main[data-fragment="artist"]) { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
-  .artist-profile > section { min-block-size: var(--section-min-height-stable); scroll-snap-align: start; scroll-snap-stop: always; }
-  html:has(main[data-fragment="artist"]) [data-fragment="footer"] { scroll-snap-align: end; }
-}
-@media (prefers-reduced-motion: reduce) {
-  html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior: auto; }
-  .artist-profile > section { scroll-snap-align: none; scroll-snap-stop: normal; }
-}
+.artist-profile [data-artist-since] { display:flex; gap:var(--spacing-sm); margin:0; }
+.artist-profile [data-artist-portrait] { display:grid; place-items:center; inline-size:calc(var(--control-height-lg) * 2); aspect-ratio:1; border-radius:var(--radius-circle); background:var(--control-bg); }
+.artist-profile [data-artist-portrait] img { inline-size:var(--icon-size-lg); block-size:var(--icon-size-lg); }
 /* One composited surface keeps artwork and matte on identical viewport bounds. */
 html:not([data-loading]):has(main[data-fragment="artist"]) body::before {
   --artist-matte: color-mix(in srgb, var(--cv-page-bg) calc(var(--opacity-muted) * 100%), transparent);
