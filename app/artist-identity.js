@@ -2,6 +2,7 @@ import policy from './neuroartan/assets/data/account/username/username-policy.js
 import registry from './neuroartan/assets/data/account/username/reserved-usernames.json';
 import {normalizeAccountUsernameInput,validateAccountUsernamePolicy} from './neuroartan/assets/js/layers/website/system/account/username/account-username-policy.js';
 const messages={available:'Available to request. Label approval is required.',taken:'This username is already in use.',reserved:'This username is reserved.',invalid:'Use 3–32 lowercase letters, numbers or internal dots.'};
+const mayCheck=result=>result.ok||result.code==='USERNAME_RESERVED'&&result.adminOverride===true;
 export async function bindArtistIdentity({client,config,resolveUser}){
  const root=document.querySelector('[data-artist-identity]');if(!root||!client||!config.workspace.artistPages)return;
  let user;try{user=await resolveUser(client);}catch{return;}if(!user)return;
@@ -19,11 +20,11 @@ export async function bindArtistIdentity({client,config,resolveUser}){
  try{await refresh();}catch(error){notice.textContent=error.message;form.querySelector('button').disabled=true;return;}
  input.addEventListener('input',()=>{
   clearTimeout(timer);const turn=++epoch;status.textContent='';
-  timer=setTimeout(async()=>{try{const result=await validateAccountUsernamePolicy(input.value,{policy,registry});if(turn!==epoch)return;if(!result.ok){status.textContent=result.message;return;}const response=await client.rpc('studio_username_check',{candidate:result.normalized});if(turn!==epoch)return;if(response.error)throw response.error;status.textContent=messages[response.data]||'Availability could not be checked.';}catch{if(turn===epoch)status.textContent='Availability could not be checked. Try again.';}},350);
+  timer=setTimeout(async()=>{try{const result=await validateAccountUsernamePolicy(input.value,{policy,registry});if(turn!==epoch)return;if(!mayCheck(result)){status.textContent=result.message;return;}const response=await client.rpc('studio_username_check',{candidate:result.normalized});if(turn!==epoch)return;if(response.error)throw response.error;status.textContent=messages[response.data]||'Availability could not be checked.';}catch{if(turn===epoch)status.textContent='Availability could not be checked. Try again.';}},350);
  });
  form.addEventListener('submit',async event=>{
   event.preventDefault();const button=form.querySelector('button');button.disabled=true;++epoch;clearTimeout(timer);
-  try{const current=await resolveUser(client);if(current?.id!==user.id)throw Error('Your session changed. Sign in again.');const result=await validateAccountUsernamePolicy(input.value,{policy,registry});if(!result.ok)throw Error(result.message);input.value=normalizeAccountUsernameInput(input.value);const response=await client.rpc('studio_request_username',{candidate:input.value});if(response.error)throw Error('This username could not be requested. It may be reserved or already in use.');await refresh();status.textContent='Request sent. Your approval result will appear here.';}catch(error){status.textContent=error.message;}finally{button.disabled=Boolean(approved);}
+  try{const current=await resolveUser(client);if(current?.id!==user.id)throw Error('Your session changed. Sign in again.');const result=await validateAccountUsernamePolicy(input.value,{policy,registry});if(!mayCheck(result))throw Error(result.message);input.value=normalizeAccountUsernameInput(input.value);const response=await client.rpc('studio_request_username',{candidate:input.value});if(response.error)throw Error('This username could not be requested. It may be reserved or already in use.');await refresh();status.textContent='Request sent. Your approval result will appear here.';}catch(error){status.textContent=error.message;}finally{button.disabled=Boolean(approved);}
  });
  for(const [button,rpc] of [[publish,'studio_publish_artist_page'],[hide,'studio_unpublish_artist_page']])button.addEventListener('click',async()=>{
   button.disabled=true;
