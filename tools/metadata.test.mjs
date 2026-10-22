@@ -29,3 +29,17 @@ test('Google avatar fallback only uses authenticated Google provider metadata an
   assert.equal(googlePhoto({app_metadata:{provider:'google'},user_metadata:{picture:'https://lh3.googleusercontent.com/test'}}),'https://lh3.googleusercontent.com/test');
   assert.equal(googlePhoto({app_metadata:{provider:'google'},user_metadata:{picture:'https://googleusercontent.com.evil.test/test'}}),null);
 });
+test('track groups cover every field once and preserve catalogue details',()=>{
+  const grouped=schema.release.trackGroups.flatMap(group=>group.fields);
+  assert.equal(new Set(grouped).size,grouped.length);
+  assert.deepEqual([...grouped].sort(),schema.release.trackFields.map(field=>field.name).sort());
+  const track={...release().tracks[0],lyrics:'Artist-authored lyrics',credits:'Piano: Display Name',key:'A minor',duration:'4:29',release_date:'2026-10-22',music_sheet_url:'https://example.test/score.pdf',performance_url:'https://example.test/performance'};
+  const value=releaseMetadata({...release(),tracks:[track],visibility:{tracks:'public'}},schema);
+  assert.equal(value.tracks[0].music_sheet_url,track.music_sheet_url);
+  const selected=releaseSelection(value,schema).tracks[0];
+  assert.equal(selected.lyrics,track.lyrics);
+  assert.equal(selected.credits,track.credits);
+  assert.equal(selected.music_sheet_url,undefined);
+  assert.equal(selected.performance_url,undefined);
+  assert.throws(()=>releaseMetadata({...release(),tracks:[{...track,performance_url:'javascript:alert(1)'}]},schema));
+});

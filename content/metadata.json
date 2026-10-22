@@ -19,6 +19,8 @@
       "description",
       "story",
       "production_process",
+      "release_information",
+      "musical_details",
       "links",
       "tracks"
     ],
@@ -32,6 +34,13 @@
       "explicit",
       "instrumental",
       "duration",
+      "release_date",
+      "credits",
+      "musical_details",
+      "key",
+      "tempo",
+      "structure",
+      "production_process",
       "story",
       "lyrics"
     ]
@@ -372,6 +381,8 @@
         "label": "Copyright owner",
         "maxLength": 200
       },
+      { "name": "release_information", "label": "Release information", "type": "textarea", "maxLength": 5000 },
+      { "name": "musical_details", "label": "Musical details", "type": "textarea", "maxLength": 5000 },
       {
         "name": "phonographic_owner",
         "label": "Master recording owner",
@@ -457,6 +468,17 @@
         "type": "textarea",
         "maxLength": 5000
       },
+      { "name": "release_date", "label": "Track release date", "type": "date" },
+      { "name": "credits", "label": "Public-facing credits (approved display names)", "type": "textarea", "maxLength": 5000 },
+      { "name": "musical_details", "label": "Musical details", "type": "textarea", "maxLength": 5000 },
+      { "name": "key", "label": "Musical key", "maxLength": 100 },
+      { "name": "tempo", "label": "Tempo", "maxLength": 100 },
+      { "name": "structure", "label": "Song structure", "maxLength": 2000 },
+      { "name": "production_process", "label": "Recording and production notes", "type": "textarea", "maxLength": 5000 },
+      { "name": "music_sheet_url", "label": "Music sheet reference (private review link)", "type": "url" },
+      { "name": "music_sheet_notes", "label": "Music sheet description and permissions", "type": "textarea", "maxLength": 2000 },
+      { "name": "performance_url", "label": "Performance video reference (private review link)", "type": "url" },
+      { "name": "performance_notes", "label": "Performance description and credits", "type": "textarea", "maxLength": 2000 },
       {
         "name": "lyrics",
         "label": "Lyrics",
@@ -537,6 +559,8 @@
         "fields": [
           "description",
           "story",
+          "release_information",
+          "musical_details",
           "production_process"
         ]
       },
@@ -550,6 +574,13 @@
           "rights_notes"
         ]
       }
+    ],
+    "trackGroups": [
+      { "title": "Track details", "fields": ["title", "version", "primary_artist", "featured_artists", "language", "explicit", "instrumental", "isrc", "duration", "release_date"] },
+      { "title": "Story and lyrics", "fields": ["story", "lyrics"] },
+      { "title": "Music and production", "fields": ["musical_details", "key", "tempo", "structure", "production_process", "audio_url"] },
+      { "title": "Credits", "fields": ["credits"] },
+      { "title": "Scores and performances", "fields": ["music_sheet_url", "music_sheet_notes", "performance_url", "performance_notes"] }
     ],
     "maxTracks": 20,
     "maxContributors": 30

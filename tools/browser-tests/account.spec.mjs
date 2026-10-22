@@ -145,7 +145,7 @@ test('release drafts preserve stories, lyrics and contributors without submissio
   await expect(view.locator('[data-release-controls]')).toBeVisible();
   await view.locator('form > details').first().locator('[name=title]').fill('Test single');
   await view.getByText('Release story',{exact:true}).click();await view.locator('form > details').filter({has:page.locator('[name=description]')}).locator('[name=story]').fill('Release story');
-  const track=view.locator('[data-track]');await track.locator('[name=title]').fill('Test song');await track.locator('[name=lyrics]').fill('Test lyrics');
+  const track=view.locator('[data-track]');await track.locator('[name=title]').fill('Test song');await track.getByText('Story and lyrics',{exact:true}).click();await track.locator('[name=lyrics]').fill('Test lyrics');
   await track.locator('[data-add-contributor]').click();await track.locator('[name=contributor_name]').fill('Test writer');
   await view.getByText('Publication choices',{exact:true}).click();await view.locator('[data-visibility-key=story]').check();
   await view.getByRole('button',{name:'Save release draft'}).click();await expect(view.locator('[data-metadata-status]')).toContainText('Nothing is submitted');
