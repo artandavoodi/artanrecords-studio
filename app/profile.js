@@ -1,4 +1,5 @@
 import {googlePhoto} from './metadata-values.js';
+import {registerProfileMediaEditorTarget,openProfileMediaEditor} from './neuroartan/assets/js/layers/website/ui/profile-media-editor.js';
 export async function bindProfile({client,config,resolveUser,profileValues,validPhoto}){
   const view=document.querySelector('[data-profile-view]');if(!view)return;
   const status=view.querySelector('[data-profile-status]'),form=view.querySelector('form'),guest=view.querySelector('[data-profile-guest]');
@@ -30,11 +31,25 @@ export async function bindProfile({client,config,resolveUser,profileValues,valid
   form.addEventListener('submit',async event=>{event.preventDefault();const button=form.querySelector('[type="submit"]');button.disabled=true;try{const values=profileValues(new FormData(form));const current=await resolveUser(client);if(current?.id!==user.id)throw Error('Your session changed.');const existing=await client.from('studio_profiles').select('id').eq('id',current.id).maybeSingle();if(existing.error)throw existing.error;const result=existing.data?await client.from('studio_profiles').update(values).eq('id',current.id):await client.from('studio_profiles').insert({id:current.id,...values});if(result.error)throw result.error;status.textContent='Profile saved.';}catch(error){status.textContent=error.message?.includes('HTTPS')?error.message:'Profile could not be saved. Please try again.';}finally{button.disabled=false;}});
   const header=view.querySelector('[data-header-image]');
   try{const list=await client.storage.from('studio-headers').list(user.id,{search:'header',limit:10});if(!list.error&&list.data.some(file=>file.name==='header')){const signed=await client.storage.from('studio-headers').createSignedUrl(user.id+'/header',300);if(!signed.error){header.src=signed.data.signedUrl;header.hidden=false;}}}catch{/* The empty header remains usable when storage is unavailable. */}
-  for(const [name,bucket,filename,target] of [['photo','studio-avatars','avatar',avatar],['header_photo','studio-headers','header',header]])form.elements[name].addEventListener('change',async()=>{
+  registerProfileMediaEditorTarget('studio',{
+    getCurrentImageUrl:({kind})=>(kind==='cover'?header:avatar).getAttribute('src')||'',
+    async save({file,kind}){
+      if(!validPhoto(file))throw Error('Edited image exceeds the upload limit.');
+      const current=await resolveUser(client);if(current?.id!==user.id)throw Error('Session changed');
+      const cover=kind==='cover',bucket=cover?'studio-headers':'studio-avatars',path=current.id+'/'+(cover?'header':'avatar');
+      const uploaded=await client.storage.from(bucket).upload(path,file,{upsert:true,contentType:file.type});if(uploaded.error)throw uploaded.error;
+      const signed=await client.storage.from(bucket).createSignedUrl(path,300);if(signed.error)throw signed.error;
+      if(cover){header.src=signed.data.signedUrl;header.hidden=false;}else showPhoto(signed.data.signedUrl);
+      status.textContent=cover?'Header image saved privately.':'Profile photograph saved privately.';
+    }
+  });
+  view.querySelectorAll('[data-open-profile-media]').forEach(button=>button.addEventListener('click',()=>openProfileMediaEditor({target:'studio',kind:button.dataset.openProfileMedia})));
+  avatar.addEventListener('click',()=>openProfileMediaEditor({target:'studio',kind:'avatar'}));
+  for(const [name,filename] of [['photo','avatar'],['header_photo','header']])form.elements[name].addEventListener('change',async()=>{
     const input=form.elements[name],file=input.files[0];if(!file)return;
     if(!validPhoto(file)){status.textContent='Choose a JPEG, PNG or WebP image up to 2 MB.';input.value='';return;}
     input.disabled=true;
-    try{const decoded=await createImageBitmap(file);const tooLarge=decoded.width>8192||decoded.height>8192;decoded.close();if(tooLarge)throw Error('Image too large');const current=await resolveUser(client);if(current?.id!==user.id)throw Error('Session changed');const path=current.id+'/'+filename;const uploaded=await client.storage.from(bucket).upload(path,file,{upsert:true,contentType:file.type});if(uploaded.error)throw uploaded.error;const signed=await client.storage.from(bucket).createSignedUrl(path,300);if(signed.error)throw signed.error;target.src=signed.data.signedUrl;target.hidden=false;status.textContent=filename==='header'?'Header image saved privately.':'Profile photograph saved privately.';}catch{status.textContent='Your image could not be saved. Please try again.';}finally{input.disabled=false;input.value='';}
+    try{const decoded=await createImageBitmap(file);const tooLarge=decoded.width>8192||decoded.height>8192;decoded.close();if(tooLarge)throw Error('Image too large');openProfileMediaEditor({target:'studio',kind:filename==='header'?'cover':'avatar',file});}catch{status.textContent='This image could not be opened. Use a valid image no larger than 8192 pixels per side.';}finally{input.disabled=false;input.value='';}
   });
   view.querySelector('[data-verify-phone]').addEventListener('click',()=>{view.querySelector('[data-phone-status]').textContent=config.phoneNotice;});
   view.querySelector('[data-reset-password]').addEventListener('click',async()=>{const result=await client.auth.resetPasswordForEmail(user.email,{redirectTo:location.origin+'/account/?flow=recovery'});status.textContent=result.error?'Reset email could not be sent. Please try again.':'Check your email for a password reset link.';});

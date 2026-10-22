@@ -158,7 +158,7 @@ html[data-theme-effective="dark"] .label-wordmark--light { display: none; }
 [data-information-tabs] [role="tab"]:hover, [data-information-tabs] [role="tab"]:focus-visible, [data-information-tabs] [role="tab"][aria-selected="true"] { color: var(--local-nav-hover-text-color); opacity: var(--local-nav-hover-opacity); text-decoration: none; }
 [data-information-tabs] :is([role="tab"],[role="tabpanel"]):focus-visible { outline:none; background:var(--control-bg-hover); }
 [data-information-tabs] [role="tabpanel"][hidden] { display: none; }
-.information-page > header, .information-page > section { display: grid; gap: var(--spacing-md); max-inline-size: var(--cv-reading-width); }
+.information-page :where(header, section) { display: grid; gap: var(--spacing-md); max-inline-size: var(--cv-reading-width); }
 .information-page section { scroll-margin-block-start: var(--site-header-height); }
 .information-page { overflow-wrap: anywhere; }
 .partnership-comparison { max-inline-size:100%; overflow-x:auto; padding-block:var(--spacing-lg); }

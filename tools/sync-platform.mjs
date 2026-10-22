@@ -4,6 +4,12 @@ import {createHash} from 'node:crypto';
 import {dirname} from 'node:path';
 const source='../website';
 const files=[
+  'assets/js/layers/website/ui/profile-media-editor.js',
+  'assets/css/layers/website/ui/profile-media-editor.css',
+  'assets/css/core/01-tokens/editor.tokens.css',
+  'assets/css/core/03-primitives/icons.css',
+  'assets/css/core/03-primitives/slider.css',
+  'assets/fragments/layers/website/profile/private/media/profile-media-editor.html',
   'assets/data/account/username/username-policy.json',
   'assets/data/account/username/reserved-usernames.json',
   'assets/js/layers/website/system/account/username/account-username-policy.js',

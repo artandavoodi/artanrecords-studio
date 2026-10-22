@@ -1,0 +1,186 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) ROOT ICON TOKENS
+   03) SHARED ICON BUTTON BASE
+   04) ICON BUTTON STATE STABILITY
+   05) ICON SIZE UTILITIES
+   06) GENERIC ICON THEME UTILITIES
+   07) ICON INTERACTION LOCK
+   08) GENERIC HOVER HELPERS
+   09) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/icons.css */
+
+/* =============================================================================
+   02) ROOT ICON TOKENS
+============================================================================= */
+:root{
+  --icon-image-filter:brightness(0) invert(1);
+  --icon-image-filter-strong:brightness(0) invert(1);
+  --icon-color:var(--text-color);
+  --icon-color-muted:var(--text-secondary-color);
+  --icon-color-accent:var(--color-primary1);
+  
+  /* Icon size tokens using accessibility scale */
+  --icon-size-xs:calc(0.75rem * var(--accessibility-icon-scale));
+  --icon-size-sm:calc(1rem * var(--accessibility-icon-scale));
+  --icon-size-md:calc(1.25rem * var(--accessibility-icon-scale));
+  --icon-size-lg:calc(1.5rem * var(--accessibility-icon-scale));
+  --icon-size-xl:calc(2rem * var(--accessibility-icon-scale));
+}
+
+
+html[data-theme-effective="light"]{
+  --icon-image-filter:brightness(0) saturate(100%);
+  --icon-image-filter-strong:brightness(0) saturate(100%);
+  --icon-color:var(--text-color);
+  --icon-color-muted:var(--text-secondary-color);
+  --icon-color-accent:var(--color-primary1);
+}
+
+html[data-theme-effective="dark"]{
+  --icon-image-filter:brightness(0) invert(1);
+  --icon-image-filter-strong:brightness(0) invert(1);
+  --icon-color:var(--text-color);
+  --icon-color-muted:var(--text-secondary-color);
+  --icon-color-accent:var(--color-primary1);
+}
+
+/* =============================================================================
+   03) SHARED ICON BUTTON BASE
+============================================================================= */
+.ui-icon-button{
+  appearance:none;
+  -webkit-appearance:none;
+  width:var(--control-height-md);
+  height:var(--control-height-md);
+  min-width:var(--control-height-md);
+  min-height:var(--control-height-md);
+  padding:var(--spacing-none);
+  border-radius:var(--shape-icon-button-radius);
+  border:var(--border-width-hairline) solid transparent;
+  background:transparent;
+  color:var(--control-text-unified);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  transition:var(--interaction-transition-control);
+}
+
+/* =============================================================================
+   04) ICON BUTTON STATE STABILITY
+============================================================================= */
+.ui-icon-button:hover{
+  background:var(--control-surface-hover);
+  color:var(--control-text-hover-unified);
+  transform:none;
+}
+
+.ui-icon-button:focus-visible{
+  outline:none;
+  box-shadow:none;
+}
+
+/* =============================================================================
+   05) ICON SIZE UTILITIES
+============================================================================= */
+.ui-icon-xs{width:var(--icon-size-xs);height:var(--icon-size-xs);}
+.ui-icon-sm{width:var(--icon-size-sm);height:var(--icon-size-sm);}
+.ui-icon-md{width:var(--icon-size-md);height:var(--icon-size-md);}
+.ui-icon-lg{width:var(--icon-size-lg);height:var(--icon-size-lg);}
+.ui-icon-xl{width:var(--icon-size-xl);height:var(--icon-size-xl);}
+
+/* =============================================================================
+   06) GENERIC ICON THEME UTILITIES
+============================================================================= */
+.ui-icon-theme-aware,
+img.ui-icon-theme-aware,
+svg.ui-icon-theme-aware,
+.ui-icon-theme-aware img,
+.ui-icon-theme-aware svg,
+.ui-icon-button img,
+.ui-icon-button svg,
+.ui-icon-button [data-ui-icon],
+[data-ui-icon].ui-icon-theme-aware{
+  filter:var(--icon-image-filter) !important;
+  color:var(--icon-color);
+}
+
+.ui-icon-theme-aware-muted,
+img.ui-icon-theme-aware-muted,
+svg.ui-icon-theme-aware-muted,
+.ui-icon-theme-aware-muted img,
+.ui-icon-theme-aware-muted svg,
+[data-ui-icon-muted]{
+  filter:var(--icon-image-filter) !important;
+  color:var(--icon-color-muted);
+}
+
+.ui-icon-theme-aware-accent,
+img.ui-icon-theme-aware-accent,
+svg.ui-icon-theme-aware-accent,
+.ui-icon-theme-aware-accent img,
+.ui-icon-theme-aware-accent svg,
+[data-ui-icon-accent]{
+  filter:var(--icon-image-filter-strong) !important;
+  color:var(--icon-color-accent);
+}
+
+img[src$="/core/identity/trust/verified.svg"]{
+  filter:none !important;
+}
+
+.ui-icon-mask,
+.ui-icon-mask::before,
+.ui-icon-mask::after,
+[data-ui-icon-mask]{
+  background-color:currentColor;
+}
+
+/* =============================================================================
+   07) ICON INTERACTION LOCK
+============================================================================= */
+img[src^="/registry/icons/"],
+img[src*="/registry/icons/"],
+img.ui-icon-theme-aware,
+img.ui-icon-theme-aware-muted,
+img.ui-icon-theme-aware-accent,
+.ui-icon-theme-aware img,
+.ui-icon-theme-aware-muted img,
+.ui-icon-theme-aware-accent img,
+.ui-icon-button img,
+[data-ui-icon] img,
+svg.ui-icon-theme-aware,
+svg.ui-icon-theme-aware-muted,
+svg.ui-icon-theme-aware-accent,
+[data-ui-icon] svg{
+  -webkit-user-drag:none;
+  -webkit-user-select:none;
+  -webkit-touch-callout:none;
+  pointer-events:none;
+  user-select:none;
+}
+
+/* =============================================================================
+   08) GENERIC HOVER HELPERS
+============================================================================= */
+.ui-hover-lift:hover{
+  transform:none;
+}
+
+.ui-hover-lift-strong:hover{
+  transform:none;
+}
+
+.ui-hover-opacity:hover{
+  opacity:var(--hover-opacity-soft);
+}
+
+/* =============================================================================
+   09) END OF FILE
+============================================================================= */

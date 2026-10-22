@@ -4,6 +4,10 @@
 @import url('./shared/close-button.css');
 @import url('./shared/store-surfaces.css');
 @import url('./platform.css');
+@import url('./neuroartan/assets/css/core/01-tokens/editor.tokens.css');
+@import url('./neuroartan/assets/css/core/03-primitives/icons.css');
+@import url('./neuroartan/assets/css/core/03-primitives/slider.css');
+@import url('./neuroartan/assets/css/layers/website/ui/profile-media-editor.css');
 @import url('./neuroartan/assets/css/core/03-primitives/radio-list.css');
 @import url('./neuroartan/assets/css/core/03-primitives/toggle.css');
 @import url('./neuroartan/assets/css/core/03-primitives/dropdown.css');
@@ -78,10 +82,10 @@ html[data-search-open] :is(.studio-header-tools,.site-menu-toggle) { opacity:var
 .studio-billing[open] > summary img { transform:rotate(-90deg); }
 .studio-billing-fields { display:grid; gap:var(--spacing-lg); }
 .studio-billing-fields label { display:grid; gap:var(--spacing-sm); }
-.studio-avatar { position:relative; justify-self:center; inline-size:var(--control-height-lg); block-size:var(--control-height-lg); border-radius:50%; background:var(--control-bg-hover); }
+.studio-avatar { position:relative; justify-self:center; inline-size:var(--profile-portrait-size); block-size:var(--profile-portrait-size); margin-block-start:calc(0px - var(--profile-portrait-header-overlap) - var(--spacing-md)); border-radius:50%; background:var(--control-bg-hover); }
 .studio-avatar > [data-avatar-placeholder] { display:grid; place-items:center; inline-size:100%; block-size:100%; }
-.studio-avatar > img { inline-size:var(--control-height-lg); block-size:var(--control-height-lg); object-fit:cover; border-radius:50%; }
-.studio-photo-action { position:relative; display:grid; place-items:center; inline-size:var(--control-height-md); block-size:var(--control-height-md); border-radius:50%; background:transparent; cursor:pointer; }
+.studio-avatar > img { inline-size:100%; block-size:100%; object-fit:cover; border-radius:50%; }
+.studio-photo-action { position:relative; display:grid; place-items:center; inline-size:var(--control-height-md); block-size:var(--control-height-md); border:0; padding:0; border-radius:50%; background:transparent; cursor:pointer; }
 .studio-photo-action::before { content:''; position:absolute; inline-size:var(--icon-size-lg); block-size:var(--icon-size-lg); border-radius:50%; background:var(--cv-page-bg); }
 .studio-photo-action > .studio-icon { position:relative; }
 .studio-avatar .studio-photo-action { position:absolute; inset-inline-end:0; inset-block-end:0; }

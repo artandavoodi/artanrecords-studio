@@ -1,7 +1,13 @@
 {
   "source": "artandavoodi/website",
-  "revision": "dd328e1c6247eaf199ed52641f9a8f2671613989",
+  "revision": "8bf4f09b9077f10557848240c97d923c45ba1f29",
   "files": {
+    "assets/js/layers/website/ui/profile-media-editor.js": "6fa1dbe0eaeb30a2cfa8522dc89433fd5af46c02a820be6f587d6b278b33567e",
+    "assets/css/layers/website/ui/profile-media-editor.css": "82cca9297ca39f2d3c237b39788caa17009912c8eb40cb0bca5ec1d0a0bc79d4",
+    "assets/css/core/01-tokens/editor.tokens.css": "4010f6f7c1be2b835cb409c68138dbe944fa655f873feafc8f3a9f0f135ce40c",
+    "assets/css/core/03-primitives/icons.css": "01ff955dfdbe0f0e9565096d2b099648b66033810c2e56685f52fca380877774",
+    "assets/css/core/03-primitives/slider.css": "666bf34ca6cfab68a5a326a2ae4c5c831e8e442725fed7eca1a369459f6f1ded",
+    "assets/fragments/layers/website/profile/private/media/profile-media-editor.html": "bf479db7d0a7c3244ad4be51d1918b8494f2929855f6044d468a50f515d7a8ed",
     "assets/data/account/username/username-policy.json": "ce4117e44370290fbcd1b8c663c68313db4efb44db925603aafd12af19d609aa",
     "assets/data/account/username/reserved-usernames.json": "87a8a2824b2b92abe6062aded5d4138c8d04ad97143b77fb508dc3801ea6be3c",
     "assets/js/layers/website/system/account/username/account-username-policy.js": "3b170a6eb9b0304b23799c4053c2ed7c07cc67ae085b5462f8f000b64e9c87eb",
@@ -23,13 +29,18 @@
     "assets/fragments/layers/website/cookie/cookie-consent.html": "7cec3722e13cf12c770954989fd80f244753025264246ac131b4243b722d9a3a",
     "assets/fragments/layers/website/cookie/cookie-learning-overlay.html": "ebd631371b721b39f494fd58a971f7c270e110fd175fc2ac6254b412252461c7",
     "assets/fragments/layers/website/home/platform-menu/settings/appearance/index.html": "e9f57105e965404b890f5fa21ef856b70b101636d00b4acfb2a4bd80a8b67304",
+    "registry/icons/public/assets/core/media/image-add/image-add.svg": "05067499207ffe613c48bd24e29c25c30cacba4ef9edb0ea47b0ee8cd415da40",
+    "registry/icons/public/assets/core/actions/move/move.svg": "e2f3e2bceb09c63d33d3ccf84139cffd177b21895d70b79d4444cd98ff705b47",
+    "registry/icons/public/assets/core/actions/crop/crop.svg": "2e05841554c718ee4101dbc461fe9ce0a74409916f13a8d68a2118b6c61005d6",
+    "registry/icons/public/assets/core/navigation/chevron/chevron-down.svg": "267f15b40d1f468dd67aa683522be1166bed34488003b70181d9f6ab00da01a6",
+    "registry/icons/public/assets/core/actions/reset/reset.svg": "668c7abdf4726e2d1ff4572db11569ea4b5dc21718579bba1acaa9f9d9850433",
+    "registry/icons/public/assets/core/actions/save/save.svg": "a012b9e309780a987176d65c826a2985b5f4dcf9c8c8e2e09fa41f14acf97dc2",
     "registry/icons/public/assets/core/interface/cookies/cookies.svg": "2d9260b8fd642aaf72d428eed614ff92aee24a639154214d3fa19d19cc5bc9e7",
     "registry/icons/public/assets/core/navigation/global/globe.svg": "b4693a9829c4d5915df2546696c3fd0afffe41717b913651970e5fe758036b94",
     "registry/icons/public/assets/core/navigation/direction/back.svg": "78d015c37800e318e22b1afbafdc0f0d5a561e90646ad55d9475898f08cb43d6",
     "registry/icons/public/assets/core/interface/status/essential.svg": "0c44d091d0e18c0b0d02b6b43ddae591cb38fa87528c5c694445c912a93ed406",
     "registry/icons/public/assets/core/interface/navigation/drop-down.svg": "1aa34a52ef2e911b2aac3083a2b1f6931ccf3e0ba62d87e71fba3eeedcf3a1b9",
     "registry/icons/public/assets/layers/website/cookie/categories/cookie-analytics.svg": "28980d3377240defd2a33ac3afdcc464a3aa3fefb8d0f615927c10b0c2b0e6e5",
-    "registry/icons/public/assets/layers/website/cookie/categories/cookie-experience.svg": "f305bf026bd84f0047d481c2c37a805151af0fb58c7bffda32b5f49b11857ec9",
-    "registry/icons/public/assets/core/navigation/chevron/chevron-down.svg": "267f15b40d1f468dd67aa683522be1166bed34488003b70181d9f6ab00da01a6"
+    "registry/icons/public/assets/layers/website/cookie/categories/cookie-experience.svg": "f305bf026bd84f0047d481c2c37a805151af0fb58c7bffda32b5f49b11857ec9"
   }
 }

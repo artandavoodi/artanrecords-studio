@@ -44,6 +44,33 @@ async function openAccount(page){
   await expect(dialog).toBeVisible();
   return dialog;
 }
+test('shared portrait editor crops only after confirmation and preserves the camera size',async({page})=>{
+  await mockBackend(page);
+  await page.addInitScript(()=>{const encode=HTMLCanvasElement.prototype.toBlob;HTMLCanvasElement.prototype.toBlob=function(callback,...args){return encode.call(this,blob=>{window.__testCrop={width:this.width,height:this.height,type:blob?.type};callback(blob);},...args);};});
+  let uploads=0;
+  await page.route('**/storage/v1/object/studio-avatars/**',async route=>{
+    uploads++;expect(route.request().method()).toBe('POST');
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({Key:id+'/avatar'})});
+  });
+  await page.route('**/storage/v1/object/sign/studio-avatars/**',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({signedURL:'/object/sign/studio-avatars/'+id+'/avatar?token=fixture'})}));
+  const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
+  await expect(page.locator('[data-profile-form]')).toBeVisible();
+  const avatar=await page.locator('.studio-avatar').boundingBox(),header=await page.locator('.studio-profile-header').boundingBox();
+  expect(avatar.width).toBeGreaterThan(90);expect(Math.abs(avatar.width-avatar.height)).toBeLessThan(1);expect(avatar.y).toBeLessThan(header.y+header.height);
+  const camera=await page.locator('.studio-avatar .studio-photo-action .studio-icon').boundingBox();expect(camera.width).toBeLessThan(30);
+  await page.getByRole('button',{name:'Change profile photograph',exact:true}).click();
+  const editor=page.getByRole('dialog',{name:'Edit Profile Image',exact:true});await expect(editor).toBeVisible();
+  const titleBox=await editor.getByRole('heading').boundingBox(),closeBox=await editor.getByRole('button',{name:'Close image editor'}).boundingBox();expect(closeBox.x).toBeGreaterThan(titleBox.x+titleBox.width);
+  await editor.getByRole('button',{name:'Close image editor'}).click();expect(uploads).toBe(0);
+  const image=await page.evaluate(()=>{const canvas=document.createElement('canvas');canvas.width=300;canvas.height=180;const c=canvas.getContext('2d');c.fillStyle='#d2691e';c.fillRect(0,0,150,180);c.fillStyle='#006b54';c.fillRect(150,0,150,180);return canvas.toDataURL('image/png').split(',')[1];});
+  await page.locator('[name=photo]').setInputFiles({name:'crop-test.png',mimeType:'image/png',buffer:Buffer.from(image,'base64')});await expect(editor).toBeVisible();
+  await editor.getByRole('slider',{name:'Crop zoom'}).fill('1.8');await editor.getByRole('combobox',{name:'Image filter'}).selectOption('mono');await expect(editor.locator('[data-profile-media-editor-filter-label]')).toHaveText('Mono');
+  expect(uploads).toBe(0);await editor.getByRole('button',{name:'Save',exact:true}).click();await expect(editor).toBeHidden();expect(uploads).toBe(1);await expect(page.locator('[data-profile-status]')).toHaveText('Profile photograph saved privately.');
+  expect(await page.evaluate(()=>window.__testCrop)).toEqual({width:1024,height:1024,type:'image/jpeg'});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
+  await page.getByRole('button',{name:'Change header image',exact:true}).click();await expect(page.getByRole('dialog',{name:'Edit Header Image',exact:true})).toBeVisible();await page.getByRole('button',{name:'Close image editor'}).click();
+  await page.screenshot({path:test.info().outputPath('portrait-over-header.png')});
+});
 test('artist notifications retain decisions and mark only the selected item read',async({page})=>{
  await mockBackend(page);let read=false;
  const notification='95000000-0000-4000-8000-000000000001';
