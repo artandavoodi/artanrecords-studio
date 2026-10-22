@@ -1,9 +1,9 @@
 {
   "source": "artandavoodi/website",
-  "revision": "8bf4f09b9077f10557848240c97d923c45ba1f29",
+  "revision": "4908dbe83b2b9a13033bea5694fa1a8503f3227f",
   "files": {
     "assets/js/layers/website/ui/profile-media-editor.js": "6fa1dbe0eaeb30a2cfa8522dc89433fd5af46c02a820be6f587d6b278b33567e",
-    "assets/css/layers/website/ui/profile-media-editor.css": "82cca9297ca39f2d3c237b39788caa17009912c8eb40cb0bca5ec1d0a0bc79d4",
+    "assets/css/layers/website/ui/profile-media-editor.css": "aa0c478e67baecf9267ce96983a86ce159d14ac00a888d99e1e46aa37124440f",
     "assets/css/core/01-tokens/editor.tokens.css": "4010f6f7c1be2b835cb409c68138dbe944fa655f873feafc8f3a9f0f135ce40c",
     "assets/css/core/03-primitives/icons.css": "01ff955dfdbe0f0e9565096d2b099648b66033810c2e56685f52fca380877774",
     "assets/css/core/03-primitives/slider.css": "666bf34ca6cfab68a5a326a2ae4c5c831e8e442725fed7eca1a369459f6f1ded",
