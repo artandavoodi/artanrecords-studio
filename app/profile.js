@@ -17,26 +17,28 @@ export async function bindProfile({client,config,resolveUser,profileValues,valid
   // Recheck record existence when saving so empty profiles and other tabs are handled correctly.
   if(!form.elements.display_name.value)form.elements.display_name.value=user.user_metadata?.full_name||user.user_metadata?.name||'';
   const avatar=view.querySelector('[data-avatar]'),placeholder=view.querySelector('[data-avatar-placeholder]');
+  const mediaRevision={avatar:0,cover:0};
   const showPhoto=url=>{if(!url)return;avatar.onload=()=>{avatar.hidden=false;placeholder.hidden=true;};avatar.onerror=()=>{avatar.hidden=true;placeholder.hidden=false;};avatar.src=url;};
   showPhoto(googlePhoto(user));
-  try{
+  void (async()=>{try{
     const photos=await client.storage.from('studio-avatars').list(user.id,{limit:10,search:'avatar'});
     if(photos.error)throw photos.error;
     if(photos.data.some(photo=>photo.name==='avatar')){
       const signed=await client.storage.from('studio-avatars').createSignedUrl(user.id+'/avatar',300);
       if(signed.error)throw signed.error;
-      showPhoto(signed.data.signedUrl);
+      if(mediaRevision.avatar===0)showPhoto(signed.data.signedUrl);
     }
-  }catch{ /* Keep the Google photograph or the neutral account placeholder. */ }
+  }catch{ /* Keep the Google photograph or the neutral account placeholder. */ }})();
   form.addEventListener('submit',async event=>{event.preventDefault();const button=form.querySelector('[type="submit"]');button.disabled=true;try{const values=profileValues(new FormData(form));const current=await resolveUser(client);if(current?.id!==user.id)throw Error('Your session changed.');const existing=await client.from('studio_profiles').select('id').eq('id',current.id).maybeSingle();if(existing.error)throw existing.error;const result=existing.data?await client.from('studio_profiles').update(values).eq('id',current.id):await client.from('studio_profiles').insert({id:current.id,...values});if(result.error)throw result.error;status.textContent='Profile saved.';}catch(error){status.textContent=error.message?.includes('HTTPS')?error.message:'Profile could not be saved. Please try again.';}finally{button.disabled=false;}});
   const header=view.querySelector('[data-header-image]');
-  try{const list=await client.storage.from('studio-headers').list(user.id,{search:'header',limit:10});if(!list.error&&list.data.some(file=>file.name==='header')){const signed=await client.storage.from('studio-headers').createSignedUrl(user.id+'/header',300);if(!signed.error){header.src=signed.data.signedUrl;header.hidden=false;}}}catch{/* The empty header remains usable when storage is unavailable. */}
+  void (async()=>{try{const list=await client.storage.from('studio-headers').list(user.id,{search:'header',limit:10});if(!list.error&&list.data.some(file=>file.name==='header')){const signed=await client.storage.from('studio-headers').createSignedUrl(user.id+'/header',300);if(!signed.error&&mediaRevision.cover===0){header.src=signed.data.signedUrl;header.hidden=false;}}}catch{/* The empty header remains usable when storage is unavailable. */}})();
   registerProfileMediaEditorTarget('studio',{
     getCurrentImageUrl:({kind})=>(kind==='cover'?header:avatar).getAttribute('src')||'',
     async save({file,kind}){
       if(!validPhoto(file))throw Error('Edited image exceeds the upload limit.');
       const current=await resolveUser(client);if(current?.id!==user.id)throw Error('Session changed');
       const cover=kind==='cover',bucket=cover?'studio-headers':'studio-avatars',path=current.id+'/'+(cover?'header':'avatar');
+      mediaRevision[cover?'cover':'avatar']++;
       const uploaded=await client.storage.from(bucket).upload(path,file,{upsert:true,contentType:file.type});if(uploaded.error)throw uploaded.error;
       const signed=await client.storage.from(bucket).createSignedUrl(path,300);if(signed.error)throw signed.error;
       if(cover){header.src=signed.data.signedUrl;header.hidden=false;}else showPhoto(signed.data.signedUrl);

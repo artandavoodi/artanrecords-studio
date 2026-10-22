@@ -47,6 +47,8 @@ async function openAccount(page){
 test('shared portrait editor crops only after confirmation and preserves the camera size',async({page})=>{
   await mockBackend(page);
   await page.addInitScript(()=>{const encode=HTMLCanvasElement.prototype.toBlob;HTMLCanvasElement.prototype.toBlob=function(callback,...args){return encode.call(this,blob=>{window.__testCrop={width:this.width,height:this.height,type:blob?.type};callback(blob);},...args);};});
+  let releaseListings;const listingsReady=new Promise(resolve=>{releaseListings=resolve;});
+  await page.route('**/storage/v1/object/list/**',async route=>{await listingsReady;await route.fulfill({status:200,contentType:'application/json',body:'[]'});});
   let uploads=0;
   await page.route('**/storage/v1/object/studio-avatars/**',async route=>{
     uploads++;expect(route.request().method()).toBe('POST');
@@ -60,6 +62,7 @@ test('shared portrait editor crops only after confirmation and preserves the cam
   const camera=await page.locator('.studio-avatar .studio-photo-action .studio-icon').boundingBox();expect(camera.width).toBeLessThan(30);
   await page.getByRole('button',{name:'Change profile photograph',exact:true}).click();
   const editor=page.getByRole('dialog',{name:'Edit Profile Image',exact:true});await expect(editor).toBeVisible();
+  releaseListings();
   const titleBox=await editor.getByRole('heading').boundingBox(),closeBox=await editor.getByRole('button',{name:'Close image editor'}).boundingBox();expect(closeBox.x).toBeGreaterThan(titleBox.x+titleBox.width);
   await editor.getByRole('button',{name:'Close image editor'}).click();expect(uploads).toBe(0);
   const image=await page.evaluate(()=>{const canvas=document.createElement('canvas');canvas.width=300;canvas.height=180;const c=canvas.getContext('2d');c.fillStyle='#d2691e';c.fillRect(0,0,150,180);c.fillStyle='#006b54';c.fillRect(150,0,150,180);return canvas.toDataURL('image/png').split(',')[1];});
