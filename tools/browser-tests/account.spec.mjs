@@ -70,7 +70,8 @@ test('shared portrait editor crops only after confirmation and preserves the cam
   await expect(page.locator('[data-profile-form]')).toBeVisible();
   const avatar=await page.locator('.studio-avatar').boundingBox(),header=await page.locator('.studio-profile-header').boundingBox();
   expect(avatar.width).toBeGreaterThan(90);expect(Math.abs(avatar.width-avatar.height)).toBeLessThan(1);expect(avatar.y).toBeLessThan(header.y+header.height);
-  const camera=await page.locator('.studio-avatar .studio-photo-action .studio-icon').boundingBox();expect(camera.width).toBeLessThan(30);
+  const photoAction=page.getByRole('button',{name:'Change profile photograph',exact:true});await expect(photoAction).not.toHaveClass(/ui-button/);await expect(photoAction).toHaveClass(/profile-media-action/);expect((await photoAction.boundingBox()).width).toBeLessThan(30);
+  const camera=await page.locator('.studio-avatar .studio-photo-action .studio-icon').boundingBox();expect(camera.width).toBeLessThan(30);await expect(photoAction.locator('img')).toHaveClass(/ui-icon-theme-aware/);
   await page.getByRole('button',{name:'Change profile photograph',exact:true}).click();
   const editor=page.getByRole('dialog',{name:'Edit Profile Image',exact:true});await expect(editor).toBeVisible();
   releaseListings();
