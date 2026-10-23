@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/website",
-  "revision": "f61ae0c4b74fe10d49d5f32accabda28905d24c5",
+  "revision": "de941f571ef7d46784c1cf389f2fab77f9fe7af6",
   "files": {
     "assets/css/core/04-systems/notifications.css": "57985e09f5fc774f4d5678b92192dcedbf24efc3feac5a7824ab10bf5f309780",
     "assets/js/core/02-systems/notification-feed.js": "8aa604e9ff3e4041265a818ee4ef083737c6dfced611c7aa4ebdb87effc1a7dc",
@@ -22,6 +22,7 @@
     "registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-security.svg": "a0bf0d55cdc0a10661a6afa6826324d202f8198bcfc6bdf0c57259118b0d2111",
     "assets/js/core/02-systems/theme.js": "5698e16826265da8a02b4df7d149abf273e5c481659373b2672bd70731258e15",
     "assets/js/core/01-foundation/toggle.js": "6097773948c6265680bb2e25a8698d1146deeb3853a6e8e45eb0294a5044ca7a",
+    "assets/js/core/02-systems/magnetic-navigation.js": "9aab4752f6542dc30dd5a4d4e9c603c2d996e7fa3322b1e9b33e5741b4c4de85",
     "assets/js/layers/website/overlays/cookie/cookie-consent.js": "2e4ca3f200e381b4bc555f3f6fe7e1013d4988fd8e91ada38e2d1520fa07403f",
     "assets/css/core/03-primitives/radio-list.css": "ee8a4f19a799bc1d3a45f28e2a16809bde19f01a1bac0f0d6999f963aad13aa0",
     "assets/css/core/03-primitives/toggle.css": "612aa8b0cc31c9554db52d7761b272c68f29840c5aae5ad2c7f5069e9517e541",

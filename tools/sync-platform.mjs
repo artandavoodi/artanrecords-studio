@@ -22,7 +22,7 @@ const files=[
   'registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-appearance.svg',
   'registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-privacy.svg',
   'registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-security.svg',
-  'assets/js/core/02-systems/theme.js','assets/js/core/01-foundation/toggle.js',
+  'assets/js/core/02-systems/theme.js','assets/js/core/01-foundation/toggle.js','assets/js/core/02-systems/magnetic-navigation.js',
   'assets/js/layers/website/overlays/cookie/cookie-consent.js',
   'assets/css/core/03-primitives/radio-list.css','assets/css/core/03-primitives/toggle.css',
   'assets/css/core/03-primitives/dropdown.css','assets/css/core/03-primitives/pickers.css',

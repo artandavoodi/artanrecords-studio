@@ -37,12 +37,13 @@ export async function bindGraphics({client,resolveUser}){
  const form=document.querySelector('[data-graphics-form]');if(!form)return;
  const status=form.querySelector('[data-graphics-status]'),save=form.querySelector('[type=submit]'),fields=form.querySelector('[data-color-fields]'),add=form.querySelector('[data-add-color]'),preview=form.querySelector('[data-logo-preview]');
  save.disabled=true;let owner,pending=null,previewUrl='';
- const show=blob=>{if(previewUrl)URL.revokeObjectURL(previewUrl);previewUrl=URL.createObjectURL(blob);preview.src=previewUrl;preview.hidden=false;};
+ const show=blob=>{if(previewUrl)URL.revokeObjectURL(previewUrl);previewUrl=URL.createObjectURL(blob);preview.src=previewUrl;preview.hidden=false;form.querySelector('[data-logo-empty]').hidden=true;};
+ form.querySelector('[data-choose-logo]').onclick=()=>form.elements.logo.click();
  const append=color=>{
-  const row=document.createElement('label');row.className='studio-color-field';
+  const row=document.createElement('div');row.className='studio-color-field';row.setAttribute('role','group');row.setAttribute('aria-label','Artist colour');
   const picker=document.createElement('input');picker.type='color';picker.value=color;picker.setAttribute('aria-label','Choose artist colour');
-  const hex=document.createElement('input');hex.type='text';hex.value=color;hex.pattern='#[0-9a-fA-F]{6}';hex.maxLength=7;hex.required=true;hex.setAttribute('aria-label','Artist colour hex code');
-  const remove=document.createElement('button');remove.type='button';remove.textContent='Remove colour';remove.onclick=()=>{row.remove();add.disabled=fields.children.length>=config.maxColors;};
+  const hex=document.createElement('input');hex.type='text';hex.className='ui-field';hex.value=color;hex.pattern='#[0-9a-fA-F]{6}';hex.maxLength=7;hex.required=true;hex.setAttribute('aria-label','Artist colour hex code');
+  const remove=document.createElement('button');remove.type='button';remove.className='studio-color-remove';remove.setAttribute('aria-label','Remove colour');remove.title='Remove colour';const image=document.createElement('img');image.src='/app/icons/close.svg';image.alt='';image.className='studio-icon';remove.append(image);remove.onclick=()=>{row.remove();add.disabled=fields.children.length>=config.maxColors;};
   picker.oninput=()=>{hex.value=picker.value;};hex.oninput=()=>{if(/^#[0-9a-f]{6}$/i.test(hex.value))picker.value=hex.value;};row.append(picker,hex,remove);fields.append(row);add.disabled=fields.children.length>=config.maxColors;
  };
  add.onclick=()=>{if(fields.children.length<config.maxColors)append('#000000');};
@@ -54,7 +55,7 @@ export async function bindGraphics({client,resolveUser}){
   save.disabled=false;
   const logo=await client.storage.from('studio-logos').download(owner.id+'/logo');if(!logo.error)show(logo.data);
  }catch(error){status.textContent=error.message;return;}
- form.elements.logo.onchange=async()=>{save.disabled=true;pending=null;try{const file=form.elements.logo.files[0];if(file){pending=await exportLogo(file);show(pending.display);}status.textContent='';}catch(error){status.textContent=error.message;form.elements.logo.value='';}finally{save.disabled=false;}};
+ form.elements.logo.onchange=async()=>{save.disabled=true;pending=null;try{const file=form.elements.logo.files[0];if(file){pending=await exportLogo(file);show(pending.display);form.querySelector('[data-logo-file]').textContent=file.name+' · PNG preview ready';}status.textContent='';}catch(error){status.textContent=error.message;form.elements.logo.value='';}finally{save.disabled=false;}};
  form.onsubmit=async event=>{
   event.preventDefault();save.disabled=true;
   try{

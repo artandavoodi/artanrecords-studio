@@ -52,6 +52,15 @@ async function openAccount(page){
   await expect(dialog).toBeVisible();
   return dialog;
 }
+test('Studio reuses magnetic navigation for drag collapse and reopening',async({page})=>{
+ await page.emulateMedia({reducedMotion:'reduce'});await mockBackend(page);await page.goto('/profile/');
+ const handle=page.getByRole('separator',{name:'Resize navigation',exact:true}),rail=page.locator('.studio-platform-rail');
+ if(!test.info().project.name.endsWith('desktop')){await expect(handle).toBeHidden();return;}
+ await expect(handle).toBeVisible();const maximum=await rail.evaluate(el=>el.getBoundingClientRect().width);
+ let box=await handle.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+100);await page.mouse.down();await page.mouse.move(0,box.y+100,{steps:12});await page.mouse.up();await expect(page.locator('html')).toHaveAttribute('data-studio-rail','closed');
+ box=await handle.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+100);await page.mouse.down();await page.mouse.move(maximum,box.y+100,{steps:12});await page.mouse.up();await expect(page.locator('html')).toHaveAttribute('data-studio-rail','open');
+ await expect(rail.locator('.studio-platform-group a span').first()).toHaveCSS('white-space','nowrap');
+});
 test('artist graphics isolate their tab and save explicit palette visibility',async({page})=>{
  const requests=await mockBackend(page),dialog=await openAccount(page);
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
@@ -60,6 +69,8 @@ test('artist graphics isolate their tab and save explicit palette visibility',as
  const form=page.locator('[data-graphics-form]');await expect(form).toBeVisible();await expect(page.locator('[data-profile-form]')).toBeHidden();
  await form.getByRole('button',{name:'Add colour'}).click();await form.getByLabel('Artist colour hex code').fill('#123456');
  await expect(form.getByLabel('Choose artist colour')).toHaveValue('#123456');
+ await expect(form.locator('.studio-color-field')).toHaveCSS('display','flex');await expect(form.getByRole('button',{name:'Remove colour'})).toHaveText('');
+ if(test.info().project.name==='chromium-desktop')await page.screenshot({path:'/tmp/studio-graphics-refined-proof.png'});
  await form.getByLabel('Share my artist colours').check();await form.getByRole('button',{name:'Save',exact:true}).click();
  await expect(page.locator('.system-save-confirmation')).toHaveText('Graphics saved.');
  expect(requests.find(item=>item.path.endsWith('/rpc/studio_save_artist_graphics')).body).toEqual({colors:['#123456'],share_logo:false,share_palette:true});

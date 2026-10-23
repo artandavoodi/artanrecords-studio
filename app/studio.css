@@ -128,5 +128,16 @@ html[data-theme-effective=dark] .studio-signout .studio-icon { filter:brightness
 [data-logo-preview] { display:block; max-inline-size:100%; inline-size:var(--control-height-xl, 6rem); max-block-size:var(--control-height-xl, 6rem); object-fit:contain; }
 [data-logo-preview][hidden] { display:none; }
 .studio-color-field { display:flex; align-items:center; gap:var(--spacing-md); }
-.studio-color-field input[type=color] { flex:0 0 var(--control-height-md); inline-size:var(--control-height-md); padding:0; }
-.studio-color-field input[type=text] { min-inline-size:0; }
+.studio-logo-field { display:flex; align-items:center; gap:var(--spacing-lg); padding-block:var(--spacing-lg); }
+.studio-logo-field > :is(img,[data-logo-empty]) { flex:none; inline-size:var(--control-height-lg); block-size:var(--control-height-lg); object-fit:contain; }
+.studio-logo-field [data-logo-empty] { display:grid; place-items:center; background:var(--cv-surface); border-radius:var(--radius-md); }
+.studio-logo-field button,.studio-account .studio-color-remove { inline-size:auto; border:0; background:none; padding:var(--spacing-sm); }
+.studio-account .studio-color-remove { flex:none; }
+.studio-account [data-add-color] { justify-self:start; inline-size:auto; border:0; background:none; }
+.studio-color-field input[type=color] { border:0; background:none; cursor:pointer; border-radius:50%; overflow:hidden; }
+.studio-color-field input[type=color]::-webkit-color-swatch-wrapper { padding:0; }
+.studio-color-field input[type=color]::-webkit-color-swatch { border:0; border-radius:50%; }
+.studio-color-field input[type=color]::-moz-color-swatch { border:0; border-radius:50%; }
+.studio-color-field input[type=color] { flex:0 0 var(--control-height-md); inline-size:var(--control-height-md); block-size:var(--control-height-md); min-block-size:var(--control-height-md); padding:0; }
+.studio-color-field input[type=text] { min-inline-size:0; inline-size:12ch; flex:0 1 12ch; }
+.studio-color-field input[type=color] { box-shadow:0 0 0 var(--border-width-hairline) var(--cv-text-secondary); }
