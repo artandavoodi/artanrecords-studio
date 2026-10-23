@@ -49,9 +49,9 @@ The public overview carries SoftwareApplication metadata; private workspace
 routes remain noindex. manifest.webmanifest prepares standalone browser launch;
 there is no offline cache or service worker storing private records.
 
-Prepared is not connected: dedicated Supabase activation, hosted auth verification,
-streaming imports, royalty accounting, payout onboarding and secure signing remain
-required before this can operate as an artist business platform. No balances,
+The approved shared Store identity, private profiles, metadata drafts and selected
+public artist snapshots are connected. Streaming imports, royalty accounting,
+payout onboarding and secure signing remain separate activation gates. No balances,
 streaming totals, signed contracts or payment readiness are simulated.
 
 ## Account Upgrade, October 18, 2026
@@ -65,7 +65,13 @@ manually edit app/shared/. Search indexes public guidance only, not artist recor
 
 Studio-owned application modules are in app/ and backend preparation is in supabase/. The shared label shell remains pinned and checksum-verified. The duplicate body logo is removed; public search, account routes, private profile and release-draft clients, cookie choices and legal notices are implemented locally. Public introduction and legal pages are indexable; workspace routes are not.
 
-No Studio backend is activated: the free-project quota is exhausted and the owner deferred reviewing the Pro purchase. Do not reuse Store/Neuroartan projects or enable registration until a dedicated project, migrations, email delivery, CAPTCHA/rate limits and two-account RLS tests are verified. Phone, Google, Stripe Connect, real financial reporting and digital signature delivery remain inactive. See supabase/README.md for activation and contract-management gates. A build or mock test is not evidence of hosted operational readiness.
+On October 20 the owner approved the existing Store project for shared identity
+and isolated Studio records; Neuroartan remains a separate identity system.
+Google and email account clients use that approved shared configuration. Phone,
+Stripe Connect, financial reporting and digital signatures remain inactive.
+Selected public images were connected on October 23 with hosted isolation tests;
+private buckets were not made public. See supabase/README.md for the exact scope.
+A build or mock test is not evidence of every hosted account or business journey.
 
 Target domain:
 
@@ -73,7 +79,7 @@ Target domain:
 
 ## Purpose
 
-Artan Records Studio is the future authenticated operational platform for accepted artists.
+Artanrecords Studio is the artist account and operational platform under development.
 
 Long-term areas may include:
 

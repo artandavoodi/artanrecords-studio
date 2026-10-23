@@ -1,16 +1,19 @@
 import {artistMetadataEditor} from './metadata-render.mjs';
+import {renderIcon} from './icon-render.mjs';
 import {readFile} from 'node:fs/promises';
 const artistAccount=JSON.parse(await readFile(new URL('../content/artist-account.json',import.meta.url),'utf8'));
 const mediaEditor=await readFile(new URL('./neuroartan/assets/fragments/layers/website/profile/private/media/profile-media-editor.html',import.meta.url),'utf8');
 export function profileMarkup({settings,e,icon}){
+  const camera=renderIcon('camera',e,'studio-icon ui-icon-theme-aware');
   return `<nav class="studio-profile-tabs" aria-label="Artist profile sections"><a href="#profile-details">${icon('account')}Profile</a><a href="#profile-catalogue">${icon('globe')}Links & catalogue</a><a href="#profile-publication">${icon('visibility-on')}Publication</a></nav><div id="profile-details"><section class="studio-account" data-profile-view>
     <p role="status" data-profile-status>Checking your account...</p>
     <div data-profile-guest hidden><a class="ui-button" href="/account/">${icon('signin')}Sign in</a></div>
     <form data-profile-form hidden>
-      <div class="studio-profile-header"><img data-header-image alt="Your artist header" hidden><span class="studio-section-label">${icon('image')}Header image</span><button type="button" class="studio-photo-action" data-open-profile-media="cover" aria-label="Change header image">${icon('camera')}</button><input name="header_photo" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Choose header image" hidden></div>
-      <div class="studio-avatar"><span data-avatar-placeholder>${icon('account')}</span><img data-avatar alt="Your profile photograph" referrerpolicy="no-referrer" hidden><button type="button" class="studio-photo-action" data-open-profile-media="avatar" aria-label="Change profile photograph">${icon('camera')}</button><input name="photo" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Choose profile photograph" hidden></div>
+      <div class="studio-profile-header"><img data-header-image alt="Your artist header" hidden><span class="studio-section-label">${icon('image')}Header image</span><button type="button" class="studio-photo-action profile-media-action profile-media-action--cover" data-open-profile-media="cover" aria-label="Change header image">${camera}</button><input name="header_photo" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Choose header image" hidden></div>
+      <div class="studio-avatar"><span data-avatar-placeholder>${icon('account')}</span><img data-avatar alt="Your profile photograph" referrerpolicy="no-referrer" hidden><button type="button" class="studio-photo-action profile-media-action profile-media-action--avatar" data-open-profile-media="avatar" aria-label="Change profile photograph">${camera}</button><input name="photo" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Choose profile photograph" hidden></div>
       ${settings.profileFields.map(field=>`<label><span>${e(field.label)}</span><input name="${e(field.name)}" type="${e(field.type||'text')}" autocomplete="${e(field.autocomplete)}" maxlength="${field.max}"></label>`).join('')}
       <label><span>Biography</span><textarea name="biography" maxlength="2000" rows="4"></textarea></label>
+      <fieldset data-media-visibility disabled><legend>Catalogue images</legend><label class="studio-sharing"><input type="checkbox" data-public-media="avatar"><span>Show my portrait on my public artist page</span></label><label class="studio-sharing"><input type="checkbox" data-public-media="cover"><span>Show my header on my public artist page</span></label><p class="studio-field-note">Only your cropped images are shared. Save your profile to apply these choices. Hiding your artist page blocks new public downloads.</p></fieldset>
       <label><span>Account email (private)</span><input data-profile-email type="email" readonly autocomplete="email"></label><p data-verification></p>
       <label><span>Phone number (private)</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel"></label><button type="button" data-verify-phone>${icon('check')}Verify number</button><p data-phone-status role="status"></p>
       <button type="submit">${icon('check')}${e(settings.labels.save)}</button>

@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 import {dirname} from 'node:path';
 const source='../website';
 const files=[
+  'assets/css/core/03-primitives/profile-media-action.css',
   'assets/js/core/02-systems/toast.js',
   'assets/css/core/04-systems/toast.css',
   'assets/js/layers/website/ui/profile-media-editor.js',

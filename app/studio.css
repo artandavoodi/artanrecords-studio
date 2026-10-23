@@ -1,5 +1,6 @@
 /* Pinned Store owners. Do not edit generated distributions in app/shared. */
 @import url('./neuroartan/assets/css/core/04-systems/toast.css');
+@import url('./neuroartan/assets/css/core/03-primitives/profile-media-action.css');
 @import url('./shared/buttons.css');
 @import url('./shared/password-field.css');
 @import url('./shared/close-button.css');
@@ -60,7 +61,7 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 .studio-account .studio-signout { background:var(--layout-home-featured-functions-card-spectrum-orange); color:var(--color-black); }
 .studio-account .studio-signout img { filter:brightness(0); }
 .studio-account button:disabled { opacity:var(--state-opacity-low); cursor:not-allowed; }
-.studio-account button:hover:not(:disabled),.studio-account button:focus-visible { opacity:var(--hover-opacity-strong); outline:none; }
+.studio-account button:not(.studio-photo-action):hover:not(:disabled),.studio-account button:not(.studio-photo-action):focus-visible { opacity:var(--hover-opacity-strong); outline:none; }
 .studio-auth-tabs { display:grid; gap:var(--spacing-md); }
 .studio-account .studio-auth-tabs button { background:transparent; padding-inline:0; }
 .studio-auth-tabs [aria-pressed=false] { opacity:var(--opacity-muted); }
@@ -87,10 +88,6 @@ html[data-search-open] :is(.studio-header-tools,.site-menu-toggle) { opacity:var
 .studio-avatar { position:relative; justify-self:center; inline-size:var(--profile-portrait-size); block-size:var(--profile-portrait-size); margin-block-start:calc(0px - var(--profile-portrait-header-overlap) - var(--spacing-md)); border-radius:50%; background:var(--control-bg-hover); }
 .studio-avatar > [data-avatar-placeholder] { display:grid; place-items:center; inline-size:100%; block-size:100%; }
 .studio-avatar > img { inline-size:100%; block-size:100%; object-fit:cover; border-radius:50%; }
-.studio-photo-action { position:relative; display:grid; place-items:center; inline-size:var(--control-height-md); block-size:var(--control-height-md); border:0; padding:0; border-radius:50%; background:transparent; cursor:pointer; }
-.studio-photo-action::before { content:''; position:absolute; inline-size:var(--icon-size-lg); block-size:var(--icon-size-lg); border-radius:50%; background:var(--cv-page-bg); }
-.studio-photo-action > .studio-icon { position:relative; }
-.studio-avatar .studio-photo-action { position:absolute; inset-inline-end:0; inset-block-end:0; }
 .studio-metadata { margin-block-start:var(--spacing-xl); }
 .studio-metadata details > summary { display:flex; align-items:center; justify-content:space-between; gap:var(--spacing-md); padding-block:var(--spacing-lg); cursor:pointer; list-style:none; }
 .studio-metadata summary::-webkit-details-marker { display:none; }
@@ -100,12 +97,10 @@ html[data-search-open] :is(.studio-header-tools,.site-menu-toggle) { opacity:var
 .studio-metadata fieldset { min-inline-size:0; margin:0; padding:var(--spacing-lg) 0; border:0; border-block-start:var(--border-width-hairline) solid var(--cv-border); }
 .studio-metadata .studio-sharing { font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); margin-block-start:var(--spacing-sm); }
 .studio-photo-action input { position:absolute; inline-size:1px; block-size:1px; opacity:0; }
-.studio-photo-action:focus-within { background:var(--control-bg-hover); }
 .studio-section-label { display:flex; align-items:center; gap:var(--spacing-sm); }
 .studio-profile-header { position:relative; aspect-ratio:3/1; border-radius:var(--account-field-radius); background:var(--control-bg-hover); overflow:hidden; display:grid; place-items:center; }
 .studio-profile-header > img { position:absolute; inset:0; inline-size:100%; block-size:100%; object-fit:cover; }
 .studio-profile-header > img:not([hidden]) + span { visibility:hidden; }
-.studio-profile-header .studio-photo-action { position:absolute; inset-inline-end:var(--spacing-sm); inset-block-end:var(--spacing-sm); }
 .studio-profile-help { font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 .studio-profile-help summary { cursor:pointer; list-style:none; }
 .studio-profile-help summary::-webkit-details-marker { display:none; }

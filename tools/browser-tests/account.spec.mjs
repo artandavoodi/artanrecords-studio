@@ -29,6 +29,7 @@ async function mockBackend(page){
     else if(url.pathname.endsWith('/rpc/studio_username_check'))body='available';
     else if(url.pathname.endsWith('/rpc/studio_request_username')){handle={requested_username:request.postDataJSON().candidate,approved_username:null,status:'pending',notice:'Your username is awaiting label review.'};body=null;}
     else if(url.pathname.endsWith('/rpc/studio_apply_partnership')){application={requested_tier:request.postDataJSON().tier,approved_tier:null,status:'pending',decision_note:''};body=null;}
+    else if(url.pathname.endsWith('/rpc/studio_set_artist_media_visibility'))body=null;
     else if(url.pathname.includes('/rest/v1/studio_')){body=request.method()==='GET'?[]:null;status=request.method()==='POST'?201:200;}
     else if(url.pathname.includes('/storage/v1/object/list/'))body=[];
     else throw Error('Unexpected mocked request: '+url.pathname);

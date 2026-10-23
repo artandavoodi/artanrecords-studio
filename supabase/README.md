@@ -8,10 +8,27 @@ owner-only reads/updates, immutable ownership, schema constraints and anonymous
 denial, including rows with requested public visibility. All synthetic fixtures
 were rolled back. These are private records, not direct publishing or distribution.
 `content/metadata.json` owns field definitions and publication allowlists.
-`tools/export-catalogue.mjs` is an owner-run, documented-review export; it never
-updates a public catalogue automatically. Visibility changes to already published
-material need a coordinated catalogue update. No account email, phone, billing,
-private listening references or contributor legal-name records are exported.
+`tools/export-catalogue.mjs` remains an owner-run, documented-review export for
+catalogue drafts. Separately, approved artist pages use `studio_artist_pages`:
+selected profile fields refresh on save after first publication and username
+approval. Release drafts are not automatically published. No account email,
+phone, billing, private listening references or contributor legal names are exported.
+
+### Selected artist images, October 23, 2026
+
+Store-owned `202610230001_artist_media_publication.sql` was applied to the shared
+project. Owner-only `studio_artist_media` preferences default to private. A public
+snapshot projects a portrait/header path only when that artist selected it and
+the corresponding object exists. The buckets remain private. Anonymous reads
+allow only get operations for paths in an existing published snapshot, never
+bucket listing or signing operations. Public pages fetch those selected images
+with the publishable key and `cache: no-store`; no service credential is shipped.
+Saving an image refreshes an existing publication, never first-publishes a page.
+Withdrawal/unpublishing blocks new downloads; previously downloaded copies cannot
+be recalled. Hosted rollback-only tests verified isolation, explicit publication,
+selected reads, listing denial, withdrawal and unpublishing. The selected founder
+portrait was also retrieved through the anonymous Storage API and displayed in
+the local public catalogue. No header was fabricated where no upload existed.
 
 On 2026-10-20 the owner approved reusing the existing Store Supabase project.
 No project, organization, customer record or existing service was removed or
