@@ -280,6 +280,8 @@ html:has(main[data-fragment="artist"]) body { isolation: isolate; }
 html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior: auto; overscroll-behavior-y: none; background: var(--cv-page-bg); }
 .artist-profile > section { display: grid; align-content: center; gap: var(--spacing-xl); box-sizing: border-box; padding-block: var(--cv-page-padding-block); }
 .artist-profile [data-artist-since] { display:flex; gap:var(--spacing-sm); margin:0; }
+.artist-profile .artist-connections { align-content:start; justify-content:start; justify-items:start; gap:var(--spacing-lg); }
+.artist-profile .artist-connections.information-links { display:flex; flex-wrap:wrap; align-items:center; }
 .artist-profile [data-artist-portrait] { display:grid; place-items:center; inline-size:calc(var(--control-height-lg) * 2); aspect-ratio:1; border-radius:var(--radius-circle); background:var(--control-bg); }
 .artist-profile [data-artist-portrait] img { inline-size:var(--icon-size-lg); block-size:var(--icon-size-lg); }
 /* One composited surface keeps artwork and matte on identical viewport bounds. */
