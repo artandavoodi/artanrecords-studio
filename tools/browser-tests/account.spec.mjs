@@ -9,7 +9,7 @@ async function mockBackend(page){
   let artistMetadata=null,handle=null,application=null;const drafts=new Map(),concerts=new Map();
   await page.route('https://hahtbepdrjkjluhespbs.supabase.co/**',async route=>{
     const request=route.request(),url=new URL(request.url());
-    requests.push({path:url.pathname,query:url.search,body:request.postDataJSON(),method:request.method()});
+    requests.push({path:url.pathname,query:url.search,body:request.headers()['content-type']?.includes('application/json')?request.postDataJSON():null,method:request.method()});
     let body={},status=200;
     if(url.pathname.endsWith('/user'))body=user;
     else if(url.pathname.endsWith('/token')||url.pathname.endsWith('/verify'))body=session;
@@ -35,8 +35,10 @@ async function mockBackend(page){
     else if(url.pathname.endsWith('/rpc/studio_request_username')){handle={requested_username:request.postDataJSON().candidate,approved_username:null,status:'pending',notice:'Your username is awaiting label review.'};body=null;}
     else if(url.pathname.endsWith('/rpc/studio_apply_partnership')){application={requested_tier:request.postDataJSON().tier,approved_tier:null,status:'pending',decision_note:''};body=null;}
     else if(url.pathname.endsWith('/rpc/studio_set_artist_media_visibility'))body=null;
+    else if(url.pathname.endsWith('/rpc/studio_save_artist_graphics'))body=null;
     else if(url.pathname.includes('/rest/v1/studio_')){body=request.method()==='GET'?[]:null;status=request.method()==='POST'?201:200;}
     else if(url.pathname.includes('/storage/v1/object/list/'))body=[];
+    else if(url.pathname.includes('/storage/v1/object/studio-logos/')){status=request.method()==='GET'?404:200;body=request.method()==='GET'?{message:'Not found'}:{Key:'logo'};}
     else throw Error('Unexpected mocked request: '+url.pathname);
     await route.fulfill({status,contentType:'application/json',body:status===204?undefined:JSON.stringify(body)});
   });
@@ -50,6 +52,31 @@ async function openAccount(page){
   await expect(dialog).toBeVisible();
   return dialog;
 }
+test('artist graphics isolate their tab and save explicit palette visibility',async({page})=>{
+ const requests=await mockBackend(page),dialog=await openAccount(page);
+ await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+ await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.getByRole('tab',{name:'Graphics',exact:true}).click();
+ const form=page.locator('[data-graphics-form]');await expect(form).toBeVisible();await expect(page.locator('[data-profile-form]')).toBeHidden();
+ await form.getByRole('button',{name:'Add colour'}).click();await form.getByLabel('Artist colour hex code').fill('#123456');
+ await expect(form.getByLabel('Choose artist colour')).toHaveValue('#123456');
+ await form.getByLabel('Share my artist colours').check();await form.getByRole('button',{name:'Save',exact:true}).click();
+ await expect(page.locator('.system-save-confirmation')).toHaveText('Graphics saved.');
+ expect(requests.find(item=>item.path.endsWith('/rpc/studio_save_artist_graphics')).body).toEqual({colors:['#123456'],share_logo:false,share_palette:true});
+ await expect(page.locator('body')).toHaveJSProperty('scrollWidth',await page.locator('body').evaluate(node=>node.clientWidth));
+});
+test('artist logos reject active SVG and export safe artwork without distortion',async({page})=>{
+ const requests=await mockBackend(page),dialog=await openAccount(page);
+ await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+ await expect(page.locator('[data-profile-form]')).toBeVisible();await page.getByRole('tab',{name:'Graphics',exact:true}).click();
+ const form=page.locator('[data-graphics-form]'),input=form.locator('[name=logo]');
+ await input.setInputFiles({name:'unsafe.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>')});
+ await expect(form.locator('[data-graphics-status]')).toContainText('vector shapes only');
+ await input.setInputFiles({name:'fixture.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100"><rect x="20" y="20" width="100" height="50" fill="black"/></svg>')});
+ await expect(form.locator('[data-logo-preview]')).toBeVisible();await expect(form.locator('[data-logo-preview]')).toHaveJSProperty('naturalWidth',200);await expect(form.locator('[data-logo-preview]')).toHaveJSProperty('naturalHeight',100);
+ await form.getByRole('button',{name:'Save',exact:true}).click();await expect(page.locator('.system-save-confirmation')).toHaveText('Graphics saved.');
+ expect(requests.filter(item=>item.method==='POST'&&item.path.includes('/object/studio-logos/')).map(item=>item.path.split('/').at(-1))).toEqual(['source','logo']);
+});
 test('profile saves show shared feedback and text fields resize only vertically',async({page})=>{
   await mockBackend(page);
   const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
@@ -147,7 +174,7 @@ test('artist notifications retain decisions and mark only the selected item read
  const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
  const trigger=page.getByRole('button',{name:'Notifications, 1 unread',exact:true});await expect(trigger).toBeVisible();await trigger.click();
  const notices=page.getByRole('dialog',{name:'Notifications',exact:true});await expect(notices).toContainText('Your username is approved.');await notices.getByRole('button',{name:'Mark as read',exact:true}).click();
- await expect(page.getByRole('button',{name:'Notifications',exact:true})).toBeVisible();await expect(notices).toContainText('Your username is approved.');await expect(notices.getByRole('button',{name:'Mark as read'})).toHaveCount(0);
+ await expect(page.getByRole('button',{name:'Notifications',exact:true})).toBeVisible();await expect(notices).not.toContainText('Your username is approved.');await notices.getByRole('button',{name:'History',exact:true}).click();await expect(notices).toContainText('Your username is approved.');await expect(notices.getByRole('button',{name:'Mark as read'})).toHaveCount(0);
 });
 test('search keeps branded close controls and focuses typing immediately',async({page})=>{
   await mockBackend(page);

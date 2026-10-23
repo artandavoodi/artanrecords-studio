@@ -1,0 +1,10 @@
+{
+  "title": "Graphics",
+  "notice": "Choose a transparent PNG or a self-contained SVG, up to 2 MB and 8192 pixels per side. Your original stays private. Public display uses a PNG export and requires an approved, published artist page.",
+  "paletteLabel": "Artist colours",
+  "paletteNotice": "Choose up to five colours. Enter a six-digit hex code or use your browser’s colour picker.",
+  "maxBytes": 2097152,
+  "maxDimension": 8192,
+  "exportDimension": 1024,
+  "maxColors": 5
+}

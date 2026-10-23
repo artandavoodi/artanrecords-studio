@@ -1,7 +1,9 @@
 import {googlePhoto} from './metadata-values.js';
+import {bindGraphics} from './graphics.js';
 import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
 import {registerProfileMediaEditorTarget,openProfileMediaEditor} from './neuroartan/assets/js/layers/website/ui/profile-media-editor.js';
 export async function bindProfile({client,config,resolveUser,profileValues,validPhoto}){
+  void bindGraphics({client,resolveUser});
   const view=document.querySelector('[data-profile-view]');if(!view)return;
   const status=view.querySelector('[data-profile-status]'),form=view.querySelector('form'),guest=view.querySelector('[data-profile-guest]');
   form.elements.phone.readOnly=false;

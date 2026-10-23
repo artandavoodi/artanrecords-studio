@@ -281,7 +281,7 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile > section { display: grid; align-content: center; gap: var(--spacing-xl); box-sizing: border-box; padding-block: var(--cv-page-padding-block); }
 [data-public-artist][hidden] { display:none; }
 .artist-profile [data-artist-since] { display:flex; gap:var(--spacing-sm); margin:0; font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
-.artist-profile .artist-connections { align-content:start; justify-content:start; justify-items:start; gap:var(--spacing-lg); }
+.artist-profile .artist-connections { align-content:start; justify-content:start; gap:var(--spacing-lg); }
 .artist-profile .artist-connections.information-links { display:flex; flex-wrap:wrap; align-items:center; }
 .artist-profile [data-artist-portrait] { position:relative; display:grid; place-items:center; inline-size:calc(var(--control-height-lg) * 3); aspect-ratio:1; border:0; border-radius:var(--radius-circle); background:var(--control-bg); }
 .artist-profile [data-artist-portrait] img { inline-size:100%; block-size:100%; border-radius:inherit; object-fit:cover; }
@@ -295,7 +295,7 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-concerts > h2 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
 .artist-profile [data-artist-fields] p { margin:0; font-size:var(--site-type-body-size); line-height:var(--line-height-body); }
 .artist-profile .artist-connections { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); inline-size:100%; align-items:start; }
-.artist-profile .artist-link-group { justify-items:start; gap:var(--spacing-md); min-inline-size:0; }
+.artist-profile .artist-link-group { justify-items:stretch; gap:var(--spacing-md); min-inline-size:0; }
 .artist-profile .artist-link-group .hub__group-links { justify-content:flex-start; }
 .artist-concerts article { display:grid; gap:var(--spacing-sm); padding-block:var(--spacing-lg); border-block-start:var(--border-width-hairline) solid var(--cv-border); }
 .artist-concerts article :is(h3,p) { margin:0; }
@@ -327,3 +327,7 @@ html:not([data-enhanced]) .site-menu__surface { min-block-size: auto; padding-bl
 html:not([data-enhanced]) .site-menu__links { display: flex; flex-wrap: wrap; }
 html:not([data-enhanced]) .site-menu__links a { font-size: var(--site-type-body-size); }
 a { text-decoration:none; }
+[data-artist-graphics] { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-md); }
+[data-artist-logo] img { max-inline-size:100%; max-block-size:var(--site-header-height); object-fit:contain; }
+[data-artist-palette] { display:flex; gap:var(--spacing-xs); }
+[data-artist-palette] span { inline-size:var(--spacing-lg); block-size:var(--spacing-lg); border-radius:50%; border:1px solid currentColor; }
