@@ -21,6 +21,10 @@ document.querySelectorAll('[data-signout]').forEach(button=>{button.classList.ad
 let client=null;
 try{if(configured(config))client=createClient(config.supabase.url,config.supabase.publishableKey,{auth:{storageKey:'artanrecords-studio-auth',storage:sessionStorage,flowType:'pkce',detectSessionInUrl:false}});}catch(error){console.error('[studio] Backend configuration rejected');}
 const context={client,config,resolveUser,profileValues,validPhoto};
+document.querySelectorAll('[data-reset-password]').forEach(button=>button.addEventListener('click',async()=>{
+  const status=document.querySelector('[data-security-status]');button.disabled=true;
+  try{const user=client&&await resolveUser(client);if(!user)throw Error();const result=await client.auth.resetPasswordForEmail(user.email,{redirectTo:location.origin+'/account/?flow=recovery'});if(result.error)throw result.error;status.textContent='Check your email for a password reset link.';}catch{status.textContent='A reset link could not be requested. Sign in and try again.';}finally{button.disabled=false;}
+}));
 bindPlatform(context);
 const callback=readAccountCallback(new URL(location.href));
 const accountCallback=Boolean(callback.code||callback.token||callback.error);

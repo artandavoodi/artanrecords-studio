@@ -150,7 +150,8 @@ test('sign-in opens a private profile and sign-out does not revoke other applica
   await expect(page.locator('[data-profile-status]')).toHaveText('Profile saved.');
   const save=requests.find(request=>request.path.endsWith('/studio_profiles')&&request.method==='POST');
   expect(save.body.id).toBe(id);expect(save.body.artist_name).toBe('Test artist');expect(save.body.role).toBeUndefined();
-  await page.locator('[data-profile-form] [data-signout]').click();
+  await page.goto('/settings/#security');
+  await page.locator('[data-settings-panel="security"] [data-signout]').click();
   await expect(page).toHaveURL(/\/account\/$/);
   expect(requests.find(request=>request.path.endsWith('/logout')).query).toContain('scope=local');
 });
