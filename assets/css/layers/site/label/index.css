@@ -285,13 +285,14 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile .artist-connections.information-links { display:flex; flex-wrap:wrap; align-items:center; }
 .artist-profile [data-artist-portrait] { position:relative; display:grid; place-items:center; inline-size:calc(var(--control-height-lg) * 3); aspect-ratio:1; border:0; border-radius:var(--radius-circle); background:var(--control-bg); }
 .artist-profile [data-artist-portrait] img { inline-size:100%; block-size:100%; border-radius:inherit; object-fit:cover; }
-.artist-profile [data-artist-header]:has(img) { position:absolute; inset:0; z-index:-1; overflow:hidden; border:0; }
+.artist-profile [data-artist-header]:has(img) { position:absolute; inset-block:calc(0px - var(--site-header-height)) 0; inset-inline:calc((100% - 100vw) / 2); z-index:-1; overflow:hidden; border:0; }
 .artist-profile [data-artist-header] img { inline-size:100%; block-size:100%; object-fit:cover; }
 .artist-profile [data-artist-header]:has(img)::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,color-mix(in srgb,var(--cv-page-bg) 35%,transparent),var(--cv-page-bg)); }
 .artist-profile [data-artist-header]:empty { display:none; }
 .artist-profile [data-artist-fields] { display:grid; gap:var(--spacing-lg); inline-size:min(100%,var(--cv-reading-width)); }
 .artist-profile [data-artist-fields] section { display:grid; gap:var(--spacing-sm); }
-.artist-profile [data-artist-fields] h2,.artist-link-group h2,.artist-concerts > h2 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
+.artist-profile [data-artist-fields] h2,.artist-link-group h2 { margin:0; font-size:var(--site-type-caption-size); font-weight:var(--font-weight-medium); color:var(--cv-text-secondary); }
+.artist-concerts > h2 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
 .artist-profile [data-artist-fields] p { margin:0; font-size:var(--site-type-body-size); line-height:var(--line-height-body); }
 .artist-profile .artist-connections { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); inline-size:100%; align-items:start; }
 .artist-profile .artist-link-group { justify-items:start; gap:var(--spacing-md); min-inline-size:0; }
