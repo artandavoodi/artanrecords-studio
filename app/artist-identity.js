@@ -15,7 +15,7 @@ export async function bindArtistIdentity({client,config,resolveUser}){
   approved=response.data?.approved_username||null;notice.textContent=(approved?'Username approved. ':'')+(response.data?.notice||'Choose a username for label review.');notice.dataset.approved=String(Boolean(approved));
   if(response.data)input.value=response.data.requested_username;
   input.readOnly=Boolean(approved);form.querySelector('button').disabled=Boolean(approved);publish.disabled=!approved;
-  if(approved){link.href='https://artanrecords.com/artists/profile/?username='+encodeURIComponent(approved);const page=await client.from('studio_artist_pages').select('username').eq('username',approved).maybeSingle();if(page.error)throw Error('The public page status could not be checked.');link.hidden=!page.data;hide.disabled=!page.data;}
+  if(approved){link.href='https://artanrecords.com/artists/'+encodeURIComponent(approved)+'/';const page=await client.from('studio_artist_pages').select('username').eq('username',approved).maybeSingle();if(page.error)throw Error('The public page status could not be checked.');link.hidden=!page.data;hide.disabled=!page.data;}
  };
  try{await refresh();}catch(error){notice.textContent=error.message;form.querySelector('button').disabled=true;return;}
  input.addEventListener('input',()=>{

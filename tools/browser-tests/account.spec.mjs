@@ -44,6 +44,16 @@ async function openAccount(page){
   await expect(dialog).toBeVisible();
   return dialog;
 }
+test('profile saves show shared feedback and text fields resize only vertically',async({page})=>{
+  await mockBackend(page);
+  const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
+  const form=page.locator('[data-profile-form]');await expect(form).toBeVisible();
+  await expect(form.locator('textarea')).toHaveCSS('resize','vertical');
+  await expect(form.locator('[data-signout],[data-reset-password]')).toHaveCount(0);
+  await form.locator('[name=artist_name]').fill('Test artist');
+  await form.locator('[type=submit]').click();
+  const feedback=page.locator('.system-save-confirmation');await expect(feedback).toHaveText('Profile saved.');await expect(feedback).toHaveAttribute('data-visible','true');await expect(feedback).toHaveAttribute('data-visible','false',{timeout:6500});
+});
 test('shared portrait editor crops only after confirmation and preserves the camera size',async({page})=>{
   await mockBackend(page);
   await page.addInitScript(()=>{const encode=HTMLCanvasElement.prototype.toBlob;HTMLCanvasElement.prototype.toBlob=function(callback,...args){return encode.call(this,blob=>{window.__testCrop={width:this.width,height:this.height,type:blob?.type};callback(blob);},...args);};});

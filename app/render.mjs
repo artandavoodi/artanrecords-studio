@@ -20,7 +20,7 @@ export async function renderHead(){
 if(programmes.referrals.enabled||programmes.payments.enabled||programmes.royaltyWithdrawals.enabled)throw Error('Programme activation requires verified backend implementation');
 export async function render(page,{config,e,search}){
   const icon=name=>renderIcon(name,e);
-  const header=`<header><h1>${e(page.heading||page.title)}</h1><p class="reading">${e(page.description)}</p></header>`;
+  const header=page.path==='/profile/'?`<h1 class="sr-only">${e(page.heading||page.title)}</h1>`:`<header><h1>${e(page.heading||page.title)}</h1><p class="reading">${e(page.description)}</p></header>`;
   let body='';
   if(page.path==='/account/')body=`<div class="studio-hero-actions"><button class="ui-button" type="button" data-studio-account-open>${icon('signin')}Sign in</button><a href="/profile/">Manage your profile</a></div>`;
   else if(page.path==='/profile/')body=profileMarkup({settings,e,icon});

@@ -1,4 +1,5 @@
 /* Pinned Store owners. Do not edit generated distributions in app/shared. */
+@import url('./neuroartan/assets/css/core/04-systems/toast.css');
 @import url('./shared/buttons.css');
 @import url('./shared/password-field.css');
 @import url('./shared/close-button.css');
@@ -37,7 +38,7 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 .studio-notifications time { font-size:var(--text-caption-size); color:var(--cv-text-secondary); }
 [data-studio-notifications][data-unread=true] { color:var(--color-primary7); }
 [data-studio-notifications] { position:relative; }
-[data-studio-notification-count] { position:absolute; inset-block-start:0; inset-inline-end:0; display:grid; place-items:center; min-inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); padding-inline:var(--spacing-xs); border-radius:var(--radius-circle); font-size:var(--text-caption-size); line-height:1; background:var(--color-primary7); color:var(--cv-page-bg); }
+[data-studio-notification-count] { position:absolute; inset-block-start:0; inset-inline-end:0; display:grid; place-items:center; min-inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); padding-inline:var(--spacing-xs); border-radius:var(--radius-circle); font-size:var(--text-caption-size); line-height:1; background:var(--color-primary7); color:var(--color-white); }
 .studio-footer { inline-size:100%; padding-block:var(--spacing-lg); border-block-start:var(--border-width-hairline) solid var(--cv-border); color:var(--cv-text-secondary); text-align:center; font-size:var(--site-type-caption-size); }
 .studio-footer p { margin:0; }
 .studio-header-control { display:grid; place-items:center; inline-size:var(--control-height-sm); block-size:var(--control-height-sm); border:0; padding:0; background:transparent; cursor:pointer; }
@@ -53,6 +54,7 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 .studio-account label { display:grid; gap:var(--account-content-gap-xs); }
 .studio-account :is(input:not([type=checkbox]):not([type=file]),textarea,select) { inline-size:100%; box-sizing:border-box; }
 .studio-account textarea.ui-field { padding-block:var(--spacing-md); }
+.studio-account textarea { resize:vertical; max-inline-size:100%; }
 .studio-account a { text-decoration:none; font-weight:inherit; }
 .studio-account .ui-password-field__toggle { padding:0; min-block-size:var(--password-field-toggle-size); background:transparent; }
 .studio-account .studio-signout { background:var(--layout-home-featured-functions-card-spectrum-orange); color:var(--color-black); }
@@ -108,6 +110,8 @@ html[data-search-open] :is(.studio-header-tools,.site-menu-toggle) { opacity:var
 .studio-profile-help summary { cursor:pointer; list-style:none; }
 .studio-profile-help summary::-webkit-details-marker { display:none; }
 .studio-profile-actions { display:flex; flex-wrap:wrap; gap:var(--spacing-sm); }
+.studio-profile-tabs { display:flex; flex-wrap:wrap; gap:var(--spacing-lg); margin-block-end:var(--spacing-xl); }
+:is(#profile-details,#profile-catalogue,#profile-publication) { scroll-margin-block-start:var(--site-header-height); }
 .studio-identity { margin-block-start:var(--spacing-xl); }
 html[data-theme-effective=dark] :is(.studio-icon:not([src$='/google.svg']),.ui-password-field__toggle-icon,.privacy-preferences img,.search-arrival-icon) { filter:brightness(0) invert(1); }
 html[data-theme-effective=dark] .studio-signout .studio-icon { filter:brightness(0); }

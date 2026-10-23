@@ -97,6 +97,7 @@
         "fields": [
           {
             "name": "apple_music",
+            "icon": "apple_music",
             "label": "Apple Music",
             "type": "url",
             "hosts": [
@@ -105,6 +106,7 @@
           },
           {
             "name": "spotify",
+            "icon": "spotify",
             "label": "Spotify",
             "type": "url",
             "hosts": [
@@ -113,6 +115,7 @@
           },
           {
             "name": "youtube_music",
+            "icon": "youtube_music",
             "label": "YouTube Music",
             "type": "url",
             "hosts": [
@@ -131,6 +134,7 @@
           },
           {
             "name": "deezer",
+            "icon": "deezer",
             "label": "Deezer",
             "type": "url",
             "hosts": [
@@ -140,6 +144,7 @@
           },
           {
             "name": "tidal",
+            "icon": "tidal",
             "label": "TIDAL",
             "type": "url",
             "hosts": [
@@ -156,6 +161,7 @@
           },
           {
             "name": "soundcloud",
+            "icon": "soundcloud",
             "label": "SoundCloud",
             "type": "url",
             "hosts": [
@@ -171,6 +177,7 @@
         "fields": [
           {
             "name": "instagram",
+            "icon": "instagram",
             "label": "Instagram",
             "type": "url",
             "hosts": [
@@ -179,6 +186,7 @@
           },
           {
             "name": "youtube",
+            "icon": "youtube",
             "label": "YouTube channel",
             "type": "url",
             "hosts": [
@@ -187,6 +195,7 @@
           },
           {
             "name": "tiktok",
+            "icon": "tiktok",
             "label": "TikTok",
             "type": "url",
             "hosts": [
@@ -195,6 +204,7 @@
           },
           {
             "name": "facebook",
+            "icon": "facebook",
             "label": "Facebook",
             "type": "url",
             "hosts": [
@@ -203,6 +213,7 @@
           },
           {
             "name": "x",
+            "icon": "x",
             "label": "X",
             "type": "url",
             "hosts": [

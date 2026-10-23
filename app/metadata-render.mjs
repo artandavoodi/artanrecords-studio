@@ -7,7 +7,8 @@ export function metadataField(field,e,share=false){
   if(field.type==='textarea')control=`<textarea class="ui-field" ${common} rows="4"></textarea>`;
   else if(field.type==='select')control=`<select class="ui-field" ${common}>${field.options.map(value=>`<option value="${e(value)}">${e(value)}</option>`).join('')}</select>`;
   else control=`<input ${field.type==='checkbox'?'':'class="ui-field"'} type="${field.type||'text'}" ${common}${field.type==='number'?` min="${field.min}" max="${field.max}"`:''}>`;
-  const label=`<label>${field.type==='checkbox'?control+'<span>'+e(field.label)+'</span>':'<span>'+e(field.label)+'</span>'+control}</label>`;
+  const fieldLabel=(field.icon?renderIcon(field.icon,e):'')+e(field.label);
+  const label=`<label>${field.type==='checkbox'?control+'<span>'+fieldLabel+'</span>':'<span class="studio-section-label">'+fieldLabel+'</span>'+control}</label>`;
   return share?`<div>${label}<label class="studio-sharing"><input type="checkbox" data-visibility-key="${e(field.name)}"><span>Public after approval</span></label></div>`:label;
 }
 const summary=(title,e,icon)=>`<summary><span class="studio-section-label">${icon?renderIcon(icon,e):''}${e(title)}</span><img class="studio-icon studio-chevron" src="/assets/icons/navigation/chevron-right.svg" alt=""></summary>`;
