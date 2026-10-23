@@ -9,7 +9,8 @@ export function metadataField(field,e,share=false){
   else control=`<input ${field.type==='checkbox'?'':'class="ui-field"'} type="${field.type||'text'}" ${common}${field.type==='number'?` min="${field.min}" max="${field.max}"`:''}>`;
   const fieldLabel=(field.icon?renderIcon(field.icon,e):'')+e(field.label);
   const label=`<label>${field.type==='checkbox'?control+'<span>'+fieldLabel+'</span>':'<span class="studio-section-label">'+fieldLabel+'</span>'+control}</label>`;
-  return share?`<div>${label}<label class="studio-sharing"><input type="checkbox" data-visibility-key="${e(field.name)}"><span>Public after approval</span></label></div>`:label;
+  const count=field.name==='type'?`<label><span>Number of tracks</span><input class="ui-field" data-track-count type="number" min="1" max="${schema.release.maxTracks}" value="1" readonly aria-describedby="track-count-help"></label><p id="track-count-help" class="studio-field-note">A single has one track. For an EP or album, choose how many tracks you are preparing.</p>`:'';
+  return share?`<div>${label}<label class="studio-sharing"><input type="checkbox" data-visibility-key="${e(field.name)}"><span>Public after approval</span></label></div>`:label+count;
 }
 const summary=(title,e,icon)=>`<summary><span class="studio-section-label">${icon?renderIcon(icon,e):''}${e(title)}</span><img class="studio-icon studio-chevron" src="/assets/icons/navigation/chevron-right.svg" alt=""></summary>`;
 export function artistMetadataEditor(e){
@@ -23,9 +24,9 @@ export function releaseMetadataEditor(e){
   const sharing=publicFields.map(key=>`<label class="studio-sharing"><input type="checkbox" data-visibility-key="${key}"><span>${e(schema.release.fields.find(field=>field.name===key)?.label||key)}: public after approval</span></label>`).join('');
   return `<section class="studio-account studio-metadata" data-release-metadata>
     <p>${e(schema.release.notice)}</p><p role="status" data-metadata-status>Checking your account...</p>
-    <div data-release-controls hidden><label>Saved drafts<select class="ui-field" data-draft-picker><option value="">New release</option></select></label><button type="button" class="ui-button" data-new-draft>New release</button>
+    <div data-release-controls hidden><label>Saved drafts<select class="ui-field" data-draft-picker><option value="">New release</option></select></label><button type="button" class="ui-button" data-new-draft>${renderIcon('plus',e)}New release</button>
       <form>${schema.release.groups.map((group,index)=>`<details${index===0?' open':''}>${summary(group.title,e)}<div class="studio-metadata-fields">${group.fields.map(name=>metadataField(schema.release.fields.find(field=>field.name===name),e)).join('')}</div></details>`).join('')}
-        <h2>Tracks</h2><div data-tracks>${track(e)}</div><button type="button" class="ui-button" data-add-track>Add track</button>
+        <h2>Tracks</h2><div data-tracks>${track(e)}</div><button type="button" class="ui-button" data-add-track>${renderIcon('plus',e)}Add track</button>
         <details>${summary('Existing release links',e)}<div class="studio-metadata-fields" data-release-links>${schema.release.linkFields.map(field=>metadataField(field,e)).join('')}</div></details>
         <details>${summary('Publication choices',e)}<p>Choose which catalogue fields may appear after release approval. Private reference links and contributor legal-name records are never published by these choices. Track sharing covers titles, versions, public artist names, language, explicit status, duration, stories and lyrics only.</p>${sharing}</details>
         <p>Human-made music only. Fully AI-generated masters are not accepted. Disclose assistive tools and artwork provenance; rights, assets and delivery are reviewed separately.</p><button type="submit" class="ui-button">${renderIcon('check',e)}Save release draft</button>

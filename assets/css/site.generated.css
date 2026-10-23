@@ -7486,7 +7486,7 @@ html[data-theme-effective="dark"] .label-wordmark--light { display: none; }
 .artist-card figure { inline-size: 100%; overflow: hidden; margin: 0; }
 .artist-card img { inline-size: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 0; }
 .artist-biography > figure img { aspect-ratio: 1; object-fit: cover; border-radius: var(--radius-circle); }
-.artist-biography { justify-items: center; text-align: center; }
+.artist-biography { position:relative; isolation:isolate; justify-items:start; text-align:start; min-block-size:65svh; }
 .artist-biography .artist-facts div { justify-content: center; }
 .artist-biography .artist-facts dt { position: absolute; inline-size: 1px; block-size: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 .artist-card h3 { position: absolute; inset-inline: var(--spacing-lg); inset-block-end: var(--spacing-lg); margin: 0; min-inline-size: 0; overflow-wrap: anywhere; color: var(--color-white); }
@@ -7543,13 +7543,28 @@ html:has(main[data-fragment="artist"]) body { isolation: isolate; }
 html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior: auto; overscroll-behavior-y: none; background: var(--cv-page-bg); }
 .artist-profile > section { display: grid; align-content: center; gap: var(--spacing-xl); box-sizing: border-box; padding-block: var(--cv-page-padding-block); }
 [data-public-artist][hidden] { display:none; }
-.artist-profile [data-artist-since] { display:flex; gap:var(--spacing-sm); margin:0; }
+.artist-profile [data-artist-since] { display:flex; gap:var(--spacing-sm); margin:0; font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 .artist-profile .artist-connections { align-content:start; justify-content:start; justify-items:start; gap:var(--spacing-lg); }
 .artist-profile .artist-connections.information-links { display:flex; flex-wrap:wrap; align-items:center; }
-.artist-profile [data-artist-portrait] { display:grid; place-items:center; inline-size:calc(var(--control-height-lg) * 2); aspect-ratio:1; border-radius:var(--radius-circle); background:var(--control-bg); }
+.artist-profile [data-artist-portrait] { position:relative; display:grid; place-items:center; inline-size:calc(var(--control-height-lg) * 3); aspect-ratio:1; border:0; border-radius:var(--radius-circle); background:var(--control-bg); }
 .artist-profile [data-artist-portrait] img { inline-size:100%; block-size:100%; border-radius:inherit; object-fit:cover; }
-.artist-profile [data-artist-header]:has(img) { inline-size:100%; aspect-ratio:3/1; overflow:hidden; border-radius:var(--radius-md); }
+.artist-profile [data-artist-header]:has(img) { position:absolute; inset:0; z-index:-1; overflow:hidden; border:0; }
 .artist-profile [data-artist-header] img { inline-size:100%; block-size:100%; object-fit:cover; }
+.artist-profile [data-artist-header]:has(img)::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,color-mix(in srgb,var(--cv-page-bg) 35%,transparent),var(--cv-page-bg)); }
+.artist-profile [data-artist-header]:empty { display:none; }
+.artist-profile [data-artist-fields] { display:grid; gap:var(--spacing-lg); inline-size:min(100%,var(--cv-reading-width)); }
+.artist-profile [data-artist-fields] section { display:grid; gap:var(--spacing-sm); }
+.artist-profile [data-artist-fields] h2,.artist-link-group h2,.artist-concerts > h2 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
+.artist-profile [data-artist-fields] p { margin:0; font-size:var(--site-type-body-size); line-height:var(--line-height-body); }
+.artist-profile .artist-connections { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); inline-size:100%; align-items:start; }
+.artist-profile .artist-link-group { justify-items:start; gap:var(--spacing-md); min-inline-size:0; }
+.artist-profile .artist-link-group .hub__group-links { justify-content:flex-start; }
+.artist-concerts article { display:grid; gap:var(--spacing-sm); padding-block:var(--spacing-lg); border-block-start:var(--border-width-hairline) solid var(--cv-border); }
+.artist-concerts article :is(h3,p) { margin:0; }
+.artist-concerts time { font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
+@media(max-width:600px){.artist-profile .artist-connections { grid-template-columns:minmax(0,1fr); }}
+@media(prefers-reduced-motion:no-preference){.artist-profile .artist-biography { animation:artist-profile-arrive var(--duration-slow) var(--ease-standard) both; }@keyframes artist-profile-arrive{from{opacity:0;transform:translateY(var(--spacing-md))}to{opacity:1;transform:none}}}
+@supports(animation-timeline:scroll()){@media(prefers-reduced-motion:no-preference){.artist-profile [data-artist-header] img { animation:artist-header-scroll linear both; animation-timeline:scroll(root); animation-range:0 65vh; }@keyframes artist-header-scroll{from{filter:blur(0);transform:scale(1)}to{filter:blur(var(--panel-blur-unified));transform:scale(1.04)}}}}
 /* One composited surface keeps artwork and matte on identical viewport bounds. */
 html:not([data-loading]):has(main[data-fragment="artist"]) body::before {
   --artist-matte: color-mix(in srgb, var(--cv-page-bg) calc(var(--opacity-muted) * 100%), transparent);

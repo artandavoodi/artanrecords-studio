@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "node tools/build-app.mjs && node foundation/build.mjs",
-    "check": "node tools/check.mjs && node --test tools/account.test.mjs tools/metadata.test.mjs tools/artist-identity.test.mjs",
+    "check": "node tools/check.mjs && node --test tools/account.test.mjs tools/metadata.test.mjs tools/artist-identity.test.mjs tools/concerts.test.mjs",
     "test:browser": "playwright test --config tools/browser-tests/playwright.config.mjs"
   },
   "dependencies": {

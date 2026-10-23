@@ -12,6 +12,8 @@ import {bindPlatform} from './platform.js';
 import {bindArtistMetadata,bindReleaseMetadata} from './metadata.js';
 import {bindArtistIdentity,bindArtistApplication} from './artist-identity.js';
 import {bindNotifications} from './notifications.js';
+import {bindConcerts} from './concerts.js';
+import {bindPublishedReleases} from './releases.js';
 await bindPreferences();
 bindSearch();
 const chrome=bindChrome();
@@ -41,6 +43,8 @@ await bindArtistIdentity(context);
 await bindArtistApplication(context);
 await bindNotifications(context);
 await bindReleaseMetadata(context);
+await bindPublishedReleases(context);
+await bindConcerts(context);
 await bindWorkspace(context);
 document.querySelectorAll('[data-signout]').forEach(button=>{button.disabled=!client;button.addEventListener('click',async()=>{if(!client)return;button.disabled=true;try{const result=await client.auth.signOut({scope:'local'});if(result.error)throw result.error;}catch{button.disabled=false;button.setAttribute('aria-label','Try signing out again');}});});
 if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){entry.target.dataset.studioVisible='true';observer.unobserve(entry.target);}});document.querySelectorAll('.studio-surface header,.surface-card').forEach(item=>{item.dataset.studioReveal='';observer.observe(item);});}

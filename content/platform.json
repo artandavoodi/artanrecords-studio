@@ -4,7 +4,7 @@
   "securityNotice":"Use your shared Store and Studio identity to sign in or request password recovery. A password change affects both services. Phone verification is not active; no verification text is sent.",
   "summary":"The artist platform being developed by Artanrecords for release preparation, agreements and royalty reporting.",
   "groups":[
-    {"label":"Workspace","items":[{"path":"/","label":"Overview","icon":"dashboard"},{"path":"/releases/","label":"Releases","icon":"release"},{"path":"/analytics/","label":"Analytics","icon":"analytics"}]},
+    {"label":"Workspace","items":[{"path":"/","label":"Overview","icon":"dashboard"},{"path":"/releases/","label":"Releases","icon":"release"},{"path":"/concerts/","label":"Concerts","icon":"concert"},{"path":"/analytics/","label":"Analytics","icon":"analytics"}]},
     {"label":"Business","items":[{"path":"/referrals/","label":"Artist introductions","icon":"contract"},{"path":"/payments/","label":"Payment methods","icon":"payment"},{"path":"/royalties/","label":"Royalties","icon":"finance"},{"path":"/statements/","label":"Statements","icon":"document"},{"path":"/payouts/","label":"Payouts","icon":"payment"},{"path":"/agreements/","label":"Agreements","icon":"contract"}]},
     {"label":"Account","items":[{"path":"/profile/","label":"Artist profile","icon":"account"},{"path":"/settings/","label":"Settings","icon":"settings"}]}
   ],

@@ -1,0 +1,6 @@
+{
+ "origin":"https://artanrecords.com",
+ "releases":"/assets/data/music/releases.json",
+ "artists":"/assets/data/artists/platform.json",
+ "notice":"Published catalogue records are shown here from Artanrecords. They are separate from your private release drafts; saving a draft does not change a published release."
+}

@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "9b4db43c7106108c5dfd6707aebec00ad9d4e9f7",
+  "revision": "9df1e36c9f999d7602ca3387538276b098884f72",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
     "instagram": "7e4b0ad497c7afdbec799228d72ea8e32f851adf56d04598bf93cfa333cec0c7",
@@ -45,7 +45,9 @@
     "social": "4eb410024e0a832301e6cd289c1aa5ee6e4782a73248fbd2f6f247d045efaea4",
     "email": "cf2c19b26e0f7313cc851db282bbf6c08c115a41854c7fe9f0a910809f9e161c",
     "image": "4375c1baa33f12fb7bb800ad31339fa51f516b317a6f2394e890e0eb40ae3aa6",
-    "globe": "4eb410024e0a832301e6cd289c1aa5ee6e4782a73248fbd2f6f247d045efaea4"
+    "globe": "b4693a9829c4d5915df2546696c3fd0afffe41717b913651970e5fe758036b94",
+    "plus": "d6e6467d134a5ff667f8b639533f677fbed1da38172ae8e995e1f7fc6e83307f",
+    "concert": "e12059ce8e2de342f5d92213581641c5021c69effc241edc3eae4e30bf835c57"
   },
   "available": {
     "placeholder": true,
@@ -91,6 +93,8 @@
     "social": false,
     "email": true,
     "image": true,
-    "globe": false
+    "globe": true,
+    "plus": true,
+    "concert": false
   }
 }

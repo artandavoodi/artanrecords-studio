@@ -40,6 +40,7 @@
   ],
   "footer": [],
   "pages": [
+    {"path":"/concerts/","title":"Concerts","description":"Manage concert drafts, venue details, ticket links and public announcements.","category":"Workspace","indexable":false,"sections":[]},
     {
       "path": "/cookies/",
       "title": "Cookie Policy",

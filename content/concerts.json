@@ -1,0 +1,18 @@
+{
+  "title":"Concerts",
+  "description":"Plan a show, add venue and ticket details, then publish an announcement on your artist page.",
+  "fields":[
+    {"name":"title","label":"Concert title","required":true,"max":200},
+    {"name":"starts_at","label":"Starts","type":"datetime-local","required":true},
+    {"name":"ends_at","label":"Ends","type":"datetime-local"},
+    {"name":"timezone","label":"Event time zone","required":true,"max":100},
+    {"name":"venue","label":"Venue","required":true,"max":200},
+    {"name":"city","label":"City","required":true,"max":120},
+    {"name":"country","label":"Country code","required":true,"max":2},
+    {"name":"ticket_url","label":"Ticket website","type":"url","max":2000},
+    {"name":"ticket_price","label":"Ticket price (leave blank if not announced)","type":"number"},
+    {"name":"currency","label":"Currency code","max":3},
+    {"name":"announcement","label":"Announcement","type":"textarea","max":2000}
+  ],
+  "notice":"Times use the event time zone, not the visitor’s device. Prices are information only; ticket purchases happen on the linked ticket website. Saving a published concert updates its public details."
+}

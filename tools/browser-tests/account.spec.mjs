@@ -6,7 +6,7 @@ const access=[{alg:'HS256',typ:'JWT'},{sub:id,role:'authenticated',aud:'authenti
 const session={access_token:access,refresh_token:'test-refresh-not-a-real-credential',token_type:'bearer',expires_in:3600,user};
 async function mockBackend(page){
   const requests=[];
-  let artistMetadata=null,handle=null,application=null;const drafts=new Map();
+  let artistMetadata=null,handle=null,application=null;const drafts=new Map(),concerts=new Map();
   await page.route('https://hahtbepdrjkjluhespbs.supabase.co/**',async route=>{
     const request=route.request(),url=new URL(request.url());
     requests.push({path:url.pathname,query:url.search,body:request.postDataJSON(),method:request.method()});
@@ -24,6 +24,11 @@ async function mockBackend(page){
       if(request.method()==='GET'){const selected=url.searchParams.get('id')?.replace('eq.','');body=selected?{metadata:drafts.get(selected)?.metadata}:[...drafts].map(([id,draft])=>({id,title:draft.title}));}
       else{const selected=url.searchParams.get('id')?.replace('eq.','')||'94000000-0000-0000-0000-000000000001';drafts.set(selected,request.postDataJSON());body={id:selected};status=201;}
     }
+    else if(url.pathname.endsWith('/studio_concerts')){
+      if(request.method()==='GET')body=[...concerts.values()];
+      else{const selected=url.searchParams.get('id')?.replace('eq.','')||'95000000-0000-0000-0000-000000000001';const data=request.postDataJSON();concerts.set(selected,{status:'draft',...concerts.get(selected),...data,id:selected});body={id:selected};}
+    }
+    else if(url.pathname.endsWith('/rpc/studio_set_concert_status')){const data=request.postDataJSON();concerts.get(data.concert).status=data.new_status;body=null;}
     else if(url.pathname.endsWith('/studio_artist_handles'))body=handle?[handle]:[];
     else if(url.pathname.endsWith('/studio_artist_applications'))body=application?[application]:[];
     else if(url.pathname.endsWith('/rpc/studio_username_check'))body='available';
@@ -50,10 +55,32 @@ test('profile saves show shared feedback and text fields resize only vertically'
   const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
   const form=page.locator('[data-profile-form]');await expect(form).toBeVisible();
   await expect(form.locator('textarea')).toHaveCSS('resize','vertical');
+  await expect(form.locator('[data-media-visibility]')).toHaveCSS('border-top-width','0px');
   await expect(form.locator('[data-signout],[data-reset-password]')).toHaveCount(0);
   await form.locator('[name=artist_name]').fill('Test artist');
   await form.locator('[type=submit]').click();
   const feedback=page.locator('.system-save-confirmation');await expect(feedback).toHaveText('Profile saved.');await expect(feedback).toHaveAttribute('data-visible','true');await expect(feedback).toHaveAttribute('data-visible','false',{timeout:6500});
+});
+test('concert drafts save separately from explicit publication and cancellation',async({page})=>{
+ const requests=await mockBackend(page),dialog=await openAccount(page);
+ await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+ await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.goto('/concerts/');const root=page.locator('[data-concerts]');await expect(root.locator('[data-concert-controls]')).toBeVisible();
+ await root.locator('[name=title]').fill('Piano night');await root.locator('[name=starts_at]').fill('2026-12-01T20:00');await root.locator('[name=timezone]').fill('Europe/Berlin');await root.locator('[name=venue]').fill('Concert hall');await root.locator('[name=city]').fill('Berlin');await root.locator('[name=country]').fill('DE');
+ await root.getByRole('button',{name:'Save',exact:true}).click();await expect(page.locator('.system-save-confirmation')).toHaveText('Concert saved.');
+ expect(requests.some(row=>row.path.endsWith('/rpc/studio_set_concert_status'))).toBe(false);
+ await root.getByRole('button',{name:'Publish concert',exact:true}).click();await expect(root.locator('[data-concert-status]')).toHaveText('Concert: published.');
+ await root.getByRole('button',{name:'Cancel concert',exact:true}).click();await expect(root.locator('[data-concert-status]')).toHaveText('Concert: cancelled.');
+ await root.getByRole('button',{name:'Return to draft',exact:true}).click();await expect(root.locator('[data-concert-status]')).toHaveText('Concert: draft.');
+ const saved=requests.find(row=>row.path.endsWith('/studio_concerts')&&row.method==='POST');expect(saved.body.starts_at).toBe('2026-12-01T19:00:00.000Z');expect(saved.body.status).toBeUndefined();
+});
+test('album preparation selects track count and single preparation permits only one track',async({page})=>{
+ await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.goto('/releases/#release-drafts');const form=page.locator('[data-release-metadata] form');await expect(form.locator('[data-track]')).toHaveCount(1);await expect(form.locator('[data-add-track]')).toBeDisabled();
+ await form.locator('[name=type]').selectOption('Album');await expect(form.locator('[data-track]')).toHaveCount(2);
+ await form.locator('[data-track-count]').fill('3');await form.locator('[data-track-count]').press('Tab');await expect(form.locator('[data-track]')).toHaveCount(3);
+ await form.locator('[data-add-track]').click();await expect(form.locator('[data-track]')).toHaveCount(4);await expect(form.locator('[data-add-track] img')).toHaveAttribute('src',/\/app\/icons\//);
+ page.once('dialog',dialog=>dialog.accept());await form.locator('[name=type]').selectOption('Single');await expect(form.locator('[data-track]')).toHaveCount(1);await expect(form.locator('[data-track-count]')).toHaveValue('1');await expect(form.locator('[data-add-track]')).toBeDisabled();
 });
 test('profile tabs isolate sections, retain the selected address and use standard rail icons',async({page,isMobile})=>{
   await mockBackend(page);
@@ -226,7 +253,7 @@ test('release drafts preserve stories, lyrics and contributors without submissio
   const requests=await mockBackend(page),dialog=await openAccount(page);
   await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
   await expect(page).toHaveURL(/\/profile\/$/);await expect(page.locator('[data-profile-form]')).toBeVisible();
-  await page.goto('/releases/');const view=page.locator('[data-release-metadata]');
+  await page.goto('/releases/');await page.getByRole('tab',{name:'New release & drafts',exact:true}).click();const view=page.locator('[data-release-metadata]');
   await expect(view.locator('[data-release-controls]')).toBeVisible();
   await view.locator('form > details').first().locator('[name=title]').fill('Test single');
   await view.getByText('Release story',{exact:true}).click();await view.locator('form > details').filter({has:page.locator('[name=description]')}).locator('[name=story]').fill('Release story');
