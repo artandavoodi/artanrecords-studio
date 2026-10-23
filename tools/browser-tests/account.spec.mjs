@@ -55,6 +55,32 @@ test('profile saves show shared feedback and text fields resize only vertically'
   await form.locator('[type=submit]').click();
   const feedback=page.locator('.system-save-confirmation');await expect(feedback).toHaveText('Profile saved.');await expect(feedback).toHaveAttribute('data-visible','true');await expect(feedback).toHaveAttribute('data-visible','false',{timeout:6500});
 });
+test('profile tabs isolate sections, retain the selected address and use standard rail icons',async({page,isMobile})=>{
+  await mockBackend(page);
+  const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
+  const profile=page.getByRole('tab',{name:'Profile',exact:true});
+  const catalogue=page.getByRole('tab',{name:'Links & catalogue',exact:true});
+  await expect(profile).toHaveAttribute('aria-selected','true');
+  await expect(page.locator('#profile-catalogue')).toBeHidden();
+  await expect(page.locator('#profile-publication')).toBeHidden();
+  await catalogue.click();
+  await expect(page.locator('#profile-details')).toBeHidden();
+  await expect(page.locator('#profile-catalogue')).toBeVisible();
+  expect(Number(await catalogue.evaluate(el=>getComputedStyle(el).opacity))).toBeGreaterThan(Number(await profile.evaluate(el=>getComputedStyle(el).opacity)));
+  await expect(catalogue).toHaveCSS('align-items','center');
+  await catalogue.press('ArrowRight');
+  await expect(page.getByRole('tab',{name:'Publication',exact:true})).toBeFocused();
+  await expect(page.locator('#profile-publication')).toBeVisible();
+  await expect(page.locator('#profile-catalogue')).toBeHidden();
+  await page.reload();
+  await expect(page.getByRole('tab',{name:'Publication',exact:true})).toHaveAttribute('aria-selected','true');
+  await expect(page.locator('#profile-details')).toBeHidden();
+  if(!isMobile&&await page.locator('[data-platform-rail-toggle]').isVisible()){
+    const toggle=await page.locator('[data-platform-rail-toggle] img').boundingBox();
+    const item=await page.locator('.studio-platform-group a .studio-icon').first().boundingBox();
+    expect(toggle.width).toBe(item.width);expect(toggle.height).toBe(item.height);
+  }
+});
 test('shared portrait editor crops only after confirmation and preserves the camera size',async({page})=>{
   await mockBackend(page);
   await page.addInitScript(()=>{const encode=HTMLCanvasElement.prototype.toBlob;HTMLCanvasElement.prototype.toBlob=function(callback,...args){return encode.call(this,blob=>{window.__testCrop={width:this.width,height:this.height,type:blob?.type};callback(blob);},...args);};});
@@ -140,16 +166,19 @@ test('sign-in opens a private profile and sign-out does not revoke other applica
   const form=page.locator('[data-profile-form]');
   await expect(form).toBeVisible();
   const billing=page.locator('.studio-billing');
+  const profileField=await form.locator('[name=display_name]').boundingBox();
+  await page.getByRole('tab',{name:'Addresses',exact:true}).click();
   await expect(billing).toBeVisible();
   await billing.locator('summary').click();
-  const profileField=await form.locator('[name=display_name]').boundingBox();
   const addressField=await billing.locator('input').first().boundingBox();
   expect(Math.abs(profileField.x-addressField.x)).toBeLessThan(1);
   expect(Math.abs(profileField.width-addressField.width)).toBeLessThan(1);
   await billing.locator('summary').click();
+  await page.getByRole('tab',{name:'Profile',exact:true}).click();
   await form.locator('[name=artist_name]').fill('Test artist');
   await form.locator('[type=submit]').click();
-  await expect(page.locator('[data-profile-status]')).toHaveText('Profile saved.');
+  await expect(page.locator('[data-profile-status]')).toBeEmpty();
+  await expect(page.locator('.system-save-confirmation')).toHaveText('Profile saved.');
   const save=requests.find(request=>request.path.endsWith('/studio_profiles')&&request.method==='POST');
   expect(save.body.id).toBe(id);expect(save.body.artist_name).toBe('Test artist');expect(save.body.role).toBeUndefined();
   await page.goto('/settings/#security');
@@ -168,18 +197,21 @@ test('email recovery token is consumed, scrubbed and opens only password recover
 test('catalogue metadata saves field visibility without changing account identity',async({page})=>{
   const requests=await mockBackend(page),dialog=await openAccount(page);
   await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+  await page.getByRole('tab',{name:'Links & catalogue',exact:true}).click();
   const view=page.locator('[data-artist-metadata]');await expect(view).toBeVisible();
   await view.getByText('Streaming profiles',{exact:true}).click();
   await view.locator('[name=spotify]').fill('https://open.spotify.com/artist/test');
   await view.locator('[data-visibility-key=spotify]').check();
-  await view.getByRole('button',{name:'Save catalogue information'}).click();
-  await expect(view.locator('[data-metadata-status]')).toContainText('visibility saved');
+  await view.getByRole('button',{name:'Save',exact:true}).click();
+  await expect(page.locator('.system-save-confirmation')).toHaveText('Catalogue changes saved.');
+  await expect(view.locator('[data-metadata-status]')).toBeEmpty();
   const saved=requests.find(request=>request.path.endsWith('/studio_artist_metadata')&&request.method==='POST').body;
   expect(saved.metadata.visibility.spotify).toBe('public');expect(saved.metadata.visibility.biography).toBe('private');expect(saved.metadata.email).toBeUndefined();
 });
 test('username and tier requests remain pending without client approval powers',async({page})=>{
  const requests=await mockBackend(page),dialog=await openAccount(page);
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+ await page.getByRole('tab',{name:'Publication',exact:true}).click();
  const identity=page.locator('[data-artist-identity]');await expect(identity).toBeVisible();await identity.locator('[name=username]').fill('testmusician95');await identity.getByRole('button',{name:'Request username'}).click();await expect(identity.locator('[data-handle-notice]')).toContainText('awaiting label review');await expect(identity.locator('[data-publish-profile]')).toBeDisabled();
  const application=page.locator('[data-partnership-application]');await expect(application).toBeVisible();await application.locator('[name=tier]').selectOption('platinum');await application.getByRole('button',{name:'Send application'}).click();await expect(application.getByRole('status')).toContainText('Requested: platinum. Status: pending.');expect(requests.some(request=>/review_username|review_tier/.test(request.path))).toBe(false);
 });
