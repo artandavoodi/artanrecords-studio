@@ -294,7 +294,13 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile [data-artist-fields] h2,.artist-link-group h2 { margin:0; font-size:var(--site-type-caption-size); font-weight:var(--font-weight-medium); color:var(--cv-text-secondary); }
 .artist-concerts > h2 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
 .artist-profile [data-artist-fields] p { margin:0; font-size:var(--site-type-body-size); line-height:var(--line-height-body); }
-.artist-profile .artist-connections { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); inline-size:100%; align-items:start; }
+.artist-profile .artist-connections { display:grid; grid-template-columns:minmax(0,1fr); inline-size:100%; align-items:start; }
+.artist-destination-tabs { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-lg); inline-size:100%; padding-block-end:var(--spacing-md); border-block-end:var(--border-width-hairline) solid var(--cv-text-secondary); }
+.artist-destination-tabs button { font:inherit; color:inherit; background:none; border:0; padding:var(--spacing-sm) 0; cursor:pointer; opacity:var(--cv-opacity-muted); }
+.artist-destination-tabs button[aria-selected=true],.artist-destination-tabs button:hover { opacity:var(--cv-opacity-full); }
+.artist-profile [data-artist-group][hidden] { display:none; }
+.artist-profile [data-artist-group] > h2 { display:none; }
+.artist-profile [data-artist-group] .artist-concerts { padding-inline:0; min-block-size:0; }
 .artist-profile .artist-link-group { justify-items:stretch; gap:var(--spacing-md); min-inline-size:0; }
 .artist-profile .artist-link-group .hub__group-links { justify-content:flex-start; }
 .artist-concerts article { display:grid; gap:var(--spacing-sm); padding-block:var(--spacing-lg); border-block-start:var(--border-width-hairline) solid var(--cv-border); }
