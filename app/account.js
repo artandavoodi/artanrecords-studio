@@ -1,3 +1,4 @@
+import artistAccount from '../content/artist-account.json' with {type:'json'};
 export function configured(config){
   if(!config.supabase.url&&!config.supabase.publishableKey)return false;
   const url=new URL(config.supabase.url);
@@ -26,7 +27,7 @@ export function readAccountCallback(url){
   return {code:query.get('code'),token:query.get('token_hash')||hash.get('token_hash'),type:query.get('type')||hash.get('type'),recovery:query.get('flow')==='recovery'||query.get('type')==='recovery'||hash.get('type')==='recovery',error:query.has('error')||hash.has('error')};
 }
 export function profileValues(form){
-  const fields={display_name:100,artist_name:100,biography:2000,website:500};const result={};
+  const fields={display_name:100,artist_name:100,biography:artistAccount.biographyMaxLength,website:500};const result={};
   for(const [name,max] of Object.entries(fields)){const value=String(form.get(name)||'').trim();if(value.length>max)throw Error('Please shorten your profile information.');result[name]=value;}
   const phone=String(form.get('phone')||'').replace(/[\s()-]/g,'');if(phone&&!/^\+[1-9]\d{6,14}$/.test(phone))throw Error('Enter a phone number with its country code.');result.contact_phone=phone;
   if(result.website&&new URL(result.website).protocol!=='https:')throw Error('Use an HTTPS website address.');return result;

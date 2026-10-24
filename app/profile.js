@@ -1,4 +1,5 @@
 import {googlePhoto} from './metadata-values.js';
+import {syncCharacterCounter} from './neuroartan/assets/js/core/02-systems/character-counter.js';
 import {bindGraphics} from './graphics.js';
 import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
 import {registerProfileMediaEditorTarget,openProfileMediaEditor} from './neuroartan/assets/js/layers/website/ui/profile-media-editor.js';
@@ -6,6 +7,9 @@ export async function bindProfile({client,config,resolveUser,profileValues,valid
   const graphicsReady=bindGraphics({client,resolveUser});
   const view=document.querySelector('[data-profile-view]');if(!view)return;
   const status=view.querySelector('[data-profile-status]'),form=view.querySelector('form'),guest=view.querySelector('[data-profile-guest]');
+  const biography=form.elements.biography,counter=form.querySelector('[data-biography-counter]'),limit=biography.maxLength;
+  const syncBiography=()=>{const {count}=syncCharacterCounter(biography,counter,limit);biography.setCustomValidity(count>limit?'Shorten your biography to '+limit+' characters.':'');view.querySelector('#biography-limit').textContent=count>limit?(count-limit)+' characters over the limit.':count+' / '+limit+' characters.';};
+  biography.addEventListener('input',syncBiography);syncBiography();
   form.elements.phone.readOnly=false;
   if(!client){status.textContent=config.unavailable;guest.hidden=false;return;}
   let user;
@@ -20,6 +24,7 @@ export async function bindProfile({client,config,resolveUser,profileValues,valid
     user=await resolveUser(client);if(!user){status.textContent='';guest.hidden=false;return;}
     const result=await client.from('studio_profiles').select('display_name,artist_name,biography,website,contact_phone').eq('id',user.id).maybeSingle();if(result.error)throw result.error;
     for(const [name,value] of Object.entries(result.data||{}))if(form.elements[name])form.elements[name].value=value||'';
+    syncBiography();
     view.querySelector('[data-profile-email]').value=user.email||'';
     view.querySelector('[data-verification]').textContent=user.email_confirmed_at?'Email verified':'Email confirmation required';
     form.elements.phone.value=result.data?.contact_phone||user.phone||'';form.hidden=false;status.textContent='';

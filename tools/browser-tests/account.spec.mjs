@@ -146,7 +146,10 @@ test('profile saves show shared feedback and text fields resize only vertically'
   await mockBackend(page);
   const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
   const form=page.locator('[data-profile-form]');await expect(form).toBeVisible();
-  await expect(form.locator('textarea')).toHaveCSS('resize','vertical');
+  await expect(form.locator('textarea')).toHaveCSS('resize','none');
+  const biography=form.locator('[name=biography]');await expect(biography).toHaveAttribute('maxlength','250');
+  await biography.fill('A'.repeat(200));await expect(form.locator('[data-biography-counter]')).toHaveAttribute('data-character-state','warning');
+  await expect(form.locator('[data-biography-counter]')).toHaveAttribute('aria-label','200 of 250 characters');
   await expect(form.locator('[data-media-visibility]')).toHaveCSS('border-top-width','0px');
   await expect(form.locator('[data-signout],[data-reset-password]')).toHaveCount(0);
   await form.locator('[name=artist_name]').fill('Test artist');

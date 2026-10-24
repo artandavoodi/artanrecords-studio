@@ -2,6 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {configured,resolveUser,profileValues,validPhoto,requestGoogleSignIn,readAccountCallback} from '../app/account.js';
+test('short biography accepts 250 characters and rejects overflow without truncation',()=>{
+ const form=new FormData();form.set('biography','A'.repeat(250));assert.equal(profileValues(form).biography.length,250);
+ form.set('biography','A'.repeat(251));assert.throws(()=>profileValues(form),/shorten/);
+});
 test('account callbacks support same-tab Google and cross-tab email token hashes',()=>{
   assert.equal(readAccountCallback(new URL('https://studio.artanrecords.com/account/?code=test-code')).code,'test-code');
   assert.deepEqual(readAccountCallback(new URL('https://studio.artanrecords.com/account/?flow=recovery#token_hash=test-hash&type=recovery')),{code:null,token:'test-hash',type:'recovery',recovery:true,error:false});
