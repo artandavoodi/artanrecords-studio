@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "66e50d9caf62c3bc95eeb7aeded1fa4c083df3e5",
+  "commit": "6b0eeb0399da3adb2f836a41bebfdcb12c98a03c",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "57a02f650fd197cb2edae9938511f3f6c89f2e8d73b9e69b4377599ee51f2737",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -28,12 +28,12 @@
     "assets/css/layers/site/hub/index.css": "ff59cee8904b774f20e8ce6dadbba8f51e6f85e830c375fa614ebe2e9304ca9f",
     "assets/css/layers/site/label/enquiry-response.css": "d47608a69429ad06288ca5949f46a3c72d938564f5c6500c462084a8d8e604e6",
     "assets/css/layers/site/label/home-showcase.css": "4fc731c42ccfd6f8c98927722a3b4033ef389deb1dd04e609c885a57fcb0fa13",
-    "assets/css/layers/site/label/index.css": "0f00cc8ebd7cd770f4821a50585fdae1ab0f1bc3c2d017354ebf5d9fd35b4b12",
+    "assets/css/layers/site/label/index.css": "b36a3821032d44fce5c91916a987f43b3f642a15ea531bef7bf75fd1271c604b",
     "assets/css/layers/site/navigation.css": "b93be75b7d311a733a42b9d22cffea537b9ac10cb8f06c1deb952f7b797c391b",
     "assets/css/layers/site/site.css": "1fe324dc08e2a5f4e98b6cf1f0acb5612cd473b25ec1c5b037e0ab4436fe65ce",
     "assets/css/layers/site/submission/index.css": "3249ad0f7519a091c2acb7ace5473b7c90ee77430dc31b53c6d08fdb42c1ede8",
     "assets/css/layers/site/theme-menu.css": "9570198870280d8ab0843cbcbd95c0b5e13ab74cffa3088ea9df3a3067cc7d43",
-    "assets/css/site.generated.css": "37a0435b5464e49c9e1709cbe44bd0e67432ba2fa09d48d8d02672481e5dfd18",
+    "assets/css/site.generated.css": "2cad25b5380771729bca4b1c0b4197e71880b826f78310462fb825e59c480cf6",
     "assets/brand/logo/artan-records-symbol-black.svg": "3df4c9471e7c952a8108d903eedc40583428fdbdef3760518babd50dc03d0a26",
     "assets/brand/logo/artan-records-symbol-white.svg": "d369d87b98b4282a57945450b2d0b4d677e81f765c718fce234f5ae51c5dbbe7",
     "assets/brand/logo/artan-records-wordmark-black.svg": "664aeca69fcebfb9d9d4cc92d6cad46d9336e9229e9fc2a66f6e60a3a7c686ca",

@@ -7590,7 +7590,7 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile .artist-connections { display:grid; grid-template-columns:minmax(0,1fr); inline-size:100%; align-items:start; }
 .artist-destination-tabs { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-lg); inline-size:100%; padding-block:var(--spacing-md); }
 .artist-destination-tabs[hidden] { display:none; }
-[data-fragment="navigation"]:has(.artist-destination-tabs[data-in-header]) { background:var(--cv-page-bg); }
+[data-fragment="navigation"]:has(.artist-destination-tabs[data-in-header]) { background:var(--artist-primary-2,var(--cv-page-bg)); }
 .artist-destination-tabs button { font:inherit; color:inherit; background:none; border:0; padding:var(--spacing-sm) 0; cursor:pointer; opacity:var(--state-opacity-muted); }
 .artist-destination-tabs button[aria-selected=true],.artist-destination-tabs button:hover { opacity:var(--cv-opacity-full); }
 .artist-profile [data-artist-group][hidden] { display:none; }
