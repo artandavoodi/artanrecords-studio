@@ -45,7 +45,11 @@ export async function exportLogo(file){
   const pixels=context.getImageData(0,0,canvas.width,canvas.height).data;
   let transparent=false,visible=false;for(let index=3;index<pixels.length;index+=4){transparent ||=pixels[index]<255;visible ||=pixels[index]>0;}
   if(!transparent||!visible)throw Error('Use a visible logo with a transparent background.');
-  const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('The logo could not be exported.');
+  let left=canvas.width,top=canvas.height,right=0,bottom=0;
+  for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++)if(pixels[(y*canvas.width+x)*4+3]>0){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);}
+  const fitted=document.createElement('canvas');fitted.width=right-left+1;fitted.height=bottom-top+1;
+  fitted.getContext('2d').drawImage(canvas,left,top,fitted.width,fitted.height,0,0,fitted.width,fitted.height);
+  const blob=await new Promise(resolve=>fitted.toBlob(resolve,'image/png'));if(!blob)throw Error('The logo could not be exported.');
   return {original:new Blob([bytes],{type:png?'image/png':'image/svg+xml'}),display:blob};
  }finally{URL.revokeObjectURL(url);}
 }
@@ -57,12 +61,17 @@ export async function bindGraphics({client,resolveUser}){
  const choose=form.querySelector('[data-choose-logo]'),logoDialog=form.querySelector('[data-logo-dialog]'),confirmLogo=logoDialog.querySelector('[data-confirm-logo]'),logoError=logoDialog.querySelector('[data-logo-error]'),comparison=logoDialog.querySelector('[data-logo-comparison]'),logoLoading=logoDialog.querySelector('[data-logo-loading]'),candidateInfo=logoDialog.querySelector('[data-logo-candidate-info]');
  const show=blob=>{if(previewUrl)URL.revokeObjectURL(previewUrl);previewUrl=URL.createObjectURL(blob);preview.src=previewUrl;preview.hidden=false;form.querySelector('[data-logo-empty]').hidden=true;};
  const clearCandidate=()=>{candidate=null;if(candidateUrl)URL.revokeObjectURL(candidateUrl);candidateUrl='';logoDialog.querySelectorAll('[data-logo-candidate]').forEach(image=>image.removeAttribute('src'));comparison.hidden=true;confirmLogo.disabled=true;};
- choose.onclick=()=>form.elements.logo.click();
+ choose.onclick=()=>{
+  if(!previewUrl){form.elements.logo.click();return;}
+  clearCandidate();logoError.textContent='';logoLoading.hidden=true;
+  for(const image of logoDialog.querySelectorAll('[data-logo-candidate]'))image.src=previewUrl;
+  candidateInfo.textContent=form.querySelector('[data-logo-file]').textContent||'Saved artist logo';comparison.hidden=false;confirmLogo.disabled=false;logoDialog.showModal();
+ };
  logoDialog.querySelector('[data-replace-logo]').onclick=()=>form.elements.logo.click();
  logoDialog.querySelector('[data-close-logo]').onclick=()=>logoDialog.close();
  window.NeuroartanCloseButtons?.initCloseButtonPrimitive(logoDialog);
  logoDialog.addEventListener('close',()=>{if(logoDialog.open)return;selection++;selecting=false;clearCandidate();logoLoading.hidden=true;save.disabled=!owner;choose.focus({preventScroll:true});});
- confirmLogo.onclick=()=>{if(!candidate)return;pending=candidate.asset;show(pending.display);form.querySelector('[data-logo-file]').textContent=candidate.name;form.querySelector('[data-logo-status]').textContent='Logo selected. Choose Save to keep this change.';status.textContent='';logoDialog.close();};
+ confirmLogo.onclick=()=>{if(candidate){pending=candidate.asset;show(pending.display);form.querySelector('[data-logo-file]').textContent=candidate.name;form.querySelector('[data-logo-status]').textContent='Logo selected. Choose Save to keep this change.';status.textContent='';}logoDialog.close();};
  form.elements.logo.onchange=async()=>{
   const file=form.elements.logo.files[0];form.elements.logo.value='';if(!file||!owner)return;
   const version=++selection;clearCandidate();selecting=true;save.disabled=true;logoError.textContent='';candidateInfo.textContent=file.name;logoLoading.hidden=false;if(!logoDialog.open)logoDialog.showModal();
@@ -75,6 +84,7 @@ export async function bindGraphics({client,resolveUser}){
  };
  const swatches=form.querySelector('[data-colour-swatches]');
  const syncSwatches=()=>{
+  [...fields.children].forEach((row,index)=>{row.dataset.colourRole=config.paletteRoles[index];});
   const selected=[...fields.querySelectorAll('input[type=text]')].filter(input=>/^#[0-9a-f]{6}$/i.test(input.value));
   const options=selected.length?selected.map(input=>({value:input.value.toUpperCase(),label:'Edit '+input.value.toUpperCase(),input})):config.defaultColors;
   swatches.replaceChildren(...options.map(option=>{const button=document.createElement('button');button.type='button';button.dataset.colourSwatch=option.value;button.style.backgroundColor=option.value;button.setAttribute('aria-label',option.label);button.title=option.value;button.onclick=()=>{if(!option.input){append(option.value);return;}colourDialog.showModal();option.input.focus();};return button;}));

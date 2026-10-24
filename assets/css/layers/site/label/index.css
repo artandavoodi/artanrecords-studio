@@ -40,7 +40,7 @@
 .label-account-access:is(:hover,:focus-visible) { opacity:var(--cv-opacity-full); }
 html[data-menu-open] .label-header-logo { visibility: hidden; opacity: 0; transform: scale(0); transition: opacity var(--duration-base) var(--ease-standard) calc(var(--label-logo-collapse-duration) * 0.8), transform var(--label-logo-collapse-duration) var(--ease-standard), visibility var(--label-logo-collapse-duration); }
 .label-header-logo .label-wordmark { inline-size: 100%; }
-.label-header-logo[data-artist-logo] > img { inline-size:100%; block-size:var(--site-menu-button-size); object-fit:contain; object-position:left center; }
+.label-header-logo[data-artist-logo] > img { inline-size:100%; block-size:var(--brand-wordmark-header-height); object-fit:contain; object-position:left center; }
 .label-footer-groups { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:var(--spacing-xl); inline-size:100%; text-align:start; }
 .label-footer-group { min-inline-size:0; display:grid; align-content:start; gap:var(--spacing-md); }
 .label-footer-group h2 { margin:0; color:var(--cv-text-primary); font-size:var(--site-type-caption-size); font-weight:var(--font-weight-semibold); }
@@ -308,7 +308,8 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile [data-artist-portrait] img { inline-size:100%; block-size:100%; border-radius:inherit; object-fit:cover; }
 .artist-profile [data-artist-header]:has(img) { position:absolute; inset-block:calc(0px - var(--artist-header-height,var(--site-header-height))) 0; inset-inline:calc((100% - 100vw) / 2); z-index:-1; overflow:hidden; border:0; }
 .artist-profile [data-artist-header] img { inline-size:100%; block-size:100%; object-fit:cover; }
-.artist-profile [data-artist-header]:has(img)::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,color-mix(in srgb,var(--cv-page-bg) 35%,transparent),var(--cv-page-bg)); }
+.artist-profile [data-artist-header]:has(img)::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,color-mix(in srgb,var(--cv-page-bg) 35%,transparent),var(--artist-primary-2,var(--cv-page-bg))); }
+.artist-profile .artist-colour-icon { display:inline-block; inline-size:var(--icon-size-md); block-size:var(--icon-size-md); flex-shrink:0; background-color:var(--artist-primary-1); mask:var(--artist-icon-artwork) center / contain no-repeat; -webkit-mask:var(--artist-icon-artwork) center / contain no-repeat; }
 .artist-profile [data-artist-header]:empty { display:none; }
 .artist-profile [data-artist-fields] { display:grid; gap:var(--spacing-lg); inline-size:min(100%,var(--cv-reading-width)); }
 .artist-profile [data-artist-fields] section { display:grid; gap:var(--spacing-sm); }

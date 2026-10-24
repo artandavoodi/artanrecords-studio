@@ -1,6 +1,6 @@
 {
   "title": "Graphics",
-  "notice": "Choose a transparent PNG or a self-contained SVG, up to 2 MB and 8192 pixels per side. Your original stays private. Public display uses a PNG export and requires an approved, published artist page.",
+  "notice": "Choose a transparent PNG or a self-contained SVG, up to 2 MB and 8192 pixels per side. For a horizontal header wordmark, a 2048 × 256 px canvas is recommended; other proportions are welcome. Keep the artwork close to the canvas edges. Empty transparent margins are removed from the display export, never from your private original. Public display requires an approved, published artist page.",
   "paletteLabel": "Artist colours",
   "paletteNotice": "Choose up to five colours. Enter a six-digit hex code or use your browser’s colour picker.",
   "logoPreview": {
@@ -12,5 +12,6 @@
   "maxDimension": 8192,
   "exportDimension": 1024,
   "maxColors": 5,
+  "paletteRoles": ["primary-1", "primary-2", "primary-3", "primary-4", "primary-5"],
   "defaultColors": [{"value":"#000000","label":"Use black"},{"value":"#FFFFFF","label":"Use white"}]
 }

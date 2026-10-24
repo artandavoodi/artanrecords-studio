@@ -33,7 +33,7 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 .studio-navigation { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:var(--spacing-md); }
 @media(min-width:1025px){.studio-navigation { --studio-header-inset:calc(var(--spacing-lg) + (var(--control-height-md) - var(--layout-home-platform-nav-icon-size)) / 2); margin-inline:var(--studio-header-inset); inline-size:calc(100% - var(--studio-header-inset) * 2); }}
 .studio-brand { display:inline-flex; align-items:center; gap:var(--spacing-sm); justify-self:start; min-inline-size:0; max-inline-size:100%; color:var(--cv-text-primary); }
-.studio-brand-wordmark { --studio-wordmark-preview-width:calc(var(--artanrecords-wordmark-header-width) * 0.9); inline-size:var(--studio-wordmark-preview-width); max-inline-size:100%; min-inline-size:0; }
+.studio-brand-wordmark { inline-size:var(--artanrecords-wordmark-header-width); max-inline-size:100%; min-inline-size:0; }
 .studio-brand-wordmark .label-wordmark { inline-size:100%; }
 .studio-brand-label { font-size:var(--site-type-caption-size); font-weight:var(--font-weight-semibold); white-space:nowrap; }
 .studio-header-tools { display:flex; align-items:center; gap:var(--spacing-xs); }

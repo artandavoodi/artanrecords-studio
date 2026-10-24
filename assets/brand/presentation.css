@@ -1,6 +1,7 @@
-/* Artanrecords owns wordmark dimensions; consumers mirror this file unchanged. */
+@import url('../css/core/01-tokens/brand-header.tokens.css');
+/* Artanrecords binds shared header dimensions; consumers mirror this file unchanged. */
 :root {
-  --artanrecords-wordmark-header-width: calc(var(--site-menu-button-size) * 16);
+  --artanrecords-wordmark-header-width: var(--brand-wordmark-header-width);
   --artanrecords-wordmark-showcase-width: 15rem;
 }
 @media(min-width:1025px){
