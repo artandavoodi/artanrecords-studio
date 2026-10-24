@@ -2,14 +2,14 @@
 .studio-platform { position:relative; display:grid; grid-template-columns:var(--studio-rail-width,var(--layout-home-platform-rail-width)) minmax(0,1fr); gap:var(--spacing-xl); align-items:stretch; }
 .studio-platform-content { min-inline-size:0; }
 .studio-platform-rail { min-inline-size:0; border-inline-end:var(--border-width-hairline) solid var(--cv-border); }
-.studio-platform-rail-scroll { position:sticky; inset-block-start:var(--site-header-height); padding-block:var(--spacing-lg); max-block-size:calc(100dvh - var(--site-header-height)); overflow-y:auto; box-sizing:border-box; padding-inline-end:var(--spacing-lg); }
-.studio-platform-rail-scroll > button { justify-content:start; }
+.studio-platform-rail-scroll { position:sticky; inset-block-start:var(--site-header-height); padding-block:var(--spacing-lg); max-block-size:calc(100dvh - var(--site-header-height)); overflow-y:auto; box-sizing:border-box; padding-inline:var(--spacing-lg); }
+.studio-platform-rail-scroll > button { justify-content:center; inline-size:var(--control-height-md); }
 .site-menu__links .studio-menu-workspace { display:none; }
 .site-menu__links:has(.studio-menu-workspace) { justify-items:stretch; }
 .studio-platform-rail nav,.studio-platform-group { display:grid; gap:var(--layout-home-platform-nav-gap); }
 .studio-platform-group + .studio-platform-group { margin-block-start:var(--spacing-lg); }
 .studio-platform-group h2 { margin:0; padding-block:var(--spacing-sm); font-size:var(--site-type-caption-size); font-weight:var(--font-weight-medium); color:var(--cv-text-secondary); }
-.studio-platform-group a { display:flex; align-items:center; gap:var(--layout-home-platform-nav-item-gap); min-block-size:var(--layout-home-platform-nav-item-min-height); padding:var(--layout-home-platform-nav-item-padding-y) 0; box-sizing:border-box; border:0; background:transparent; color:var(--text-secondary-color); opacity:var(--state-opacity-muted); font-size:var(--layout-home-platform-nav-text-size); font-weight:var(--layout-home-platform-nav-text-weight); line-height:var(--layout-home-platform-nav-text-line-height); letter-spacing:var(--layout-home-platform-nav-text-tracking); text-decoration:none; }
+.studio-platform-group a { display:flex; align-items:center; gap:var(--layout-home-platform-nav-item-gap); min-block-size:var(--layout-home-platform-nav-item-min-height); padding:var(--layout-home-platform-nav-item-padding-y) calc((var(--control-height-md) - var(--layout-home-platform-nav-icon-size)) / 2); box-sizing:border-box; border:0; background:transparent; color:var(--text-secondary-color); opacity:var(--state-opacity-muted); font-size:var(--layout-home-platform-nav-text-size); font-weight:var(--layout-home-platform-nav-text-weight); line-height:var(--layout-home-platform-nav-text-line-height); letter-spacing:var(--layout-home-platform-nav-text-tracking); text-decoration:none; }
 .studio-platform-group a:is(:hover,:focus-visible,[aria-current]) { opacity:var(--overlay-opacity-open); color:var(--text-primary-color); outline:none; }
 .studio-platform-rail .studio-icon { inline-size:var(--layout-home-platform-nav-icon-size); block-size:var(--layout-home-platform-nav-icon-size); }
 html[data-studio-rail=closed] .studio-platform { grid-template-columns:calc(var(--control-height-md) + var(--spacing-lg)*2) minmax(0,1fr); }
@@ -18,6 +18,7 @@ html[data-studio-rail=closed] .studio-platform { grid-template-columns:calc(var(
 @media(min-width:1025px) and (pointer:fine){.studio-rail-resize { display:block; position:absolute; inset-block:0; inset-inline-start:calc(var(--studio-rail-width,var(--layout-home-platform-rail-width)) - var(--spacing-xs)); inline-size:var(--spacing-sm); cursor:col-resize; touch-action:none; z-index:var(--z-above); }html[data-studio-rail=closed] .studio-rail-resize { inset-inline-start:calc(var(--control-height-md) + var(--spacing-lg)*2 - var(--spacing-xs)); }}
 @media(prefers-reduced-motion:no-preference){.studio-platform { transition:grid-template-columns var(--duration-fast) var(--interaction-ease-standard); }}
 html[data-studio-rail=closed] .studio-platform .studio-platform-group :is(h2,span) { display:none; }
+html[data-studio-rail=closed] .studio-platform-group a { inline-size:var(--control-height-md); }
 .studio-platform-introduction,.studio-platform-connection { display:grid; gap:var(--spacing-lg); }
 .studio-platform-introduction h2 { font-size:var(--font-size-h1); font-weight:var(--font-weight-light); line-height:var(--line-height-heading-tight); }
 .studio-platform-features { display:grid; gap:var(--spacing-xl); }

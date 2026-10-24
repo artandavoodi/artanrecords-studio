@@ -14,6 +14,8 @@ import {bindArtistIdentity,bindArtistApplication} from './artist-identity.js';
 import {bindNotifications} from './notifications.js';
 import {bindConcerts} from './concerts.js';
 import {bindPublishedReleases} from './releases.js';
+import {bindArtistContent} from './artist-content.js';
+const workspaceMain=document.querySelector('main');if(workspaceMain)workspaceMain.inert=true;
 await bindPreferences();
 bindSearch();
 const chrome=bindChrome();
@@ -23,6 +25,7 @@ document.querySelectorAll('[data-signout]').forEach(button=>{button.classList.ad
 let client=null;
 try{if(configured(config))client=createClient(config.supabase.url,config.supabase.publishableKey,{auth:{storageKey:'artanrecords-studio-auth',storage:sessionStorage,flowType:'pkce',detectSessionInUrl:false}});}catch(error){console.error('[studio] Backend configuration rejected');}
 const context={client,config,resolveUser,profileValues,validPhoto};
+const notificationsReady=bindNotifications(context);
 document.querySelectorAll('[data-reset-password]').forEach(button=>button.addEventListener('click',async()=>{
   const status=document.querySelector('[data-security-status]');button.disabled=true;
   try{const user=client&&await resolveUser(client);if(!user)throw Error();const result=await client.auth.resetPasswordForEmail(user.email,{redirectTo:location.origin+'/account/?flow=recovery'});if(result.error)throw result.error;status.textContent='Check your email for a password reset link.';}catch{status.textContent='A reset link could not be requested. Sign in and try again.';}finally{button.disabled=false;}
@@ -31,6 +34,7 @@ bindPlatform(context);
 const callback=readAccountCallback(new URL(location.href));
 const accountCallback=Boolean(callback.code||callback.token||callback.error);
 client?.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){document.querySelectorAll('[data-profile-form],[data-artist-metadata],[data-release-controls],[data-submissions-list],[data-contracts-list]').forEach(element=>element.replaceChildren());document.querySelector('[data-avatar]')?.removeAttribute('src');location.replace('/account/');}});
+try{
 await bindAccount(context);await bindProfile(context);
 if(client)try{chrome.setUser(await resolveUser(client));}catch{console.error('[studio] Account verification unavailable');}
 if(location.pathname==='/account/')requestAnimationFrame(()=>{
@@ -41,10 +45,18 @@ await bindBilling(context);
 await bindArtistMetadata(context);
 await bindArtistIdentity(context);
 await bindArtistApplication(context);
-await bindNotifications(context);
+await notificationsReady;
 await bindReleaseMetadata(context);
 await bindPublishedReleases(context);
 await bindConcerts(context);
 await bindWorkspace(context);
+await bindArtistContent(context);
+await Promise.allSettled([...document.querySelectorAll('main img:not([loading=lazy])')].filter(image=>image.getAttribute('src')&&!image.closest('[hidden]')).map(async image=>{
+ // WebKit can defer SVG decoding until paint; waiting for decode behind the boot screen deadlocks it.
+ if(new URL(image.currentSrc||image.src,location.href).pathname.endsWith('.svg')){
+  if(!image.complete)await new Promise(resolve=>{image.addEventListener('load',resolve,{once:true});image.addEventListener('error',resolve,{once:true});});
+ }else await image.decode();
+}));
+}catch(error){console.error('[studio] Workspace initialization failed',error);}finally{clearTimeout(window.__studioLoadingFallback);delete document.documentElement.dataset.studioLoading;if(workspaceMain)workspaceMain.inert=false;}
 document.querySelectorAll('[data-signout]').forEach(button=>{button.disabled=!client;button.addEventListener('click',async()=>{if(!client)return;button.disabled=true;try{const result=await client.auth.signOut({scope:'local'});if(result.error)throw result.error;}catch{button.disabled=false;button.setAttribute('aria-label','Try signing out again');}});});
 if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){entry.target.dataset.studioVisible='true';observer.unobserve(entry.target);}});document.querySelectorAll('.studio-surface header,.surface-card').forEach(item=>{item.dataset.studioReveal='';observer.observe(item);});}

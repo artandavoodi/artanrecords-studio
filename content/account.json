@@ -136,6 +136,7 @@
     "tiktok": "layers/website/social/platforms/tiktok.svg",
     "spotify": "layers/website/social/platforms/spotify.svg",
     "apple_music": "layers/website/social/platforms/apple-music.svg",
+    "amazon_music": "core/commerce/marketplaces/amazon/amazon.svg",
     "soundcloud": "layers/website/social/platforms/soundcloud.svg",
     "youtube": "system/social/youtube.svg",
     "youtube_music": "layers/website/social/platforms/youtube-music.svg",
@@ -174,6 +175,7 @@
     "social": "layers/website/navigation/actions/social-links.svg",
     "email": "system/social/email.svg",
     "image": "core/media/image/image.svg",
+    "edit": "core/actions/edit/edit.svg",
     "globe": "core/navigation/global/globe.svg",
     "plus": "core/actions/create/add.svg",
     "concert": "core/productivity/calendar/calendar.svg"

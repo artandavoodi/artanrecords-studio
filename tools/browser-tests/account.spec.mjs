@@ -6,7 +6,7 @@ const access=[{alg:'HS256',typ:'JWT'},{sub:id,role:'authenticated',aud:'authenti
 const session={access_token:access,refresh_token:'test-refresh-not-a-real-credential',token_type:'bearer',expires_in:3600,user};
 async function mockBackend(page){
   const requests=[];
-  let artistMetadata=null,handle=null,application=null;const drafts=new Map(),concerts=new Map();
+  let artistMetadata=null,handle=null,application=null,artistContent=null;const drafts=new Map(),concerts=new Map();
   await page.route('https://hahtbepdrjkjluhespbs.supabase.co/**',async route=>{
     const request=route.request(),url=new URL(request.url());
     requests.push({path:url.pathname,query:url.search,body:request.headers()['content-type']?.includes('application/json')?request.postDataJSON():null,method:request.method()});
@@ -36,6 +36,8 @@ async function mockBackend(page){
     else if(url.pathname.endsWith('/rpc/studio_apply_partnership')){application={requested_tier:request.postDataJSON().tier,approved_tier:null,status:'pending',decision_note:''};body=null;}
     else if(url.pathname.endsWith('/rpc/studio_set_artist_media_visibility'))body=null;
     else if(url.pathname.endsWith('/rpc/studio_save_artist_graphics'))body=null;
+    else if(url.pathname.endsWith('/studio_artist_content'))body=artistContent?[{content:artistContent}]:[];
+    else if(url.pathname.endsWith('/rpc/studio_save_artist_content')){artistContent=request.postDataJSON().value;body=null;}
     else if(url.pathname.includes('/rest/v1/studio_')){body=request.method()==='GET'?[]:null;status=request.method()==='POST'?201:200;}
     else if(url.pathname.includes('/storage/v1/object/list/'))body=[];
     else if(url.pathname.includes('/storage/v1/object/studio-logos/')){status=request.method()==='GET'?404:200;body=request.method()==='GET'?{message:'Not found'}:{Key:'logo'};}
@@ -56,10 +58,19 @@ test('Studio reuses magnetic navigation for drag collapse and reopening',async({
  await page.emulateMedia({reducedMotion:'reduce'});await mockBackend(page);await page.goto('/profile/');
  const handle=page.getByRole('separator',{name:'Resize navigation',exact:true}),rail=page.locator('.studio-platform-rail');
  if(!test.info().project.name.endsWith('desktop')){await expect(handle).toBeHidden();return;}
- await expect(handle).toBeVisible();const maximum=await rail.evaluate(el=>el.getBoundingClientRect().width);
+ await expect(handle).toBeVisible();expect((await rail.boundingBox()).x).toBe(0);const maximum=await rail.evaluate(el=>el.getBoundingClientRect().width),iconLeft=await rail.locator('.studio-platform-group a img').first().evaluate(el=>el.getBoundingClientRect().left);
+ expect(Math.abs((await page.locator('.studio-brand').boundingBox()).x-iconLeft)).toBeLessThanOrEqual(1);
  let box=await handle.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+100);await page.mouse.down();await page.mouse.move(0,box.y+100,{steps:12});await page.mouse.up();await expect(page.locator('html')).toHaveAttribute('data-studio-rail','closed');
+ const balance=await rail.evaluate(el=>{const icon=el.querySelector('.studio-platform-group a img').getBoundingClientRect(),bounds=el.getBoundingClientRect();return Math.abs((icon.left-bounds.left)-(bounds.right-icon.right));});expect(balance).toBeLessThanOrEqual(1.1);expect(Math.abs(await rail.locator('.studio-platform-group a img').first().evaluate(el=>el.getBoundingClientRect().left)-iconLeft)).toBeLessThanOrEqual(1);
  box=await handle.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+100);await page.mouse.down();await page.mouse.move(maximum,box.y+100,{steps:12});await page.mouse.up();await expect(page.locator('html')).toHaveAttribute('data-studio-rail','open');
  await expect(rail.locator('.studio-platform-group a span').first()).toHaveCSS('white-space','nowrap');
+});
+test('artist content edits stay private unless a specific field is shared',async({page})=>{
+ const requests=await mockBackend(page),account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
+ await page.getByRole('tab',{name:'Artist content',exact:true}).click();const card=page.locator('.studio-content-card').filter({has:page.getByRole('heading',{name:'About',exact:true})});await card.getByRole('button',{name:'Edit'}).click();
+ const dialog=page.getByRole('dialog',{name:'Edit artist content'});await dialog.getByLabel('Other names',{exact:true}).fill('Stage name');await dialog.getByLabel('Born',{exact:true}).fill('1990-01-01');await dialog.getByRole('button',{name:'Save',exact:true}).click();await expect(dialog).toBeHidden();
+ const saved=requests.find(item=>item.path.endsWith('/rpc/studio_save_artist_content')).body.value;expect(saved.born).toBe('1990-01-01');expect(saved.visibility.born).toBe(false);expect(saved.visibility.other_names).toBe(false);
+ await expect(page.locator('.system-save-confirmation')).toHaveText('About saved.');
 });
 test('artist graphics isolate their tab and save explicit palette visibility',async({page})=>{
  const requests=await mockBackend(page),dialog=await openAccount(page);
@@ -67,10 +78,13 @@ test('artist graphics isolate their tab and save explicit palette visibility',as
  await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.getByRole('tab',{name:'Graphics',exact:true}).click();
  const form=page.locator('[data-graphics-form]');await expect(form).toBeVisible();await expect(page.locator('[data-profile-form]')).toBeHidden();
- await form.getByRole('button',{name:'Add colour'}).click();await form.getByLabel('Artist colour hex code').fill('#123456');
+ await form.getByRole('button',{name:'Custom colour'}).click();await form.getByLabel('Artist colour hex code').fill('#123456');
  await expect(form.getByLabel('Choose artist colour')).toHaveValue('#123456');
  await expect(form.locator('.studio-color-field')).toHaveCSS('display','flex');await expect(form.getByRole('button',{name:'Remove colour'})).toHaveText('');
+ const colours=page.getByRole('dialog',{name:'Custom artist colours'});await expect(colours).toBeVisible();await expect(colours.locator('.global-close-button__line')).toHaveCount(2);
+ expect(await colours.evaluate(el=>getComputedStyle(el,'::backdrop').backdropFilter)).not.toBe('none');
  if(test.info().project.name==='chromium-desktop')await page.screenshot({path:'/tmp/studio-graphics-refined-proof.png'});
+ await colours.getByRole('button',{name:'Close custom colours'}).click();await expect(colours).toBeHidden();await expect(form.getByRole('button',{name:'Custom colour'})).toBeFocused();
  await form.getByLabel('Share my artist colours').check();await form.getByRole('button',{name:'Save',exact:true}).click();
  await expect(page.locator('.system-save-confirmation')).toHaveText('Graphics saved.');
  expect(requests.find(item=>item.path.endsWith('/rpc/studio_save_artist_graphics')).body).toEqual({colors:['#123456'],share_logo:false,share_palette:true});
@@ -103,7 +117,7 @@ test('concert drafts save separately from explicit publication and cancellation'
  const requests=await mockBackend(page),dialog=await openAccount(page);
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
  await expect(page.locator('[data-profile-form]')).toBeVisible();
- await page.goto('/concerts/');const root=page.locator('[data-concerts]');await expect(root.locator('[data-concert-controls]')).toBeVisible();
+ await page.goto('/concerts/');const root=page.locator('[data-concerts]');await expect(page.locator('html')).not.toHaveAttribute('data-studio-loading','true',{timeout:15000});await expect(root.locator('[data-concert-controls]')).toBeVisible();
  await root.locator('[name=title]').fill('Piano night');await root.locator('[name=starts_at]').fill('2026-12-01T20:00');await root.locator('[name=timezone]').fill('Europe/Berlin');await root.locator('[name=venue]').fill('Concert hall');await root.locator('[name=city]').fill('Berlin');await root.locator('[name=country]').fill('DE');
  await root.getByRole('button',{name:'Save',exact:true}).click();await expect(page.locator('.system-save-confirmation')).toHaveText('Concert saved.');
  expect(requests.some(row=>row.path.endsWith('/rpc/studio_set_concert_status'))).toBe(false);
@@ -158,14 +172,15 @@ test('shared portrait editor crops only after confirmation and preserves the cam
   });
   await page.route('**/storage/v1/object/sign/studio-avatars/**',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({signedURL:'/object/sign/studio-avatars/'+id+'/avatar?token=fixture'})}));
   const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
-  await expect(page.locator('[data-profile-form]')).toBeVisible();
+  await expect(page.locator('.studio-boot')).toBeVisible();
+  releaseListings();
+  await expect(page.locator('[data-profile-form]')).toBeVisible({timeout:15000});
   const avatar=await page.locator('.studio-avatar').boundingBox(),header=await page.locator('.studio-profile-header').boundingBox();
   expect(avatar.width).toBeGreaterThan(90);expect(Math.abs(avatar.width-avatar.height)).toBeLessThan(1);expect(avatar.y).toBeLessThan(header.y+header.height);
   const photoAction=page.getByRole('button',{name:'Change profile photograph',exact:true});await expect(photoAction).not.toHaveClass(/ui-button/);await expect(photoAction).toHaveClass(/profile-media-action/);expect((await photoAction.boundingBox()).width).toBeLessThan(30);
   const camera=await page.locator('.studio-avatar .studio-photo-action .studio-icon').boundingBox();expect(camera.width).toBeLessThan(30);await expect(photoAction.locator('img')).toHaveClass(/ui-icon-theme-aware/);
   await page.getByRole('button',{name:'Change profile photograph',exact:true}).click();
   const editor=page.getByRole('dialog',{name:'Edit Profile Image',exact:true});await expect(editor).toBeVisible();
-  releaseListings();
   const titleBox=await editor.getByRole('heading').boundingBox(),closeBox=await editor.getByRole('button',{name:'Close image editor'}).boundingBox();expect(closeBox.x).toBeGreaterThan(titleBox.x+titleBox.width);
   await editor.getByRole('button',{name:'Close image editor'}).click();expect(uploads).toBe(0);
   const image=await page.evaluate(()=>{const canvas=document.createElement('canvas');canvas.width=300;canvas.height=180;const c=canvas.getContext('2d');c.fillStyle='#d2691e';c.fillRect(0,0,150,180);c.fillStyle='#006b54';c.fillRect(150,0,150,180);return canvas.toDataURL('image/png').split(',')[1];});

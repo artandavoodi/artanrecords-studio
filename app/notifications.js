@@ -1,7 +1,7 @@
 import {renderNotificationFeed} from './neuroartan/assets/js/core/02-systems/notification-feed.js';
 export async function bindNotifications({client,resolveUser}){
  const button=document.querySelector('[data-studio-notifications]'),popover=document.getElementById('studio-notifications');if(!button||!client)return;
- let user;try{user=await resolveUser(client);}catch{return;}if(!user)return;button.hidden=false;
+ let user;try{user=await resolveUser(client);}catch{return;}if(!user)return;button.disabled=false;
  const heading=document.createElement('h2'),feed=document.createElement('div');heading.textContent='Notifications';popover.replaceChildren(heading,feed);
  const count=button.querySelector('[data-studio-notification-count]');count.classList.add('system-notification-badge');
  let busy=false,history=false,records=[];const acknowledged=new Set();

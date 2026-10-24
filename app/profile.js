@@ -3,7 +3,7 @@ import {bindGraphics} from './graphics.js';
 import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
 import {registerProfileMediaEditorTarget,openProfileMediaEditor} from './neuroartan/assets/js/layers/website/ui/profile-media-editor.js';
 export async function bindProfile({client,config,resolveUser,profileValues,validPhoto}){
-  void bindGraphics({client,resolveUser});
+  const graphicsReady=bindGraphics({client,resolveUser});
   const view=document.querySelector('[data-profile-view]');if(!view)return;
   const status=view.querySelector('[data-profile-status]'),form=view.querySelector('form'),guest=view.querySelector('[data-profile-guest]');
   form.elements.phone.readOnly=false;
@@ -31,7 +31,7 @@ export async function bindProfile({client,config,resolveUser,profileValues,valid
   const mediaRevision={avatar:0,cover:0};
   const showPhoto=url=>{if(!url)return;avatar.onload=()=>{avatar.hidden=false;placeholder.hidden=true;};avatar.onerror=()=>{avatar.hidden=true;placeholder.hidden=false;};avatar.src=url;};
   showPhoto(googlePhoto(user));
-  void (async()=>{try{
+  const portraitReady=(async()=>{try{
     const photos=await client.storage.from('studio-avatars').list(user.id,{limit:10,search:'avatar'});
     if(photos.error)throw photos.error;
     if(photos.data.some(photo=>photo.name==='avatar')){
@@ -42,7 +42,7 @@ export async function bindProfile({client,config,resolveUser,profileValues,valid
   }catch{ /* Keep the Google photograph or the neutral account placeholder. */ }})();
   form.addEventListener('submit',async event=>{event.preventDefault();const button=form.querySelector('[type="submit"]');button.disabled=true;try{const values=profileValues(new FormData(form));const current=await resolveUser(client);if(current?.id!==user.id)throw Error('Your session changed.');const existing=await client.from('studio_profiles').select('id').eq('id',current.id).maybeSingle();if(existing.error)throw existing.error;const result=existing.data?await client.from('studio_profiles').update(values).eq('id',current.id):await client.from('studio_profiles').insert({id:current.id,...values});if(result.error)throw result.error;if(mediaReady)await saveMediaVisibility();status.textContent='';showSaveConfirmation('Profile saved.');}catch(error){status.textContent=error.message?.includes('HTTPS')?error.message:'Profile could not be saved. Please try again.';}finally{button.disabled=false;}});
   const header=view.querySelector('[data-header-image]');
-  void (async()=>{try{const list=await client.storage.from('studio-headers').list(user.id,{search:'header',limit:10});if(!list.error&&list.data.some(file=>file.name==='header')){const signed=await client.storage.from('studio-headers').createSignedUrl(user.id+'/header',300);if(!signed.error&&mediaRevision.cover===0){header.src=signed.data.signedUrl;header.hidden=false;}}}catch{/* The empty header remains usable when storage is unavailable. */}})();
+  const headerReady=(async()=>{try{const list=await client.storage.from('studio-headers').list(user.id,{search:'header',limit:10});if(!list.error&&list.data.some(file=>file.name==='header')){const signed=await client.storage.from('studio-headers').createSignedUrl(user.id+'/header',300);if(!signed.error&&mediaRevision.cover===0){header.src=signed.data.signedUrl;header.hidden=false;}}}catch{/* The empty header remains usable when storage is unavailable. */}})();
   registerProfileMediaEditorTarget('studio',{
     getCurrentImageUrl:({kind})=>(kind==='cover'?header:avatar).getAttribute('src')||'',
     async save({file,kind}){
@@ -68,4 +68,5 @@ export async function bindProfile({client,config,resolveUser,profileValues,valid
     try{const decoded=await createImageBitmap(file);const tooLarge=decoded.width>8192||decoded.height>8192;decoded.close();if(tooLarge)throw Error('Image too large');openProfileMediaEditor({target:'studio',kind:filename==='header'?'cover':'avatar',file});}catch{status.textContent='This image could not be opened. Use a valid image no larger than 8192 pixels per side.';}finally{input.disabled=false;input.value='';}
   });
   view.querySelector('[data-verify-phone]').addEventListener('click',()=>{view.querySelector('[data-phone-status]').textContent=config.phoneNotice;});
+  await Promise.allSettled([graphicsReady,portraitReady,headerReady]);
 }

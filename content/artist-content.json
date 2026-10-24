@@ -1,0 +1,11 @@
+{
+ "title":"Artist content",
+ "notice":"Edit the information on your artist page. New details are private until you choose to share them. Publishing requires an approved artist address and a public profile.",
+ "groups":[
+  {"id":"about","title":"About","fields":[{"name":"other_names","label":"Other names"},{"name":"from","label":"From"},{"name":"born","label":"Born","type":"date"},{"name":"about","label":"About","multiline":true}]},
+  {"id":"questions","title":"In your own words","fields":[{"name":"early_memory","label":"An early musical memory","multiline":true},{"name":"favorite_albums","label":"Favourite albums and why they matter","multiline":true},{"name":"favorite_song","label":"A song that matters to you","multiline":true},{"name":"career_moment","label":"A memorable career moment","multiline":true},{"name":"ambitions","label":"What you would like to do next","multiline":true}]},
+  {"id":"connections","title":"Influences & collaborations","fields":[{"name":"influences","label":"Musical influences","multiline":true},{"name":"collaborations","label":"Collaborations you would like to highlight","multiline":true}]},
+  {"id":"spotlight","title":"Spotlight","fields":[{"name":"spotlight_release","label":"Featured release","type":"release"},{"name":"spotlight_start","label":"Start date","type":"date","private":true},{"name":"spotlight_end","label":"End date","type":"date","private":true},{"name":"spotlight_note","label":"A note for your listeners","multiline":true,"private":true}]},
+  {"id":"editorial","title":"For our editors","fields":[{"name":"editorial_pronouns","label":"Pronouns for editorial use","private":true}]}
+ ]
+}

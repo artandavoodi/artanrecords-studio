@@ -1,12 +1,13 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "9df1e36c9f999d7602ca3387538276b098884f72",
+  "revision": "a88183ad431c4a2ac7388ab9096fde792f575224",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
     "instagram": "7e4b0ad497c7afdbec799228d72ea8e32f851adf56d04598bf93cfa333cec0c7",
     "tiktok": "6b0add3deed8bd8e774bb84c39d837e5f761136eca83a927cd49a5da37d46edb",
     "spotify": "bd1ca6cb3af69550651f91f674dfcfc381edf9e9f636b86378cbfe5793c33033",
     "apple_music": "365264bcf032a1acb6f18554cf7d34b1b2a75f7e571848629173bbfd0e1cadbb",
+    "amazon_music": "08e5de4782296c6e724a6e8caf655a2d66998e70a8c75f548fcdc2c96ac487d9",
     "soundcloud": "02bac3d2cb8c1091aeae61219803dadbb4364dd636e50f60567d25dfcde7c12c",
     "youtube": "94f7062f3106f4379a3ab1de21e71afc2900792e0f7eb68b8d877eb799c8bd3b",
     "youtube_music": "f96c8a67f93717df8f9f57b0e96638b19e8fd80a165ddf83598592b5342612f5",
@@ -45,6 +46,7 @@
     "social": "4eb410024e0a832301e6cd289c1aa5ee6e4782a73248fbd2f6f247d045efaea4",
     "email": "cf2c19b26e0f7313cc851db282bbf6c08c115a41854c7fe9f0a910809f9e161c",
     "image": "4375c1baa33f12fb7bb800ad31339fa51f516b317a6f2394e890e0eb40ae3aa6",
+    "edit": "07d5a2a08583e9d4d7ef7adcf76d3ac4109e9b91c2e6dd44ca67b26cd63e9330",
     "globe": "b4693a9829c4d5915df2546696c3fd0afffe41717b913651970e5fe758036b94",
     "plus": "d6e6467d134a5ff667f8b639533f677fbed1da38172ae8e995e1f7fc6e83307f",
     "concert": "e12059ce8e2de342f5d92213581641c5021c69effc241edc3eae4e30bf835c57"
@@ -55,6 +57,7 @@
     "tiktok": true,
     "spotify": true,
     "apple_music": true,
+    "amazon_music": true,
     "soundcloud": true,
     "youtube": true,
     "youtube_music": true,
@@ -93,6 +96,7 @@
     "social": false,
     "email": true,
     "image": true,
+    "edit": true,
     "globe": true,
     "plus": true,
     "concert": false

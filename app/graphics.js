@@ -47,13 +47,19 @@ export async function bindGraphics({client,resolveUser}){
   picker.oninput=()=>{hex.value=picker.value;};hex.oninput=()=>{if(/^#[0-9a-f]{6}$/i.test(hex.value))picker.value=hex.value;};row.append(picker,hex,remove);fields.append(row);add.disabled=fields.children.length>=config.maxColors;
  };
  add.onclick=()=>{if(fields.children.length<config.maxColors)append('#000000');};
+ const colourDialog=form.querySelector('#artist-colour-picker');
+ window.NeuroartanCloseButtons?.initCloseButtonPrimitive(colourDialog);
+ colourDialog.addEventListener('close',()=>form.querySelector('[data-open-colour]').focus({preventScroll:true}));
+ form.querySelector('[data-close-colour]').onclick=()=>colourDialog.close();
+ form.querySelector('[data-open-colour]').addEventListener('click',()=>{if(!fields.children.length)append('#000000');colourDialog.showModal();});
+ for(const button of form.querySelectorAll('[data-colour-preset]')){button.style.backgroundColor=button.dataset.colourPreset;button.onclick=()=>{if(!fields.children.length)append(button.dataset.colourPreset);const row=fields.firstElementChild;row.querySelector('[type=color]').value=button.dataset.colourPreset;row.querySelector('[type=text]').value=button.dataset.colourPreset;for(const other of form.querySelectorAll('[data-colour-preset]'))other.setAttribute('aria-pressed',String(other===button));};}
  try{
   if(!client||(owner=await resolveUser(client))==null)throw Error('Sign in to manage artist graphics.');
   const result=await client.from('studio_artist_graphics').select('palette,logo_public,palette_public').eq('account_id',owner.id).maybeSingle();if(result.error)throw Error('Artist graphics are not available yet. No changes have been saved.');
   for(const color of result.data?.palette||[])append(color);
   form.elements.share_logo.checked=result.data?.logo_public===true;form.elements.share_palette.checked=result.data?.palette_public===true;
   save.disabled=false;
-  const logo=await client.storage.from('studio-logos').download(owner.id+'/logo');if(!logo.error)show(logo.data);
+  const logo=await client.storage.from('studio-logos').download(owner.id+'/logo');if(!logo.error){show(logo.data);form.querySelector('[data-logo-status]').textContent=result.data?.logo_public?'Public display selected':'Saved privately';}
  }catch(error){status.textContent=error.message;return;}
  form.elements.logo.onchange=async()=>{save.disabled=true;pending=null;try{const file=form.elements.logo.files[0];if(file){pending=await exportLogo(file);show(pending.display);form.querySelector('[data-logo-file]').textContent=file.name+' · PNG preview ready';}status.textContent='';}catch(error){status.textContent=error.message;form.elements.logo.value='';}finally{save.disabled=false;}};
  form.onsubmit=async event=>{

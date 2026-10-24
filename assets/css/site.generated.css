@@ -7547,10 +7547,25 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 [data-public-artist][hidden] { display:none; }
 .artist-profile [data-artist-since] { display:flex; gap:var(--spacing-sm); margin:0; font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 .artist-profile .artist-connections { align-content:start; justify-content:start; gap:var(--spacing-lg); }
+@media(min-width:1025px) and (hover:hover) and (pointer:fine){
+ html:has([data-artist-section-mode=desktop]) { scroll-snap-type:y mandatory; scroll-padding-block-start:var(--artist-header-height,var(--site-header-height)); }
+ .artist-profile[data-artist-section-mode=desktop] > section { min-block-size:calc(100svh - var(--artist-header-height,var(--site-header-height))); scroll-snap-align:start; scroll-snap-stop:always; overflow-anchor:none; }
+ .artist-profile[data-artist-section-mode=desktop] .artist-connections { align-content:center; text-align:center; justify-content:stretch; }
+ .artist-profile[data-artist-section-mode=desktop] .artist-link-group .hub__group-links { justify-content:center; }
+ .artist-profile .artist-destination-tabs { display:none; }
+ .label-header-logo[hidden] { display:none; }
+ .label-navigation .artist-destination-tabs[data-in-header] { grid-area:1/1; inline-size:auto; flex-wrap:nowrap; padding:0; gap:var(--spacing-md); font-size:var(--site-type-caption-size); }
+ .label-navigation .artist-destination-tabs[data-in-header] { animation:artist-tab-arrive var(--duration-base) var(--ease-standard) both; }
+ .label-navigation .artist-destination-tabs[data-leaving] { animation:artist-tab-leave var(--duration-base) var(--ease-standard) both; pointer-events:none; }
+ @keyframes artist-tab-arrive{from{opacity:0;transform:translateY(var(--spacing-xs))}to{opacity:1;transform:none}}
+ @keyframes artist-tab-leave{from{opacity:1;transform:none}to{opacity:0;transform:translateY(calc(0px - var(--spacing-xs)))}}
+ .artist-profile .artist-destination-tabs { justify-content:center; }
+}
+@media(prefers-reduced-motion:reduce){.label-navigation .artist-destination-tabs[data-in-header],.label-navigation .artist-destination-tabs[data-leaving] { animation:none; }}
 .artist-profile .artist-connections.information-links { display:flex; flex-wrap:wrap; align-items:center; }
 .artist-profile [data-artist-portrait] { position:relative; display:grid; place-items:center; inline-size:calc(var(--control-height-lg) * 3); aspect-ratio:1; border:0; border-radius:var(--radius-circle); background:var(--control-bg); }
 .artist-profile [data-artist-portrait] img { inline-size:100%; block-size:100%; border-radius:inherit; object-fit:cover; }
-.artist-profile [data-artist-header]:has(img) { position:absolute; inset-block:calc(0px - var(--site-header-height)) 0; inset-inline:calc((100% - 100vw) / 2); z-index:-1; overflow:hidden; border:0; }
+.artist-profile [data-artist-header]:has(img) { position:absolute; inset-block:calc(0px - var(--artist-header-height,var(--site-header-height))) 0; inset-inline:calc((100% - 100vw) / 2); z-index:-1; overflow:hidden; border:0; }
 .artist-profile [data-artist-header] img { inline-size:100%; block-size:100%; object-fit:cover; }
 .artist-profile [data-artist-header]:has(img)::after { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,color-mix(in srgb,var(--cv-page-bg) 35%,transparent),var(--cv-page-bg)); }
 .artist-profile [data-artist-header]:empty { display:none; }
@@ -7561,6 +7576,7 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile [data-artist-fields] p { margin:0; font-size:var(--site-type-body-size); line-height:var(--line-height-body); }
 .artist-profile .artist-connections { display:grid; grid-template-columns:minmax(0,1fr); inline-size:100%; align-items:start; }
 .artist-destination-tabs { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-lg); inline-size:100%; padding-block:var(--spacing-md); }
+.artist-destination-tabs[hidden] { display:none; }
 .artist-destination-tabs button { font:inherit; color:inherit; background:none; border:0; padding:var(--spacing-sm) 0; cursor:pointer; opacity:var(--state-opacity-muted); }
 .artist-destination-tabs button[aria-selected=true],.artist-destination-tabs button:hover { opacity:var(--cv-opacity-full); }
 .artist-profile [data-artist-group][hidden] { display:none; }
