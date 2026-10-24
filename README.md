@@ -6,6 +6,10 @@ Every major and minor development change must follow the canonical [Control Cent
 
 ## Shared Platform Controls
 
+The Studio wordmark currently previews 90% of the shared header width in
+`app/studio.css`. This size is awaiting owner review; do not propagate it to the
+website or other consumers before approval. Shared logo artwork remains unchanged.
+
 Studio owns its stationary header and copyright-only footer in
 `app/shell-render.mjs`; marketing navigation does not own platform identity.
 Workspace column dividers belong to the full-height rail, not its inner sticky

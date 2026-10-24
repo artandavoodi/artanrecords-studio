@@ -1,3 +1,10 @@
+import artworkRules from '../content/release-artwork.json' with {type:'json'};
+export function releaseArtworkValues(value){
+ const uuid='[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+ if(!value||!new RegExp('^'+uuid+'/'+uuid+'/'+uuid+'\\.(jpg|png)$').test(value.path)||!['image/jpeg','image/png'].includes(value.type))throw Error('Check the saved cover artwork.');
+ if(!value.path.endsWith(value.type==='image/png'?'.png':'.jpg')||!Number.isInteger(value.bytes)||value.bytes<1||value.bytes>artworkRules.maxBytes||!Number.isInteger(value.width)||value.width!==value.height||value.width<artworkRules.minDimension||value.width>artworkRules.maxDimension)throw Error('Check the saved cover artwork.');
+ return {path:value.path,name:String(value.name||'Cover artwork').slice(0,200),type:value.type,bytes:value.bytes,width:value.width,height:value.height};
+}
 function fields(values,definitions){
   const result={};
   for(const field of definitions){
@@ -27,6 +34,7 @@ export function artistMetadata(values,schema){
 }
 export function releaseMetadata(values,schema){
   const result={schemaVersion:1,...fields(values,schema.release.fields),links:fields(values.links||{},schema.release.linkFields),visibility:visibility(values.visibility,schema.publication.releaseFields)};
+  if(values.artwork)result.artwork=releaseArtworkValues(values.artwork);
   if(result.upc&&!/^\d{12,13}$/.test(result.upc))throw Error('Use an existing 12- or 13-digit UPC/EAN, or leave it blank.');
   if(!Array.isArray(values.tracks)||!values.tracks.length||values.tracks.length>schema.release.maxTracks)throw Error('Add between 1 and '+schema.release.maxTracks+' tracks.');
   if(result.type==='Single'&&values.tracks.length!==1)throw Error('A single draft must contain one track; choose EP or Album for more tracks.');

@@ -33,7 +33,7 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 .studio-navigation { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:var(--spacing-md); }
 @media(min-width:1025px){.studio-navigation { --studio-header-inset:calc(var(--spacing-lg) + (var(--control-height-md) - var(--layout-home-platform-nav-icon-size)) / 2); margin-inline:var(--studio-header-inset); inline-size:calc(100% - var(--studio-header-inset) * 2); }}
 .studio-brand { display:inline-flex; align-items:center; gap:var(--spacing-sm); justify-self:start; min-inline-size:0; max-inline-size:100%; color:var(--cv-text-primary); }
-.studio-brand-wordmark { inline-size:var(--artanrecords-wordmark-header-width); max-inline-size:100%; min-inline-size:0; }
+.studio-brand-wordmark { --studio-wordmark-preview-width:calc(var(--artanrecords-wordmark-header-width) * 0.9); inline-size:var(--studio-wordmark-preview-width); max-inline-size:100%; min-inline-size:0; }
 .studio-brand-wordmark .label-wordmark { inline-size:100%; }
 .studio-brand-label { font-size:var(--site-type-caption-size); font-weight:var(--font-weight-semibold); white-space:nowrap; }
 .studio-header-tools { display:flex; align-items:center; gap:var(--spacing-xs); }
@@ -117,6 +117,11 @@ html[data-search-open] :is(.studio-header-tools,.site-menu-toggle) { opacity:var
 .studio-track-header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:var(--spacing-md); }
 .studio-track-header h3 { font-size:var(--site-type-body-size); font-weight:var(--font-weight-semibold); }
 .studio-track [data-contributors] { display:grid; gap:var(--spacing-xl); }
+.studio-cover { display:grid; gap:var(--spacing-lg); padding-block:var(--spacing-xl); }
+.studio-cover header { display:flex; flex-wrap:wrap; gap:var(--spacing-md); align-items:center; justify-content:space-between; }
+.studio-cover h2,.studio-cover p { margin:0; }
+.studio-cover-preview { inline-size:min(100%,var(--reading-width-sm)); aspect-ratio:1; display:grid; place-items:center; background:var(--control-bg-hover); border-radius:var(--panel-radius-unified); overflow:hidden; }
+.studio-cover-preview > img { inline-size:100%; block-size:100%; object-fit:contain; }
 .studio-metadata-fields > label { gap:var(--spacing-sm); }
 .studio-release-facts { display:grid; gap:var(--spacing-lg); margin:0; }
 .studio-release-facts dt { color:var(--cv-text-secondary); font-size:var(--site-type-caption-size); }

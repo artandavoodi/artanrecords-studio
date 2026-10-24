@@ -595,14 +595,12 @@
         ]
       },
       {
-        "title": "Rights and artwork",
+        "title": "Rights and permissions",
         "fields": [
           "copyright_owner",
           "copyright_year",
           "phonographic_owner",
           "recording_year",
-          "artwork_url",
-          "artwork_credit",
           "rights_notes"
         ]
       }

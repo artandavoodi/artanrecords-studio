@@ -283,8 +283,11 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile [data-artist-since] { display:flex; gap:var(--spacing-sm); margin:0; font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 .artist-profile .artist-connections { align-content:start; justify-content:start; gap:var(--spacing-lg); }
 @media(min-width:1025px) and (hover:hover) and (pointer:fine){
- html:has(main[data-fragment="artist"] [data-artist-section-mode=desktop]) { scroll-snap-type:y mandatory; scroll-padding-block-start:var(--artist-header-height,var(--site-header-height)); }
- .artist-profile[data-artist-section-mode=desktop] > section { min-block-size:calc(100svh - var(--artist-header-height,var(--site-header-height))); scroll-snap-align:start; scroll-snap-stop:always; overflow-anchor:none; }
+ html:has(main[data-fragment="artist"] [data-artist-section-mode=desktop]:not([data-artist-free-scroll])) { scroll-snap-type:y mandatory; scroll-padding-block-start:var(--artist-header-height,var(--site-header-height)); }
+ .artist-profile[data-artist-section-mode=desktop] > section:not([data-artist-archive]) { min-block-size:calc(100svh - var(--artist-header-height,var(--site-header-height))); scroll-snap-align:start; scroll-snap-stop:always; overflow-anchor:none; }
+ .artist-profile[data-artist-section-mode=desktop] > [data-artist-archive] { scroll-snap-align:start; scroll-snap-stop:normal; align-content:start; }
+ .artist-profile[data-artist-free-scroll] > [data-artist-archive] { scroll-snap-align:none; }
+ .artist-profile[data-artist-section-mode=desktop] [data-artist-directory] { opacity:calc(1 - var(--artist-directory-progress,0)); scale:calc(1 - var(--artist-directory-progress,0) * 0.15); transform-origin:center; }
  .artist-profile[data-artist-section-mode=desktop] .artist-connections { align-content:center; text-align:center; justify-content:stretch; }
  .artist-profile[data-artist-section-mode=desktop] .artist-link-group .hub__group-links { justify-content:center; }
  .artist-profile[data-artist-section-mode=desktop] .artist-latest-release { justify-items:center; text-align:center; }

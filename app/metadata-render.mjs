@@ -1,6 +1,7 @@
 import {readFile} from 'node:fs/promises';
 import {renderIcon} from './icon-render.mjs';
 const schema=JSON.parse(await readFile(new URL('../content/metadata.json',import.meta.url),'utf8'));
+const artwork=JSON.parse(await readFile(new URL('../content/release-artwork.json',import.meta.url),'utf8'));
 export function metadataField(field,e,share=false){
   const common=`name="${e(field.name)}"${field.required?' required':''}${field.maxLength?` maxlength="${field.maxLength}"`:''}`;
   let control;
@@ -26,6 +27,7 @@ export function releaseMetadataEditor(e){
     <p>${e(schema.release.notice)}</p><p role="status" data-metadata-status>Checking your account...</p>
     <div data-release-controls hidden><label>Saved drafts<select class="ui-field" data-draft-picker><option value="">New release</option></select></label><button type="button" class="ui-button" data-new-draft>${renderIcon('plus',e)}New release</button>
       <form>${schema.release.groups.map((group,index)=>`<details${index===0?' open':''}>${summary(group.title,e)}<div class="studio-metadata-fields">${group.fields.map(name=>metadataField(schema.release.fields.find(field=>field.name===name),e)).join('')}</div></details>`).join('')}
+        <section class="studio-cover" data-release-artwork><header><h2>${e(artwork.title)}</h2><button class="ui-button" type="button" data-choose-cover>${renderIcon('image',e)}Choose artwork</button></header><p class="studio-field-note">${e(artwork.notice)}</p><div class="studio-cover-preview"><img data-cover-preview alt="Release cover artwork" hidden><span data-cover-empty>${renderIcon('image',e)}</span></div><input type="file" accept="image/jpeg,image/png" hidden><p class="studio-field-note" role="status" data-cover-status>No cover artwork added.</p><div class="studio-metadata-fields">${artwork.fields.map(name=>metadataField(schema.release.fields.find(field=>field.name===name),e)).join('')}</div></section>
         <section class="studio-track-list"><h2>Tracks</h2><div data-tracks>${track(e)}</div><button type="button" class="ui-button" data-add-track>${renderIcon('plus',e)}Add track</button></section>
         <details>${summary('Existing release links',e)}<div class="studio-metadata-fields" data-release-links>${schema.release.linkFields.map(field=>metadataField(field,e)).join('')}</div></details>
         <details>${summary('Publication choices',e)}<p>Choose which catalogue fields may appear after release approval. Private reference links and contributor legal-name records are never published by these choices. Track sharing covers titles, versions, public artist names, language, explicit status, duration, stories and lyrics only.</p>${sharing}</details>

@@ -1,8 +1,9 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {artistMetadata,releaseMetadata,googlePhoto,catalogueSelection,releaseSelection} from '../app/metadata-values.js';
+import {artistMetadata,releaseMetadata,releaseArtworkValues,googlePhoto,catalogueSelection,releaseSelection} from '../app/metadata-values.js';
 const schema=JSON.parse(await readFile(new URL('../content/metadata.json',import.meta.url),'utf8'));
+const artwork=JSON.parse(await readFile(new URL('../content/release-artwork.json',import.meta.url),'utf8'));
 const release=()=>({title:'Test single',type:'Single',tracks:[{title:'Test track',explicit:'Clean',contributors:[{name:'Test writer',role:'Songwriter'}]}]});
 test('catalogue fields are allowlisted and private by default',()=>{
   const value=artistMetadata({spotify:'https://open.spotify.com/artist/test',role:'admin',visibility:{spotify:'public',email:'public'}},schema);
@@ -50,4 +51,11 @@ test('cover credits and preview positions remain validated private draft metadat
  assert.throws(()=>releaseMetadata({...release(),tracks:[{...track,original_artist:''}]},schema));
  assert.throws(()=>releaseMetadata({...release(),tracks:[{...track,preview_start:'3:00'}]},schema));
  assert.throws(()=>releaseMetadata({...release(),tracks:[{...track,clean_version:true,explicit:'Explicit'}]},schema));
+});
+test('release artwork has one field owner and stays outside public selection',()=>{
+ const fields=[...schema.release.groups.flatMap(group=>group.fields),...artwork.fields];assert.equal(new Set(fields).size,fields.length);assert.deepEqual(fields.sort(),schema.release.fields.map(field=>field.name).sort());
+ const cover={path:'92000000-0000-0000-0000-000000000001/94000000-0000-0000-0000-000000000001/96000000-0000-0000-0000-000000000001.png',name:'Cover.png',type:'image/png',bytes:1024,width:3000,height:3000};
+ assert.deepEqual(releaseArtworkValues(cover),cover);
+ for(const invalid of [{path:'../cover.png'},{type:'image/jpeg'},{bytes:10485761},{width:999,height:999},{height:1000}])assert.throws(()=>releaseArtworkValues({...cover,...invalid}));
+ const value=releaseMetadata({...release(),artwork:cover},schema);assert.deepEqual(value.artwork,cover);assert.equal(releaseSelection(value,schema).artwork,undefined);
 });

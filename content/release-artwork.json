@@ -1,0 +1,10 @@
+{
+  "bucket":"studio-release-artwork",
+  "maxBytes":10485760,
+  "minDimension":1000,
+  "maxDimension":6000,
+  "recommendedDimension":3000,
+  "title":"Cover artwork",
+  "notice":"Upload a square JPEG or PNG, 1000-6000 pixels per side, up to 10 MB. We recommend 3000 x 3000 pixels. The original stays private with this release draft; saving does not publish or deliver it.",
+  "fields":["artwork_url","artwork_credit"]
+}

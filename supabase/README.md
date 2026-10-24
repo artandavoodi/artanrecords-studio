@@ -14,6 +14,24 @@ selected profile fields refresh on save after first publication and username
 approval. Release drafts are not automatically published. No account email,
 phone, billing, private listening references or contributor legal names are exported.
 
+### Private release artwork, October 24, 2026
+
+Store-owned `202610240002_release_artwork.sql` is applied to the shared project.
+The private `studio-release-artwork` bucket accepts JPEG/PNG originals up to
+10 MB. Object paths bind the authenticated owner, an existing owned release
+draft and a unique asset ID. Only that owner can insert/read; replacements use
+new immutable objects, with no client update/delete or public grants.
+Hosted transaction tests verified owner access, unknown-draft rejection, foreign
+insert/read denial and anonymous denial; all fixtures were rolled back.
+
+Studio validates square images from 1000 to 6000 pixels per side and recommends
+3000. `content/release-artwork.json` owns these intake limits and field grouping.
+Draft text is saved before upload so a failed cover upload can be retried without
+duplicating the draft. Metadata attachment is explicit and private. These client
+image checks are intake guidance, not a server-side distributor approval system.
+No original cover is exported publicly or delivered by saving a draft; reviewed
+publication and distributor asset delivery remain separate implementation gates.
+
 ### Selected artist images, October 23, 2026
 
 Store-owned `202610230001_artist_media_publication.sql` was applied to the shared

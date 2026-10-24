@@ -6,7 +6,7 @@ const access=[{alg:'HS256',typ:'JWT'},{sub:id,role:'authenticated',aud:'authenti
 const session={access_token:access,refresh_token:'test-refresh-not-a-real-credential',token_type:'bearer',expires_in:3600,user};
 async function mockBackend(page){
   const requests=[];
-  let artistMetadata=null,handle=null,application=null,artistContent=null;const drafts=new Map(),concerts=new Map();
+  let artistMetadata=null,handle=null,application=null,artistContent=null;const drafts=new Map(),concerts=new Map(),covers=new Map();
   await page.route('https://hahtbepdrjkjluhespbs.supabase.co/**',async route=>{
     const request=route.request(),url=new URL(request.url());
     requests.push({path:url.pathname,query:url.search,body:request.headers()['content-type']?.includes('application/json')?request.postDataJSON():null,method:request.method()});
@@ -22,7 +22,7 @@ async function mockBackend(page){
     }
     else if(url.pathname.endsWith('/studio_release_drafts')){
       if(request.method()==='GET'){const selected=url.searchParams.get('id')?.replace('eq.','');body=selected?{metadata:drafts.get(selected)?.metadata}:[...drafts].map(([id,draft])=>({id,title:draft.title}));}
-      else{const selected=url.searchParams.get('id')?.replace('eq.','')||'94000000-0000-0000-0000-000000000001';drafts.set(selected,request.postDataJSON());body={id:selected};status=201;}
+      else{const selected=url.searchParams.get('id')?.replace('eq.','')||'94000000-0000-0000-0000-000000000001';drafts.set(selected,{...drafts.get(selected),...request.postDataJSON()});body={id:selected};status=201;}
     }
     else if(url.pathname.endsWith('/studio_concerts')){
       if(request.method()==='GET')body=[...concerts.values()];
@@ -39,6 +39,11 @@ async function mockBackend(page){
     else if(url.pathname.endsWith('/studio_artist_content'))body=artistContent?[{content:artistContent}]:[];
     else if(url.pathname.endsWith('/rpc/studio_save_artist_content')){artistContent=request.postDataJSON().value;body=null;}
     else if(url.pathname.includes('/rest/v1/studio_')){body=request.method()==='GET'?[]:null;status=request.method()==='POST'?201:200;}
+    else if(/\/storage\/v1\/object\/(authenticated\/)?studio-release-artwork\//.test(url.pathname)){
+      const key=url.pathname.split('studio-release-artwork/')[1];
+      if(request.method()==='GET'){const image=covers.get(key);return route.fulfill({status:image?200:404,contentType:image?'image/png':'application/json',body:image||'{}'});}
+      covers.set(key,request.postDataBuffer());body={Key:key};
+    }
     else if(url.pathname.includes('/storage/v1/object/list/'))body=[];
     else if(url.pathname.includes('/storage/v1/object/studio-logos/')){status=request.method()==='GET'?404:200;body=request.method()==='GET'?{message:'Not found'}:{Key:'logo'};}
     else throw Error('Unexpected mocked request: '+url.pathname);
@@ -331,4 +336,24 @@ test('release drafts preserve stories, lyrics and contributors without submissio
   expect(saved.metadata.tracks[0].lyrics).toBe('Test lyrics');expect(saved.metadata.tracks[0].contributors[0].name).toBe('Test writer');expect(saved.metadata.visibility.story).toBe('public');
   await view.locator('[data-new-draft]').click();await view.locator('[data-draft-picker]').selectOption('94000000-0000-0000-0000-000000000001');
   await expect(view.locator('[data-track] [name=lyrics]')).toHaveValue('Test lyrics');
+});
+test('release covers validate square originals and save privately with a retryable draft',async({page})=>{
+ const requests=await mockBackend(page),dialog=await openAccount(page);
+ await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page).toHaveURL(/\/profile\/$/);
+ await page.goto('/releases/');await page.getByRole('tab',{name:'New release & drafts',exact:true}).click();const view=page.locator('[data-release-metadata]');await expect(view.locator('[data-release-controls]')).toBeVisible();
+ const file=async(width,height)=>Buffer.from(await page.evaluate(({width,height})=>{const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;canvas.getContext('2d').fillRect(0,0,width,height);return canvas.toDataURL('image/png').split(',')[1];},{width,height}),'base64');
+ const input=view.locator('[data-release-artwork] input[type=file]'),notice=view.locator('[data-cover-status]');
+ await input.setInputFiles({name:'wide.png',mimeType:'image/png',buffer:await file(1000,1200)});await expect(notice).toContainText('must be square');
+ await input.setInputFiles({name:'small.png',mimeType:'image/png',buffer:await file(100,100)});await expect(notice).toContainText('1000 and 6000');
+ await input.setInputFiles({name:'invalid.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg/>')});await expect(notice).toContainText('valid JPEG or PNG');
+ await input.setInputFiles({name:'cover.png',mimeType:'image/png',buffer:await file(1000,1000)});await expect(notice).toContainText('1000 x 1000');await expect(view.locator('[data-cover-preview]')).toBeVisible();
+ await view.locator('form > details').first().locator('[name=title]').fill('Artwork single');await view.locator('[data-track] [name=title]').fill('Artwork song');
+ let fail=true;await page.route('**/storage/v1/object/studio-release-artwork/**',async route=>{if(fail){fail=false;return route.fulfill({status:403,contentType:'application/json',body:JSON.stringify({message:'Fixture upload denial'})});}await route.fallback();});
+ await view.getByRole('button',{name:'Save release draft'}).click();await expect(view.locator('[data-metadata-status]')).toContainText('Your text draft is saved');
+ await view.getByRole('button',{name:'Save release draft'}).click();await expect(view.locator('[data-metadata-status]')).toContainText('Nothing is submitted');
+ expect(requests.filter(request=>request.path.endsWith('/studio_release_drafts')&&request.method==='POST')).toHaveLength(1);
+ const attached=requests.find(request=>request.method==='PATCH'&&request.body?.metadata?.artwork).body.metadata.artwork;expect(attached.path).toMatch(new RegExp('^'+id+'/94000000-0000-0000-0000-000000000001/'));expect(attached.width).toBe(1000);
+ await view.locator('[data-new-draft]').click();await expect(view.locator('[data-cover-preview]')).toBeHidden();await view.locator('[data-draft-picker]').selectOption('94000000-0000-0000-0000-000000000001');await expect(notice).toContainText('cover.png');await expect(view.locator('[data-cover-preview]')).toBeVisible();
+ expect(requests.some(request=>/publish|deliver/.test(request.path))).toBe(false);
+ if(test.info().project.name==='chromium-desktop')await page.screenshot({path:'/tmp/studio-release-artwork.png'});
 });
