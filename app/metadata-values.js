@@ -34,6 +34,10 @@ export function releaseMetadata(values,schema){
     const track={...fields(value,schema.release.trackFields),number:index+1};
     if(track.isrc&&!/^[A-Z]{2}[A-Z0-9]{3}\d{7}$/.test(track.isrc))throw Error('Use the existing 12-character ISRC, without spaces or dashes.');
     if(track.duration&&!/^\d{1,4}:[0-5]\d$/.test(track.duration))throw Error('Use minutes:seconds for duration.');
+    if(track.preview_start&&!/^\d{1,4}:[0-5]\d$/.test(track.preview_start))throw Error('Use minutes:seconds for the preview start.');
+    if(track.preview_start&&track.duration){const seconds=value=>value.split(':').reduce((minutes,part)=>minutes*60+Number(part),0);if(seconds(track.preview_start)>=seconds(track.duration))throw Error('The preview must start before the track ends.');}
+    if(track.composition_type==='Cover song'&&(!track.original_artist||!track.original_song_title))throw Error('Add the original artist and song title for this cover.');
+    if(track.clean_version&&track.explicit==='Explicit')throw Error('A clean edit cannot be marked explicit.');
     if(track.instrumental&&track.lyrics)throw Error('An instrumental track cannot contain lyrics.');
     if(!Array.isArray(value.contributors)||value.contributors.length>schema.release.maxContributors)throw Error('Check the contributor list.');
     track.contributors=value.contributors.map(person=>{

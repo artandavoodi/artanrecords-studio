@@ -12,6 +12,7 @@
       "type",
       "version",
       "primary_artist",
+      "record_label",
       "release_date",
       "language",
       "genre",
@@ -124,6 +125,7 @@
           },
           {
             "name": "amazon_music",
+            "icon": "amazon_music",
             "label": "Amazon Music",
             "type": "url",
             "hosts": [
@@ -340,6 +342,9 @@
         "label": "Primary artist or group",
         "maxLength": 200
       },
+      {"name":"record_label","label":"Record label","maxLength":200},
+      {"name":"copyright_year","label":"Copyright year","type":"number","min":1900,"max":2100},
+      {"name":"recording_year","label":"Master recording copyright year","type":"number","min":1900,"max":2100},
       {
         "name": "release_date",
         "label": "Requested release date",
@@ -459,6 +464,11 @@
         "label": "Instrumental (no lyrics)",
         "type": "checkbox"
       },
+      {"name":"composition_type","label":"Songwriting","type":"select","options":["Not specified","Original song","Cover song"]},
+      {"name":"original_artist","label":"Original artist (for a cover song)","maxLength":200},
+      {"name":"original_song_title","label":"Original song title (for a cover song)","maxLength":200},
+      {"name":"clean_version","label":"This is a clean edit of an explicit recording","type":"checkbox"},
+      {"name":"preview_start","label":"Preferred preview start (minutes:seconds)","maxLength":8},
       {
         "name": "isrc",
         "label": "Existing ISRC (if assigned)",
@@ -505,6 +515,7 @@
       "Producer",
       "Performer",
       "Featured artist",
+      "Remixer",
       "Mixing engineer",
       "Mastering engineer"
     ],
@@ -512,31 +523,37 @@
       {
         "name": "apple_music",
         "label": "Apple Music release",
+        "icon": "apple_music",
         "type": "url"
       },
       {
         "name": "spotify",
         "label": "Spotify release",
+        "icon": "spotify",
         "type": "url"
       },
       {
         "name": "youtube_music",
         "label": "YouTube Music release",
+        "icon": "youtube_music",
         "type": "url"
       },
       {
         "name": "amazon_music",
         "label": "Amazon Music release",
+        "icon": "amazon_music",
         "type": "url"
       },
       {
         "name": "deezer",
         "label": "Deezer release",
+        "icon": "deezer",
         "type": "url"
       },
       {
         "name": "tidal",
         "label": "TIDAL release",
+        "icon": "tidal",
         "type": "url"
       },
       {
@@ -552,7 +569,8 @@
           "title",
           "type",
           "version",
-          "primary_artist"
+          "primary_artist",
+          "record_label"
         ]
       },
       {
@@ -580,7 +598,9 @@
         "title": "Rights and artwork",
         "fields": [
           "copyright_owner",
+          "copyright_year",
           "phonographic_owner",
+          "recording_year",
           "artwork_url",
           "artwork_credit",
           "rights_notes"
@@ -589,6 +609,7 @@
     ],
     "trackGroups": [
       { "title": "Track details", "fields": ["title", "version", "primary_artist", "featured_artists", "language", "explicit", "instrumental", "isrc", "duration", "release_date"] },
+      { "title": "Songwriting and preview", "fields": ["composition_type", "original_artist", "original_song_title", "clean_version", "preview_start"] },
       { "title": "Story and lyrics", "fields": ["story", "lyrics"] },
       { "title": "Music and production", "fields": ["musical_details", "key", "tempo", "structure", "production_process", "audio_url"] },
       { "title": "Credits", "fields": ["credits"] },

@@ -15,7 +15,6 @@ import {bindNotifications} from './notifications.js';
 import {bindConcerts} from './concerts.js';
 import {bindPublishedReleases} from './releases.js';
 import {bindArtistContent} from './artist-content.js';
-const workspaceMain=document.querySelector('main');if(workspaceMain)workspaceMain.inert=true;
 await bindPreferences();
 bindSearch();
 const chrome=bindChrome();
@@ -51,12 +50,7 @@ await bindPublishedReleases(context);
 await bindConcerts(context);
 await bindWorkspace(context);
 await bindArtistContent(context);
-await Promise.allSettled([...document.querySelectorAll('main img:not([loading=lazy])')].filter(image=>image.getAttribute('src')&&!image.closest('[hidden]')).map(async image=>{
- // WebKit can defer SVG decoding until paint; waiting for decode behind the boot screen deadlocks it.
- if(new URL(image.currentSrc||image.src,location.href).pathname.endsWith('.svg')){
-  if(!image.complete)await new Promise(resolve=>{image.addEventListener('load',resolve,{once:true});image.addEventListener('error',resolve,{once:true});});
- }else await image.decode();
-}));
-}catch(error){console.error('[studio] Workspace initialization failed',error);}finally{clearTimeout(window.__studioLoadingFallback);delete document.documentElement.dataset.studioLoading;if(workspaceMain)workspaceMain.inert=false;}
+await window.NeuroartanPageLoading?.images(document.body);
+}catch(error){console.error('[studio] Workspace initialization failed',error);}finally{window.NeuroartanPageLoading?.finish();}
 document.querySelectorAll('[data-signout]').forEach(button=>{button.disabled=!client;button.addEventListener('click',async()=>{if(!client)return;button.disabled=true;try{const result=await client.auth.signOut({scope:'local'});if(result.error)throw result.error;}catch{button.disabled=false;button.setAttribute('aria-label','Try signing out again');}});});
 if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){entry.target.dataset.studioVisible='true';observer.unobserve(entry.target);}});document.querySelectorAll('.studio-surface header,.surface-card').forEach(item=>{item.dataset.studioReveal='';observer.observe(item);});}

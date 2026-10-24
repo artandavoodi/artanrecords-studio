@@ -65,6 +65,19 @@ test('Studio reuses magnetic navigation for drag collapse and reopening',async({
  box=await handle.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+100);await page.mouse.down();await page.mouse.move(maximum,box.y+100,{steps:12});await page.mouse.up();await expect(page.locator('html')).toHaveAttribute('data-studio-rail','open');
  await expect(rail.locator('.studio-platform-group a span').first()).toHaveCSS('white-space','nowrap');
 });
+test('released catalogue keeps artwork spacing and exposes complete release and track details',async({page})=>{
+ await mockBackend(page);
+ await page.route('**/rest/v1/studio_artist_handles*',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify([{approved_username:'testartist'}])}));
+ await page.route('https://artanrecords.com/assets/data/artists/platform.json',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({routes:{fixture:'testartist'}})}));
+ const links=[{platform:'amazonMusic',label:'Amazon Music',url:'https://music.amazon.com/albums/test'},{platform:'youtubeMusic',label:'YouTube Music',url:'https://music.youtube.com/watch?v=test'}];
+ await page.route('https://artanrecords.com/assets/data/music/releases.json',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({items:[{id:'fixture',artistId:'fixture',title:'Released album',status:'Released',type:'Album',releaseDate:'2026-10-24',cover:{src:'assets/fixture.png'},productionProcess:'Recorded at the piano.',releaseInformation:'Released with permission.',credits:'Piano: Artist',links,tracks:[{title:'Opening',duration:'3:20',isrc:'USABC2600001',story:'A track story.',links}]}]})}));
+ await page.route('https://artanrecords.com/assets/fixture.png',route=>route.fulfill({status:200,contentType:'image/png',body:Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aDV8AAAAASUVORK5CYII=','base64')}));
+ const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.goto('/releases/');await expect(page.locator('.ui-loading-surface')).toBeHidden();const card=page.locator('.studio-published-release');await expect(card.getByRole('heading',{name:'Released album',exact:true})).toBeVisible();
+ const gap=await card.evaluate(el=>{const image=el.querySelector(':scope > img').getBoundingClientRect(),copy=el.querySelector('.studio-release-copy').getBoundingClientRect();return copy.top-image.bottom;});expect(gap).toBeGreaterThanOrEqual(24);
+ await card.locator('summary').click();await expect(card).toContainText('Recorded at the piano.');await expect(card).toContainText('Released with permission.');await expect(card).toContainText('USABC2600001');await expect(card).toContainText('A track story.');
+ await expect(card.getByRole('link',{name:'Amazon Music'}).first().locator('img')).toHaveAttribute('src','/app/icons/amazon_music.svg');await expect(card.getByRole('link',{name:'YouTube Music'}).first().locator('img')).toHaveAttribute('src','/app/icons/youtube_music.svg');
+});
 test('artist content edits stay private unless a specific field is shared',async({page})=>{
  const requests=await mockBackend(page),account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
  await page.getByRole('tab',{name:'Artist content',exact:true}).click();const card=page.locator('.studio-content-card').filter({has:page.getByRole('heading',{name:'About',exact:true})});await card.getByRole('button',{name:'Edit'}).click();
@@ -117,7 +130,7 @@ test('concert drafts save separately from explicit publication and cancellation'
  const requests=await mockBackend(page),dialog=await openAccount(page);
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
  await expect(page.locator('[data-profile-form]')).toBeVisible();
- await page.goto('/concerts/');const root=page.locator('[data-concerts]');await expect(page.locator('html')).not.toHaveAttribute('data-studio-loading','true',{timeout:15000});await expect(root.locator('[data-concert-controls]')).toBeVisible();
+ await page.goto('/concerts/');const root=page.locator('[data-concerts]');await expect(page.locator('html')).not.toHaveAttribute('data-page-loading','true',{timeout:15000});await expect(root.locator('[data-concert-controls]')).toBeVisible();
  await root.locator('[name=title]').fill('Piano night');await root.locator('[name=starts_at]').fill('2026-12-01T20:00');await root.locator('[name=timezone]').fill('Europe/Berlin');await root.locator('[name=venue]').fill('Concert hall');await root.locator('[name=city]').fill('Berlin');await root.locator('[name=country]').fill('DE');
  await root.getByRole('button',{name:'Save',exact:true}).click();await expect(page.locator('.system-save-confirmation')).toHaveText('Concert saved.');
  expect(requests.some(row=>row.path.endsWith('/rpc/studio_set_concert_status'))).toBe(false);
@@ -172,7 +185,7 @@ test('shared portrait editor crops only after confirmation and preserves the cam
   });
   await page.route('**/storage/v1/object/sign/studio-avatars/**',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({signedURL:'/object/sign/studio-avatars/'+id+'/avatar?token=fixture'})}));
   const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
-  await expect(page.locator('.studio-boot')).toBeVisible();
+  await expect(page.locator('.ui-loading-surface')).toBeVisible();
   releaseListings();
   await expect(page.locator('[data-profile-form]')).toBeVisible({timeout:15000});
   const avatar=await page.locator('.studio-avatar').boundingBox(),header=await page.locator('.studio-profile-header').boundingBox();

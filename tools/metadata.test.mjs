@@ -43,3 +43,11 @@ test('track groups cover every field once and preserve catalogue details',()=>{
   assert.equal(selected.performance_url,undefined);
   assert.throws(()=>releaseMetadata({...release(),tracks:[{...track,performance_url:'javascript:alert(1)'}]},schema));
 });
+test('cover credits and preview positions remain validated private draft metadata',()=>{
+ const track={...release().tracks[0],composition_type:'Cover song',original_artist:'Original artist',original_song_title:'Original title',preview_start:'0:45',duration:'3:00'};
+ const value=releaseMetadata({...release(),record_label:'Artanrecords',copyright_year:'2026',tracks:[track]},schema);
+ assert.equal(value.record_label,'Artanrecords');assert.equal(value.tracks[0].preview_start,'0:45');
+ assert.throws(()=>releaseMetadata({...release(),tracks:[{...track,original_artist:''}]},schema));
+ assert.throws(()=>releaseMetadata({...release(),tracks:[{...track,preview_start:'3:00'}]},schema));
+ assert.throws(()=>releaseMetadata({...release(),tracks:[{...track,clean_version:true,explicit:'Explicit'}]},schema));
+});

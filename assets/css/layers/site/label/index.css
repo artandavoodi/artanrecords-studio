@@ -283,10 +283,12 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile [data-artist-since] { display:flex; gap:var(--spacing-sm); margin:0; font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 .artist-profile .artist-connections { align-content:start; justify-content:start; gap:var(--spacing-lg); }
 @media(min-width:1025px) and (hover:hover) and (pointer:fine){
- html:has([data-artist-section-mode=desktop]) { scroll-snap-type:y mandatory; scroll-padding-block-start:var(--artist-header-height,var(--site-header-height)); }
+ html:has(main[data-fragment="artist"] [data-artist-section-mode=desktop]) { scroll-snap-type:y mandatory; scroll-padding-block-start:var(--artist-header-height,var(--site-header-height)); }
  .artist-profile[data-artist-section-mode=desktop] > section { min-block-size:calc(100svh - var(--artist-header-height,var(--site-header-height))); scroll-snap-align:start; scroll-snap-stop:always; overflow-anchor:none; }
  .artist-profile[data-artist-section-mode=desktop] .artist-connections { align-content:center; text-align:center; justify-content:stretch; }
  .artist-profile[data-artist-section-mode=desktop] .artist-link-group .hub__group-links { justify-content:center; }
+ .artist-profile[data-artist-section-mode=desktop] .artist-latest-release { justify-items:center; text-align:center; }
+ .artist-profile[data-artist-section-mode=desktop] .artist-latest-release > p { max-inline-size:var(--cv-reading-width); }
  .artist-profile .artist-destination-tabs { display:none; }
  .label-header-logo[hidden] { display:none; }
  .label-navigation .artist-destination-tabs[data-in-header] { grid-area:1/1; inline-size:auto; flex-wrap:nowrap; padding:0; gap:var(--spacing-md); font-size:var(--site-type-caption-size); }
@@ -312,6 +314,7 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile .artist-connections { display:grid; grid-template-columns:minmax(0,1fr); inline-size:100%; align-items:start; }
 .artist-destination-tabs { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-lg); inline-size:100%; padding-block:var(--spacing-md); }
 .artist-destination-tabs[hidden] { display:none; }
+[data-fragment="navigation"]:has(.artist-destination-tabs[data-in-header]) { background:var(--cv-page-bg); }
 .artist-destination-tabs button { font:inherit; color:inherit; background:none; border:0; padding:var(--spacing-sm) 0; cursor:pointer; opacity:var(--state-opacity-muted); }
 .artist-destination-tabs button[aria-selected=true],.artist-destination-tabs button:hover { opacity:var(--cv-opacity-full); }
 .artist-profile [data-artist-group][hidden] { display:none; }
@@ -324,10 +327,15 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-concerts article :is(h3,p) { margin:0; }
 .artist-concerts time { font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 @media(max-width:600px){.artist-profile .artist-connections { grid-template-columns:minmax(0,1fr); }}
-@media(prefers-reduced-motion:no-preference){.artist-profile .artist-biography { animation:artist-profile-arrive var(--duration-slow) var(--ease-standard) both; }@keyframes artist-profile-arrive{from{opacity:0;transform:translateY(var(--spacing-md))}to{opacity:1;transform:none}}}
+@media(prefers-reduced-motion:no-preference){
+ .artist-profile[data-artist-motion] > section > :not([data-artist-header]) { opacity:0; transform:translateY(var(--spacing-md)); transition:opacity var(--duration-slow) var(--ease-standard),transform var(--duration-slow) var(--ease-standard); }
+ .artist-profile[data-artist-motion] > section[data-artist-visible] > :not([data-artist-header]) { opacity:1; transform:none; }
+ .artist-profile [data-artist-group]:not([hidden]) { animation:artist-profile-arrive var(--duration-slow) var(--ease-standard) both; }
+ @keyframes artist-profile-arrive{from{opacity:0;transform:translateY(var(--spacing-sm))}to{opacity:1;transform:none}}
+}
 @supports(animation-timeline:scroll()){@media(prefers-reduced-motion:no-preference){.artist-profile [data-artist-header] img { animation:artist-header-scroll linear both; animation-timeline:scroll(root); animation-range:0 65vh; }@keyframes artist-header-scroll{from{filter:blur(0);transform:scale(1)}to{filter:blur(var(--panel-blur-unified));transform:scale(1.04)}}}}
 /* One composited surface keeps artwork and matte on identical viewport bounds. */
-html:not([data-loading]):has(main[data-fragment="artist"]) body::before {
+html:not([data-page-loading]):has(main[data-fragment="artist"]) body::before {
   --artist-matte: color-mix(in srgb, var(--cv-page-bg) calc(var(--opacity-muted) * 100%), transparent);
   content: '';
   position: fixed;

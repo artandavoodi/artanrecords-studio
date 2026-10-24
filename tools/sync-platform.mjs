@@ -8,6 +8,7 @@ const files=[
   'assets/js/core/02-systems/notification-feed.js',
   'assets/css/core/03-primitives/profile-media-action.css',
   'assets/js/core/02-systems/toast.js',
+  'assets/js/core/02-systems/page-loading.js',
   'assets/css/core/04-systems/toast.css',
   'assets/js/layers/website/ui/profile-media-editor.js',
   'assets/css/layers/website/ui/profile-media-editor.css',

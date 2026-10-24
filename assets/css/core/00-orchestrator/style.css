@@ -6,6 +6,6 @@
 @import url('../04-systems/search-close.css');
 @import url('../04-systems/docs-search.css');
 @import url('../../layers/00-orchestrator/00-layers-all.css');
-@import url('../04-systems/startup.css');
+@import url('../03-primitives/loaders.css');
 @import url('../04-systems/public-information.css');
 @import url('../04-systems/preferences.css');

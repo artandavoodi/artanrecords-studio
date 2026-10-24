@@ -10,7 +10,7 @@ export {renderMenu} from './platform-render.mjs';
 export {renderNavigation,renderFooter} from './shell-render.mjs';
 export {renderActions} from './dialog-render.mjs';
 import {renderDialogs as accountDialogs} from './dialog-render.mjs';
-export function renderDialogs(context){return accountDialogs(context)+`<div class="studio-boot" role="status" aria-label="Loading Studio"><span class="ui-loader-circle" aria-hidden="true"></span></div><div id="cookie-consent-mount">${cookieMarkup}</div>`;}
+export function renderDialogs(context){return accountDialogs(context)+`<div class="ui-loading-surface" role="status" aria-label="Loading Studio"><span class="ui-loader-circle" aria-hidden="true"></span></div><div id="cookie-consent-mount">${cookieMarkup}</div>`;}
 const settings=JSON.parse(await readFile(new URL('../content/account.json',import.meta.url),'utf8'));
 const programmes=JSON.parse(await readFile(new URL('../content/programmes.json',import.meta.url),'utf8'));
 const legal=JSON.parse(await readFile(new URL('../assets/data/studio-legal.json',import.meta.url),'utf8'));

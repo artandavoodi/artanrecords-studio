@@ -1,0 +1,106 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) LOADER PRIMITIVE GOVERNANCE NOTE
+   03) CIRCULAR LOADER PRIMITIVE
+   04) ACCESSIBILITY
+   05) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/loaders.css */
+
+/* =============================================================================
+   02) LOADER PRIMITIVE GOVERNANCE NOTE
+============================================================================= */
+/* Loader primitives must remain reusable, theme-aware, and token-governed.
+   Consumers may control placement only; animation, size, opacity, and color
+   must come from the global loader token system. */
+
+/* =============================================================================
+   03) CIRCULAR LOADER PRIMITIVE
+============================================================================= */
+.ui-loader-circle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:var(--loader-circle-size);
+  height:var(--loader-circle-size);
+  color:var(--loader-circle-color);
+  opacity:var(--loader-circle-opacity);
+  pointer-events:none;
+}
+
+.ui-loader-circle::before{
+  content:"";
+  display:block;
+  width:var(--loader-circle-size);
+  height:var(--loader-circle-size);
+  border-radius:var(--radius-circle);
+  background:currentColor;
+  box-shadow:0 0 var(--space-3) color-mix(in srgb, currentColor 12%, transparent);
+  transform:scale(0.94);
+  animation:ui-loader-circle-breathe var(--loader-circle-motion-duration) var(--loader-circle-motion-ease) infinite;
+}
+
+.ui-loader-circle--sm{
+  width:var(--loader-circle-size-sm);
+  height:var(--loader-circle-size-sm);
+}
+
+.ui-loader-circle--sm::before{
+  width:var(--loader-circle-size-sm);
+  height:var(--loader-circle-size-sm);
+}
+
+.ui-loader-circle--lg{
+  width:var(--loader-circle-size-lg);
+  height:var(--loader-circle-size-lg);
+}
+
+.ui-loader-circle--lg::before{
+  width:var(--loader-circle-size-lg);
+  height:var(--loader-circle-size-lg);
+}
+
+/* Page readiness uses this same theme-aware surface in public and private apps. */
+.ui-loading-surface{display:none;}
+html[data-page-loading] .ui-loading-surface{
+  display:grid;
+  position:fixed;
+  inset:0;
+  place-items:center;
+  background:var(--cv-page-bg,var(--bg-primary));
+  color:var(--cv-text-primary,var(--text-primary-color));
+  --loader-circle-color:currentColor;
+  z-index:var(--z-header-controls);
+}
+html[data-page-loading] main{opacity:0;pointer-events:none;}
+
+@keyframes ui-loader-circle-breathe{
+  0%,
+  100%{
+    opacity:0.72;
+    transform:scale(0.94);
+  }
+
+  50%{
+    opacity:1;
+    transform:scale(1.06);
+  }
+}
+
+/* =============================================================================
+   04) ACCESSIBILITY
+============================================================================= */
+@media (prefers-reduced-motion: reduce){
+  .ui-loader-circle::before{
+    animation-duration:var(--loader-circle-reduced-motion-duration);
+  }
+}
+
+/* =============================================================================
+   05) END OF FILE
+============================================================================= */

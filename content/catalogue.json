@@ -2,5 +2,7 @@
  "origin":"https://artanrecords.com",
  "releases":"/assets/data/music/releases.json",
  "artists":"/assets/data/artists/platform.json",
- "notice":"Published catalogue records are shown here from Artanrecords. They are separate from your private release drafts; saving a draft does not change a published release."
+ "notice":"Published catalogue records are shown here from Artanrecords. They are separate from your private release drafts; saving a draft does not change a published release.",
+ "details":[{"key":"releaseDate","label":"Released"},{"key":"genre","label":"Genre"},{"key":"label","label":"Record label"},{"key":"upc","label":"UPC"},{"key":"isrc","label":"ISRC"},{"key":"format","label":"Format"},{"key":"description","label":"About this release"},{"key":"story","label":"Story"},{"key":"lyrics","label":"Lyrics"},{"key":"productionProcess","label":"Production"},{"key":"releaseInformation","label":"Release information"},{"key":"musicalDetails","label":"Musical details"},{"key":"credits","label":"Credits"}],
+ "trackDetails":[{"key":"isrc","label":"ISRC"},{"key":"format","label":"Format"},{"key":"story","label":"Story"},{"key":"lyrics","label":"Lyrics"},{"key":"productionProcess","label":"Production"},{"key":"musicalDetails","label":"Musical details"},{"key":"credits","label":"Credits"}]
 }

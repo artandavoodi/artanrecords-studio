@@ -1,4 +1,4 @@
-/* Pre-paint theme; readiness ends loading immediately, with native load as fallback. */
+/* Pre-paint theme. Page readiness is owned by the shared loading controller. */
 (() => {
   const root = document.documentElement;
   const config=window.ArtanRecordsPreferenceConfig;
@@ -14,11 +14,4 @@
     root.dataset.theme = theme;
     root.dataset.themeEffective = theme;
   } catch { /* Storage is optional. */ }
-  root.dataset.loading = 'true';
-  const finish = () => {
-    delete root.dataset.loading;
-  };
-  window.addEventListener('site:ready', finish, {once: true});
-  window.addEventListener('load', finish, {once: true});
-  window.addEventListener('pageshow', event => { if (event.persisted) finish(); });
 })();

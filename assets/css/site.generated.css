@@ -7548,10 +7548,12 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile [data-artist-since] { display:flex; gap:var(--spacing-sm); margin:0; font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 .artist-profile .artist-connections { align-content:start; justify-content:start; gap:var(--spacing-lg); }
 @media(min-width:1025px) and (hover:hover) and (pointer:fine){
- html:has([data-artist-section-mode=desktop]) { scroll-snap-type:y mandatory; scroll-padding-block-start:var(--artist-header-height,var(--site-header-height)); }
+ html:has(main[data-fragment="artist"] [data-artist-section-mode=desktop]) { scroll-snap-type:y mandatory; scroll-padding-block-start:var(--artist-header-height,var(--site-header-height)); }
  .artist-profile[data-artist-section-mode=desktop] > section { min-block-size:calc(100svh - var(--artist-header-height,var(--site-header-height))); scroll-snap-align:start; scroll-snap-stop:always; overflow-anchor:none; }
  .artist-profile[data-artist-section-mode=desktop] .artist-connections { align-content:center; text-align:center; justify-content:stretch; }
  .artist-profile[data-artist-section-mode=desktop] .artist-link-group .hub__group-links { justify-content:center; }
+ .artist-profile[data-artist-section-mode=desktop] .artist-latest-release { justify-items:center; text-align:center; }
+ .artist-profile[data-artist-section-mode=desktop] .artist-latest-release > p { max-inline-size:var(--cv-reading-width); }
  .artist-profile .artist-destination-tabs { display:none; }
  .label-header-logo[hidden] { display:none; }
  .label-navigation .artist-destination-tabs[data-in-header] { grid-area:1/1; inline-size:auto; flex-wrap:nowrap; padding:0; gap:var(--spacing-md); font-size:var(--site-type-caption-size); }
@@ -7577,6 +7579,7 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile .artist-connections { display:grid; grid-template-columns:minmax(0,1fr); inline-size:100%; align-items:start; }
 .artist-destination-tabs { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-lg); inline-size:100%; padding-block:var(--spacing-md); }
 .artist-destination-tabs[hidden] { display:none; }
+[data-fragment="navigation"]:has(.artist-destination-tabs[data-in-header]) { background:var(--cv-page-bg); }
 .artist-destination-tabs button { font:inherit; color:inherit; background:none; border:0; padding:var(--spacing-sm) 0; cursor:pointer; opacity:var(--state-opacity-muted); }
 .artist-destination-tabs button[aria-selected=true],.artist-destination-tabs button:hover { opacity:var(--cv-opacity-full); }
 .artist-profile [data-artist-group][hidden] { display:none; }
@@ -7589,10 +7592,15 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-concerts article :is(h3,p) { margin:0; }
 .artist-concerts time { font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 @media(max-width:600px){.artist-profile .artist-connections { grid-template-columns:minmax(0,1fr); }}
-@media(prefers-reduced-motion:no-preference){.artist-profile .artist-biography { animation:artist-profile-arrive var(--duration-slow) var(--ease-standard) both; }@keyframes artist-profile-arrive{from{opacity:0;transform:translateY(var(--spacing-md))}to{opacity:1;transform:none}}}
+@media(prefers-reduced-motion:no-preference){
+ .artist-profile[data-artist-motion] > section > :not([data-artist-header]) { opacity:0; transform:translateY(var(--spacing-md)); transition:opacity var(--duration-slow) var(--ease-standard),transform var(--duration-slow) var(--ease-standard); }
+ .artist-profile[data-artist-motion] > section[data-artist-visible] > :not([data-artist-header]) { opacity:1; transform:none; }
+ .artist-profile [data-artist-group]:not([hidden]) { animation:artist-profile-arrive var(--duration-slow) var(--ease-standard) both; }
+ @keyframes artist-profile-arrive{from{opacity:0;transform:translateY(var(--spacing-sm))}to{opacity:1;transform:none}}
+}
 @supports(animation-timeline:scroll()){@media(prefers-reduced-motion:no-preference){.artist-profile [data-artist-header] img { animation:artist-header-scroll linear both; animation-timeline:scroll(root); animation-range:0 65vh; }@keyframes artist-header-scroll{from{filter:blur(0);transform:scale(1)}to{filter:blur(var(--panel-blur-unified));transform:scale(1.04)}}}}
 /* One composited surface keeps artwork and matte on identical viewport bounds. */
-html:not([data-loading]):has(main[data-fragment="artist"]) body::before {
+html:not([data-page-loading]):has(main[data-fragment="artist"]) body::before {
   --artist-matte: color-mix(in srgb, var(--cv-page-bg) calc(var(--opacity-muted) * 100%), transparent);
   content: '';
   position: fixed;
@@ -7805,26 +7813,112 @@ main[data-fragment="home"] {
 }
 
 
-/* Initial enhancement state; uses the Neuroartan circle's shared motion tokens. */
-html[data-loading] body > * { display: none !important; }
-html[data-loading] body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  inline-size: var(--loader-circle-size);
-  block-size: var(--loader-circle-size);
-  border-radius: var(--radius-circle);
-  background: var(--cv-text-primary);
-  animation: site-startup-breathe var(--loader-circle-motion-duration) var(--loader-circle-motion-ease) infinite;
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) LOADER PRIMITIVE GOVERNANCE NOTE
+   03) CIRCULAR LOADER PRIMITIVE
+   04) ACCESSIBILITY
+   05) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/loaders.css */
+
+/* =============================================================================
+   02) LOADER PRIMITIVE GOVERNANCE NOTE
+============================================================================= */
+/* Loader primitives must remain reusable, theme-aware, and token-governed.
+   Consumers may control placement only; animation, size, opacity, and color
+   must come from the global loader token system. */
+
+/* =============================================================================
+   03) CIRCULAR LOADER PRIMITIVE
+============================================================================= */
+.ui-loader-circle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:var(--loader-circle-size);
+  height:var(--loader-circle-size);
+  color:var(--loader-circle-color);
+  opacity:var(--loader-circle-opacity);
+  pointer-events:none;
 }
-@keyframes site-startup-breathe {
-  0%, 100% { opacity: .72; transform: scale(.94); }
-  50% { opacity: 1; transform: scale(1.06); }
+
+.ui-loader-circle::before{
+  content:"";
+  display:block;
+  width:var(--loader-circle-size);
+  height:var(--loader-circle-size);
+  border-radius:var(--radius-circle);
+  background:currentColor;
+  box-shadow:0 0 var(--space-3) color-mix(in srgb, currentColor 12%, transparent);
+  transform:scale(0.94);
+  animation:ui-loader-circle-breathe var(--loader-circle-motion-duration) var(--loader-circle-motion-ease) infinite;
 }
-@media (prefers-reduced-motion: reduce) {
-  html[data-loading] body::before { animation: none; }
+
+.ui-loader-circle--sm{
+  width:var(--loader-circle-size-sm);
+  height:var(--loader-circle-size-sm);
 }
+
+.ui-loader-circle--sm::before{
+  width:var(--loader-circle-size-sm);
+  height:var(--loader-circle-size-sm);
+}
+
+.ui-loader-circle--lg{
+  width:var(--loader-circle-size-lg);
+  height:var(--loader-circle-size-lg);
+}
+
+.ui-loader-circle--lg::before{
+  width:var(--loader-circle-size-lg);
+  height:var(--loader-circle-size-lg);
+}
+
+/* Page readiness uses this same theme-aware surface in public and private apps. */
+.ui-loading-surface{display:none;}
+html[data-page-loading] .ui-loading-surface{
+  display:grid;
+  position:fixed;
+  inset:0;
+  place-items:center;
+  background:var(--cv-page-bg,var(--bg-primary));
+  color:var(--cv-text-primary,var(--text-primary-color));
+  --loader-circle-color:currentColor;
+  z-index:var(--z-header-controls);
+}
+html[data-page-loading] main{opacity:0;pointer-events:none;}
+
+@keyframes ui-loader-circle-breathe{
+  0%,
+  100%{
+    opacity:0.72;
+    transform:scale(0.94);
+  }
+
+  50%{
+    opacity:1;
+    transform:scale(1.06);
+  }
+}
+
+/* =============================================================================
+   04) ACCESSIBILITY
+============================================================================= */
+@media (prefers-reduced-motion: reduce){
+  .ui-loader-circle::before{
+    animation-duration:var(--loader-circle-reduced-motion-duration);
+  }
+}
+
+/* =============================================================================
+   05) END OF FILE
+============================================================================= */
 
 /* Canonical ecosystem email and publication metadata presentation. */
 :root {

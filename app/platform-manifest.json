@@ -1,11 +1,12 @@
 {
   "source": "artandavoodi/website",
-  "revision": "de941f571ef7d46784c1cf389f2fab77f9fe7af6",
+  "revision": "418e197cb0ca0e199e68cc33339560f05be6d216",
   "files": {
     "assets/css/core/04-systems/notifications.css": "57985e09f5fc774f4d5678b92192dcedbf24efc3feac5a7824ab10bf5f309780",
     "assets/js/core/02-systems/notification-feed.js": "8aa604e9ff3e4041265a818ee4ef083737c6dfced611c7aa4ebdb87effc1a7dc",
     "assets/css/core/03-primitives/profile-media-action.css": "396097481d6d5440ebf9b78a61c1a4e4a3ce8226f57fb93761493eb1a4cf1b33",
     "assets/js/core/02-systems/toast.js": "96f80c43c2616a68abe67336f14fc577f32dcf986a6382658d091001fb4919da",
+    "assets/js/core/02-systems/page-loading.js": "aa689d15d8fd95639386de3df4f722a46384901066f3e7621ec881b6caaf0745",
     "assets/css/core/04-systems/toast.css": "07f55c5c1674c4ca1e98956a0aa7608605d324358db37eb49388506572e431a9",
     "assets/js/layers/website/ui/profile-media-editor.js": "6fa1dbe0eaeb30a2cfa8522dc89433fd5af46c02a820be6f587d6b278b33567e",
     "assets/css/layers/website/ui/profile-media-editor.css": "aa0c478e67baecf9267ce96983a86ce159d14ac00a888d99e1e46aa37124440f",
@@ -23,7 +24,7 @@
     "assets/js/core/02-systems/theme.js": "5698e16826265da8a02b4df7d149abf273e5c481659373b2672bd70731258e15",
     "assets/js/core/01-foundation/toggle.js": "6097773948c6265680bb2e25a8698d1146deeb3853a6e8e45eb0294a5044ca7a",
     "assets/js/core/02-systems/magnetic-navigation.js": "9aab4752f6542dc30dd5a4d4e9c603c2d996e7fa3322b1e9b33e5741b4c4de85",
-    "assets/css/core/03-primitives/loaders.css": "fee381014480ba1d6ab37dda0c36b1acd7f2e1f3683b4807c5a62c3f063ed102",
+    "assets/css/core/03-primitives/loaders.css": "ed634b772b8f1ef3f1c4bbd7a46858fd59dd12a18d95170cc98aec450d9711ee",
     "assets/js/layers/website/overlays/cookie/cookie-consent.js": "2e4ca3f200e381b4bc555f3f6fe7e1013d4988fd8e91ada38e2d1520fa07403f",
     "assets/css/core/03-primitives/radio-list.css": "ee8a4f19a799bc1d3a45f28e2a16809bde19f01a1bac0f0d6999f963aad13aa0",
     "assets/css/core/03-primitives/toggle.css": "612aa8b0cc31c9554db52d7761b272c68f29840c5aae5ad2c7f5069e9517e541",
