@@ -6,9 +6,10 @@ Every major and minor development change must follow the canonical [Control Cent
 
 ## Shared Platform Controls
 
-The Studio wordmark currently previews 90% of the shared header width in
-`app/studio.css`. This size is awaiting owner review; do not propagate it to the
-website or other consumers before approval. Shared logo artwork remains unchanged.
+The Studio wordmark uses the approved shared header dimensions imported from
+`brand-header.tokens.css`. Do not add local size multipliers. Shared logo artwork
+remains unchanged. Public artist links use `https://artanrecords.com/{username}/`;
+the username and its label-approval requirement remain unchanged.
 
 Studio owns its stationary header and copyright-only footer in
 `app/shell-render.mjs`; marketing navigation does not own platform identity.
