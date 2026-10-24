@@ -19,7 +19,7 @@ await bindPreferences();
 bindSearch();
 const chrome=bindChrome();
 document.querySelectorAll('.studio-account input:not([type=checkbox]):not([type=file]),.studio-account textarea,.studio-account select').forEach(field=>field.classList.add('ui-field'));
-document.querySelectorAll('.studio-account button:not(.ui-password-field__toggle,.studio-photo-action)').forEach(button=>button.classList.add('ui-button'));
+document.querySelectorAll('.studio-account button:not(.ui-password-field__toggle,.studio-photo-action,.global-close-button)').forEach(button=>button.classList.add('ui-button'));
 document.querySelectorAll('[data-signout]').forEach(button=>{button.classList.add('studio-signout');const icon=document.createElement('img');icon.className='studio-icon';icon.src='/app/icons/signout.svg';icon.alt='';button.prepend(icon);});
 let client=null;
 try{if(configured(config))client=createClient(config.supabase.url,config.supabase.publishableKey,{auth:{storageKey:'artanrecords-studio-auth',storage:sessionStorage,flowType:'pkce',detectSessionInUrl:false}});}catch(error){console.error('[studio] Backend configuration rejected');}

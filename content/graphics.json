@@ -3,6 +3,11 @@
   "notice": "Choose a transparent PNG or a self-contained SVG, up to 2 MB and 8192 pixels per side. Your original stays private. Public display uses a PNG export and requires an approved, published artist page.",
   "paletteLabel": "Artist colours",
   "paletteNotice": "Choose up to five colours. Enter a six-digit hex code or use your browser’s colour picker.",
+  "logoPreview": {
+    "title": "Preview logo",
+    "notice": "Check your logo on light and dark backgrounds. Its proportions and colours stay unchanged. Choose Use logo, then Save to update your profile.",
+    "confirm": "Use logo"
+  },
   "maxBytes": 2097152,
   "maxDimension": 8192,
   "exportDimension": 1024,

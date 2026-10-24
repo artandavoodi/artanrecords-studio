@@ -168,9 +168,20 @@ html[data-theme-effective=dark] .studio-signout .studio-icon { filter:brightness
 .studio-content-dialog { inline-size:min(var(--size-full),var(--control-width-auth-max-wide)); max-block-size:85dvh; padding:var(--spacing-xl); background:var(--cv-page-bg); color:var(--cv-text-primary); border:0; border-radius:var(--panel-radius-unified); }
 .studio-content-dialog::backdrop { background:var(--overlay-bg); backdrop-filter:blur(var(--panel-blur-unified)); }
 .studio-content-dialog [data-content-fields] { display:grid; gap:var(--spacing-lg); }
-.studio-graphics .studio-content-card header button { inline-size:auto; border:0; background:none; }
+.studio-graphics .studio-content-card > header button { inline-size:auto; border:0; background:none; }
 .studio-colour-options { display:flex; align-items:center; gap:var(--spacing-md); margin-block-start:var(--spacing-lg); }
 .studio-colour-options [data-colour-swatches] { display:flex; flex-wrap:wrap; gap:var(--spacing-md); }
 .studio-account .studio-colour-options [data-colour-swatch] { inline-size:var(--icon-size-lg); block-size:var(--icon-size-lg); min-block-size:0; padding:0; border:var(--border-width-hairline) solid var(--cv-text-primary); border-radius:50%; }
 .studio-colour-dialog > p { margin-block:var(--spacing-lg); }
 .studio-colour-dialog [data-color-fields] { display:grid; gap:var(--spacing-md); margin-block-end:var(--spacing-lg); }
+.studio-logo-dialog > p { margin-block:var(--spacing-lg); }
+.studio-logo-dialog [data-logo-loading] { display:grid; place-items:center; min-block-size:var(--control-height-xl); padding:var(--spacing-xl); }
+.studio-logo-comparison { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--spacing-md); }
+.studio-logo-comparison figure { margin:0; min-inline-size:0; }
+.studio-logo-comparison [data-logo-backdrop] { display:grid; place-items:center; aspect-ratio:1; padding:var(--spacing-lg); border-radius:var(--radius-md); }
+.studio-logo-comparison [data-logo-backdrop=light] { background:var(--color-white); }
+.studio-logo-comparison [data-logo-backdrop=dark] { background:var(--color-black); }
+.studio-logo-comparison img { inline-size:100%; block-size:100%; min-block-size:0; object-fit:contain; }
+.studio-logo-comparison figcaption { margin-block-start:var(--spacing-sm); font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
+.studio-logo-dialog [data-logo-candidate-info] { overflow-wrap:anywhere; }
+.studio-logo-dialog footer { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:var(--spacing-md); }
