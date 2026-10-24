@@ -1,23 +1,40 @@
 import config from '../content/graphics.json' with {type:'json'};
 import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
 
+function logoSvg(text){
+ const doc=new DOMParser().parseFromString(text,'image/svg+xml'),svg=doc.documentElement;
+ const namespace='http://www.w3.org/2000/svg',editors=new Set(['http://www.inkscape.org/namespaces/inkscape','http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd']);
+ const shapes=new Set(['svg','g','path','circle','ellipse','rect','line','polyline','polygon','defs','linearGradient','radialGradient','stop','clipPath','title','desc']);
+ const presentation=new Set(['fill','fill-opacity','fill-rule','stroke','stroke-width','stroke-opacity','stroke-linecap','stroke-linejoin','stroke-miterlimit','stroke-dasharray','stroke-dashoffset','opacity','clip-path','clip-rule','stop-color','stop-opacity','color','display','visibility','overflow','vector-effect','paint-order','mix-blend-mode']);
+ const attributes=new Set(['id','version','x','y','width','height','viewBox','preserveAspectRatio','transform','d','points','cx','cy','r','rx','ry','x1','y1','x2','y2','fx','fy','fr','offset','gradientUnits','gradientTransform','spreadMethod','clipPathUnits',...presentation]);
+ if(doc.querySelector('parsererror')||doc.doctype||svg.localName!=='svg'||svg.namespaceURI!==namespace)throw Error('Choose a valid transparent PNG or SVG.');
+ const checkReference=value=>{const references=[...value.matchAll(/url\s*\(([^)]*)\)/gi)];if(/url\s*\(/i.test(value)&&!references.length||references.some(match=>!/^(['"]?)#[\w:.-]+\1$/.test(match[1].trim())))throw Error('Remove external references from the SVG.');};
+ for(const element of [...doc.querySelectorAll('*')]){
+  if(element!==svg&&!svg.contains(element))continue;
+  // Editor metadata is not artwork; keep it only in the untouched private original.
+  if(editors.has(element.namespaceURI)||element.namespaceURI===namespace&&element.localName==='metadata'){element.remove();continue;}
+  if(element.namespaceURI!==namespace||!shapes.has(element.localName))throw Error('Use a self-contained SVG with vector shapes only.');
+  for(const attribute of [...element.attributes]){
+   if(editors.has(attribute.namespaceURI)||attribute.namespaceURI==='http://www.w3.org/2000/xmlns/'){if(attribute.name!=='xmlns')element.removeAttributeNode(attribute);continue;}
+   if(/^on/i.test(attribute.name)||/href/i.test(attribute.name))throw Error('Remove scripts and external references from the SVG.');
+   checkReference(attribute.value);
+   if(attribute.name==='style'){
+    if(/@import|expression\s*\(/i.test(attribute.value))throw Error('Remove active styles from the SVG.');
+    // Convert only paint/layout declarations into SVG presentation attributes, never active CSS.
+    for(const property of Array.from(element.style)){if(!presentation.has(property))continue;const value=element.style.getPropertyValue(property);if(/var\s*\(|expression\s*\(/i.test(value))throw Error('Use self-contained colours and shapes in the SVG.');checkReference(value);element.setAttribute(property,value);}
+    element.removeAttribute('style');
+   }else if(attribute.namespaceURI||!attributes.has(attribute.name))element.removeAttributeNode(attribute);
+  }
+ }
+ return new Blob([new XMLSerializer().serializeToString(svg)],{type:'image/svg+xml'});
+}
+
 export async function exportLogo(file){
  if(file.size>config.maxBytes)throw Error('Choose a logo up to 2 MB.');
  const bytes=new Uint8Array(await file.arrayBuffer());
  const png=[137,80,78,71,13,10,26,10].every((value,index)=>bytes[index]===value);
  let source=file;
- if(!png){
-  const doc=new DOMParser().parseFromString(await file.text(),'image/svg+xml');
-  const allowed=new Set(['svg','g','path','circle','ellipse','rect','line','polyline','polygon','defs','linearGradient','radialGradient','stop','clipPath','title','desc']);
-  if(doc.querySelector('parsererror')||doc.documentElement.localName!=='svg')throw Error('Choose a valid transparent PNG or SVG.');
-  for(const element of doc.querySelectorAll('*')){
-   if(!allowed.has(element.localName)||element.namespaceURI!=='http://www.w3.org/2000/svg')throw Error('Use a self-contained SVG with vector shapes only.');
-   for(const attribute of element.attributes){
-    if(/^on/i.test(attribute.name)||/href/i.test(attribute.name)||attribute.name==='style'||/url\s*\((?!\s*#[\w-]+\s*\))/i.test(attribute.value))throw Error('Remove scripts, external references and embedded styles from the SVG.');
-   }
-  }
-  source=new Blob([new XMLSerializer().serializeToString(doc.documentElement)],{type:'image/svg+xml'});
- }
+ if(!png)source=logoSvg(await file.text());
  const url=URL.createObjectURL(source);
  try{
   const image=new Image();image.src=url;await image.decode();
