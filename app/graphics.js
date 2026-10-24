@@ -39,12 +39,18 @@ export async function bindGraphics({client,resolveUser}){
  save.disabled=true;let owner,pending=null,previewUrl='';
  const show=blob=>{if(previewUrl)URL.revokeObjectURL(previewUrl);previewUrl=URL.createObjectURL(blob);preview.src=previewUrl;preview.hidden=false;form.querySelector('[data-logo-empty]').hidden=true;};
  form.querySelector('[data-choose-logo]').onclick=()=>form.elements.logo.click();
+ const swatches=form.querySelector('[data-colour-swatches]');
+ const syncSwatches=()=>{
+  const selected=[...fields.querySelectorAll('input[type=text]')].filter(input=>/^#[0-9a-f]{6}$/i.test(input.value));
+  const options=selected.length?selected.map(input=>({value:input.value.toUpperCase(),label:'Edit '+input.value.toUpperCase(),input})):config.defaultColors;
+  swatches.replaceChildren(...options.map(option=>{const button=document.createElement('button');button.type='button';button.dataset.colourSwatch=option.value;button.style.backgroundColor=option.value;button.setAttribute('aria-label',option.label);button.title=option.value;button.onclick=()=>{if(!option.input){append(option.value);return;}colourDialog.showModal();option.input.focus();};return button;}));
+ };
  const append=color=>{
   const row=document.createElement('div');row.className='studio-color-field';row.setAttribute('role','group');row.setAttribute('aria-label','Artist colour');
   const picker=document.createElement('input');picker.type='color';picker.value=color;picker.setAttribute('aria-label','Choose artist colour');
   const hex=document.createElement('input');hex.type='text';hex.className='ui-field';hex.value=color;hex.pattern='#[0-9a-fA-F]{6}';hex.maxLength=7;hex.required=true;hex.setAttribute('aria-label','Artist colour hex code');
-  const remove=document.createElement('button');remove.type='button';remove.className='studio-color-remove';remove.setAttribute('aria-label','Remove colour');remove.title='Remove colour';const image=document.createElement('img');image.src='/app/icons/close.svg';image.alt='';image.className='studio-icon';remove.append(image);remove.onclick=()=>{row.remove();add.disabled=fields.children.length>=config.maxColors;};
-  picker.oninput=()=>{hex.value=picker.value;};hex.oninput=()=>{if(/^#[0-9a-f]{6}$/i.test(hex.value))picker.value=hex.value;};row.append(picker,hex,remove);fields.append(row);add.disabled=fields.children.length>=config.maxColors;
+  const remove=document.createElement('button');remove.type='button';remove.className='studio-color-remove';remove.setAttribute('aria-label','Remove colour');remove.title='Remove colour';const image=document.createElement('img');image.src='/app/icons/close.svg';image.alt='';image.className='studio-icon';remove.append(image);remove.onclick=()=>{row.remove();add.disabled=fields.children.length>=config.maxColors;syncSwatches();};
+  picker.oninput=()=>{hex.value=picker.value;syncSwatches();};hex.oninput=()=>{if(/^#[0-9a-f]{6}$/i.test(hex.value))picker.value=hex.value;syncSwatches();};row.append(picker,hex,remove);fields.append(row);add.disabled=fields.children.length>=config.maxColors;syncSwatches();
  };
  add.onclick=()=>{if(fields.children.length<config.maxColors)append('#000000');};
  const colourDialog=form.querySelector('#artist-colour-picker');
@@ -52,7 +58,7 @@ export async function bindGraphics({client,resolveUser}){
  colourDialog.addEventListener('close',()=>form.querySelector('[data-open-colour]').focus({preventScroll:true}));
  form.querySelector('[data-close-colour]').onclick=()=>colourDialog.close();
  form.querySelector('[data-open-colour]').addEventListener('click',()=>{if(!fields.children.length)append('#000000');colourDialog.showModal();});
- for(const button of form.querySelectorAll('[data-colour-preset]')){button.style.backgroundColor=button.dataset.colourPreset;button.onclick=()=>{if(!fields.children.length)append(button.dataset.colourPreset);const row=fields.firstElementChild;row.querySelector('[type=color]').value=button.dataset.colourPreset;row.querySelector('[type=text]').value=button.dataset.colourPreset;for(const other of form.querySelectorAll('[data-colour-preset]'))other.setAttribute('aria-pressed',String(other===button));};}
+ syncSwatches();
  try{
   if(!client||(owner=await resolveUser(client))==null)throw Error('Sign in to manage artist graphics.');
   const result=await client.from('studio_artist_graphics').select('palette,logo_public,palette_public').eq('account_id',owner.id).maybeSingle();if(result.error)throw Error('Artist graphics are not available yet. No changes have been saved.');

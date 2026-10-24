@@ -33,7 +33,7 @@ export async function bindReleaseMetadata({client,config,resolveUser}){
   const list=async()=>{const result=await client.from('studio_release_drafts').select('id,title').eq('account_id',user.id).order('created_at',{ascending:false}).limit(100);if(result.error)throw result.error;records=result.data;picker.replaceChildren(new Option('New release',''),...records.map(row=>new Option(row.title,row.id)));picker.value=current||'';};
   try{await list();await load();controls.hidden=false;status.textContent='Private drafts only. Nothing is delivered or published.';}catch{status.textContent='Your drafts could not be loaded. Refresh to retry.';return;}
   form.addEventListener('input',()=>dirty=true);
-  const canLeave=()=>!busy&&(!dirty||window.confirm('Discard unsaved changes to this draft?'));
+  const canLeave=()=>!busy&&!artwork.busy&&(!dirty||window.confirm('Discard unsaved changes to this draft?'));
   const setCount=desired=>{if(!Number.isInteger(desired)||desired<1||desired>schema.release.maxTracks){renumber();return;}if(desired<tracks.children.length&&!window.confirm('Remove the final '+(tracks.children.length-desired)+' track(s) from this draft?')){if(type.value==='Single'&&tracks.children.length>1)type.value='Album';renumber();return;}while(tracks.children.length>desired)tracks.lastElementChild.remove();while(tracks.children.length<desired)addTrack();renumber();dirty=true;};
   count.addEventListener('change',()=>setCount(Number(count.value)));
   type.addEventListener('change',()=>{if(type.value==='Single')setCount(1);else{count.readOnly=false;if(tracks.children.length===1)setCount(2);else renumber();}});

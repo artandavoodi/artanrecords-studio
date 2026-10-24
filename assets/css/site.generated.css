@@ -7628,8 +7628,6 @@ html:not([data-enhanced]) .site-menu__links a { font-size: var(--site-type-body-
 a { text-decoration:none; }
 [data-artist-graphics] { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-md); }
 [data-artist-logo] img { max-inline-size:100%; max-block-size:var(--site-header-height); object-fit:contain; }
-[data-artist-palette] { display:flex; gap:var(--spacing-xs); }
-[data-artist-palette] span { inline-size:var(--spacing-lg); block-size:var(--spacing-lg); border-radius:50%; border:1px solid currentColor; }
 
 /* Homepage editorial motion and native horizontal showcases. */
 main[data-fragment="home"] {

@@ -4,7 +4,7 @@ const id='92000000-0000-0000-0000-000000000001';
 const user={id,aud:'authenticated',role:'authenticated',email:'artist@example.test',email_confirmed_at:'2026-10-20T00:00:00Z',created_at:'2026-10-20T00:00:00Z',app_metadata:{provider:'email'},user_metadata:{full_name:'Test artist'}};
 const access=[{alg:'HS256',typ:'JWT'},{sub:id,role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600},'test-signature'].map(value=>Buffer.from(typeof value==='string'?value:JSON.stringify(value)).toString('base64url')).join('.');
 const session={access_token:access,refresh_token:'test-refresh-not-a-real-credential',token_type:'bearer',expires_in:3600,user};
-async function mockBackend(page){
+async function mockBackend(page,{releaseCover}={}){
   const requests=[];
   let artistMetadata=null,handle=null,application=null,artistContent=null;const drafts=new Map(),concerts=new Map(),covers=new Map();
   await page.route('https://hahtbepdrjkjluhespbs.supabase.co/**',async route=>{
@@ -42,7 +42,8 @@ async function mockBackend(page){
     else if(/\/storage\/v1\/object\/(authenticated\/)?studio-release-artwork\//.test(url.pathname)){
       const key=url.pathname.split('studio-release-artwork/')[1];
       if(request.method()==='GET'){const image=covers.get(key);return route.fulfill({status:image?200:404,contentType:image?'image/png':'application/json',body:image||'{}'});}
-      covers.set(key,request.postDataBuffer());body={Key:key};
+      // WebKit's intercepted multipart body omits file bytes; retain the explicit upload fixture.
+      const upload=await new Response(request.postDataBuffer(),{headers:{'content-type':request.headers()['content-type']}}).formData();const file=Buffer.from(await upload.get('').arrayBuffer());covers.set(key,file.length?file:releaseCover);body={Key:key};
     }
     else if(url.pathname.includes('/storage/v1/object/list/'))body=[];
     else if(url.pathname.includes('/storage/v1/object/studio-logos/')){status=request.method()==='GET'?404:200;body=request.method()==='GET'?{message:'Not found'}:{Key:'logo'};}
@@ -96,8 +97,10 @@ test('artist graphics isolate their tab and save explicit palette visibility',as
  await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.getByRole('tab',{name:'Graphics',exact:true}).click();
  const form=page.locator('[data-graphics-form]');await expect(form).toBeVisible();await expect(page.locator('[data-profile-form]')).toBeHidden();
+ await expect(form.locator('[data-colour-swatch]')).toHaveCount(2);await expect(form.locator('summary')).toHaveCount(0);
  await form.getByRole('button',{name:'Custom colour'}).click();await form.getByLabel('Artist colour hex code').fill('#123456');
  await expect(form.getByLabel('Choose artist colour')).toHaveValue('#123456');
+ await expect(form.locator('[data-colour-swatch]')).toHaveCount(1);await expect(form.locator('[data-colour-swatch]')).toHaveAttribute('data-colour-swatch','#123456');
  await expect(form.locator('.studio-color-field')).toHaveCSS('display','flex');await expect(form.getByRole('button',{name:'Remove colour'})).toHaveText('');
  const colours=page.getByRole('dialog',{name:'Custom artist colours'});await expect(colours).toBeVisible();await expect(colours.locator('.global-close-button__line')).toHaveCount(2);
  expect(await colours.evaluate(el=>getComputedStyle(el,'::backdrop').backdropFilter)).not.toBe('none');
@@ -106,6 +109,7 @@ test('artist graphics isolate their tab and save explicit palette visibility',as
  await form.getByLabel('Share my artist colours').check();await form.getByRole('button',{name:'Save',exact:true}).click();
  await expect(page.locator('.system-save-confirmation')).toHaveText('Graphics saved.');
  expect(requests.find(item=>item.path.endsWith('/rpc/studio_save_artist_graphics')).body).toEqual({colors:['#123456'],share_logo:false,share_palette:true});
+ await form.getByRole('button',{name:'Edit #123456'}).click();await colours.getByRole('button',{name:'Remove colour'}).click();await colours.getByRole('button',{name:'Close custom colours'}).click();await expect(form.locator('[data-colour-swatch]')).toHaveCount(2);await expect(form.getByRole('button',{name:'Use black'})).toBeVisible();await expect(form.getByRole('button',{name:'Use white'})).toBeVisible();
  await expect(page.locator('body')).toHaveJSProperty('scrollWidth',await page.locator('body').evaluate(node=>node.clientWidth));
 });
 test('artist logos reject active SVG and export safe artwork without distortion',async({page})=>{
@@ -338,22 +342,22 @@ test('release drafts preserve stories, lyrics and contributors without submissio
   await expect(view.locator('[data-track] [name=lyrics]')).toHaveValue('Test lyrics');
 });
 test('release covers validate square originals and save privately with a retryable draft',async({page})=>{
- const requests=await mockBackend(page),dialog=await openAccount(page);
+ const file=async(width,height)=>Buffer.from(await page.evaluate(({width,height})=>{const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;canvas.getContext('2d').fillRect(0,0,width,height);return canvas.toDataURL('image/png').split(',')[1];},{width,height}),'base64');
+ const cover=await file(1000,1000),requests=await mockBackend(page,{releaseCover:cover}),dialog=await openAccount(page);
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page).toHaveURL(/\/profile\/$/);
  await page.goto('/releases/');await page.getByRole('tab',{name:'New release & drafts',exact:true}).click();const view=page.locator('[data-release-metadata]');await expect(view.locator('[data-release-controls]')).toBeVisible();
- const file=async(width,height)=>Buffer.from(await page.evaluate(({width,height})=>{const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;canvas.getContext('2d').fillRect(0,0,width,height);return canvas.toDataURL('image/png').split(',')[1];},{width,height}),'base64');
  const input=view.locator('[data-release-artwork] input[type=file]'),notice=view.locator('[data-cover-status]');
  await input.setInputFiles({name:'wide.png',mimeType:'image/png',buffer:await file(1000,1200)});await expect(notice).toContainText('must be square');
  await input.setInputFiles({name:'small.png',mimeType:'image/png',buffer:await file(100,100)});await expect(notice).toContainText('1000 and 6000');
  await input.setInputFiles({name:'invalid.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg/>')});await expect(notice).toContainText('valid JPEG or PNG');
- await input.setInputFiles({name:'cover.png',mimeType:'image/png',buffer:await file(1000,1000)});await expect(notice).toContainText('1000 x 1000');await expect(view.locator('[data-cover-preview]')).toBeVisible();
+ await input.setInputFiles({name:'cover.png',mimeType:'image/png',buffer:cover});await expect(notice).toContainText('1000 x 1000');await expect(view.locator('[data-cover-preview]')).toBeVisible();
  await view.locator('form > details').first().locator('[name=title]').fill('Artwork single');await view.locator('[data-track] [name=title]').fill('Artwork song');
  let fail=true;await page.route('**/storage/v1/object/studio-release-artwork/**',async route=>{if(fail){fail=false;return route.fulfill({status:403,contentType:'application/json',body:JSON.stringify({message:'Fixture upload denial'})});}await route.fallback();});
  await view.getByRole('button',{name:'Save release draft'}).click();await expect(view.locator('[data-metadata-status]')).toContainText('Your text draft is saved');
  await view.getByRole('button',{name:'Save release draft'}).click();await expect(view.locator('[data-metadata-status]')).toContainText('Nothing is submitted');
  expect(requests.filter(request=>request.path.endsWith('/studio_release_drafts')&&request.method==='POST')).toHaveLength(1);
  const attached=requests.find(request=>request.method==='PATCH'&&request.body?.metadata?.artwork).body.metadata.artwork;expect(attached.path).toMatch(new RegExp('^'+id+'/94000000-0000-0000-0000-000000000001/'));expect(attached.width).toBe(1000);
- await view.locator('[data-new-draft]').click();await expect(view.locator('[data-cover-preview]')).toBeHidden();await view.locator('[data-draft-picker]').selectOption('94000000-0000-0000-0000-000000000001');await expect(notice).toContainText('cover.png');await expect(view.locator('[data-cover-preview]')).toBeVisible();
+ await view.locator('[data-new-draft]').click();await expect(view.locator('[data-cover-preview]')).toBeHidden();await view.locator('[data-draft-picker]').selectOption('94000000-0000-0000-0000-000000000001');await expect(notice).toContainText('cover.png');await expect(view.locator('[data-cover-preview]')).toBeVisible();await expect.poll(()=>view.locator('[data-cover-preview]').evaluate(el=>el.naturalWidth)).toBe(1000);
  expect(requests.some(request=>/publish|deliver/.test(request.path))).toBe(false);
  if(test.info().project.name==='chromium-desktop')await page.screenshot({path:'/tmp/studio-release-artwork.png'});
 });

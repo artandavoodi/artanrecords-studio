@@ -170,7 +170,7 @@ html[data-theme-effective=dark] .studio-signout .studio-icon { filter:brightness
 .studio-content-dialog [data-content-fields] { display:grid; gap:var(--spacing-lg); }
 .studio-graphics .studio-content-card header button { inline-size:auto; border:0; background:none; }
 .studio-colour-options { display:flex; align-items:center; gap:var(--spacing-md); margin-block-start:var(--spacing-lg); }
-.studio-account .studio-colour-options [data-colour-preset] { inline-size:var(--icon-size-lg); block-size:var(--icon-size-lg); min-block-size:0; padding:0; border:0; border-radius:50%; }
-.studio-colour-options [aria-pressed=true] { outline:var(--border-width-hairline) solid var(--cv-text-primary); outline-offset:var(--spacing-xs); }
+.studio-colour-options [data-colour-swatches] { display:flex; flex-wrap:wrap; gap:var(--spacing-md); }
+.studio-account .studio-colour-options [data-colour-swatch] { inline-size:var(--icon-size-lg); block-size:var(--icon-size-lg); min-block-size:0; padding:0; border:var(--border-width-hairline) solid var(--cv-text-primary); border-radius:50%; }
 .studio-colour-dialog > p { margin-block:var(--spacing-lg); }
 .studio-colour-dialog [data-color-fields] { display:grid; gap:var(--spacing-md); margin-block-end:var(--spacing-lg); }

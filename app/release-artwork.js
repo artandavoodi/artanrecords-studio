@@ -18,15 +18,18 @@ export async function inspectReleaseArtwork(file){
 export function bindReleaseArtwork(view,{client,user,resolveUser,onDirty}){
  const root=view.querySelector('[data-release-artwork]'),input=root.querySelector('input[type=file]'),preview=root.querySelector('img[data-cover-preview]'),status=root.querySelector('[data-cover-status]'),empty=root.querySelector('[data-cover-empty]');
  let pending=null,stored=null,uploaded=null,url='',revision=0;
- const display=(blob,info)=>{
-  if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(blob);preview.src=url;preview.hidden=false;empty.hidden=true;
+ const display=async(blob,info,version=revision)=>{
+  const source=URL.createObjectURL(blob),image=new Image();image.src=source;
+  try{await image.decode();}catch{URL.revokeObjectURL(source);throw Error('The cover preview could not be opened.');}
+  if(version!==revision){URL.revokeObjectURL(source);return;}
+  if(url)URL.revokeObjectURL(url);url=source;preview.src=url;preview.hidden=false;empty.hidden=true;
   status.textContent=info.name+' · '+info.width+' x '+info.height+' · '+(info.bytes/1048576).toFixed(1)+' MB';
  };
  const clear=()=>{if(url)URL.revokeObjectURL(url);url='';preview.removeAttribute('src');preview.hidden=true;empty.hidden=false;};
  root.querySelector('[data-choose-cover]').onclick=()=>input.click();
  input.onchange=async()=>{
   const version=++revision;root.inert=true;
-  try{const file=input.files[0];if(!file)return;const info=await inspectReleaseArtwork(file);if(version!==revision)return;pending={file,info};uploaded=null;display(file,info);onDirty();}
+  try{const file=input.files[0];if(!file)return;const info=await inspectReleaseArtwork(file);if(version!==revision)return;await display(file,info,version);if(version!==revision)return;pending={file,info};uploaded=null;onDirty();}
   catch(error){status.textContent=error.message;}finally{input.value='';root.inert=false;}
  };
  return {
@@ -39,7 +42,7 @@ export function bindReleaseArtwork(view,{client,user,resolveUser,onDirty}){
    try{asset=releaseArtworkValues(asset);}catch{status.textContent='This cover record could not be opened.';return;}
    if(!asset.path.startsWith(user.id+'/')){status.textContent='This cover does not belong to your account.';return;}
    stored=asset;status.textContent='Loading private cover artwork...';
-   try{const result=await client.storage.from(config.bucket).download(asset.path);if(result.error)throw result.error;if(version===revision)display(result.data,asset);}
+   try{const result=await client.storage.from(config.bucket).download(asset.path);if(result.error)throw result.error;await display(result.data,asset,version);}
    catch{if(version===revision)status.textContent='The saved cover could not be loaded. Try reopening this draft.';}
   },
   async prepare(draft){
