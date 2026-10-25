@@ -1,5 +1,22 @@
 # Artanrecords Studio
 
+## Creator Store foundation
+
+`/store/` provides private store preparation, product and collection drafts,
+profile/shop domain requests and a gated finance notice. Drafts belong to the
+verified account's stable creator/store IDs; table policies, composite foreign
+keys and restricted column grants enforce ownership on the shared backend.
+The canonical backend migration belongs to the existing artan-store repository,
+not a second database or a new Supabase account. No existing storefront is moved.
+
+Public route and commerce contracts are owned by Artanrecords
+`docs/assets/data/commerce.json` and distributed through the checksum-verified
+foundation; Studio copy and field configuration are owned by `content/commerce.json`.
+Domain requests are not connected domains. Public shops, product publication,
+DNS/TLS activation, seller onboarding, company collection, commissions and
+withdrawals remain disabled pending their documented server and approval gates.
+`tools/commerce.test.mjs` and the Store browser cases cover this boundary.
+
 ## Development Registration
 
 Every major and minor development change must follow the canonical [Control Center development-registration policy](https://github.com/artandavoodi/control-center/blob/main/docs/development-registration.md). Commit in the owning repository; never copy code, tokens or vectors to register a change. Private repository history remains private until its authorized connector is available.
