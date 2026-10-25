@@ -60,6 +60,35 @@ async function openAccount(page){
   await expect(dialog).toBeVisible();
   return dialog;
 }
+test('Store prepares private products and collections without activating publication or payments',async({page})=>{
+ await mockBackend(page);let prepared=false;const products=[],collections=[],domainRequests=[];
+ const creator='a5000000-0000-0000-0000-000000000011',store='a5000000-0000-0000-0000-000000000021';
+ await page.route('**/rpc/studio_prepare_store',route=>{prepared=true;return route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(store)});});
+ for(const table of ['studio_creators','studio_store_drafts','studio_store_products','studio_store_collections','studio_creator_domains'])await page.route('**/rest/v1/'+table+'*',route=>{
+  const request=route.request();let body=[];
+  if(table==='studio_creators')body=prepared?[{id:creator}]:[];
+  else if(table==='studio_store_drafts')body=prepared?[{id:store,creator_id:creator,title:'Private store',introduction:'',status:'draft'}]:[];
+  else{
+   const rows=table==='studio_store_products'?products:table==='studio_store_collections'?collections:domainRequests;
+   if(request.method()==='POST'){const record={...request.postDataJSON(),id:'a5000000-0000-0000-0000-'+String(rows.length+31).padStart(12,'0'),status:table==='studio_creator_domains'?'requested':'draft'};rows.push(record);body={id:record.id};}else body=rows;
+  }
+  return route.fulfill({status:request.method()==='POST'?201:200,contentType:'application/json',body:JSON.stringify(body)});
+ });
+ const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.goto('/store/');await page.getByRole('button',{name:'Prepare a private store',exact:true}).click();await expect(page.getByRole('tab',{name:'Products',exact:true})).toBeVisible();
+ await page.getByRole('tab',{name:'Collections',exact:true}).click();await page.getByRole('button',{name:'New collection',exact:true}).click();const collection=page.locator('[data-commerce-editor=collection]');await collection.getByLabel('Collection name').fill('Music');await collection.getByLabel('Collection address').fill('music');await collection.getByRole('button',{name:'Save',exact:true}).click();await expect(page.locator('.system-save-confirmation')).toHaveText('Changes saved.');
+ await page.getByRole('tab',{name:'Products',exact:true}).click();await page.getByRole('button',{name:'New product',exact:true}).click();const product=page.locator('[data-commerce-editor=product]');await product.getByLabel('Product name').fill('A score');await product.getByLabel('Product address').fill('a-score');await product.getByLabel('Product type').selectOption('digital');await product.getByLabel('Price (optional)',{exact:true}).fill('2.50');await product.getByRole('combobox',{name:'Currency',exact:true}).selectOption('EUR');await product.getByRole('combobox',{name:'Collection',exact:true}).selectOption(collections[0].id);await product.getByRole('button',{name:'Save',exact:true}).click();await expect(page.locator('[data-commerce-list=product]')).toContainText('A score');
+ expect(products[0]).toMatchObject({creator_id:creator,store_id:store,price_minor:250,currency:'EUR',collection_id:collections[0].id});expect(products[0].details.variants).toEqual([]);
+ await page.getByRole('tab',{name:'Domains',exact:true}).click();const domain=page.locator('[data-commerce-domain]');await domain.getByLabel('Custom domain').fill('WWW.Creator.com');await domain.getByRole('button',{name:'Save domain request'}).click();await expect(page.locator('[data-commerce-domains]')).toContainText('www.creator.com');expect(domainRequests[0]).toMatchObject({creator_id:creator,surface:'profile',hostname:'www.creator.com',status:'requested'});
+ await page.getByRole('tab',{name:'Finance',exact:true}).click();await expect(page.locator('#store-finance')).toContainText('Commerce payments and withdrawals are not active.');await expect(page.getByRole('button',{name:/Withdraw|Publish|Checkout/})).toHaveCount(0);
+ expect(await page.locator('body').evaluate(element=>element.scrollWidth<=innerWidth)).toBe(true);
+ await page.reload();await expect(page.getByRole('tab',{name:'Finance',exact:true})).toHaveAttribute('aria-selected','true');
+});
+test('Store backend unavailability does not simulate a shop or expose an unusable editor',async({page})=>{
+ await mockBackend(page);const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.route('**/rest/v1/studio_creators*',route=>route.fulfill({status:404,contentType:'application/json',body:'{"message":"Unavailable"}'}));
+ await page.goto('/store/');await expect(page.locator('[data-commerce-status]')).toHaveText('Store preparation is not connected yet. Your existing shop has not changed.');await expect(page.locator('[data-commerce-controls]')).toBeHidden();await expect(page.locator('[data-commerce-prepare]')).toBeHidden();
+});
 test('Studio reuses magnetic navigation for drag collapse and reopening',async({page})=>{
  await page.emulateMedia({reducedMotion:'reduce'});await mockBackend(page);await page.goto('/profile/');
  const handle=page.getByRole('separator',{name:'Resize navigation',exact:true}),rail=page.locator('.studio-platform-rail');

@@ -1,0 +1,13 @@
+{
+ "schemaVersion":1,
+ "activation":{"publicShops":false,"checkout":false,"domainConnections":false,"withdrawals":false},
+ "routes":{"profile":"/{username}/","store":"/{username}/shop/","product":"/{username}/shop/{slug}/","studio":"/store/","marketplaceHost":"shop.artanrecords.com","reservedRoots":["shop"]},
+ "storeStates":["disabled","draft","review","published","suspended","archived"],
+ "productStates":["draft","review","scheduled","active","sold_out","hidden","archived"],
+ "domainSurfaces":["profile","store"],
+ "capabilities":["store.publish","store.sell_physical","store.sell_digital","store.analytics","domain.connect","commerce.withdraw"],
+ "productKinds":[{"id":"physical","label":"Physical product"},{"id":"digital","label":"Digital product"},{"id":"hybrid","label":"Physical & digital"},{"id":"service","label":"Service"}],
+ "currencies":[{"id":"EUR","minorUnits":2},{"id":"USD","minorUnits":2},{"id":"GBP","minorUnits":2}],
+ "limits":{"title":200,"slug":80,"description":10000,"collectionTitle":120,"collectionDescription":4000,"introduction":2000,"category":80,"maxPriceMinor":999999999999},
+ "finance":{"providerCandidate":"stripe-connect","flowCandidate":"separate-charges-and-transfers","recordingSharesApplyToCommerce":false,"commission":null,"merchantOfRecord":null,"withdrawalEndpoint":null}
+}

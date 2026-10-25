@@ -1,0 +1,10 @@
+{
+ "title":"Store",
+ "description":"Prepare your products, collections and website addresses. Your drafts are private; selling and withdrawals are not active.",
+ "tabs":[{"id":"store-overview","label":"Overview","icon":"dashboard"},{"id":"store-products","label":"Products","icon":"store"},{"id":"store-collections","label":"Collections","icon":"collection"},{"id":"store-domains","label":"Domains","icon":"globe"},{"id":"store-finance","label":"Finance","icon":"finance"}],
+ "productFields":[{"name":"title","label":"Product name","required":true,"max":200},{"name":"slug","label":"Product address","required":true,"max":80},{"name":"description","label":"Description","multiline":true,"max":10000},{"name":"category","label":"Category","max":80},{"name":"sku","label":"SKU (optional)","max":80},{"name":"image_url","label":"Reference image URL (optional)","type":"url","max":2000},{"name":"price","label":"Price (optional)","inputmode":"decimal","max":20}],
+ "collectionFields":[{"name":"title","label":"Collection name","required":true,"max":120},{"name":"slug","label":"Collection address","required":true,"max":80},{"name":"description","label":"Description","multiline":true,"max":4000}],
+ "domainNotice":"Save a request for your official website or shop. Saving does not connect DNS, verify ownership or provision a certificate. We will need a verified hosting connection before activating a domain.",
+ "financeNotice":"Commerce payments and withdrawals are not active. Recording royalties and store proceeds stay separate. No commissions, balances or earnings are calculated here.",
+ "protectedHosts":["artanrecords.com","neuroartan.com"]
+}

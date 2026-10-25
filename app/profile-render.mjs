@@ -22,7 +22,7 @@ export function profileMarkup({settings,e,icon}){
       <button type="submit">${icon('check')}Save</button>
     </form>
   </section></div><div id="profile-publication" role="tabpanel" aria-labelledby="tab-profile-publication" data-settings-panel="profile-publication" hidden><section class="studio-account studio-identity" data-artist-identity hidden>
-    <h2 class="studio-section-label">${icon('username')}Artist address</h2>
+    <h2 class="studio-section-label">${icon('username')}Artist address</h2><a href="/store/#store-domains">${icon('globe')}Website & shop domains</a>
     <form data-username-form><label><span>Username</span><input class="ui-field" name="username" minlength="3" maxlength="32" autocomplete="username" autocapitalize="none" spellcheck="false" required aria-describedby="username-status"></label><button class="ui-button" type="submit">${icon('check')}Request username</button></form>
     <p id="username-status" role="status"></p><p data-handle-notice role="status"></p><p class="studio-field-note">${e(artistAccount.usernameNotice)}</p>
     <div class="studio-profile-actions"><button class="ui-button" type="button" data-publish-profile>${icon('visibility-on')}Publish selected fields</button><a class="ui-button" data-public-page hidden target="_blank" rel="noopener">${icon('globe')}View artist page</a><button class="ui-button" type="button" data-unpublish-profile>${icon('visibility-off')}Hide artist page</button></div>

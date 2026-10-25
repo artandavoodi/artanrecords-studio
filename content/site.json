@@ -40,6 +40,7 @@
   ],
   "footer": [],
   "pages": [
+    {"path":"/store/","title":"Store","description":"Prepare private products, collections and website or shop domain requests. Commerce payments and withdrawals are not active.","category":"Workspace","indexable":false,"sections":[]},
     {"path":"/concerts/","title":"Concerts","description":"Manage concert drafts, venue details, ticket links and public announcements.","category":"Workspace","indexable":false,"sections":[]},
     {
       "path": "/cookies/",

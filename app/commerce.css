@@ -1,0 +1,9 @@
+/* Store-owned composition; controls, tabs, colors and typography remain shared. */
+[data-commerce],[data-commerce-controls],[data-commerce-controls] [role=tabpanel] { display:grid; gap:var(--spacing-xl); min-inline-size:0; }
+[data-commerce] [hidden] { display:none; }
+.studio-commerce-row { display:flex; align-items:center; justify-content:space-between; gap:var(--spacing-lg); padding-block:var(--spacing-lg); }
+.studio-commerce-row + .studio-commerce-row { border-block-start:var(--border-width-hairline) solid var(--cv-border); }
+.studio-commerce-row > div { min-inline-size:0; overflow-wrap:anywhere; }
+.studio-commerce-row h3 { font:inherit; font-weight:var(--font-weight-medium); margin:0; }
+.studio-commerce-row p { margin-block:var(--spacing-sm) 0; }
+.studio-commerce-row button { flex:none; }
