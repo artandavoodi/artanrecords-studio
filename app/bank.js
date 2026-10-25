@@ -20,13 +20,15 @@ export async function bindBank({client,resolveUser}){
   const surface=document.querySelector('[data-bank-service]');if(!surface)return;
   const status=surface.querySelector('[data-bank-status]'),mode=surface.querySelector('[data-bank-mode]'),onboard=surface.querySelector('[data-bank-onboard]'),refresh=surface.querySelector('[data-bank-refresh]');
   let owner=null,busy=false;
-  const clear=()=>{mode.hidden=true;onboard.disabled=true;document.querySelectorAll('[data-bank-balance]').forEach(item=>item.textContent='Unavailable');};
+  const total=document.querySelector('[data-bank-total]');
+  const clear=()=>{mode.hidden=true;onboard.disabled=true;if(total)total.textContent='—';document.querySelectorAll('[data-bank-balance]').forEach(item=>item.textContent='Unavailable');};
   const invoke=async action=>{
     const current=client&&await resolveUser(client);
     if(!current||(owner&&current.id!==owner))throw Error('Sign in required');
     owner=current.id;
     const {data,error}=await client.functions.invoke('studio-connect',{body:{action}});
-    if(error||data?.error||(await resolveUser(client))?.id!==owner)throw Error('Payout connection unavailable');return data;
+    if(error||data?.error){console.error('[studio] Payout connection failed',error?.context?.status||'network');throw Error('Payout connection unavailable');}
+    if((await resolveUser(client))?.id!==owner)throw Error('Payout connection unavailable');return data;
   };
   async function load(){
     if(busy)return;busy=true;refresh.disabled=true;clear();status.textContent='Checking payout connection...';
@@ -37,6 +39,7 @@ export async function bindBank({client,resolveUser}){
         onboard.querySelector('span').textContent='Update payout information';
         status.textContent=data.status.restricted?'Stripe requires attention. Review your payout information.':data.status.informationDue?'Stripe requires more information before payouts are ready.':data.status.payoutsEnabled&&data.status.transfersActive?'Sandbox payout capabilities enabled. Live withdrawals remain unavailable.':'Stripe is reviewing payout capabilities. Withdrawals are unavailable.';
         document.querySelectorAll('[data-bank-balance]').forEach(item=>{const entries=data.balances[item.dataset.bankBalance];item.textContent=entries.length?entries.map(bankAmount).join(' · '):'No test funds in this balance';});
+        if(total)total.textContent=data.balances.available.length?data.balances.available.map(bankAmount).join(' · '):'0 test funds';
       }
     }catch{clear();status.textContent='Payout setup is not connected yet. No bank details were collected or withdrawal made.';}
     finally{busy=false;refresh.disabled=false;}

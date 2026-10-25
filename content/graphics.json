@@ -13,5 +13,6 @@
   "exportDimension": 1024,
   "maxColors": 5,
   "paletteRoles": ["primary-1", "primary-2", "primary-3", "primary-4", "primary-5"],
+  "assignments":[{"id":"","label":"Not assigned","targets":[]},{"id":"icons","label":"Buttons & icons","targets":["icons"]},{"id":"header","label":"Header fade & ribbon","targets":["header_fade","header_ribbon"]},{"id":"fade","label":"Header fade","targets":["header_fade"]},{"id":"ribbon","label":"Header ribbon","targets":["header_ribbon"]}],
   "defaultColors": [{"value":"#000000","label":"Use black"},{"value":"#FFFFFF","label":"Use white"}]
 }

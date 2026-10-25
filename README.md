@@ -195,8 +195,14 @@ It should not become generic SaaS or fintech in appearance.
 
 ## Deployment
 
-This directory will eventually deploy independently to:
+This directory deploys independently to:
 
 `studio.artanrecords.com`
 
-Do not configure production deployment until the runtime/security architecture is approved.
+The payout connection is sandbox-only. Bank and tax information belong in Stripe-hosted onboarding, not artist profile fields. Connection status is fetched server-side; an incomplete connection is not a zero balance or proof of verification. Live payments and withdrawals remain disabled.
+
+Private account email and contact phone are managed in Settings > Account security. Profile saves cannot clear the private phone or change verification status. Public contact links remain separate, artist-selected metadata.
+
+Artist colours have explicit optional targets for icons, header fade and header ribbon, saved by the owner-only graphics RPC. Unshared colours do not enter the public projection. Existing unassigned palettes preserve their prior mapping.
+
+Agreements includes a local, non-binding signing preview with per-section initials and a downloadable preview record. It does not execute contracts, write signatures or grant entitlements. Real issuance remains blocked pending legal review, immutable server-side versions, identity checks, evidence retention and document finalization; qualified signatures may require an external qualified provider. Control Center's private agreement draft is a review aid, not an approved legal contract.

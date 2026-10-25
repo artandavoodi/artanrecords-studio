@@ -10,6 +10,7 @@
 @import url('./shared/store-surfaces.css');
 @import url('./platform.css');
 @import url('./commerce.css');
+@import url('./bank.css');
 @import url('./neuroartan/assets/css/core/01-tokens/editor.tokens.css');
 @import url('./neuroartan/assets/css/core/03-primitives/icons.css');
 @import url('./neuroartan/assets/css/core/03-primitives/slider.css');

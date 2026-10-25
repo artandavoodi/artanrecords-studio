@@ -1,0 +1,7 @@
+.studio-bank-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-md); margin-block:var(--spacing-lg); }
+.studio-bank-summary { display:grid; gap:var(--spacing-md); padding-block:var(--spacing-lg); }
+.studio-bank-amount { font-size:var(--site-type-headline-size); font-weight:var(--font-weight-medium); line-height:var(--site-type-heading-leading); margin:0; }
+.studio-bank-note { color:var(--cv-text-secondary); font-size:var(--site-type-caption-size); }
+.studio-colour-assignment { flex:1 1 12rem; min-inline-size:0; gap:var(--spacing-sm); }
+.studio-color-field { flex-wrap:wrap; }
+.studio-account-security-actions { display:flex; flex-wrap:wrap; gap:var(--spacing-md); }

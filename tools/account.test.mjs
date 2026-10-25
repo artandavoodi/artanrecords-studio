@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {configured,resolveUser,profileValues,validPhoto,requestGoogleSignIn,readAccountCallback} from '../app/account.js';
+import {configured,resolveUser,profileValues,privatePhone,validPhoto,requestGoogleSignIn,readAccountCallback} from '../app/account.js';
 test('short biography accepts 250 characters and rejects overflow without truncation',()=>{
  const form=new FormData();form.set('biography','A'.repeat(250));assert.equal(profileValues(form).biography.length,250);
  form.set('biography','A'.repeat(251));assert.throws(()=>profileValues(form),/shorten/);
@@ -35,9 +35,10 @@ test('a failed verification never resolves as a guest',async()=>{
 });
 test('profile values exclude roles and verification; photos reject SVG and oversized content',()=>{
   const values=profileValues(new Map([['artist_name',' Artan '],['role','admin']]));assert.equal(values.artist_name,'Artan');assert.equal(values.role,undefined);
-  assert.equal(profileValues(new Map([['phone','+1 (202) 555-0123'],['phone_verified',true]])).contact_phone,'+12025550123');
+  assert.equal(profileValues(new Map([['phone','+1 (202) 555-0123'],['phone_verified',true]])).contact_phone,undefined);
+  assert.equal(privatePhone('+1 (202) 555-0123'),'+12025550123');
   assert.equal(values.phone_verified,undefined);
-  assert.throws(()=>profileValues(new Map([['phone','not a phone']])));
+  assert.throws(()=>privatePhone('not a phone'));
   assert.throws(()=>profileValues(new Map([['website','javascript:alert(1)']])));
   assert.equal(validPhoto({type:'image/svg+xml',size:100}),false);assert.equal(validPhoto({type:'image/png',size:3*1024*1024}),false);
 });

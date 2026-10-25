@@ -1,5 +1,6 @@
 import config from '../content/graphics.json' with {type:'json'};
 import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
+import {colourAssignments,assignmentSelection} from './graphics-values.js';
 
 function logoSvg(text){
  const doc=new DOMParser().parseFromString(text,'image/svg+xml'),svg=doc.documentElement;
@@ -89,12 +90,14 @@ export async function bindGraphics({client,resolveUser}){
   const options=selected.length?selected.map(input=>({value:input.value.toUpperCase(),label:'Edit '+input.value.toUpperCase(),input})):config.defaultColors;
   swatches.replaceChildren(...options.map(option=>{const button=document.createElement('button');button.type='button';button.dataset.colourSwatch=option.value;button.style.backgroundColor=option.value;button.setAttribute('aria-label',option.label);button.title=option.value;button.onclick=()=>{if(!option.input){append(option.value);return;}colourDialog.showModal();option.input.focus();};return button;}));
  };
- const append=color=>{
+ const append=(color,assignment='')=>{
   const row=document.createElement('div');row.className='studio-color-field';row.setAttribute('role','group');row.setAttribute('aria-label','Artist colour');
   const picker=document.createElement('input');picker.type='color';picker.value=color;picker.setAttribute('aria-label','Choose artist colour');
   const hex=document.createElement('input');hex.type='text';hex.className='ui-field';hex.value=color;hex.pattern='#[0-9a-fA-F]{6}';hex.maxLength=7;hex.required=true;hex.setAttribute('aria-label','Artist colour hex code');
   const remove=document.createElement('button');remove.type='button';remove.className='studio-color-remove';remove.setAttribute('aria-label','Remove colour');remove.title='Remove colour';const image=document.createElement('img');image.src='/app/icons/close.svg';image.alt='';image.className='studio-icon';remove.append(image);remove.onclick=()=>{row.remove();add.disabled=fields.children.length>=config.maxColors;syncSwatches();};
-  picker.oninput=()=>{hex.value=picker.value;syncSwatches();};hex.oninput=()=>{if(/^#[0-9a-f]{6}$/i.test(hex.value))picker.value=hex.value;syncSwatches();};row.append(picker,hex,remove);fields.append(row);add.disabled=fields.children.length>=config.maxColors;syncSwatches();
+  const label=document.createElement('label'),select=document.createElement('select');label.className='studio-colour-assignment';label.textContent='Assign colour';select.className='ui-field';select.dataset.colourAssignment='';select.setAttribute('aria-label','Assign colour');
+  for(const option of config.assignments){const item=document.createElement('option');item.value=option.id;item.textContent=option.label;select.append(item);}select.value=assignment;label.append(select);
+  picker.oninput=()=>{hex.value=picker.value;syncSwatches();};hex.oninput=()=>{if(/^#[0-9a-f]{6}$/i.test(hex.value))picker.value=hex.value;syncSwatches();};row.append(picker,hex,label,remove);fields.append(row);add.disabled=fields.children.length>=config.maxColors;syncSwatches();
  };
  add.onclick=()=>{if(fields.children.length<config.maxColors)append('#000000');};
  const colourDialog=form.querySelector('#artist-colour-picker');
@@ -105,8 +108,8 @@ export async function bindGraphics({client,resolveUser}){
  syncSwatches();
  try{
   if(!client||(owner=await resolveUser(client))==null)throw Error('Sign in to manage artist graphics.');
-  const result=await client.from('studio_artist_graphics').select('palette,logo_public,palette_public').eq('account_id',owner.id).maybeSingle();if(result.error)throw Error('Artist graphics are not available yet. No changes have been saved.');
-  for(const color of result.data?.palette||[])append(color);
+  const result=await client.from('studio_artist_graphics').select('palette,palette_assignments,logo_public,palette_public').eq('account_id',owner.id).maybeSingle();if(result.error)throw Error('Artist graphics are not available yet. No changes have been saved.');
+  for(const [index,color] of (result.data?.palette||[]).entries())append(color,assignmentSelection(result.data?.palette_assignments,index));
   form.elements.share_logo.checked=result.data?.logo_public===true;form.elements.share_palette.checked=result.data?.palette_public===true;
   const logo=await client.storage.from('studio-logos').download(owner.id+'/logo');if(!logo.error){show(logo.data);form.querySelector('[data-logo-status]').textContent=result.data?.logo_public?'Public display selected':'Saved privately';}
   save.disabled=false;choose.disabled=false;
@@ -117,7 +120,8 @@ export async function bindGraphics({client,resolveUser}){
    const current=await resolveUser(client);if(current?.id!==owner.id)throw Error('Your session changed. Refresh before saving.');
    if(pending){for(const [path,blob] of [['source',pending.original],['logo',pending.display]]){const result=await client.storage.from('studio-logos').upload(owner.id+'/'+path,blob,{upsert:true,contentType:blob.type});if(result.error)throw Error('Your logo could not be uploaded. Try again.');}}
    const colors=[...fields.querySelectorAll('input[type=text]')].map(input=>input.value.toUpperCase());
-   const result=await client.rpc('studio_save_artist_graphics',{colors,share_logo:form.elements.share_logo.checked,share_palette:form.elements.share_palette.checked});if(result.error)throw Error('Graphics could not be saved. Try again.');
+   const assignments=colourAssignments([...fields.children].map(row=>({assignment:row.querySelector('[data-colour-assignment]').value})));
+   const result=await client.rpc('studio_save_artist_graphics_v2',{colors,assignments,share_logo:form.elements.share_logo.checked,share_palette:form.elements.share_palette.checked});if(result.error)throw Error('Graphics could not be saved. Try again.');
    pending=null;status.textContent='';showSaveConfirmation('Graphics saved.');
   }catch(error){status.textContent=error.message;}finally{save.disabled=false;}
  };

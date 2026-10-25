@@ -8,6 +8,7 @@ import {releaseMetadataEditor} from './metadata-render.mjs';
 import {concertsMarkup} from './concert-render.mjs';
 import {commerceMarkup} from './commerce-render.mjs';
 import {bankMarkup} from './bank-render.mjs';
+import {agreementsMarkup} from './agreements-render.mjs';
 export {renderMenu} from './platform-render.mjs';
 export {renderNavigation,renderFooter} from './shell-render.mjs';
 export {renderActions} from './dialog-render.mjs';
@@ -36,7 +37,7 @@ export async function render(page,{config,e,search}){
   else if(page.path==='/store/')body=commerceMarkup(e,icon);
   else if(page.path==='/payouts/')body=bankMarkup(e);
   else if(page.path==='/payments/')body=`<a class="ui-button" href="/settings/#payments">${icon('settings')}Open payment & payout settings</a>`;
-  else if(page.path==='/agreements/')body=`<section data-contracts-view><p data-contracts-status role="status">Sign in to view agreements shared with your account. Digital signing is not enabled yet.</p><div data-contracts-list></div><a href="/account/">Your Studio account</a></section>`;
+  else if(page.path==='/agreements/')body=agreementsMarkup(e,icon);
   else body=`<p class="surface-status" role="status">${e(page.status||settings.unavailable)}</p><a href="/account/">Your Studio account</a>`;
   const content=`<section class="${page.path==='/settings/'?'studio-settings-surface':'site-section'} surface studio-surface">${page.path==='/settings/'?'<h1 class="sr-only">Settings</h1>':header}${body}</section>`;
   return ['/privacy/','/terms/','/cookies/','/account/','/search/'].includes(page.path)?content:`<div class="studio-platform" data-platform-layout>${renderPlatformNavigation(page,e)}<div class="studio-platform-content">${content}</div></div>`;

@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {colourAssignments,assignmentSelection} from '../app/graphics-values.js';
+test('colour assignments preserve legacy defaults and reject duplicate targets',()=>{
+ assert.equal(assignmentSelection(null,0),'icons');assert.equal(assignmentSelection(null,1),'header');
+ assert.deepEqual(colourAssignments([{assignment:'ribbon'},{assignment:'icons'},{assignment:'fade'}]),{icons:1,header_fade:2,header_ribbon:0});
+ assert.throws(()=>colourAssignments([{assignment:'icons'},{assignment:'icons'}]));
+ assert.throws(()=>colourAssignments([{assignment:'invalid'}]));
+ assert.deepEqual(colourAssignments([]),{icons:null,header_fade:null,header_ribbon:null});
+});

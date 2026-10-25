@@ -133,8 +133,8 @@
   "effectiveDate": "2026-10-19",
   "icons": {
     "address":"core/navigation/location/location.svg",
-    "artist-content":"layers/website/content/articles/article.svg",
-    "bank":"core/commerce/payments/wallet.svg",
+    "artist-content":"layers/website/profile/actions/artist-content.svg",
+    "bank":"core/commerce/finance/bank.svg",
     "store":"core/commerce/shopping/bag.svg",
     "collection":"core/files/folder/folder.svg",
     "instagram": "system/social/instagram.svg",

@@ -4,6 +4,21 @@ const id='92000000-0000-0000-0000-000000000001';
 const user={id,aud:'authenticated',role:'authenticated',email:'artist@example.test',email_confirmed_at:'2026-10-20T00:00:00Z',created_at:'2026-10-20T00:00:00Z',app_metadata:{provider:'email'},user_metadata:{full_name:'Test artist'}};
 const access=[{alg:'HS256',typ:'JWT'},{sub:id,role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600},'test-signature'].map(value=>Buffer.from(typeof value==='string'?value:JSON.stringify(value)).toString('base64url')).join('.');
 const session={access_token:access,refresh_token:'test-refresh-not-a-real-credential',token_type:'bearer',expires_in:3600,user};
+test('internal signing preview requires initials and remains a non-binding local record',async({page})=>{
+ await mockBackend(page);await page.goto('/agreements/');
+ await page.getByRole('button',{name:'Preview internal signing',exact:true}).click();
+ const dialog=page.locator('[data-signing-preview]');await expect(dialog).toBeVisible();
+ await expect(dialog.getByRole('button',{name:'Download preview record'})).toBeDisabled();
+ for(const input of await dialog.locator('input[name]:not([type=checkbox])').all())await input.fill('Preview');
+ await dialog.getByRole('checkbox').check();await dialog.getByRole('button',{name:'Finish preview',exact:true}).click();
+ await expect(dialog.locator('[data-signing-preview-status]')).toContainText('No contract was signed');
+ const download=dialog.getByRole('button',{name:'Download preview record'});await expect(download).toBeEnabled();
+ const event=page.waitForEvent('download');await download.click();const file=await event;
+ const {readFile}=await import('node:fs/promises');const record=JSON.parse(await readFile(await file.path(),'utf8'));
+ expect(record.executedAgreement).toBe(false);expect(record.kind).toBe('non-binding-signing-preview');
+ await dialog.locator('input[name=name]').fill('Changed');await expect(download).toBeDisabled();
+ await dialog.getByRole('button',{name:'Close signing preview'}).click();await expect(dialog).toBeHidden();
+});
 async function mockBackend(page,{releaseCover}={}){
   const requests=[];
   let artistMetadata=null,handle=null,application=null,artistContent=null;const drafts=new Map(),concerts=new Map(),covers=new Map();
@@ -36,7 +51,7 @@ async function mockBackend(page,{releaseCover}={}){
     else if(url.pathname.endsWith('/rpc/studio_request_username')){handle={requested_username:request.postDataJSON().candidate,approved_username:null,status:'pending',notice:'Your username is awaiting label review.'};body=null;}
     else if(url.pathname.endsWith('/rpc/studio_apply_partnership')){application={requested_tier:request.postDataJSON().tier,approved_tier:null,status:'pending',decision_note:''};body=null;}
     else if(url.pathname.endsWith('/rpc/studio_set_artist_media_visibility'))body=null;
-    else if(url.pathname.endsWith('/rpc/studio_save_artist_graphics'))body=null;
+    else if(url.pathname.endsWith('/rpc/studio_save_artist_graphics_v2'))body=null;
     else if(url.pathname.endsWith('/studio_artist_content'))body=artistContent?[{content:artistContent}]:[];
     else if(url.pathname.endsWith('/rpc/studio_save_artist_content')){artistContent=request.postDataJSON().value;body=null;}
     else if(url.pathname.includes('/rest/v1/studio_')){body=request.method()==='GET'?[]:null;status=request.method()==='POST'?201:200;}
@@ -129,6 +144,7 @@ test('artist graphics isolate their tab and save explicit palette visibility',as
  const form=page.locator('[data-graphics-form]');await expect(form).toBeVisible();await expect(page.locator('[data-profile-form]')).toBeHidden();
  await expect(form.locator('[data-colour-swatch]')).toHaveCount(2);await expect(form.locator('summary')).toHaveCount(0);
  await form.getByRole('button',{name:'Custom colour'}).click();await form.getByLabel('Artist colour hex code').fill('#123456');
+ await form.getByRole('combobox',{name:'Assign colour',exact:true}).selectOption('icons');
  await expect(form.getByLabel('Choose artist colour')).toHaveValue('#123456');
  await expect(form.locator('[data-colour-swatch]')).toHaveCount(1);await expect(form.locator('[data-colour-swatch]')).toHaveAttribute('data-colour-swatch','#123456');
  await expect(form.locator('.studio-color-field')).toHaveCSS('display','flex');await expect(form.getByRole('button',{name:'Remove colour'})).toHaveText('');
@@ -138,7 +154,7 @@ test('artist graphics isolate their tab and save explicit palette visibility',as
  await colours.getByRole('button',{name:'Close custom colours'}).click();await expect(colours).toBeHidden();await expect(form.getByRole('button',{name:'Custom colour'})).toBeFocused();
  await form.getByLabel('Share my artist colours').check();await form.getByRole('button',{name:'Save',exact:true}).click();
  await expect(page.locator('.system-save-confirmation')).toHaveText('Graphics saved.');
- expect(requests.find(item=>item.path.endsWith('/rpc/studio_save_artist_graphics')).body).toEqual({colors:['#123456'],share_logo:false,share_palette:true});
+ expect(requests.find(item=>item.path.endsWith('/rpc/studio_save_artist_graphics_v2')).body).toEqual({colors:['#123456'],assignments:{icons:0,header_fade:null,header_ribbon:null},share_logo:false,share_palette:true});
  await form.getByRole('button',{name:'Edit #123456'}).click();await colours.getByRole('button',{name:'Remove colour'}).click();await colours.getByRole('button',{name:'Close custom colours'}).click();await expect(form.locator('[data-colour-swatch]')).toHaveCount(2);await expect(form.getByRole('button',{name:'Use black'})).toBeVisible();await expect(form.getByRole('button',{name:'Use white'})).toBeVisible();
  await form.getByRole('button',{name:'Custom colour'}).click();for(let index=1;index<5;index++)await colours.locator('[data-add-color]').click();
  await expect(colours.locator('.studio-color-field')).toHaveCount(5);await expect(colours.locator('[data-add-color]')).toBeDisabled();
@@ -173,7 +189,7 @@ test('artist logos reject active SVG and export safe artwork without distortion'
  for(const vector of ['<rect width="10" height="10" style="fill:url(https://external.example/logo)"/>','<image href="https://external.example/logo"/>','<foreignObject><div xmlns="http://www.w3.org/1999/xhtml">unsafe</div></foreignObject>']){await input.setInputFiles({name:'external.svg',mimeType:'image/svg+xml',buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">'+vector+'</svg>')});await expect(logoDialog.getByRole('alert')).not.toBeEmpty();await expect(logoDialog.getByRole('button',{name:'Use logo',exact:true})).toBeDisabled();await logoDialog.getByRole('button',{name:'Close logo preview'}).click();}
 });
 test('profile saves show shared feedback and text fields resize only vertically',async({page})=>{
-  await mockBackend(page);
+  const requests=await mockBackend(page);
   const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
   const form=page.locator('[data-profile-form]');await expect(form).toBeVisible();
   await expect(form.locator('textarea')).toHaveCSS('resize','none');
@@ -182,9 +198,11 @@ test('profile saves show shared feedback and text fields resize only vertically'
   await expect(form.locator('[data-biography-counter]')).toHaveAttribute('aria-label','200 of 250 characters');
   await expect(form.locator('[data-media-visibility]')).toHaveCSS('border-top-width','0px');
   await expect(form.locator('[data-signout],[data-reset-password]')).toHaveCount(0);
+  await expect(form.locator('[name=contact_phone],[name=email]')).toHaveCount(0);
   await form.locator('[name=artist_name]').fill('Test artist');
   await form.locator('[type=submit]').click();
   const feedback=page.locator('.system-save-confirmation');await expect(feedback).toHaveText('Profile saved.');await expect(feedback).toHaveAttribute('data-visible','true');await expect(feedback).toHaveAttribute('data-visible','false',{timeout:6500});
+  const update=requests.findLast(request=>request.path.endsWith('/studio_profiles')&&request.method!=='GET');expect(update.body).not.toHaveProperty('contact_phone');
 });
 test('concert drafts save separately from explicit publication and cancellation',async({page})=>{
  const requests=await mockBackend(page),dialog=await openAccount(page);

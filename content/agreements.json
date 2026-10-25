@@ -1,0 +1,9 @@
+{
+ "provider":"internal",
+ "signingEnabled":false,
+ "title":"Your agreements",
+ "empty":"No agreements have been shared through Studio yet.",
+ "notice":"Agreement drafting and staff review happen in Control Center. Drafts are not signed agreements and do not grant earnings, verification or a partnership.",
+ "steps":[{"title":"Review","description":"Read the exact version shared with you and raise any questions before signing."},{"title":"Confirm","description":"An internal signing experience is being prepared. Production signing requires a fixed document version, authenticated signer, explicit consent and server-recorded evidence."},{"title":"Keep a copy","description":"A completed agreement and its evidence must be verified before it is listed as signed. The preview below does not create an agreement."}],
+ "preview":{"id":"artist-agreement-experience-v1","title":"Artist agreement experience","version":1,"notice":"NON-BINDING PREVIEW — no contract, signature, agreement or financial permission is created. Nothing entered here is sent to a server.","sections":[{"id":"parties","title":"Parties","text":"The artist and legal contracting entity will be identified in an issued agreement. No parties are appointed in this preview."},{"id":"scope","title":"Scope and services","text":"Services, rights, territory and term require an approved document. These placeholders are not commercial terms."},{"id":"earnings","title":"Reporting and payments","text":"Shares, deductions, tax responsibilities and payout conditions require separate approval. No percentage or withdrawal minimum is established here."}]}
+}

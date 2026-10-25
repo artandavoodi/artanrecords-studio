@@ -10,7 +10,6 @@ export async function bindProfile({client,config,resolveUser,profileValues,valid
   const biography=form.elements.biography,counter=form.querySelector('[data-biography-counter]'),limit=biography.maxLength;
   const syncBiography=()=>{const {count}=syncCharacterCounter(biography,counter,limit);biography.setCustomValidity(count>limit?'Shorten your biography to '+limit+' characters.':'');view.querySelector('#biography-limit').textContent=count>limit?(count-limit)+' characters over the limit.':count+' / '+limit+' characters.';};
   biography.addEventListener('input',syncBiography);syncBiography();
-  form.elements.phone.readOnly=false;
   if(!client){status.textContent=config.unavailable;guest.hidden=false;return;}
   let user;
   const mediaControls=view.querySelector('[data-media-visibility]');let mediaReady=false;
@@ -22,12 +21,10 @@ export async function bindProfile({client,config,resolveUser,profileValues,valid
   };
   try{
     user=await resolveUser(client);if(!user){status.textContent='';guest.hidden=false;return;}
-    const result=await client.from('studio_profiles').select('display_name,artist_name,biography,website,contact_phone').eq('id',user.id).maybeSingle();if(result.error)throw result.error;
+    const result=await client.from('studio_profiles').select('display_name,artist_name,biography,website').eq('id',user.id).maybeSingle();if(result.error)throw result.error;
     for(const [name,value] of Object.entries(result.data||{}))if(form.elements[name])form.elements[name].value=value||'';
     syncBiography();
-    view.querySelector('[data-profile-email]').value=user.email||'';
-    view.querySelector('[data-verification]').textContent=user.email_confirmed_at?'Email verified':'Email confirmation required';
-    form.elements.phone.value=result.data?.contact_phone||user.phone||'';form.hidden=false;status.textContent='';
+    form.hidden=false;status.textContent='';
   }catch{status.textContent='Your profile could not be loaded. Refresh to try again.';return;}
   try{const result=await client.from('studio_artist_media').select('portrait_public,header_public').eq('account_id',user.id).maybeSingle();if(result.error)throw result.error;form.querySelector('[data-public-media="avatar"]').checked=result.data?.portrait_public===true;form.querySelector('[data-public-media="cover"]').checked=result.data?.header_public===true;mediaReady=true;mediaControls.disabled=false;}catch{status.textContent='Your private profile is available, but public image settings could not be loaded.';}
   // Recheck record existence when saving so empty profiles and other tabs are handled correctly.
@@ -72,6 +69,5 @@ export async function bindProfile({client,config,resolveUser,profileValues,valid
     input.disabled=true;
     try{const decoded=await createImageBitmap(file);const tooLarge=decoded.width>8192||decoded.height>8192;decoded.close();if(tooLarge)throw Error('Image too large');openProfileMediaEditor({target:'studio',kind:filename==='header'?'cover':'avatar',file});}catch{status.textContent='This image could not be opened. Use a valid image no larger than 8192 pixels per side.';}finally{input.disabled=false;input.value='';}
   });
-  view.querySelector('[data-verify-phone]').addEventListener('click',()=>{view.querySelector('[data-phone-status]').textContent=config.phoneNotice;});
   await Promise.allSettled([graphicsReady,portraitReady,headerReady]);
 }
