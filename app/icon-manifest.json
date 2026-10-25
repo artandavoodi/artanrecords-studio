@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "19f13d2455eb1fd8a17776678c04cb6e19e93fef",
+  "revision": "a94057160c9de7c0978f64225915e604026206fd",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
     "instagram": "7e4b0ad497c7afdbec799228d72ea8e32f851adf56d04598bf93cfa333cec0c7",
@@ -19,12 +19,12 @@
     "dashboard": "cac757105f85465cc22a6a74cbed2e8b1f3f1f7b91330cedb0b975a95a99d7dc",
     "release": "eca84ef9d1f8557f75cfcb9208256e7b23fd356f73f82693c12deccbfe4412d7",
     "analytics": "767765ece516a6c3f94703c2d378379f945cb0489822c1e4df8d890095cae210",
-    "finance": "600017791b60ee1b2414c83624c33817cd3f4671451668184882bfef7644cb5c",
+    "finance": "1ea3b4b63cee6e3595b34d08f1f08956d98cbaf1ffe03b9243ce36d36d9c24a2",
     "document": "18d7e7cfc77112a4bdf7ba29963cd6cf694aef79066fd92eea58e9669001623a",
-    "payment": "600017791b60ee1b2414c83624c33817cd3f4671451668184882bfef7644cb5c",
+    "payment": "fddb94f7b66d3f4481e753459df9d680dcebdb27d43c3f88c7bc4e0ada6142fb",
     "contract": "ccdf28240ac7d5b21c6127226a83d4fca91f772b05306545dbdb1ea4565ae107",
     "settings": "734f57b40adbbf70f35e4a08bf531798ff10c1af2003d2a8ae3888bfc84bbb6d",
-    "appearance": "600017791b60ee1b2414c83624c33817cd3f4671451668184882bfef7644cb5c",
+    "appearance": "27cfc3c404b443b55f762bdfc6d2ce52fb76955733332843c8e3ac265cf4956d",
     "panel": "515a7c387653b552985d723cd5aadb0117c506691c8f5f1904259d6bebd7b77f",
     "panel-collapsed": "3d90d7d4cb928756281d2e83db74cb5dc31b1cd679b52e43d317ced33be19c85",
     "signin": "b1857c7ac2012e8c3cbc6aa02ac6f2d18bff71864112fc42d20b3d34df406e69",
@@ -37,19 +37,19 @@
     "visibility-off": "655bfe844eb290946a3fb9622fc8ca5433ca261b1c3531346442c6b1b6d7e190",
     "search": "abdb05666a80bc2e391b0b76baa70210d595a5c027ee4b8f451aac6234d883d5",
     "camera": "ee639466052db5d263fe9893f2137d190299dea551d6ac1f0f7973956a7f14ff",
-    "check": "3d5f11cd561884abb16caa769b551368e55249bfa4305570c533214e669e8ec6",
+    "check": "ee2070bd7306eae4e561d26c72fbd521f5e85ad92b77dabc36c9ae59b6f6a0f9",
     "close": "bbf01f68e9dbca049099e02ec7a60ca1a5ba73023980cb854c5c4c8173004419",
     "cookies": "2d9260b8fd642aaf72d428eed614ff92aee24a639154214d3fa19d19cc5bc9e7",
-    "username": "e12059ce8e2de342f5d92213581641c5021c69effc241edc3eae4e30bf835c57",
+    "username": "03d8f7d611bc66fe22f4010fc62534cc2411485c2ae731f7d803f9a631ed6fa2",
     "help": "35b8912b1a061475e20bfb781cc9c486e4b6c43f2297bdb8ce04a5a0ba79d3c9",
     "music": "c42d93153203b439cea413f2714de354afb05e6793ba7f8743ce610289dee002",
-    "social": "4eb410024e0a832301e6cd289c1aa5ee6e4782a73248fbd2f6f247d045efaea4",
+    "social": "884aaa7e2cd797dbbb9cf7d30a4c1b471d4c6333c872d28685cb0703f0a3720c",
     "email": "cf2c19b26e0f7313cc851db282bbf6c08c115a41854c7fe9f0a910809f9e161c",
     "image": "4375c1baa33f12fb7bb800ad31339fa51f516b317a6f2394e890e0eb40ae3aa6",
     "edit": "7e159858f866fb171948cffa2155e3a9cea3dc6669c3523e4c7ce4327dfd73d2",
     "globe": "b4693a9829c4d5915df2546696c3fd0afffe41717b913651970e5fe758036b94",
     "plus": "d6e6467d134a5ff667f8b639533f677fbed1da38172ae8e995e1f7fc6e83307f",
-    "concert": "e12059ce8e2de342f5d92213581641c5021c69effc241edc3eae4e30bf835c57"
+    "concert": "c8faa597f648e8fc35359d856a7c01828ed47fc95992fd38ea7dfc09ca958c13"
   },
   "available": {
     "placeholder": true,
@@ -90,15 +90,15 @@
     "check": true,
     "close": true,
     "cookies": true,
-    "username": false,
+    "username": true,
     "help": true,
     "music": true,
-    "social": false,
+    "social": true,
     "email": true,
     "image": true,
     "edit": true,
     "globe": true,
     "plus": true,
-    "concert": false
+    "concert": true
   }
 }

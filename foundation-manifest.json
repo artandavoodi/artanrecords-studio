@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "a3d2bd12527116fbfa9028017a4d51e382aff5ee",
+  "commit": "a9947838a23bfd78d10c25fc409d160bcecdbf2c",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "bf2d7bab84057768d028b0e3be924690b931ffdd97a8a3a4eb7594540c6db6f3",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -44,7 +44,7 @@
     "assets/brand/logo/symbol-artan.svg": "d730f712acc93a04e590917fdecde93c5b8d9fcdde5a8e02c073184504d5597b",
     "assets/brand/presentation.css": "12692232b6fdcc08d065b5751a96ddac4a968218c0b57f4c20513a28f7397870",
     "assets/icons/actions/account.svg": "4913e5db3f1332b04ac0723740225c3a0c229431a74370cd77e95b5df4db880a",
-    "assets/icons/actions/check.svg": "3d5f11cd561884abb16caa769b551368e55249bfa4305570c533214e669e8ec6",
+    "assets/icons/actions/check.svg": "ee2070bd7306eae4e561d26c72fbd521f5e85ad92b77dabc36c9ae59b6f6a0f9",
     "assets/icons/actions/close.svg": "bbf01f68e9dbca049099e02ec7a60ca1a5ba73023980cb854c5c4c8173004419",
     "assets/icons/actions/cookies.svg": "2d9260b8fd642aaf72d428eed614ff92aee24a639154214d3fa19d19cc5bc9e7",
     "assets/icons/actions/search.svg": "abdb05666a80bc2e391b0b76baa70210d595a5c027ee4b8f451aac6234d883d5",
