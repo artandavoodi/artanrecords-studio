@@ -172,6 +172,16 @@ and a disabled withdrawal action. Account return redirects are not verification.
 Do not activate these views by changing a client flag or infer money permissions
 from an artist tier. Existing Store checkout and Stripe accounts are unchanged.
 
+`app/bank.js` now calls the owner-authenticated `studio-connect` server function
+for sandbox status and an explicit onboarding handoff. It accepts only Stripe's
+Connect destination, rechecks account identity, labels all returned balances as
+test funds and never treats an onboarding return URL as verification. It does not
+collect tax IDs, bank/card numbers or identity documents. A missing deployment
+or rejected provider response keeps setup disabled and offers a status retry.
+Deployment and private credentials are still required; browser fixtures are not
+proof of a connected hosted provider. See the backend owner's
+`supabase/README.md` for the exact deployment gates and deferred decisions.
+
 Studio should use the Artan Records shared visual foundation while prioritizing:
 
 - clarity

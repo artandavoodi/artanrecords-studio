@@ -16,6 +16,7 @@ async function mockBackend(page,{releaseCover}={}){
     else if(url.pathname.endsWith('/signup'))body={user,session:null};
     else if(url.pathname.endsWith('/recover'))body={};
     else if(url.pathname.endsWith('/logout'))status=204;
+    else if(url.pathname.endsWith('/functions/v1/studio-connect')){status=503;body={error:'Payout connection is not configured.'};}
     else if(url.pathname.endsWith('/studio_artist_metadata')){
       if(request.method()==='GET')body=artistMetadata?[{account_id:id,metadata:artistMetadata}]:[];
       else{artistMetadata=request.postDataJSON().metadata;body=null;status=201;}
@@ -308,6 +309,26 @@ test('signup and recovery keep distinct fields, required consent and usable clos
   await dialog.locator('#account-close').click();
   await expect(dialog).toBeHidden();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
+});
+test('payout setup uses owner-authenticated sandbox status and a validated Stripe handoff',async({page})=>{
+  await mockBackend(page);const actions=[];
+  await page.route('**/functions/v1/studio-connect',async route=>{
+    const input=route.request().postDataJSON();actions.push(input);
+    expect(Object.keys(input)).toEqual(['action']);
+    await route.fulfill({contentType:'application/json',body:JSON.stringify(input.action==='onboard'?{mode:'test',url:'https://connect.stripe.com/setup/test-only'}:{mode:'test',linked:true,status:{detailsSubmitted:true,payoutsEnabled:false,transfersActive:false,informationDue:1,restricted:false},balances:{available:[{amount:1234,currency:'eur'}],pending:[{amount:500,currency:'usd'}]}})});
+  });
+  const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page).toHaveURL(/\/profile\/$/);
+  await page.goto('/payouts/');
+  await expect(page.locator('[data-bank-mode]')).toBeVisible();
+  await expect(page.locator('[data-bank-balance=available]')).toContainText('12.34');
+  await expect(page.locator('[data-bank-balance=pending]')).toContainText('5.00');
+  await page.goto('/settings/?payout=return#payments');
+  await expect(page.locator('[data-bank-status]')).toContainText('requires more information');
+  await expect(page.locator('[data-bank-onboard]')).toBeEnabled();
+  await page.route('https://connect.stripe.com/setup/test-only',route=>route.fulfill({contentType:'text/html',body:'<h1>Sandbox onboarding fixture</h1>'}));
+  await page.locator('[data-bank-onboard]').click();
+  await expect(page).toHaveURL('https://connect.stripe.com/setup/test-only');
+  expect(actions.some(item=>item.action==='onboard')).toBe(true);
 });
 test('Bank and payout settings never simulate money or enable withdrawals',async({page})=>{
   await mockBackend(page);

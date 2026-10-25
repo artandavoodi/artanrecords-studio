@@ -16,6 +16,7 @@ import {bindConcerts} from './concerts.js';
 import {bindPublishedReleases} from './releases.js';
 import {bindArtistContent} from './artist-content.js';
 import {bindCommerce} from './commerce.js';
+import {bindBank} from './bank.js';
 await bindPreferences();
 bindSearch();
 const chrome=bindChrome();
@@ -52,6 +53,7 @@ await bindConcerts(context);
 await bindWorkspace(context);
 await bindArtistContent(context);
 await bindCommerce(context);
+await bindBank(context);
 await window.NeuroartanPageLoading?.images(document.body);
 }catch(error){console.error('[studio] Workspace initialization failed',error);}finally{window.NeuroartanPageLoading?.finish();}
 document.querySelectorAll('[data-signout]').forEach(button=>{button.disabled=!client;button.addEventListener('click',async()=>{if(!client)return;button.disabled=true;try{const result=await client.auth.signOut({scope:'local'});if(result.error)throw result.error;}catch{button.disabled=false;button.setAttribute('aria-label','Try signing out again');}});});
