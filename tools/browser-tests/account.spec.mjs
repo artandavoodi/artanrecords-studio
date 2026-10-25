@@ -309,6 +309,20 @@ test('signup and recovery keep distinct fields, required consent and usable clos
   await expect(dialog).toBeHidden();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
 });
+test('Bank and payout settings never simulate money or enable withdrawals',async({page})=>{
+  await mockBackend(page);
+  await page.goto('/payouts/');
+  await expect(page.getByRole('heading',{name:'Bank',exact:true})).toBeVisible();
+  await page.getByRole('tab',{name:'Withdrawals',exact:true}).click();
+  await expect(page.getByRole('button',{name:'Request withdrawal',exact:true})).toBeDisabled();
+  await expect(page.getByText('Minimum withdrawal: not set.',{exact:false})).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('tab',{name:'Withdrawals',exact:true})).toHaveAttribute('aria-selected','true');
+  await page.getByRole('link',{name:'Payment & payout settings',exact:true}).click();
+  await expect(page.getByRole('tab',{name:'Payment & payout methods',exact:true})).toHaveAttribute('aria-selected','true');
+  await expect(page.getByRole('tabpanel',{name:'Payment & payout methods',exact:true})).toContainText('not connected yet');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
+});
 test('sign-in opens a private profile and sign-out does not revoke other applications',async({page})=>{
   const requests=await mockBackend(page),dialog=await openAccount(page);
   await dialog.locator('[name=email]').fill(user.email);
@@ -318,15 +332,14 @@ test('sign-in opens a private profile and sign-out does not revoke other applica
   const form=page.locator('[data-profile-form]');
   await expect(form).toBeVisible();
   const billing=page.locator('.studio-billing');
-  const profileField=await form.locator('[name=display_name]').boundingBox();
-  await page.getByRole('tab',{name:'Addresses',exact:true}).click();
+  await expect(page.getByRole('tab',{name:'Addresses',exact:true})).toHaveCount(0);
+  await page.goto('/settings/#addresses');
   await expect(billing).toBeVisible();
   await billing.locator('summary').click();
-  const addressField=await billing.locator('input').first().boundingBox();
-  expect(Math.abs(profileField.x-addressField.x)).toBeLessThan(1);
-  expect(Math.abs(profileField.width-addressField.width)).toBeLessThan(1);
+  await expect(billing.locator('input').first()).toBeVisible();
   await billing.locator('summary').click();
-  await page.getByRole('tab',{name:'Profile',exact:true}).click();
+  await page.goto('/profile/');
+  await expect(form).toBeVisible();
   await form.locator('[name=artist_name]').fill('Test artist');
   await form.locator('[type=submit]').click();
   await expect(page.locator('[data-profile-status]')).toBeEmpty();

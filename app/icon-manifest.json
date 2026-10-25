@@ -3,6 +3,9 @@
   "revision": "317bef7454f6dd96ec9cbb4cdcb448207894802b",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
+    "address": "600017791b60ee1b2414c83624c33817cd3f4671451668184882bfef7644cb5c",
+    "artist-content": "e12059ce8e2de342f5d92213581641c5021c69effc241edc3eae4e30bf835c57",
+    "bank": "e12059ce8e2de342f5d92213581641c5021c69effc241edc3eae4e30bf835c57",
     "store": "bb431b7c0c7379cde0ba1fa7ee82a4f00aa1131f2df999570dc0f21bcec845e8",
     "collection": "ed6b723a4421ed140e07a02a77f3c35529b7cddcc536cbc8553d0ff30f4f5ada",
     "instagram": "7e4b0ad497c7afdbec799228d72ea8e32f851adf56d04598bf93cfa333cec0c7",
@@ -55,6 +58,9 @@
   },
   "available": {
     "placeholder": true,
+    "address": true,
+    "artist-content": false,
+    "bank": false,
     "store": true,
     "collection": true,
     "instagram": true,

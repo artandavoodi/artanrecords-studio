@@ -58,8 +58,8 @@
     },
     {
       "path": "/payments/",
-      "title": "Payment methods",
-      "description": "Manage payment methods when payment services are connected.",
+      "title": "Payment & payout settings",
+      "description": "Manage payment and payout methods in Settings.",
       "sections": [],
       "status": "Not connected"
     },
@@ -161,8 +161,8 @@
     },
     {
       "path": "/payouts/",
-      "title": "Payouts",
-      "description": "Request and track withdrawals when payout services are connected.",
+      "title": "Bank",
+      "description": "Review earnings, balances, activity and withdrawal availability.",
       "category": "Workspace",
       "sections": [],
       "status": "Not connected"

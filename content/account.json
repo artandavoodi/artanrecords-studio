@@ -132,6 +132,9 @@
   "placeholderIcon": "core/commerce/shopping/collection-placeholder.svg",
   "effectiveDate": "2026-10-19",
   "icons": {
+    "address":"core/navigation/location/location.svg",
+    "artist-content":"layers/website/content/articles/article.svg",
+    "bank":"core/commerce/payments/wallet.svg",
     "store":"core/commerce/shopping/bag.svg",
     "collection":"core/files/folder/folder.svg",
     "instagram": "system/social/instagram.svg",

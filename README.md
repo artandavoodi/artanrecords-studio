@@ -149,6 +149,29 @@ Its future architecture must be capable of supporting:
 
 ## Design
 
+### Bank and payout settings
+
+The owner approved platform-collected store payments using Stripe Connect separate
+charges and transfers on 2026-10-25. `content/bank.json` records that decision but
+does not activate a financial service. Commission, withdrawal minimum and currency
+remain unset; the illustrative 15% is not a policy. Recording royalties remain a
+separate source from settled store sales.
+
+Private billing addresses belong to Settings > Addresses, using the existing
+owner-only address table. Settings > Payment & payout methods is reserved for
+secure provider onboarding; never collect raw bank, card or identity documents
+in public profile fields. Business > Bank owns Overview, Earnings, Analytics and
+Withdrawals. The legacy `/payments/` entry links to its Settings destination.
+
+Live activation still requires the owner's Artanrecords Stripe business-account
+registration, supported-country and Connect configuration, approved commercial
+terms, a server-owned financial ledger, signed idempotent webhook processing,
+reconciliation and tested withdrawal authorization. The current Bank view has no
+financial data source and deliberately presents unavailable balances, no charts
+and a disabled withdrawal action. Account return redirects are not verification.
+Do not activate these views by changing a client flag or infer money permissions
+from an artist tier. Existing Store checkout and Stripe accounts are unchanged.
+
 Studio should use the Artan Records shared visual foundation while prioritizing:
 
 - clarity

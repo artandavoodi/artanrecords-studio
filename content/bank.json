@@ -1,0 +1,21 @@
+{
+  "collectionModel":"platform-collected-separate-charges-and-transfers",
+  "provider":"stripe-connect",
+  "liveEnabled":false,
+  "commissionBasisPoints":null,
+  "minimumWithdrawalMinor":null,
+  "currency":null,
+  "tabs":[
+    {"id":"bank-overview","label":"Overview","icon":"bank"},
+    {"id":"bank-earnings","label":"Earnings","icon":"finance"},
+    {"id":"bank-analytics","label":"Analytics","icon":"analytics"},
+    {"id":"bank-withdrawals","label":"Withdrawals","icon":"payment"}
+  ],
+  "metrics":["Available","Pending","Paid out"],
+  "notice":"Financial services are not connected. No balance or earnings are available yet.",
+  "earningsNotice":"Verified distributor statements and settled store sales will be shown separately. No earnings have been imported into Bank.",
+  "analyticsNotice":"Earnings analytics will appear when verified financial records are connected.",
+  "withdrawalNotice":"Withdrawals are unavailable. Your payout account, verification, agreement and withdrawal policy must be connected first.",
+  "minimumNotice":"Minimum withdrawal: not set. No minimum or commission has been applied.",
+  "settingsNotice":"Bank accounts and required identity or tax verification will be handled through secure Stripe onboarding. This service is not connected yet. Do not send bank or identity documents to the label through profile fields."
+}

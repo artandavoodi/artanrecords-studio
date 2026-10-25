@@ -1,4 +1,5 @@
 import settings from '../content/account.json';
+import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
 
 export function billingValues(form){
   return Object.fromEntries(settings.billingFields.map(field=>{
@@ -9,14 +10,17 @@ export function billingValues(form){
 }
 
 export async function bindBilling({client,resolveUser}){
-  const profile=document.querySelector('[data-profile-form]');
-  if(!profile||!client)return;
+  const mount=document.querySelector('[data-billing-mount]');
+  if(!mount)return;
+  if(!client){mount.textContent='Address settings are not connected.';return;}
+  const owner=await resolveUser(client).catch(()=>null);
+  if(!owner){const link=document.createElement('a');link.href='/account/';link.textContent='Sign in to manage your private address';mount.append(link);return;}
   const details=document.createElement('details'),summary=document.createElement('summary'),fields=document.createElement('div'),status=document.createElement('p'),save=document.createElement('button');
   details.className='studio-billing';summary.textContent='Billing address';details.append(summary,fields);fields.className='studio-billing-fields';status.setAttribute('role','status');
   const arrow=document.createElement('img');arrow.src='/assets/icons/navigation/chevron-right.svg';arrow.className='studio-icon';arrow.alt='';summary.append(arrow);
   for(const field of settings.billingFields){const label=document.createElement('label'),input=document.createElement('input');label.textContent=field.label;input.name='billing_'+field.name;input.autocomplete=field.autocomplete;input.maxLength=field.max;input.className='ui-field';label.append(input);fields.append(label);}
-  save.type='button';save.className='ui-button';save.textContent='Save';fields.append(save,status);document.querySelector('[data-billing-mount]').append(details);details.hidden=profile.hidden;
+  save.type='button';save.className='ui-button';save.textContent='Save';fields.append(save,status);mount.append(details);
   let loaded=false;
-  details.addEventListener('toggle',async()=>{if(!details.open||loaded)return;save.disabled=true;try{const user=await resolveUser(client);if(!user)throw Error('Sign in required');const result=await client.from('studio_billing_addresses').select(settings.billingFields.map(field=>field.name).join(',')).eq('account_id',user.id).maybeSingle();if(result.error)throw result.error;for(const field of settings.billingFields)fields.querySelector(`[name="billing_${field.name}"]`).value=result.data?.[field.name]||'';loaded=true;status.textContent='Private to your account. Saving an address does not start a payment.';}catch{status.textContent='Your address could not be loaded. Close and reopen to try again.';}finally{save.disabled=!loaded;}});
-  save.addEventListener('click',async()=>{save.disabled=true;try{const user=await resolveUser(client);if(!user)throw Error('Sign in required');const values=billingValues(new Map(settings.billingFields.map(field=>[field.name,fields.querySelector(`[name="billing_${field.name}"]`).value])));const result=await client.from('studio_billing_addresses').upsert({account_id:user.id,...values});if(result.error)throw result.error;status.textContent='Billing address saved.';}catch{status.textContent='Your address could not be saved. Please try again.';}finally{save.disabled=false;}});
+  details.addEventListener('toggle',async()=>{if(!details.open||loaded)return;save.disabled=true;try{const user=await resolveUser(client);if(user?.id!==owner.id)throw Error('Session changed');const result=await client.from('studio_billing_addresses').select(settings.billingFields.map(field=>field.name).join(',')).eq('account_id',user.id).maybeSingle();if(result.error)throw result.error;for(const field of settings.billingFields)fields.querySelector(`[name="billing_${field.name}"]`).value=result.data?.[field.name]||'';loaded=true;status.textContent='Private to your account. Saving an address does not start a payment.';}catch{status.textContent='Your address could not be loaded. Close and reopen to try again.';}finally{save.disabled=!loaded;}});
+  save.addEventListener('click',async()=>{save.disabled=true;try{const user=await resolveUser(client);if(user?.id!==owner.id)throw Error('Session changed');const values=billingValues(new Map(settings.billingFields.map(field=>[field.name,fields.querySelector(`[name="billing_${field.name}"]`).value])));const result=await client.from('studio_billing_addresses').upsert({account_id:user.id,...values});if(result.error)throw result.error;status.textContent='';showSaveConfirmation('Address saved.');}catch{status.textContent='Your address could not be saved. Please try again.';}finally{save.disabled=false;}});
 }
