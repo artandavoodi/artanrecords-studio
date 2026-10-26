@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {resolve,dirname} from 'node:path';
 import {searchMarkup} from './search.mjs';
 import {recordingReference} from './partnerships.mjs';
+import {studioPricingSections} from './studio-plans.mjs';
 const root=process.cwd();
 const read=p=>readFile(resolve(root,p),'utf8');
 const config=JSON.parse(await read('content/site.json'));
@@ -10,6 +11,7 @@ const partnershipTerms=JSON.parse(await read('assets/data/partnerships.json'));
 if(!config.application){
   const guidance=config.pages.find(page=>page.path==='/partnerships/');
   if(guidance)guidance.sections.push(...recordingReference(partnershipTerms));
+  if(guidance)guidance.sections.push(...studioPricingSections(JSON.parse(await read('assets/data/studio-plans.json'))));
 }
 const application=config.application?await import(resolve(root,config.application.renderer)):null;
 const brand=JSON.parse(await read('assets/data/site.json'));

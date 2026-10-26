@@ -1,27 +1,138 @@
 {
-  "schemaVersion":1,
-  "checkoutEnabled":false,
-  "termsApproved":true,
-  "currency":"EUR",
-  "monthlyPrice":1200,
-  "annualPrice":12000,
-  "trialDays":14,
-  "renewalConsentRequired":true,
-  "items":[{"id":"trial","name":"Free trial","url":"/studio-plans/#trial","description":"A 14-day Studio Pro trial is approved but not active yet. Renewal requires explicit consent and a verified payment setup."},{"id":"studio","name":"Studio","url":"/studio-plans/#studio","description":"The current artist workspace is free. Account access and current private preparation tools do not require a paid subscription."},{"id":"studio-pro","name":"Studio Pro","url":"/studio-plans/#studio-pro","description":"€12 per month or €120 per year in EUR. Pricing is approved; payment collection, paid feature entitlements and checkout activation are still being verified."}],
-  "comparison":{
-    "caption":"Studio plans and approved pricing",
-    "featureLabel":"Feature",
-    "detailsLabel":"Details",
-    "closeLabel":"Close plan details",
-    "scopeNotice":"Studio is free. Studio Pro pricing is approved in EUR; checkout and trials are not active yet. Subscriptions are separate from label partnerships and artist payouts. Taxes and final billing details must be shown before purchase.",
-    "states":{"available":{"label":"Available"},"pending":{"label":"Not launched"},"separate":{"label":"Separate review"}},
-    "rows":[
-      {"label":"Monthly price","presentation":"price","values":["€0 for 14 days","€0","€12 / month"],"states":["pending","available","pending"],"details":"The approved Studio Pro price is €12 per month in EUR. Studio remains free. The 14-day Pro trial and paid subscription are not active subscriptions yet: no payment or automatic renewal is enabled until secure checkout is verified. Renewal requires explicit consent."},
-      {"label":"Annual price","presentation":"price","values":["14-day trial","€0","€120 / year"],"states":["pending","available","pending"],"details":"Studio Pro annual billing is €120 for a full year, equivalent to €10 per month. Annual billing, the trial and renewal remain unavailable until checkout is verified. Any applicable taxes and the amount due must be disclosed before the customer confirms a purchase."},
-      {"label":"Profile and release preparation","values":["Scope to be confirmed","Profile and private drafts","Paid-only features to be confirmed"],"states":["pending","available","pending"],"details":"Current Studio tools support account access, artist-profile management, field visibility and private release preparation. An approved username and explicit publication choice are required for a public profile. Saving a release draft does not distribute music. No existing feature is being removed or silently reassigned to a paid plan."},
-      {"label":"Store preparation","values":["Scope to be confirmed","Private product and collection drafts","Paid-only features to be confirmed"],"states":["pending","available","pending"],"details":"Studio supports private store preparation. Shared public shops, checkout, orders, domain connection and financial reporting remain gated. A Studio Pro subscription will not by itself establish merchant eligibility, a commerce agreement or permission to sell until the relevant services and policies are operational."},
-      {"label":"Payment and renewal","values":["Consent required","No subscription charge","Secure setup not active"],"states":["pending","available","pending"],"details":"Subscription billing is distinct from artist earnings and withdrawals. Payment details must be collected by secure provider-hosted fields inside Studio, not ordinary application fields or public records. Automatic renewal requires explicit consent. No card collection, charge, renewal or trial-to-paid conversion is active yet."},
-      {"label":"Partnership and artist payouts","values":["Separate application","Separate application","Separate application"],"states":["separate","separate","separate"],"details":"Silver, Gold and Platinum describe a separately reviewed label relationship. Paying for Studio Pro must not approve an artist, grant a verification badge, change recording or commerce shares, or enable withdrawals. Payout setup requires its own application, review and provider-verification evidence."}
+  "schemaVersion": 2,
+  "checkoutEnabled": false,
+  "termsApproved": true,
+  "currency": "EUR",
+  "trialDays": 14,
+  "renewalConsentRequired": true,
+  "items": [
+    {
+      "id": "studio",
+      "plan": "STUDIO",
+      "name": "Studio",
+      "monthlyPrice": 999,
+      "annualPrice": 9900,
+      "url": "/studio-plans/#studio",
+      "description": "The standard creator platform. List pricing is separate from access included through an active Silver partnership. Paid subscriptions are not available yet."
+    },
+    {
+      "id": "studio-pro",
+      "plan": "STUDIO_PRO",
+      "name": "Studio Pro",
+      "monthlyPrice": 1999,
+      "annualPrice": 19900,
+      "url": "/studio-plans/#studio-pro",
+      "description": "The advanced creator platform. Included through a verified active Gold or Platinum partnership. Advanced features require operational, approved services; paid subscriptions are not available yet."
+    }
+  ],
+  "comparison": {
+    "caption": "Studio plans and approved pricing",
+    "featureLabel": "Feature",
+    "detailsLabel": "Details",
+    "closeLabel": "Close plan details",
+    "scopeNotice": "Approved EUR list prices are separate from recording shares and commerce fees. Paid checkout and trials are not active. Partnership access requires verified agreement evidence. Tax treatment and commercial continuation policies remain launch gates.",
+    "states": {
+      "available": {
+        "label": "Available"
+      },
+      "pending": {
+        "label": "Not launched"
+      },
+      "separate": {
+        "label": "Separate review"
+      }
+    },
+    "rows": [
+      {
+        "label": "Monthly price",
+        "billingInterval": "MONTHLY",
+        "presentation": "price",
+        "states": [
+          "pending",
+          "pending"
+        ],
+        "details": "Approved monthly list prices come from the versioned plan register. They are independent of annual billing and recording shares. Checkout is not active; choosing a period creates no subscription, charge, trial or renewal."
+      },
+      {
+        "label": "Annual price",
+        "billingInterval": "ANNUAL",
+        "presentation": "price",
+        "states": [
+          "pending",
+          "pending"
+        ],
+        "details": "Annual prices are independently approved amounts, not the monthly rate multiplied by twelve. Billing and renewal remain unavailable. Tax treatment and the final amount due must be confirmed before purchase; no VAT inclusion or exclusion is claimed."
+      },
+      {
+        "label": "Profile and private preparation",
+        "values": [
+          "Current profile and draft tools",
+          "Current profile and draft tools"
+        ],
+        "states": [
+          "available",
+          "available"
+        ],
+        "details": "Current tools support account access, profile management and private release and store drafts. Saving a draft does not distribute music or sell a product. This list-price correction does not retroactively charge accounts, remove data or invent advanced features."
+      },
+      {
+        "label": "Advanced analytics and Store tools",
+        "values": [
+          "Standard scope; activation pending",
+          "Advanced scope; activation pending"
+        ],
+        "states": [
+          "pending",
+          "pending"
+        ],
+        "details": "Analytics, commerce reporting, exports and team access require their own operational and approved services. A plan name does not mean these tools are live. Product sales, recording income and software subscriptions remain separate commercial systems."
+      },
+      {
+        "label": "Included partnership access",
+        "values": [
+          "Silver while active",
+          "Gold or Platinum while active"
+        ],
+        "states": [
+          "separate",
+          "separate"
+        ],
+        "details": "Verified active Silver partnerships include Studio; verified active Gold and Platinum partnerships include Studio Pro. Included access does not change the list price or create a separate subscription charge. A requested or approved tier label alone is not evidence of an active signed agreement."
+      },
+      {
+        "label": "Payments and continuation",
+        "values": [
+          "Checkout not active",
+          "Checkout not active"
+        ],
+        "states": [
+          "pending",
+          "pending"
+        ],
+        "details": "Subscriptions, invoices, renewals and upgrades are not active. Included access follows its verified entitlement dates. No automatic paid conversion or destructive downgrade occurs. Grace periods, cancellation, retention and continuation policies remain to be approved."
+      }
     ]
+  },
+  "pricingVersion": 2,
+  "effectiveDate": "2026-10-26",
+  "publicationStatus": "approved",
+  "partnershipInclusion": {
+    "silver": "STUDIO",
+    "gold": "STUDIO_PRO",
+    "platinum": "STUDIO_PRO"
+  },
+  "entitlementSources": [
+    "DIRECT_SUBSCRIPTION",
+    "PARTNERSHIP_INCLUDED",
+    "FOUNDER_GRANT",
+    "PROMOTIONAL",
+    "FOUNDING_ARTIST",
+    "MANUAL_GRANT",
+    "CUSTOM_AGREEMENT"
+  ],
+  "continuationPolicy": {
+    "graceDays": null,
+    "automaticConversion": false,
+    "deleteDataOnExpiry": false
   }
 }

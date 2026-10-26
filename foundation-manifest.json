@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "b5f90b40ac6a1df3f848db70abbe65ffac22226d",
+  "commit": "6fe803b1ded7cd52bc90095595c3f4346318ee47",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "bf2d7bab84057768d028b0e3be924690b931ffdd97a8a3a4eb7594540c6db6f3",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -71,9 +71,10 @@
     "assets/data/commerce.json": "0206487c6a6b4f7f965838864172b101d71a7d5b74e3911397accd6cb0caf429",
     "assets/data/artists/reserved-routes.json": "2c58f36344ba49af081ff71d3e8962edcb85f6cb28d67dc7da6633daa2769876",
     "assets/data/artists/editor.json": "7aa862fb7fadd7050191d29223cb80d7c5d195be2d494bc087d2df8ff75bd6c8",
-    "assets/data/studio-plans.json": "27753e604b19a59aff2274241c252210aba4bb2c4cd12adde4219070c5ff82b9",
+    "assets/data/studio-plans.json": "d145e9d3dc6311385fa05f8072e9227095fe53f1a5a04d9e4cc6c1c19328bd97",
     "assets/data/partnerships.json": "9a4d7cd3d705be4d3625566e7454bbd5d1dd64ffaf3ef8e75f44cddc30926140",
     "foundation/partnerships.mjs": "6364160895222c78b3f6be5c46de8eea4458bd4472a04ce922103ff590167a20",
+    "foundation/studio-plans.mjs": "9252173a6e7877e457e4c6e8ca5d0b6f0b674db20fced4c694f4bb696f7eb089",
     "assets/js/layers/site/artist-editor-preview.js": "9352577c536481af7963c84a690bd2ca75c4407df8e367a0c0bb0b00d09507cc",
     "assets/js/layers/site/creator-routes.js": "8ef9a3119aaffd6143af6d5dce967e43374bd575ede483d7122c89380709c3f5",
     "registry/icons/public/assets/core/actions/edit/edit.svg": "7e159858f866fb171948cffa2155e3a9cea3dc6669c3523e4c7ce4327dfd73d2",
@@ -93,7 +94,7 @@
     "assets/fragments/navigation/index.html": "4f1e7a8bb19c8447c913c16ec544d967ca9a6a34fae20b46fcda6e5de7d95a2b",
     "assets/data/site.json": "7a93040e394ebffbc17918724e2453f98b05b6b5490457dca999bb7da1777494",
     "assets/data/icons.json": "cc0fa8d6666c220e2bf809f5336ea19bb53cb4839f1141323dc67ca30a9c3c6e",
-    "foundation/build.mjs": "4ff4c01578a5460e7e04ef43aecfe20afa605bc5d23323a0c7bc387ff100db88",
+    "foundation/build.mjs": "15a1323708b3dd7536c6c1eb645e5719552e6d958ccce23b2a26ef7ff94785f7",
     "foundation/shell.html": "c445931a615369aef2d72b5f3660988ae1be578b4a198b8e7173f859648ef04c",
     "foundation/surface.css": "f6e47efe21e4b2f256a7b5ff2e83dbc39b42868cf99a06162fa4a851e7159d0e",
     "foundation/app.js": "572e494f0bb9e8da1eb9df5782b778b960e356d769cfde4ddbe4f83eedc5f86a",
