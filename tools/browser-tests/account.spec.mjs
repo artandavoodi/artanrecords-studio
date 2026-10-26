@@ -328,6 +328,14 @@ test('signup and recovery keep distinct fields, required consent and usable clos
   await expect(dialog).toBeHidden();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
 });
+test('new payout setup requires an explicit provider-supported country before the Stripe handoff',async({page})=>{
+ await mockBackend(page);const actions=[];
+ await page.route('**/functions/v1/studio-connect',async route=>{const body=route.request().postDataJSON();actions.push(body);await route.fulfill({contentType:'application/json',body:JSON.stringify(body.action==='status'?{mode:'test',linked:false,countries:['HR','US']}:{mode:'test',url:'https://connect.stripe.com/setup/test-only'})});});
+ const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();await expect(page).toHaveURL(/\/profile\/$/);
+ await page.goto('/settings/#payments');const country=page.getByRole('combobox',{name:'Country of residence or business registration'});await expect(country).toBeVisible();await expect(country).toHaveValue('');
+ await page.locator('[data-bank-onboard]').click();expect(actions.some(item=>item.action==='onboard')).toBe(false);
+ await country.selectOption('HR');await page.route('https://connect.stripe.com/setup/test-only',route=>route.fulfill({contentType:'text/html',body:'<h1>Sandbox onboarding fixture</h1>'}));await page.locator('[data-bank-onboard]').click();await expect(page).toHaveURL('https://connect.stripe.com/setup/test-only');expect(actions.at(-1)).toEqual({action:'onboard',country:'HR'});
+});
 test('payout setup uses owner-authenticated sandbox status and a validated Stripe handoff',async({page})=>{
   await mockBackend(page);const actions=[];
   await page.route('**/functions/v1/studio-connect',async route=>{
