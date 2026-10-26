@@ -3,7 +3,7 @@
  "publicationEnabled":false,
  "editIcon":"/registry/icons/public/assets/core/actions/edit/edit.svg",
  "studioOrigins":["https://studio.artanrecords.com","http://127.0.0.1:8930","http://127.0.0.1:9038"],
- "fonts":[{"id":"brand","label":"Manrope","value":"var(--font-base)"},{"id":"mono","label":"Monospace","value":"var(--font-mono)"}],
- "sizes":[{"id":"small","label":"Small","value":"var(--font-size-title-1)"},{"id":"standard","label":"Standard","value":"var(--font-size-section-title)"},{"id":"large","label":"Large","value":"var(--font-size-display-2)"}],
+ "fonts":[{"id":"brand","label":"Brand font","value":null},{"id":"mono","label":"Monospace","value":"var(--font-mono)"}],
+ "sizes":[{"id":"small","label":"Small","value":"var(--font-size-title-1)"},{"id":"standard","label":"Standard","value":null},{"id":"large","label":"Large","value":"var(--font-size-display-2)"}],
  "sections":[{"id":"biography","label":"Biography","selector":"[data-artist-fields]"},{"id":"connections","label":"Listen, follow & explore","selector":"[data-artist-links]"},{"id":"latest","label":"Latest release","selector":".artist-latest-release"},{"id":"archive","label":"All releases","selector":"[data-artist-archive]"}]
 }

@@ -13,14 +13,16 @@ export function bindArtistEditorPreview(root,config){
  if(bound){replay();return;}
  bound=true;
  const style=document.createElement('link');style.rel='stylesheet';style.href='/assets/css/layers/site/artist-editor-preview.css';document.head.append(style);
+ const navigation=document.querySelector('[data-fragment=navigation]'),originalRibbon=navigation?.style.getPropertyValue('--artist-header-ribbon');
  const receive=event=>{
   if(event.source!==window.parent||!config.studioOrigins.includes(event.origin)||event.data?.type!=='artanrecords:artist-preview')return;
   const draft=event.data.draft;
   if(!draft||typeof draft!=='object'||!config.fonts.some(item=>item.id===draft.font)||!config.sizes.some(item=>item.id===draft.size)||!Array.isArray(draft.sections)||draft.sections.length>config.sections.length||new Set(draft.sections).size!==draft.sections.length||draft.sections.some(id=>!config.sections.some(item=>item.id===id)))return;
   const heading=root.querySelector('[data-artist-name]');
-  if(heading){heading.style.fontFamily=config.fonts.find(item=>item.id===draft.font).value;heading.style.fontSize=config.sizes.find(item=>item.id===draft.size).value;}
+  if(heading){heading.style.fontFamily=config.fonts.find(item=>item.id===draft.font).value||'';heading.style.fontSize=config.sizes.find(item=>item.id===draft.size).value||'';}
   for(const item of config.sections){const section=root.querySelector(item.selector);if(section)section.hidden=!draft.sections.includes(item.id);}
-  if(typeof draft.ribbon==='string'&&/^#[0-9a-f]{6}$/i.test(draft.ribbon))document.querySelector('[data-fragment=navigation]')?.style.setProperty('--artist-header-ribbon',draft.ribbon);
+  if(typeof draft.ribbon==='string'&&/^#[0-9a-f]{6}$/i.test(draft.ribbon))navigation?.style.setProperty('--artist-header-ribbon',draft.ribbon);
+  else if(draft.ribbon===null){if(originalRibbon)navigation?.style.setProperty('--artist-header-ribbon',originalRibbon);else navigation?.style.removeProperty('--artist-header-ribbon');}
   replay=()=>receive(event);
   window.parent.postMessage({type:'artanrecords:artist-preview-applied'},event.origin);
  };
