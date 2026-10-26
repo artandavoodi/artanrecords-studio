@@ -4,6 +4,7 @@ const publication=JSON.parse(await readFile(new URL('../assets/data/studio-legal
 export const legalUrl=path=>publication.domain+publication.notices.find(notice=>notice.legacyPath===path).path;
 const shell=JSON.parse(await readFile(new URL('assets/data/platform/home-platform-shell.json',root),'utf8'));
 export function settingsIcon(id){
+  if(!['appearance','privacy','security'].includes(id))return null;
   const find=value=>{if(!value||typeof value!=='object')return null;if(value.id===id&&value.icon)return value.icon;for(const child of Object.values(value)){const found=find(child);if(found)return found;}return null;};
   const path=find(shell);return path?'/app/neuroartan'+path:null;
 }

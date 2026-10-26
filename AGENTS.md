@@ -1,5 +1,12 @@
 # Surface ownership
 
+Icon semantics are mandatory: never substitute an unrelated vector for missing
+artwork or reuse a glyph for distinct functions within the same navigation group.
+Use the canonical Control Center registry and inspect the actual vector, not only
+its filename. An unpainted registered slot must show a dot and remain marked as
+awaiting artwork. Do not draw substitute generic icons or silently borrow another
+function's symbol. Preserve standard shared icon sizing and record consumer usage.
+
 Public brand: Artanrecords, one word. Normalize transcription variants in copy,
 browser titles and metadata; preserve registered domains and stable identifiers.
 

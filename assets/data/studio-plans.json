@@ -26,20 +26,23 @@
     }
   ],
   "comparison": {
-    "caption": "Studio plans and approved pricing",
+    "caption": "Studio plans",
     "featureLabel": "Feature",
     "detailsLabel": "Details",
     "closeLabel": "Close plan details",
-    "scopeNotice": "Approved EUR list prices are separate from recording shares and commerce fees. Paid checkout and trials are not active. Partnership access requires verified agreement evidence. Tax treatment and commercial continuation policies remain launch gates.",
+    "scopeNotice": "Software subscriptions, recording partnerships and store sales have separate terms. Contact Artanrecords about access; online subscription checkout is currently unavailable.",
     "states": {
       "available": {
-        "label": "Available"
+        "label": "Included"
       },
       "pending": {
-        "label": "Not launched"
+        "label": "Details"
       },
       "separate": {
         "label": "Separate review"
+      },
+      "price": {
+        "label": "List price"
       }
     },
     "rows": [
@@ -48,8 +51,8 @@
         "billingInterval": "MONTHLY",
         "presentation": "price",
         "states": [
-          "pending",
-          "pending"
+          "price",
+          "price"
         ],
         "details": "Approved monthly list prices come from the versioned plan register. They are independent of annual billing and recording shares. Checkout is not active; choosing a period creates no subscription, charge, trial or renewal."
       },
@@ -58,8 +61,8 @@
         "billingInterval": "ANNUAL",
         "presentation": "price",
         "states": [
-          "pending",
-          "pending"
+          "price",
+          "price"
         ],
         "details": "Annual prices are independently approved amounts, not the monthly rate multiplied by twelve. Billing and renewal remain unavailable. Tax treatment and the final amount due must be confirmed before purchase; no VAT inclusion or exclusion is claimed."
       },
@@ -110,6 +113,16 @@
           "pending"
         ],
         "details": "Subscriptions, invoices, renewals and upgrades are not active. Included access follows its verified entitlement dates. No automatic paid conversion or destructive downgrade occurs. Grace periods, cancellation, retention and continuation policies remain to be approved."
+      }
+    ],
+    "billingPeriods": [
+      {
+        "id": "MONTHLY",
+        "label": "Monthly"
+      },
+      {
+        "id": "ANNUAL",
+        "label": "Annual"
       }
     ]
   },

@@ -132,11 +132,11 @@
   "placeholderIcon": "core/commerce/shopping/collection-placeholder.svg",
   "effectiveDate": "2026-10-19",
   "icons": {
-    "address":"core/navigation/location/location.svg",
-    "artist-content":"layers/website/profile/actions/artist-content.svg",
-    "bank":"core/commerce/finance/bank.svg",
-    "store":"core/commerce/shopping/bag.svg",
-    "collection":"core/files/folder/folder.svg",
+    "address": "core/navigation/location/location.svg",
+    "artist-content": "layers/website/profile/actions/artist-content.svg",
+    "bank": "core/commerce/finance/bank.svg",
+    "store": "core/commerce/shopping/bag.svg",
+    "collection": "core/files/folder/folder.svg",
     "instagram": "system/social/instagram.svg",
     "tiktok": "layers/website/social/platforms/tiktok.svg",
     "spotify": "layers/website/social/platforms/spotify.svg",
@@ -189,6 +189,8 @@
     "chevron-down": "core/navigation/chevron/chevron-down.svg",
     "globe": "core/navigation/global/globe.svg",
     "plus": "core/actions/create/add.svg",
-    "concert": "core/productivity/calendar/calendar.svg"
+    "concert": "core/productivity/calendar/calendar.svg",
+    "introductions": "core/identity/profile/team.svg",
+    "connections": "core/actions/link/link.svg"
   }
 }

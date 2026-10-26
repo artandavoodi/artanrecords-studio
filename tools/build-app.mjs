@@ -33,7 +33,7 @@ if(process.argv.includes('--sync-icons')){
   for(const [name,path] of Object.entries({placeholder:config.placeholderIcon,...config.icons})){
     const bytes=execFileSync('git',['-C',source,'show',`${revision}:registry/icons/source/${path}`]);
     await writeFile(`app/icons/${name}.svg`,bytes);files[name]=createHash('sha256').update(bytes).digest('hex');
-    available[name]=/<(?:path|circle|rect|line|polygon|polyline|ellipse|use|image|text)\b/.test(bytes.toString());
+    available[name]=!bytes.toString().includes('data-artwork-status="pending"')&&/<(?:path|circle|rect|line|polygon|polyline|ellipse|use|image|text)\b/.test(bytes.toString());
   }
   await writeFile('app/icon-manifest.json',JSON.stringify({source:'artandavoodi/control-center',revision,files,available},null,2)+'\n');
 }else {

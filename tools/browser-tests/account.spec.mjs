@@ -126,6 +126,20 @@ test('appearance reuses all canonical visual layers and disables controls in pla
  await expect(breathing).toBeDisabled();
  await expect(page.locator('[data-toggle-key=hero-shader][role=switch]')).toBeDisabled();
 });
+test('account appearance restores private server preferences and saves custom colours',async({page})=>{
+ await mockBackend(page);let saved;
+ await page.route('**/rest/v1/studio_user_preferences*',route=>{
+  if(route.request().method()==='POST'){saved=route.request().postDataJSON();return route.fulfill({json:[]});}
+  return route.fulfill({json:{appearance:{theme:{theme:'custom',contrast:'standard',palette:'mono',tokens:{background:'#123456',text:'#ffffff'}},toggles:{'breathing-circle':false,'hero-shader':false,'cinematic-background':false,'matte-atmosphere':false}}}});
+ });
+ const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+ await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.goto('/settings/#appearance');await expect(page.locator('html')).toHaveAttribute('data-theme','custom');
+ await expect(page.locator('body')).toHaveCSS('background-color','rgb(18, 52, 86)');
+ await page.locator('[data-theme-token=background]').evaluate(field=>{field.value='#234567';field.dispatchEvent(new Event('input',{bubbles:true}));});
+ await expect.poll(()=>saved?.appearance?.theme?.tokens?.background).toBe('#234567');
+ await expect(page.locator('body')).toHaveCSS('background-color','rgb(35, 69, 103)');
+});
 test('page editor uses only the signed-in artist handle and isolated preview controls',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
@@ -154,6 +168,11 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await expect(page.locator('.studio-header-frame')).toBeHidden();await expect(page.locator('.studio-platform-rail')).toBeHidden();
  const canvas=page.frameLocator('[data-editor-frame]');await canvas.getByRole('button',{name:'Edit Artist name',exact:true}).click();
  await expect(page.getByRole('region',{name:'Page design'})).toBeVisible();
+ if(page.viewportSize().width>1024){
+  const resize=page.getByRole('separator',{name:'Resize design tools'}),box=await resize.boundingBox();const before=await page.locator('.studio-editor-canvas').boundingBox();
+  await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+80,box.y+box.height/2);await page.mouse.up();
+  await expect.poll(async()=>Math.round((await page.locator('.studio-editor-canvas').boundingBox()).width)).toBeGreaterThan(Math.round(before.width));
+ }
  await page.locator('[data-editor-font-select]').selectOption('mono');
  await expect(canvas.locator('[data-artist-name]')).toHaveAttribute('style',/font-family: var\(--font-mono\)/);
  await page.getByRole('button',{name:'Workspace view',exact:true}).click();await expect(page.locator('.studio-header-frame')).toBeVisible();

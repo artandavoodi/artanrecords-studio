@@ -40,7 +40,7 @@ body { isolation:isolate; }
 /* Studio composition; shared brand values and label header motion stay canonical. */
 .studio-surface { display:grid; gap:var(--spacing-xl); }
 .studio-surface > header { max-inline-size:var(--cv-reading-width); }
-.studio-header-frame { background:transparent; border-block-end:var(--border-width-hairline) solid var(--cv-border); }
+.studio-header-frame { background:var(--cv-page-bg); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
 body:has(.studio-header-frame) { min-block-size:100dvh; display:flex; flex-direction:column; }
 body:has(.studio-header-frame) > main { flex:1; display:grid; }
 @media(min-width:1025px){body:has(.studio-platform) > main { inline-size:100%; margin-inline:0; }.studio-platform-content { padding-inline-end:var(--site-gutter); }}
@@ -194,6 +194,9 @@ html[data-theme-effective=dark] .studio-signout .studio-icon { filter:brightness
 .studio-colour-dialog > p { margin-block:var(--spacing-lg); }
 .studio-colour-dialog { inline-size:min(var(--size-full),var(--reading-width-md)); }
 .studio-colour-assignment { min-inline-size:0; }
+.studio-colour-column-headings { display:grid; grid-template-columns:var(--control-height-md) minmax(8ch,12ch) minmax(0,1fr) var(--control-height-md); gap:var(--spacing-md); margin-block:var(--spacing-lg) var(--spacing-sm); font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
+.studio-colour-column-headings span:first-child { grid-column:2; }
+.studio-portfolio-image-picker { display:flex; align-items:center; gap:var(--spacing-md); margin-block:var(--spacing-lg); }
 .studio-colour-assignment select { inline-size:100%; }
 @media(max-width:600px){.studio-color-field { grid-template-columns:var(--control-height-md) minmax(0,1fr) var(--control-height-md); }.studio-colour-assignment { grid-column:1 / -1; grid-row:2; }.studio-color-field input[type=text] { inline-size:100%; }}
 .studio-colour-dialog [data-color-fields] { display:grid; gap:var(--spacing-md); margin-block-end:var(--spacing-lg); }

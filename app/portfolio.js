@@ -31,6 +31,8 @@ async function bindPortfolioRoot(root,{client,resolveUser}){
   if(row?.details.image_path){const result=await client.storage.from('studio-portfolio').createSignedUrl(row.details.image_path,300);if(!result.error&&active?.id===row.id){image.src=result.data.signedUrl;image.hidden=false;}}
  };
  root.querySelector('[data-portfolio-close]').onclick=()=>dialog.close();
+ form.querySelector('[data-portfolio-pick]').onclick=()=>form.elements.image.click();
+ form.elements.image.addEventListener('change',()=>{form.querySelector('[data-portfolio-file-name]').textContent=form.elements.image.files[0]?.name||'No image selected';});
  form.elements.image.onchange=async()=>{error.textContent='';try{const file=form.elements.image.files[0];if(!file)return;const blob=await exportImage(file);if(preview)URL.revokeObjectURL(preview);preview=URL.createObjectURL(blob);image.src=preview;image.hidden=false;}catch(problem){form.elements.image.value='';error.textContent=problem.message;}};
  try{await refresh();root.querySelector('[data-portfolio-add]').disabled=false;}catch(problem){status.textContent=problem.message;return;}
  root.querySelector('[data-portfolio-add]').onclick=()=>open(null);

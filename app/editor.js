@@ -9,7 +9,12 @@ export async function bindArtistEditor({client,resolveUser}){
  const profileTools=root.querySelector('[data-editor-profile-tools]'),designTools=root.querySelector('[data-editor-design-tools]');
  const portfolioTools=[...root.querySelectorAll('[data-editor-portfolio-tools]')],releaseLink=root.querySelector('[data-editor-release-link]');
  const resetContext=()=>{portfolioTools.forEach(item=>item.hidden=true);releaseLink.hidden=true;};
- const setTools=open=>{panel.hidden=!open;tools.setAttribute('aria-expanded',String(open));};
+ const layout=root.querySelector('.studio-editor-layout');
+ const resize=document.createElement('div');resize.className='studio-editor-resize';resize.tabIndex=0;resize.setAttribute('role','separator');resize.setAttribute('aria-label','Resize design tools');resize.setAttribute('aria-orientation','vertical');layout.append(resize);
+ const setWidth=width=>{const maximum=layout.clientWidth/2,minimum=Math.min(maximum,panel.scrollWidth*0.65);const next=Math.max(minimum,Math.min(maximum,width));layout.style.setProperty('--studio-editor-panel-width',next+'px');resize.setAttribute('aria-valuenow',String(Math.round(next)));};
+ resize.addEventListener('pointerdown',event=>{if(event.button!==0||!matchMedia('(min-width:1025px)').matches)return;event.preventDefault();resize.setPointerCapture(event.pointerId);const move=event=>setWidth(layout.getBoundingClientRect().right-event.clientX);const end=()=>{resize.removeEventListener('pointermove',move);resize.removeEventListener('pointerup',end);resize.removeEventListener('pointercancel',end);};resize.addEventListener('pointermove',move);resize.addEventListener('pointerup',end);resize.addEventListener('pointercancel',end);});
+ resize.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight'].includes(event.key))return;event.preventDefault();setWidth(panel.getBoundingClientRect().width+(event.key==='ArrowLeft'?1:-1)*parseFloat(getComputedStyle(panel).paddingInlineStart));});
+ const setTools=open=>{panel.hidden=!open;layout.dataset.toolsOpen=String(open);tools.setAttribute('aria-expanded',String(open));};
  const setFocus=active=>{root.dataset.focus=String(active);focus.setAttribute('aria-pressed',String(active));focus.lastChild.textContent=active?'Workspace view':'Focus view';};
  focus.addEventListener('click',()=>setFocus(root.dataset.focus!=='true'));
  tools.addEventListener('click',()=>{resetContext();profileTools.hidden=true;designTools.hidden=false;setTools(panel.hidden);});

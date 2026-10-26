@@ -4,6 +4,7 @@ import {configured,resolveUser,profileValues,validPhoto,readAccountCallback} fro
 import {bindAccount} from './sign-in.js';
 import {bindProfile} from './profile.js';
 import {bindPreferences} from './preferences.js';
+import {bindAccountAppearance} from './account-appearance.js';
 import {bindVisualLayers} from './visual-layers.js';
 import {bindWorkspace} from './workspace.js';
 import {bindSearch} from './search.js';
@@ -46,6 +47,7 @@ const accountCallback=Boolean(callback.code||callback.token||callback.error);
 client?.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){document.querySelectorAll('[data-profile-form],[data-artist-metadata],[data-release-controls],[data-submissions-list],[data-contracts-list]').forEach(element=>element.replaceChildren());document.querySelector('[data-avatar]')?.removeAttribute('src');location.replace('/account/');}});
 try{
 await bindAccount(context);await bindProfile(context);
+await bindAccountAppearance(context);
 if(client)try{chrome.setUser(await resolveUser(client));}catch{console.error('[studio] Account verification unavailable');}
 if(location.pathname==='/account/')requestAnimationFrame(()=>{
   if(document.body.classList.contains('cookie-consent-open'))document.addEventListener('cookie-consent:closed',()=>chrome.openAccount(accountCallback),{once:true});

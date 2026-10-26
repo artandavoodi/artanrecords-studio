@@ -194,6 +194,13 @@ html[data-theme-effective="dark"] .label-wordmark--light { display: none; }
 }
 .partnership-next-step { margin-block-start:var(--spacing-2xl); padding-block-start:var(--spacing-xl); }
 .partnership-state { font-weight:var(--font-weight-semibold); }
+.pricing-period-tabs { display:flex; justify-content:center; gap:var(--spacing-lg); margin-block:var(--spacing-lg); }
+.pricing-period-tabs button { border:0; background:none; color:var(--cv-text-primary); padding:var(--spacing-sm); font:inherit; opacity:var(--state-opacity-muted); cursor:pointer; }
+.pricing-period-tabs [aria-selected=true] { opacity:1; }
+.partnership-comparison tr[hidden] { display:none; }
+.partnership-price { font-size:var(--font-size-h2); color:var(--cv-text-primary); font-weight:var(--font-weight-semibold); }
+@media(prefers-reduced-motion:no-preference){.partnership-comparison tr:not([hidden]) .partnership-price { animation:pricing-arrive var(--overlay-motion-duration) var(--overlay-motion-ease) both; }}
+@keyframes pricing-arrive { from { opacity:0; transform:translateY(var(--spacing-sm)); } to { opacity:1; transform:none; } }
 .partnership-cell > span > span + span { color:var(--cv-text-secondary); }
 .leadership-card { display: grid; gap: var(--spacing-md); min-inline-size: 0; }
 .leadership-card figure { inline-size: min(100%, var(--featured-card-width)); margin: 0; }
