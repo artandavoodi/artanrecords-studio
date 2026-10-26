@@ -1,6 +1,6 @@
 import config from '../content/graphics.json' with {type:'json'};
 import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
-import {colourAssignments,assignmentSelection} from './graphics-values.js';
+import {colourAssignments,assignmentSelection,assignmentUnavailable} from './graphics-values.js';
 
 function logoSvg(text){
  const doc=new DOMParser().parseFromString(text,'image/svg+xml'),svg=doc.documentElement;
@@ -86,18 +86,21 @@ export async function bindGraphics({client,resolveUser}){
  const swatches=form.querySelector('[data-colour-swatches]');
  const syncSwatches=()=>{
   [...fields.children].forEach((row,index)=>{row.dataset.colourRole=config.paletteRoles[index];});
+  const rows=[...fields.children].map(row=>({assignment:row.querySelector('[data-colour-assignment]').value}));
+  [...fields.children].forEach((row,index)=>{for(const option of row.querySelector('select').options)option.disabled=assignmentUnavailable(rows,index,option.value);});
   const selected=[...fields.querySelectorAll('input[type=text]')].filter(input=>/^#[0-9a-f]{6}$/i.test(input.value));
   const options=selected.length?selected.map(input=>({value:input.value.toUpperCase(),label:'Edit '+input.value.toUpperCase(),input})):config.defaultColors;
   swatches.replaceChildren(...options.map(option=>{const button=document.createElement('button');button.type='button';button.dataset.colourSwatch=option.value;button.style.backgroundColor=option.value;button.setAttribute('aria-label',option.label);button.title=option.value;button.onclick=()=>{if(!option.input){append(option.value);return;}colourDialog.showModal();option.input.focus();};return button;}));
  };
  const append=(color,assignment='')=>{
+  if(fields.children.length>=config.maxColors)return;
   const row=document.createElement('div');row.className='studio-color-field';row.setAttribute('role','group');row.setAttribute('aria-label','Artist colour');
   const picker=document.createElement('input');picker.type='color';picker.value=color;picker.setAttribute('aria-label','Choose artist colour');
   const hex=document.createElement('input');hex.type='text';hex.className='ui-field';hex.value=color;hex.pattern='#[0-9a-fA-F]{6}';hex.maxLength=7;hex.required=true;hex.setAttribute('aria-label','Artist colour hex code');
-  const remove=document.createElement('button');remove.type='button';remove.className='studio-color-remove';remove.setAttribute('aria-label','Remove colour');remove.title='Remove colour';const image=document.createElement('img');image.src='/app/icons/close.svg';image.alt='';image.className='studio-icon';remove.append(image);remove.onclick=()=>{row.remove();add.disabled=fields.children.length>=config.maxColors;syncSwatches();};
+  const remove=document.createElement('button');remove.type='button';remove.className='studio-color-remove global-close-button';remove.setAttribute('aria-label','Remove colour');remove.title='Remove colour';remove.onclick=()=>{row.remove();add.disabled=fields.children.length>=config.maxColors;syncSwatches();};
   const label=document.createElement('label'),select=document.createElement('select');label.className='studio-colour-assignment';label.textContent='Assign colour';select.className='ui-field';select.dataset.colourAssignment='';select.setAttribute('aria-label','Assign colour');
-  for(const option of config.assignments){const item=document.createElement('option');item.value=option.id;item.textContent=option.label;select.append(item);}select.value=assignment;label.append(select);
-  picker.oninput=()=>{hex.value=picker.value;syncSwatches();};hex.oninput=()=>{if(/^#[0-9a-f]{6}$/i.test(hex.value))picker.value=hex.value;syncSwatches();};row.append(picker,hex,label,remove);fields.append(row);add.disabled=fields.children.length>=config.maxColors;syncSwatches();
+  for(const option of config.assignments){const item=document.createElement('option');item.value=option.id;item.textContent=option.label;select.append(item);}select.value=assignment;select.onchange=syncSwatches;label.append(select);
+  picker.oninput=()=>{hex.value=picker.value;syncSwatches();};hex.oninput=()=>{if(/^#[0-9a-f]{6}$/i.test(hex.value))picker.value=hex.value;syncSwatches();};row.append(picker,hex,label,remove);fields.append(row);window.NeuroartanCloseButtons?.initCloseButtonPrimitive(row);add.disabled=fields.children.length>=config.maxColors;syncSwatches();
  };
  add.onclick=()=>{if(fields.children.length<config.maxColors)append('#000000');};
  const colourDialog=form.querySelector('#artist-colour-picker');

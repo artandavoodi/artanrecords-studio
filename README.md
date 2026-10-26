@@ -1,5 +1,20 @@
 # Artanrecords Studio
 
+## Subscription and presentation update - 2026-10-26
+
+Settings separates Subscription & billing from Artist payout setup. Subscription
+status comes from the account-scoped server procedure, not editable Auth metadata;
+only verified, active/trialing and unexpired access displays Pro. Checkout, card
+collection and recurring charges remain disabled pending approved commercial terms
+and provider integration. The supplied commerce briefs contain no Studio Pro
+price, billing currency, trial duration or paid feature specification.
+
+Graphics supports at most five colours, mutually exclusive surface assignments
+and the logo target. Public theme/colour application remains opt-in. Appearance
+reuses pinned Neuroartan breathing-circle and matte components; company/custom
+themes enable those controls, while unsupported cinematic video and shader
+controls stay disabled. Reduced-motion preferences disable breathing animation.
+
 ## Creator Store foundation
 
 `/store/` provides private store preparation, product and collection drafts,

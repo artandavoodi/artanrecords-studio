@@ -52,6 +52,7 @@ async function mockBackend(page,{releaseCover}={}){
     else if(url.pathname.endsWith('/rpc/studio_apply_partnership')){application={requested_tier:request.postDataJSON().tier,approved_tier:null,status:'pending',decision_note:''};body=null;}
     else if(url.pathname.endsWith('/rpc/studio_set_artist_media_visibility'))body=null;
     else if(url.pathname.endsWith('/rpc/studio_save_artist_graphics_v2'))body=null;
+    else if(url.pathname.endsWith('/rpc/studio_subscription_status'))body={plan:'studio',status:'none',entitled:false};
     else if(url.pathname.endsWith('/studio_artist_content'))body=artistContent?[{content:artistContent}]:[];
     else if(url.pathname.endsWith('/rpc/studio_save_artist_content')){artistContent=request.postDataJSON().value;body=null;}
     else if(url.pathname.includes('/rest/v1/studio_')){body=request.method()==='GET'?[]:null;status=request.method()==='POST'?201:200;}
@@ -76,6 +77,28 @@ async function openAccount(page){
   await expect(dialog).toBeVisible();
   return dialog;
 }
+test('subscription billing is separate from payouts and only verified access displays Pro',async({page})=>{
+ await mockBackend(page);const dialog=await openAccount(page);
+ await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+ await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.goto('/settings/#subscription');await expect(page.getByRole('tabpanel',{name:'Subscription & billing',exact:true})).toBeVisible();
+ await expect(page.locator('[data-subscription-status]')).toHaveText('Studio · No active paid subscription');
+ await expect(page.locator('.studio-pro-badge')).toHaveCount(0);await expect(page.locator('#settings-subscription input')).toHaveCount(0);
+ await page.route('**/rpc/studio_subscription_status',route=>route.fulfill({json:{plan:'studio-pro',status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z'}}));
+ await page.reload();await expect(page.locator('.studio-pro-badge')).toHaveText('Pro');
+ await page.getByRole('tab',{name:'Artist payout setup',exact:true}).click();await expect(page.locator('[data-payout-application-form]')).toBeVisible();
+});
+test('appearance reuses shared breathing and matte layers without enabling missing effects',async({page})=>{
+ await mockBackend(page);await page.goto('/settings/#appearance');
+ await page.locator('[data-theme-option=custom]').click();
+ const breathing=page.locator('[data-toggle-scope=homepage-theme][data-toggle-key=breathing-circle]');
+ await expect(breathing).toBeEnabled();await breathing.click();
+ await expect(page.locator('html')).toHaveAttribute('data-homepage-theme-breathing-circle','true');
+ await expect(page.locator('.home-breathing-circle')).toHaveCSS('visibility','visible');
+ await page.locator('[data-theme-option=light]').click();
+ await expect(breathing).toBeDisabled();
+ await expect(page.locator('[data-toggle-key=hero-shader][role=switch]')).toBeDisabled();
+});
 test('Store prepares private products and collections without activating publication or payments',async({page})=>{
  await mockBackend(page);let prepared=false;const products=[],collections=[],domainRequests=[];
  const creator='a5000000-0000-0000-0000-000000000011',store='a5000000-0000-0000-0000-000000000021';
@@ -147,17 +170,22 @@ test('artist graphics isolate their tab and save explicit palette visibility',as
  await form.getByRole('combobox',{name:'Assign colour',exact:true}).selectOption('icons');
  await expect(form.getByLabel('Choose artist colour')).toHaveValue('#123456');
  await expect(form.locator('[data-colour-swatch]')).toHaveCount(1);await expect(form.locator('[data-colour-swatch]')).toHaveAttribute('data-colour-swatch','#123456');
- await expect(form.locator('.studio-color-field')).toHaveCSS('display','flex');await expect(form.getByRole('button',{name:'Remove colour'})).toHaveText('');
- const colours=page.getByRole('dialog',{name:'Custom artist colours'});await expect(colours).toBeVisible();await expect(colours.locator('.global-close-button__line')).toHaveCount(2);
+ await expect(form.locator('.studio-color-field')).toHaveCSS('display','grid');await expect(form.getByRole('button',{name:'Remove colour'})).toHaveText('');
+ const colours=page.getByRole('dialog',{name:'Custom artist colours'});await expect(colours).toBeVisible();await expect(colours.getByRole('button',{name:'Close custom colours'}).locator('.global-close-button__line')).toHaveCount(2);
  expect(await colours.evaluate(el=>getComputedStyle(el,'::backdrop').backdropFilter)).not.toBe('none');
  if(test.info().project.name==='chromium-desktop')await page.screenshot({path:'/tmp/studio-graphics-refined-proof.png'});
  await colours.getByRole('button',{name:'Close custom colours'}).click();await expect(colours).toBeHidden();await expect(form.getByRole('button',{name:'Custom colour'})).toBeFocused();
  await form.getByLabel('Share my artist colours').check();await form.getByRole('button',{name:'Save',exact:true}).click();
  await expect(page.locator('.system-save-confirmation')).toHaveText('Graphics saved.');
- expect(requests.find(item=>item.path.endsWith('/rpc/studio_save_artist_graphics_v2')).body).toEqual({colors:['#123456'],assignments:{icons:0,header_fade:null,header_ribbon:null},share_logo:false,share_palette:true});
+ expect(requests.find(item=>item.path.endsWith('/rpc/studio_save_artist_graphics_v2')).body).toEqual({colors:['#123456'],assignments:{icons:0,header_fade:null,header_ribbon:null,logo:null},share_logo:false,share_palette:true});
  await form.getByRole('button',{name:'Edit #123456'}).click();await colours.getByRole('button',{name:'Remove colour'}).click();await colours.getByRole('button',{name:'Close custom colours'}).click();await expect(form.locator('[data-colour-swatch]')).toHaveCount(2);await expect(form.getByRole('button',{name:'Use black'})).toBeVisible();await expect(form.getByRole('button',{name:'Use white'})).toBeVisible();
  await form.getByRole('button',{name:'Custom colour'}).click();for(let index=1;index<5;index++)await colours.locator('[data-add-color]').click();
  await expect(colours.locator('.studio-color-field')).toHaveCount(5);await expect(colours.locator('[data-add-color]')).toBeDisabled();
+ const assignments=colours.getByRole('combobox',{name:'Assign colour',exact:true});
+ await assignments.nth(0).selectOption('icons');await expect(assignments.nth(1).locator('option[value=icons]')).toHaveAttribute('disabled','');
+ await assignments.nth(1).selectOption('logo');await expect(assignments.nth(2).locator('option[value=logo]')).toHaveAttribute('disabled','');
+ await assignments.nth(0).selectOption('header');await expect(assignments.nth(2).locator('option[value=fade]')).toHaveAttribute('disabled','');await expect(assignments.nth(2).locator('option[value=ribbon]')).toHaveAttribute('disabled','');
+ expect(await colours.evaluate(el=>el.scrollWidth<=el.clientWidth)).toBe(true);
  expect(await colours.locator('.studio-color-field').evaluateAll(rows=>rows.map(row=>row.dataset.colourRole))).toEqual(['primary-1','primary-2','primary-3','primary-4','primary-5']);
  await colours.getByRole('button',{name:'Close custom colours'}).click();
  await expect(page.locator('body')).toHaveJSProperty('scrollWidth',await page.locator('body').evaluate(node=>node.clientWidth));
@@ -346,8 +374,8 @@ test('Bank and payout settings never simulate money or enable withdrawals',async
   await page.reload();
   await expect(page.getByRole('tab',{name:'Withdrawals',exact:true})).toHaveAttribute('aria-selected','true');
   await page.getByRole('link',{name:'Payment & payout settings',exact:true}).click();
-  await expect(page.getByRole('tab',{name:'Payment & payout methods',exact:true})).toHaveAttribute('aria-selected','true');
-  await expect(page.getByRole('tabpanel',{name:'Payment & payout methods',exact:true})).toContainText('Sign in to manage your payout application.');
+  await expect(page.getByRole('tab',{name:'Artist payout setup',exact:true})).toHaveAttribute('aria-selected','true');
+  await expect(page.getByRole('tabpanel',{name:'Artist payout setup',exact:true})).toContainText('Sign in to manage your payout application.');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
 });
 test('sign-in opens a private profile and sign-out does not revoke other applications',async({page})=>{

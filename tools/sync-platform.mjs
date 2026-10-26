@@ -4,6 +4,10 @@ import {createHash} from 'node:crypto';
 import {dirname} from 'node:path';
 const source='../website';
 const files=[
+  'assets/css/layers/website/home/background/home-breathing-circle.css',
+  'assets/css/layers/website/home/background/home-matte-layer.css',
+  'assets/fragments/layers/website/home/background/home-breathing-circle.html',
+  'assets/fragments/layers/website/home/background/home-hero-matte.html',
   'assets/js/core/02-systems/character-counter.js',
   'assets/css/core/03-primitives/character-counter.css',
   'assets/css/core/04-systems/notifications.css',

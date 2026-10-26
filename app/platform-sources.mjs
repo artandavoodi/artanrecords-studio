@@ -25,3 +25,6 @@ export const appearanceMarkup=(await platformFragment('assets/fragments/layers/w
   .replaceAll('home-platform-theme__mode-grid"','ui-radio-list"')
   .replaceAll('</span>\n        </button>','</span><span class="ui-radio-list__indicator" aria-hidden="true"></span>\n        </button>')
   .replace('class="home-platform-theme__section-toggle-icon" aria-hidden="true">⌄','class="home-platform-theme__section-toggle-icon" aria-hidden="true"><img class="studio-icon" src="/app/neuroartan/registry/icons/public/assets/core/navigation/chevron/chevron-down.svg" alt="">');
+export const visualLayersMarkup='<div class="studio-visual-layers" aria-hidden="true">'+
+ (await platformFragment('assets/fragments/layers/website/home/background/home-breathing-circle.html')).replace('class="home-breathing-circle"','class="home-breathing-circle" data-visual-surface')+
+ (await platformFragment('assets/fragments/layers/website/home/background/home-hero-matte.html'))+'</div>';

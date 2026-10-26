@@ -1,0 +1,181 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) HOME MATTE TOKENS
+   02) HOME MATTE LAYER BASE
+   03) HOME MATTE TOGGLE GATE
+   04) HOME MATTE STATE MODES
+   05) HOME MATTE EXTENDED STATE MODES
+   06) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) HOME MATTE TOKENS
+============================================================================= */
+
+:root{
+  --home-matte-rgb-dark: 12, 10, 8;
+  --home-matte-rgb-light: 18, 14, 10;
+
+  --home-matte-opacity-top: 0.64;
+  --home-matte-opacity-mid: 0.60;
+  --home-matte-opacity-low: 0.76;
+  --home-matte-opacity-bottom: 1;
+
+  --home-matte-blur: calc(20px * var(--accessibility-density-scale));
+  --home-matte-saturate: 1.1;
+  --home-matte-transition-duration: 0.95s;
+  --home-matte-transition-ease: var(--interaction-ease-standard);
+
+  --home-matte-opacity-top-light: 0.74;
+  --home-matte-opacity-mid-light: 0.70;
+  --home-matte-opacity-low-light: 0.86;
+  --home-matte-opacity-bottom-light: 1;
+
+  --home-matte-opacity-top-soft: 0.62;
+  --home-matte-opacity-mid-soft: 0.68;
+  --home-matte-opacity-low-soft: 0.82;
+  --home-matte-opacity-bottom-soft: 0.96;
+
+  --home-matte-opacity-top-solid: 1;
+  --home-matte-opacity-mid-solid: 1;
+  --home-matte-opacity-low-solid: 1;
+  --home-matte-opacity-bottom-solid: 1;
+
+  --home-matte-opacity-top-solid-softedge: 0.94;
+  --home-matte-opacity-mid-solid-softedge: 0.97;
+  --home-matte-opacity-low-solid-softedge: 0.992;
+  --home-matte-opacity-bottom-solid-softedge: 1;
+
+  --home-matte-opacity-top-clear: 0.16;
+  --home-matte-opacity-mid-clear: 0.12;
+  --home-matte-opacity-low-clear: 0.20;
+  --home-matte-opacity-bottom-clear: 0.42;
+}
+
+body.home-page{
+  background-color: var(--bg-color);
+  overscroll-behavior: none;
+}
+
+/* =============================================================================
+   02) HOME MATTE LAYER BASE
+============================================================================= */
+
+.home-background-shell .home-hero-matte,
+.home-hero-matte{
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  isolation: isolate;
+  z-index: 3;
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  contain: paint;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: opacity, background, backdrop-filter;
+  border: none;
+
+  background-color: rgb(var(--home-matte-rgb-dark));
+  background:
+    linear-gradient(
+      180deg,
+      rgba(var(--home-matte-rgb-dark), var(--home-matte-opacity-top)) 0%,
+      rgba(var(--home-matte-rgb-dark), var(--home-matte-opacity-mid)) 38%,
+      rgba(var(--home-matte-rgb-dark), var(--home-matte-opacity-low)) 68%,
+      rgba(var(--home-matte-rgb-dark), var(--home-matte-opacity-bottom)) 100%
+    );
+
+  backdrop-filter: blur(var(--home-matte-blur)) saturate(var(--home-matte-saturate));
+  -webkit-backdrop-filter: blur(var(--home-matte-blur)) saturate(var(--home-matte-saturate));
+  transition:
+    background var(--home-matte-transition-duration) var(--home-matte-transition-ease),
+    background-color var(--home-matte-transition-duration) var(--home-matte-transition-ease),
+    opacity var(--home-matte-transition-duration) var(--home-matte-transition-ease),
+    visibility var(--home-matte-transition-duration) var(--home-matte-transition-ease),
+    backdrop-filter var(--home-matte-transition-duration) var(--home-matte-transition-ease),
+    -webkit-backdrop-filter var(--home-matte-transition-duration) var(--home-matte-transition-ease);
+}
+
+@supports (height: 100dvh){
+  .home-background-shell .home-hero-matte,
+  .home-hero-matte{
+    inset: 0;
+  }
+}
+
+/* =============================================================================
+   03) HOME MATTE TOGGLE GATE
+============================================================================= */
+
+html[data-homepage-theme-matte-atmosphere="false"] .home-background-shell .home-hero-matte,
+html[data-homepage-theme-matte-atmosphere="false"] .home-hero-matte{
+  opacity: 0;
+  visibility: hidden;
+}
+
+html[data-homepage-theme-matte-atmosphere="true"] .home-background-shell .home-hero-matte,
+html[data-homepage-theme-matte-atmosphere="true"] .home-hero-matte{
+  opacity: 1;
+  visibility: visible;
+}
+
+/* =============================================================================
+   04) HOME MATTE STATE MODES
+   Usage target for JS/body state switching:
+   - matte-blur  : current cinematic blurred layer
+   - matte-soft  : lighter opacity, blur retained
+   - matte-solid : full solid theme-aware surface, no visible video bleed
+============================================================================= */
+
+html[data-homepage-theme-matte-atmosphere="true"] body.matte-blur{
+  --home-matte-opacity-top: var(--home-matte-opacity-top-light);
+  --home-matte-opacity-mid: var(--home-matte-opacity-mid-light);
+  --home-matte-opacity-low: var(--home-matte-opacity-low-light);
+  --home-matte-opacity-bottom: var(--home-matte-opacity-bottom-light);
+  --home-matte-blur: calc(24px * var(--accessibility-density-scale));
+}
+
+html[data-homepage-theme-matte-atmosphere="true"] body.matte-soft{
+  --home-matte-opacity-top: var(--home-matte-opacity-top-soft);
+  --home-matte-opacity-mid: var(--home-matte-opacity-mid-soft);
+  --home-matte-opacity-low: var(--home-matte-opacity-low-soft);
+  --home-matte-opacity-bottom: var(--home-matte-opacity-bottom-soft);
+  --home-matte-blur: calc(30px * var(--accessibility-density-scale));
+}
+
+html[data-homepage-theme-matte-atmosphere="true"] body.matte-solid{
+  --home-matte-opacity-top: 1;
+  --home-matte-opacity-mid: 1;
+  --home-matte-opacity-low: 1;
+  --home-matte-opacity-bottom: 1;
+  --home-matte-blur: calc(28px * var(--accessibility-density-scale));
+}
+
+/* =============================================================================
+   05) HOME MATTE EXTENDED STATE MODES
+   Future-ready optional states for deeper homepage tuning.
+============================================================================= */
+
+html[data-homepage-theme-matte-atmosphere="true"] body.matte-clear{
+  --home-matte-opacity-top: var(--home-matte-opacity-top-clear);
+  --home-matte-opacity-mid: var(--home-matte-opacity-mid-clear);
+  --home-matte-opacity-low: var(--home-matte-opacity-low-clear);
+  --home-matte-opacity-bottom: var(--home-matte-opacity-bottom-clear);
+  --home-matte-blur: calc(10px * var(--accessibility-density-scale));
+}
+
+html[data-homepage-theme-matte-atmosphere="true"] body.matte-solid-softedge{
+  --home-matte-opacity-top: var(--home-matte-opacity-top-solid-softedge);
+  --home-matte-opacity-mid: var(--home-matte-opacity-mid-solid-softedge);
+  --home-matte-opacity-low: var(--home-matte-opacity-low-solid-softedge);
+  --home-matte-opacity-bottom: var(--home-matte-opacity-bottom-solid-softedge);
+  --home-matte-blur: calc(32px * var(--accessibility-density-scale));
+}
+
+/* =============================================================================
+   06) END OF FILE
+============================================================================= */

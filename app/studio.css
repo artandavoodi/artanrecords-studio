@@ -1,5 +1,7 @@
 /* Pinned Store owners. Do not edit generated distributions in app/shared. */
 @import url('./neuroartan/assets/css/core/03-primitives/character-counter.css');
+@import url('./neuroartan/assets/css/layers/website/home/background/home-breathing-circle.css');
+@import url('./neuroartan/assets/css/layers/website/home/background/home-matte-layer.css');
 @import url('./neuroartan/assets/css/core/04-systems/toast.css');
 @import url('./neuroartan/assets/css/core/03-primitives/loaders.css');
 @import url('./neuroartan/assets/css/core/04-systems/notifications.css');
@@ -23,6 +25,9 @@
 @import url('./neuroartan/assets/css/layers/website/overlays/cookie/cookie-consent.css');
 @import url('./neuroartan/assets/css/layers/website/overlays/cookie/cookie-learning-overlay.css');
 @import url('./neuroartan/assets/css/layers/website/home/platform-menu/settings/appearance/index.css');
+body { isolation:isolate; }
+.studio-visual-layers { position:fixed; inset:0; z-index:-1; pointer-events:none; }
+.studio-pro-badge { font-size:var(--site-type-caption-size); padding:var(--spacing-xs) var(--spacing-sm); border-radius:var(--control-radius-pill); background:var(--control-bg-hover); color:var(--cv-text-primary); }
 
 /* Studio composition; shared brand values and label header motion stay canonical. */
 .studio-surface { display:grid; gap:var(--spacing-xl); }
@@ -153,12 +158,12 @@ html[data-theme-effective=dark] .studio-signout .studio-icon { filter:brightness
 @media(prefers-reduced-motion:no-preference){[data-studio-reveal]{opacity:0;transform:translateY(var(--spacing-md));transition:opacity var(--duration-slow) var(--ease-standard),transform var(--duration-slow) var(--ease-standard);}[data-studio-visible]{opacity:1;transform:none;}}
 [data-logo-preview] { display:block; max-inline-size:100%; inline-size:var(--control-height-xl, 6rem); max-block-size:var(--control-height-xl, 6rem); object-fit:contain; }
 [data-logo-preview][hidden] { display:none; }
-.studio-color-field { display:flex; align-items:center; gap:var(--spacing-md); }
+.studio-color-field { display:grid; grid-template-columns:var(--control-height-md) minmax(8ch,12ch) minmax(0,1fr) var(--control-height-md); align-items:end; gap:var(--spacing-md); }
 .studio-logo-field { display:flex; align-items:center; gap:var(--spacing-lg); padding-block:var(--spacing-lg); }
 .studio-logo-field > :is(img,[data-logo-empty]) { flex:none; inline-size:var(--control-height-lg); block-size:var(--control-height-lg); object-fit:contain; }
 .studio-logo-field [data-logo-empty] { display:grid; place-items:center; background:var(--cv-surface); border-radius:var(--radius-md); }
 .studio-logo-field button,.studio-account .studio-color-remove { inline-size:auto; border:0; background:none; padding:var(--spacing-sm); }
-.studio-account .studio-color-remove { flex:none; }
+.studio-account .studio-color-remove { align-self:end; inline-size:var(--control-height-md); block-size:var(--control-height-md); padding:0; }
 .studio-account [data-add-color] { justify-self:start; inline-size:auto; border:0; background:none; }
 .studio-color-field input[type=color] { border:0; background:none; cursor:pointer; border-radius:50%; overflow:hidden; }
 .studio-color-field input[type=color]::-webkit-color-swatch-wrapper { padding:0; }
@@ -179,6 +184,10 @@ html[data-theme-effective=dark] .studio-signout .studio-icon { filter:brightness
 .studio-colour-options [data-colour-swatches] { display:flex; flex-wrap:wrap; gap:var(--spacing-md); }
 .studio-account .studio-colour-options [data-colour-swatch] { inline-size:var(--icon-size-lg); block-size:var(--icon-size-lg); min-block-size:0; padding:0; border:var(--border-width-hairline) solid var(--cv-text-primary); border-radius:50%; }
 .studio-colour-dialog > p { margin-block:var(--spacing-lg); }
+.studio-colour-dialog { inline-size:min(var(--size-full),var(--reading-width-md)); }
+.studio-colour-assignment { min-inline-size:0; }
+.studio-colour-assignment select { inline-size:100%; }
+@media(max-width:600px){.studio-color-field { grid-template-columns:var(--control-height-md) minmax(0,1fr) var(--control-height-md); }.studio-colour-assignment { grid-column:1 / -1; grid-row:2; }.studio-color-field input[type=text] { inline-size:100%; }}
 .studio-colour-dialog [data-color-fields] { display:grid; gap:var(--spacing-md); margin-block-end:var(--spacing-lg); }
 .studio-logo-dialog > p { margin-block:var(--spacing-lg); }
 .studio-logo-dialog [data-logo-loading] { display:grid; place-items:center; min-block-size:var(--control-height-xl); padding:var(--spacing-xl); }

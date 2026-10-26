@@ -1,7 +1,11 @@
 {
   "source": "artandavoodi/website",
-  "revision": "3a2b7b196019121f37b23dac8b9bba8b918f7ada",
+  "revision": "99b7f2762a507bb2a320d8cc940fec62c898ade7",
   "files": {
+    "assets/css/layers/website/home/background/home-breathing-circle.css": "a6d4ffc719797f81f5a02cf62f32e8cd996f543deb7820787f50526d808986bf",
+    "assets/css/layers/website/home/background/home-matte-layer.css": "50adccc5269f45ae83004fe93cc0ba6ba3e578c84ad23c0b4e70882017d392f0",
+    "assets/fragments/layers/website/home/background/home-breathing-circle.html": "be86806bcc135a9d4b19f13e26b5b9300f8a26a8b2f641bbe49b51d0f1ac3c7e",
+    "assets/fragments/layers/website/home/background/home-hero-matte.html": "5e914a6e0d8d81c1261e407713f5a8441bfbac425ea7b1ad607af34758773937",
     "assets/js/core/02-systems/character-counter.js": "708326e105661f392e5a56396652a05eabba5a715bcdf343c3c5aecd543c73d7",
     "assets/css/core/03-primitives/character-counter.css": "22dc1e1c01c396e38f969c5a199d35e4c3694fc047add297608a7390445dbcfa",
     "assets/css/core/04-systems/notifications.css": "57985e09f5fc774f4d5678b92192dcedbf24efc3feac5a7824ab10bf5f309780",
