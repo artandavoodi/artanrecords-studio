@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "e5b02fcd77fbeb88d5df03d5f32e7284c93bcb7f",
+  "commit": "3e1116b7241a23bcdfe7e656ab1c33de22ba1962",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "bf2d7bab84057768d028b0e3be924690b931ffdd97a8a3a4eb7594540c6db6f3",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -68,6 +68,7 @@
     "assets/data/studio-legal.json": "8d31474b88114eaf84cdf1a59427e5cb9ebbe346b296a0e5d44da6538872fd20",
     "assets/data/commerce.json": "0206487c6a6b4f7f965838864172b101d71a7d5b74e3911397accd6cb0caf429",
     "assets/data/artists/reserved-routes.json": "2c58f36344ba49af081ff71d3e8962edcb85f6cb28d67dc7da6633daa2769876",
+    "assets/data/artists/editor.json": "79b2221743fca618cf904f527a1774ed654b64bd9f8604f1f00c5e4d35ebe042",
     "assets/js/layers/site/creator-routes.js": "8ef9a3119aaffd6143af6d5dce967e43374bd575ede483d7122c89380709c3f5",
     "registry/icons/public/assets/core/identity/access/visibility-on.svg": "d499bf0b785f4a5910794a4fc77e9a975592d21c022117ad906aeb67b1aad3e7",
     "registry/icons/public/assets/core/identity/access/visibility-off.svg": "655bfe844eb290946a3fb9622fc8ca5433ca261b1c3531346442c6b1b6d7e190",
