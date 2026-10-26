@@ -11,7 +11,7 @@ const partnershipTerms=JSON.parse(await read('assets/data/partnerships.json'));
 if(!config.application){
   const guidance=config.pages.find(page=>page.path==='/partnerships/');
   if(guidance)guidance.sections.push(...recordingReference(partnershipTerms));
-  if(guidance)guidance.sections.push(...studioPricingSections(JSON.parse(await read('assets/data/studio-plans.json'))));
+  if(guidance)guidance.sections.push(...studioPricingSections(JSON.parse(await read('assets/data/studio-plans.json'))).map(section=>({...section,id:'platform-'+section.id})));
 }
 const application=config.application?await import(resolve(root,config.application.renderer)):null;
 const brand=JSON.parse(await read('assets/data/site.json'));

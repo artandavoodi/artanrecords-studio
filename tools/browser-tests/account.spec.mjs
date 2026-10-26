@@ -83,7 +83,8 @@ test('subscription billing is separate from payouts and only verified access dis
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
  await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.goto('/settings/#subscription');await expect(page.getByRole('tabpanel',{name:'Subscription & billing',exact:true})).toBeVisible();
- await expect(page.locator('[data-subscription-status]')).toHaveText('Studio · No active paid subscription');
+ await expect(page.locator('[data-subscription-status]')).toHaveText('No active paid subscription or verified included access');
+ for(const price of ['€9.99/month','€99/year','€19.99/month','€199/year'])await expect(page.locator('#settings-subscription')).toContainText(price);
  await expect(page.locator('.studio-pro-badge')).toHaveCount(0);await expect(page.locator('#settings-subscription input:not([type=checkbox])')).toHaveCount(0);
  await page.route('**/rpc/studio_subscription_status',route=>route.fulfill({json:{plan:'studio-pro',status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z'}}));
  await page.reload();await expect(page.locator('.studio-pro-badge')).toHaveText('Pro');
