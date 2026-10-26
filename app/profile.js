@@ -1,7 +1,7 @@
 import {googlePhoto} from './metadata-values.js';
 import {syncCharacterCounter} from './neuroartan/assets/js/core/02-systems/character-counter.js';
 import {bindGraphics} from './graphics.js';
-import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
+import {showArtistSaveConfirmation as showSaveConfirmation} from './artist-save.js';
 import {registerProfileMediaEditorTarget,openProfileMediaEditor} from './neuroartan/assets/js/layers/website/ui/profile-media-editor.js';
 export async function bindProfile({client,config,resolveUser,profileValues,validPhoto}){
   const graphicsReady=bindGraphics({client,resolveUser});

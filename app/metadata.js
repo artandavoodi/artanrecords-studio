@@ -1,5 +1,5 @@
 import schema from '../content/metadata.json';
-import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
+import {showArtistSaveConfirmation as showSaveConfirmation} from './artist-save.js';
 import {artistMetadata,releaseMetadata} from './metadata-values.js';
 import {bindReleaseArtwork} from './release-artwork.js';
 function values(root,definitions){return Object.fromEntries(definitions.map(field=>{const input=root.querySelector(`[name="${field.name}"]`);return [field.name,field.type==='checkbox'?input.checked:input.value];}));}

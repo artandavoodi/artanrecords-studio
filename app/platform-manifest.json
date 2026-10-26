@@ -1,7 +1,17 @@
 {
   "source": "artandavoodi/website",
-  "revision": "99b7f2762a507bb2a320d8cc940fec62c898ade7",
+  "revision": "a0f0f124edec0d0ef70cb7be15a0764c062240db",
   "files": {
+    "assets/css/layers/website/layout/home.css": "2ee1172bb8d6b1b1d43e7a66caa1fdda1c6bec3068377b02844d34700eed62b7",
+    "assets/css/layers/website/ui/effects/wallpaper-engine.css": "984059c6eaef39a1bd3726109b7e8ea396dae14818bf98f1e5448cb3ac554bfd",
+    "assets/css/layers/website/home/background/home-hero-shader.css": "68403f5d444c0d3de164c222b4de423d916b65159a7f840b9597adbff2db4505",
+    "assets/js/layers/website/ui/effects/wallpaper-engine.js": "6cb678f3f8002a4d45953f069f6a697fb0661b0c4f424c356da2024a677bf670",
+    "assets/js/layers/website/ui/effects/shader-core.js": "28db2512d0baee38988fe4266bbe2e0e67754a76349850919cc82470a4f0b9e3",
+    "assets/js/layers/website/home/background/home-hero-shader.js": "6ed15041db57511ae6db73e077c6f4c0750fe54e8b58f72635f9060968fd49e5",
+    "assets/scenes/wallpapers/neuroartan-home-cinematic.scene.json": "958dca9eb3d1d59904167cca46b9494cb0b2b138f9c12aa9da688bf623ebfa38",
+    "assets/fragments/layers/website/home/background/home-background-shell.html": "12af0698a4c794f7e4b326ca4ac8229423caa97134e054efd21c5f2c61285c6b",
+    "assets/fragments/layers/website/home/background/home-cinematic-wallpaper.html": "4c94d813b25b527fe09762e0a9e19891c96a4a02329b25195260241d21f32cdb",
+    "assets/fragments/layers/website/home/background/home-hero-shader.html": "08354fe283479c06cab7b2b4c15eb1962a60180b329806503c411c2706a2a0ab",
     "assets/css/layers/website/home/background/home-breathing-circle.css": "a6d4ffc719797f81f5a02cf62f32e8cd996f543deb7820787f50526d808986bf",
     "assets/css/layers/website/home/background/home-matte-layer.css": "50adccc5269f45ae83004fe93cc0ba6ba3e578c84ad23c0b4e70882017d392f0",
     "assets/fragments/layers/website/home/background/home-breathing-circle.html": "be86806bcc135a9d4b19f13e26b5b9300f8a26a8b2f641bbe49b51d0f1ac3c7e",
@@ -55,6 +65,7 @@
     "registry/icons/public/assets/core/interface/status/essential.svg": "0c44d091d0e18c0b0d02b6b43ddae591cb38fa87528c5c694445c912a93ed406",
     "registry/icons/public/assets/core/interface/navigation/drop-down.svg": "1aa34a52ef2e911b2aac3083a2b1f6931ccf3e0ba62d87e71fba3eeedcf3a1b9",
     "registry/icons/public/assets/layers/website/cookie/categories/cookie-analytics.svg": "28980d3377240defd2a33ac3afdcc464a3aa3fefb8d0f615927c10b0c2b0e6e5",
-    "registry/icons/public/assets/layers/website/cookie/categories/cookie-experience.svg": "f305bf026bd84f0047d481c2c37a805151af0fb58c7bffda32b5f49b11857ec9"
+    "registry/icons/public/assets/layers/website/cookie/categories/cookie-experience.svg": "f305bf026bd84f0047d481c2c37a805151af0fb58c7bffda32b5f49b11857ec9",
+    "assets/css/layers/website/home/background/home-shell.generated.css": "4ce39f82a7699153afd89df72fdb29cf626eea4e5497a2ef23266138ce772a57"
   }
 }

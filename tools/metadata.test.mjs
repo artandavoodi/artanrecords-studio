@@ -2,6 +2,12 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {artistMetadata,releaseMetadata,releaseArtworkValues,googlePhoto,catalogueSelection,releaseSelection} from '../app/metadata-values.js';
+import {portfolioValues} from '../app/portfolio.js';
+test('portfolio drafts validate registered fields, tags and secure project links',()=>{
+ const form=new FormData();form.set('title','A project');form.set('tags','music, photography');form.set('project_url','https://example.test/project');
+ assert.deepEqual(portfolioValues(form).tags,['music','photography']);assert.equal(portfolioValues(form).rights_confirmed,false);
+ form.set('project_url','javascript:alert(1)');assert.throws(()=>portfolioValues(form));form.set('project_url','https://user:secret@example.test');assert.throws(()=>portfolioValues(form));form.set('project_url','');form.set('year','twenty');assert.throws(()=>portfolioValues(form));
+});
 const schema=JSON.parse(await readFile(new URL('../content/metadata.json',import.meta.url),'utf8'));
 const artwork=JSON.parse(await readFile(new URL('../content/release-artwork.json',import.meta.url),'utf8'));
 const release=()=>({title:'Test single',type:'Single',tracks:[{title:'Test track',explicit:'Clean',contributors:[{name:'Test writer',role:'Songwriter'}]}]});

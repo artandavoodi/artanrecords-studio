@@ -4,6 +4,16 @@ import {createHash} from 'node:crypto';
 import {dirname} from 'node:path';
 const source='../website';
 const files=[
+  'assets/css/layers/website/layout/home.css',
+  'assets/css/layers/website/ui/effects/wallpaper-engine.css',
+  'assets/css/layers/website/home/background/home-hero-shader.css',
+  'assets/js/layers/website/ui/effects/wallpaper-engine.js',
+  'assets/js/layers/website/ui/effects/shader-core.js',
+  'assets/js/layers/website/home/background/home-hero-shader.js',
+  'assets/scenes/wallpapers/neuroartan-home-cinematic.scene.json',
+  'assets/fragments/layers/website/home/background/home-background-shell.html',
+  'assets/fragments/layers/website/home/background/home-cinematic-wallpaper.html',
+  'assets/fragments/layers/website/home/background/home-hero-shader.html',
   'assets/css/layers/website/home/background/home-breathing-circle.css',
   'assets/css/layers/website/home/background/home-matte-layer.css',
   'assets/fragments/layers/website/home/background/home-breathing-circle.html',
@@ -42,6 +52,16 @@ const files=[
   'assets/fragments/layers/website/home/platform-menu/settings/appearance/index.html'
 ];
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
+// Reuse the canonical background rules without importing homepage layout ownership.
+export function backgroundStyles(source){
+  const root=source.match(/:root\{([\s\S]*?)\n\}/)?.[1];
+  const start=source.indexOf('.home-background-shell,');
+  const end=source.indexOf('/* =============================================================================\n   07) HOME LANDING STACK',start);
+  if(!root||start<0||end<0)throw Error('Canonical background boundaries changed');
+  const tokens=[...root.matchAll(/\s*(--home-layout-stage-wallpaper[^:]*:[\s\S]*?;)/g)].map(match=>match[1]);
+  if(tokens.length!==6)throw Error('Canonical wallpaper token count changed');
+  return '/* Generated from pinned Neuroartan home.css background ownership. */\n:root{\n'+tokens.join('\n')+'\n}\n'+source.slice(start,end);
+}
 if(process.argv.includes('--sync')){
   const revision=execFileSync('git',['-C',source,'rev-parse','HEAD'],{encoding:'utf8'}).trim();
   const manifest={source:'artandavoodi/website',revision,files:{}};
@@ -52,6 +72,9 @@ if(process.argv.includes('--sync')){
     await mkdir(dirname(`app/neuroartan/${path}`),{recursive:true});
     await writeFile(`app/neuroartan/${path}`,bytes);manifest.files[path]=hash(bytes);
   }
+  const path='assets/css/layers/website/home/background/home-shell.generated.css';
+  const bytes=backgroundStyles(await readFile('app/neuroartan/assets/css/layers/website/layout/home.css','utf8'));
+  await writeFile('app/neuroartan/'+path,bytes);manifest.files[path]=hash(bytes);
   await writeFile('app/platform-manifest.json',JSON.stringify(manifest,null,2)+'\n');
 }else{
   const manifest=JSON.parse(await readFile('app/platform-manifest.json','utf8'));

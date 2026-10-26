@@ -1,6 +1,6 @@
 import config from '../content/artist-content.json' with {type:'json'};
 import {readArtistCatalogue} from './catalogue-data.js';
-import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
+import {showArtistSaveConfirmation as showSaveConfirmation} from './artist-save.js';
 export async function bindArtistContent({client,resolveUser}){
  const root=document.querySelector('[data-artist-content]');if(!root)return;
  const status=root.querySelector('[data-content-status]'),dialog=root.querySelector('dialog'),form=dialog.querySelector('form'),fields=form.querySelector('[data-content-fields]'),error=form.querySelector('[data-content-error]');

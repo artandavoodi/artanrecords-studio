@@ -1,0 +1,674 @@
+/* =============================================================================
+   00) FILE INDEX
+   00A) HOME LAYOUT TOKENS
+   01) GLOBAL SAFETY
+   02) ANNOUNCEMENT + CTA BASE
+   03) ENTER BUTTON ICON
+   05) HOME STAGE BACKGROUND VIDEO
+   06) HOME STAGE WALLPAPER OVERLAY
+   07) HOME LANDING STACK
+   08) HOME STAGE REGION LAYOUT
+   09) HOME HERO ENTERED STATE
+   10) HOME HERO MOBILE / TABLET REFINEMENTS
+   11) HOME HERO PAINT CONTAINMENT
+   12) HOME PRE-ENTER ISOLATION
+   13) HOME INTRO LOGO ANIMATION
+============================================================================= */
+
+/* =============================================================================
+   00A) HOME LAYOUT TOKENS
+============================================================================= */
+:root{
+  --home-layout-dial-rgb:145,124,111;
+  --home-layout-enter-color:color-mix(in srgb, var(--text-primary-color) 92%, transparent);
+  --home-layout-enter-border:color-mix(in srgb, var(--text-primary-color) 32%, transparent);
+  --home-layout-enter-transition:600ms;
+  --home-layout-enter-text-motion:600ms;
+  --home-layout-stage-wallpaper-motion:620ms;
+  --home-layout-essence-highlight:color-mix(in srgb, var(--color-primary1) 34%, transparent);
+  --home-layout-stage-color:color-mix(in srgb, var(--text-primary-color) 92%, transparent);
+  --home-layout-stage-wallpaper-overlay:
+    linear-gradient(118deg,
+      color-mix(in srgb, var(--color-primary5) 16%, transparent) 0%,
+      color-mix(in srgb, var(--color-primary6) 12%, transparent) 22%,
+      color-mix(in srgb, var(--color-secondary8) 10%, transparent) 48%,
+      color-mix(in srgb, var(--color-secondary9) 12%, transparent) 74%,
+      color-mix(in srgb, var(--color-primary1) 16%, transparent) 100%),
+    linear-gradient(24deg,
+      color-mix(in srgb, var(--bg-color) 28%, transparent) 0%,
+      transparent 38%,
+      color-mix(in srgb, var(--bg-color) 22%, transparent) 100%);
+  --home-layout-announcement-size:var(--layout-home-announcement-size);
+  --home-layout-announcement-weight:var(--layout-home-announcement-weight);
+  --home-layout-announcement-tracking:var(--layout-home-announcement-tracking);
+  --home-layout-announcement-secondary-size:var(--layout-home-announcement-secondary-size);
+  --home-layout-announcement-secondary-weight:var(--layout-home-announcement-secondary-weight);
+  --home-layout-announcement-secondary-tracking:var(--layout-home-announcement-secondary-tracking);
+  --home-layout-announcement-mobile-size:var(--layout-home-announcement-mobile-size);
+  --home-layout-announcement-mobile-line-height:var(--layout-home-announcement-mobile-line-height);
+  --home-layout-announcement-secondary-mobile-size:var(--layout-home-announcement-secondary-mobile-size);
+  --home-layout-announcement-secondary-mobile-tracking:var(--layout-home-announcement-secondary-mobile-tracking);
+  --home-layout-enter-width:var(--layout-home-enter-width);
+  --home-layout-enter-height:var(--layout-home-enter-height);
+  --home-layout-enter-padding-y:var(--layout-home-enter-padding-y);
+  --home-layout-enter-padding-x:var(--layout-home-enter-padding-x);
+  --home-layout-enter-size:var(--layout-home-enter-size);
+  --home-layout-enter-weight:var(--layout-home-enter-weight);
+  --home-layout-enter-tracking:var(--layout-home-enter-tracking);
+  --home-layout-enter-border-width:var(--layout-home-enter-border-width);
+  --home-layout-enter-radius:var(--control-radius);
+  --home-layout-enter-icon-size:var(--layout-home-enter-icon-size);
+  --home-layout-enter-hover-y:var(--layout-home-enter-hover-y);
+  --home-layout-enter-hover-opacity:var(--layout-home-enter-hover-opacity);
+  --home-layout-enter-breathe-duration:var(--layout-home-enter-breathe-duration);
+  --home-layout-enter-breathe-y:var(--layout-home-enter-breathe-y);
+  --home-layout-enter-mobile-width:var(--layout-home-enter-mobile-width);
+  --home-layout-enter-mobile-height:var(--layout-home-enter-mobile-height);
+  --home-layout-enter-mobile-padding-y:var(--layout-home-enter-mobile-padding-y);
+  --home-layout-enter-mobile-padding-x:var(--layout-home-enter-mobile-padding-x);
+  --home-layout-enter-mobile-size:var(--layout-home-enter-mobile-size);
+  --home-layout-stage-wallpaper-overlay-blur:var(--layout-home-stage-wallpaper-overlay-blur);
+  --home-layout-stage-wallpaper-overlay-saturate:var(--layout-home-stage-wallpaper-overlay-saturate);
+  --home-layout-stage-wallpaper-overlay-motion:var(--layout-home-stage-wallpaper-overlay-motion);
+  --home-layout-stage-wallpaper-overlay-reveal-opacity:var(--layout-home-stage-wallpaper-overlay-reveal-opacity);
+  --home-layout-logo-width:var(--layout-home-logo-width);
+  --home-layout-logo-width-mobile:var(--layout-home-logo-width-mobile);
+  --home-layout-logo-margin-bottom:var(--layout-home-logo-margin-bottom);
+  --home-layout-logo-docked-margin-bottom:var(--layout-home-logo-docked-margin-bottom);
+  --home-layout-logo-transition-opacity:var(--layout-home-logo-transition-opacity);
+  --home-layout-logo-transition-transform:var(--layout-home-logo-transition-transform);
+  --home-layout-stage-copy-margin-top:var(--layout-home-stage-copy-margin-top);
+  --home-layout-stage-bottom-margin-top:var(--layout-home-stage-bottom-margin-top);
+  --home-layout-stage-bottom-margin-top-mobile:var(--layout-home-stage-bottom-margin-top-mobile);
+  --home-layout-stage-intro-max-height:var(--layout-home-stage-intro-max-height);
+  --home-layout-stage-intro-opacity-duration:var(--layout-home-stage-intro-opacity-duration);
+  --home-layout-stage-intro-transform-duration:var(--layout-home-stage-intro-transform-duration);
+  --home-layout-stage-intro-reveal-duration:var(--layout-home-stage-intro-reveal-duration);
+  --home-layout-intro-reveal-y:var(--layout-home-intro-reveal-y);
+  --home-layout-intro-content-opacity-duration:var(--layout-home-intro-content-opacity-duration);
+  --home-layout-intro-content-transform-duration:var(--layout-home-intro-content-transform-duration);
+  --home-layout-intro-logo-scale-start:var(--layout-home-intro-logo-scale-start);
+  --home-layout-intro-logo-scale-settle:var(--layout-home-intro-logo-scale-settle);
+  --home-layout-intro-logo-scale-fade:var(--layout-home-intro-logo-scale-fade);
+}
+
+/* =============================================================================
+   01) GLOBAL SAFETY
+============================================================================= */
+html,
+body{
+  height:100%;
+}
+
+body.home-page #site-main{
+  min-block-size:var(--section-min-height-stable);
+}
+
+body{
+  margin:0;
+  overflow-x:hidden;
+}
+
+/* =============================================================================
+   02) ANNOUNCEMENT + CTA BASE
+============================================================================= */
+#announcement{
+  max-width:calc(90% * var(--accessibility-density-scale));
+  font-size:var(--home-layout-announcement-size);
+  font-weight:var(--home-layout-announcement-weight);
+  letter-spacing:var(--home-layout-announcement-tracking);
+  text-align:center;
+  margin:0 auto;
+}
+
+#announcement.secondary{
+  font-size:var(--home-layout-announcement-secondary-size);
+  font-weight:var(--home-layout-announcement-secondary-weight);
+  text-transform: none;
+  letter-spacing:var(--home-layout-announcement-secondary-tracking);
+}
+
+
+.enter-button{
+  position:relative;
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:var(--home-layout-enter-width);
+  height:var(--home-layout-enter-height);
+  min-width:var(--home-layout-enter-width);
+  min-height:var(--home-layout-enter-height);
+  padding:var(--home-layout-enter-padding-y) var(--home-layout-enter-padding-x);
+  background:transparent;
+  color:var(--home-layout-enter-color);
+  font-size:var(--home-layout-enter-size);
+  font-weight:var(--home-layout-enter-weight);
+  letter-spacing:var(--home-layout-enter-tracking);
+  text-transform: none;
+  border:var(--home-layout-enter-border-width) solid var(--home-layout-enter-border);
+  border-radius:var(--control-radius);
+  overflow:hidden;
+  transition:border-color var(--home-layout-enter-transition) var(--interaction-ease-standard), opacity var(--home-layout-enter-transition) var(--interaction-ease-standard);
+  animation:enter-breathe var(--home-layout-enter-breathe-duration) var(--interaction-ease-standard) infinite;
+  margin:0 auto;
+}
+
+/* =============================================================================
+   03) ENTER BUTTON ICON
+============================================================================= */
+.enter-button-icon{
+  display:block;
+  width:var(--home-layout-enter-icon-size);
+  height:var(--home-layout-enter-icon-size);
+  object-fit:contain;
+  object-position:center;
+  opacity:1;
+  filter:brightness(0) invert(1);
+  pointer-events:none;
+}
+
+.enter-button span{
+  position:relative;
+  z-index:2;
+  display:inline-block;
+  transition:transform var(--home-layout-enter-text-motion) var(--interaction-ease-standard), color var(--home-layout-enter-text-motion) var(--interaction-ease-standard);
+}
+
+.enter-button:hover span{
+  transform:translateY(var(--home-layout-enter-hover-y));
+}
+
+.enter-button:hover{
+  opacity:var(--home-layout-enter-hover-opacity);
+}
+
+@keyframes enter-breathe{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(var(--home-layout-enter-breathe-y));}
+  100%{transform:translateY(0);}
+}
+
+
+
+/* =============================================================================
+   05) HOME STAGE BACKGROUND VIDEO
+============================================================================= */
+.home-background-shell,
+.home-background-shell__cinematic,
+.home-background-shell__shader,
+.home-background-shell__circle,
+.home-background-shell__matte{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  margin:0;
+  padding:0;
+  border:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.home-background-shell{
+  z-index:0;
+  isolation:isolate;
+  contain:paint;
+}
+
+.stage-wallpaper,
+#stage .stage-wallpaper{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  margin:0;
+  padding:0;
+  border:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+  opacity:0;
+  visibility:hidden;
+  transition:
+    opacity var(--home-layout-stage-wallpaper-motion) var(--interaction-ease-standard),
+    visibility var(--home-layout-stage-wallpaper-motion) var(--interaction-ease-standard);
+}
+
+.stage-wallpaper .neuroartan-wallpaper__svg,
+#stage .stage-wallpaper .neuroartan-wallpaper__svg,
+#stage .neuroartan-wallpaper__svg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  margin:0;
+  padding:0;
+}
+
+.stage-wallpaper::after,
+#stage .stage-wallpaper::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:transparent;
+}
+
+html[data-homepage-theme-cinematic-background="false"] .stage-wallpaper,
+html[data-homepage-theme-cinematic-background="false"] html[data-homepage-theme-cinematic-background="false"] #stage .stage-wallpaper{
+  opacity:0;
+  visibility:hidden;
+}
+
+html[data-homepage-theme-cinematic-background="true"] .stage-wallpaper,
+html[data-homepage-theme-cinematic-background="true"] html[data-homepage-theme-cinematic-background="true"] #stage .stage-wallpaper{
+  opacity:1;
+  visibility:visible;
+}
+
+/* =============================================================================
+   06) HOME STAGE WALLPAPER OVERLAY
+============================================================================= */
+.stage-wallpaper-overlay{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:var(--home-layout-stage-wallpaper-overlay);
+  backdrop-filter:blur(var(--home-layout-stage-wallpaper-overlay-blur)) saturate(var(--home-layout-stage-wallpaper-overlay-saturate));
+  -webkit-backdrop-filter:blur(var(--home-layout-stage-wallpaper-overlay-blur)) saturate(var(--home-layout-stage-wallpaper-overlay-saturate));
+  opacity:0;
+  visibility:hidden;
+  transition:opacity var(--home-layout-stage-wallpaper-overlay-motion) var(--interaction-ease-standard), visibility var(--home-layout-stage-wallpaper-overlay-motion) var(--interaction-ease-standard);
+}
+
+.home-background-shell .stage-wallpaper,
+.home-background-shell .stage-wallpaper-overlay{
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100dvh;
+}
+
+html[data-homepage-theme-cinematic-background="false"] .stage-wallpaper-overlay{
+  opacity:0;
+  visibility:hidden;
+}
+
+html[data-homepage-theme-cinematic-background="true"] .stage-wallpaper-overlay{
+  opacity:1;
+  visibility:visible;
+}
+
+html[data-homepage-theme-cinematic-background="true"] body.home-page.intro-loading .stage-wallpaper-overlay{
+  opacity:1;
+  visibility:visible;
+}
+
+html[data-homepage-theme-cinematic-background="true"] body.home-page.intro-reveal .stage-wallpaper-overlay{
+  opacity:var(--home-layout-stage-wallpaper-overlay-reveal-opacity);
+  visibility:visible;
+}
+
+html[data-homepage-theme-cinematic-background="true"] body.home-page.site-entered.hero-lock-released .stage-wallpaper-overlay{
+  opacity:1;
+  visibility:visible;
+}
+
+/* =============================================================================
+   07) HOME LANDING STACK
+============================================================================= */
+#stage{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  position:relative;
+  overflow:clip;
+  z-index:auto;
+  height:100vh;
+  height:100svh;
+  min-height:100vh;
+  min-height:100svh;
+  box-sizing:border-box;
+  background:transparent;
+  color:var(--home-layout-stage-color);
+}
+
+@supports (height:100dvh){
+  #stage{
+    min-height:100dvh;
+    height:100dvh;
+  }
+}
+
+#stage .stage-container{
+  position:relative;
+  z-index:40;
+  width:100%;
+  max-width:none;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  margin:0 auto;
+  padding:0;
+  min-height:100%;
+}
+
+#stage .logo-container .site-logo{
+  position:relative;
+  z-index:4;
+  display:block;
+  width:min(var(--home-layout-logo-width), calc(72vw * var(--accessibility-density-scale)));
+  height:auto;
+  margin:0 auto var(--home-layout-logo-margin-bottom) auto;
+  pointer-events:auto;
+  will-change:transform, opacity;
+  transition:opacity var(--home-layout-logo-transition-opacity) var(--interaction-ease-standard), transform var(--home-layout-logo-transition-transform) var(--interaction-ease-standard);
+  transition-delay:0ms;
+}
+
+#stage #announcement{
+  width:100%;
+  max-width:calc(90% * var(--accessibility-density-scale));
+  margin:var(--home-layout-stage-copy-margin-top) auto 0 auto;
+  text-align:center;
+}
+
+#stage .enter-button,
+#stage #enter-button{
+  display:inline-flex;
+  width:fit-content;
+  margin:0 auto;
+  align-self:center;
+  justify-content:center;
+  text-align:center;
+  pointer-events:auto;
+}
+
+
+/* =============================================================================
+   08) HOME STAGE REGION LAYOUT
+============================================================================= */
+#stage-intro{
+  position:relative;
+  z-index:40;
+  width:100%;
+  display:grid;
+  align-items:center;
+  justify-items:center;
+  text-align:center;
+  opacity:1;
+  transform:translateY(0);
+  max-height:var(--home-layout-stage-intro-max-height);
+  overflow:visible;
+  transition:
+    opacity var(--home-layout-stage-intro-opacity-duration) var(--interaction-ease-standard),
+    transform var(--home-layout-stage-intro-transform-duration) var(--interaction-ease-standard),
+    max-height var(--home-layout-stage-intro-transform-duration) var(--interaction-ease-standard);
+}
+
+
+
+
+/* =============================================================================
+   09) HOME HERO ENTERED STATE
+============================================================================= */
+html[data-homepage-theme-cinematic-background="false"] body.home-page.site-entered.hero-lock-released .stage-wallpaper,
+html[data-homepage-theme-cinematic-background="false"] body.home-page.site-entered.hero-lock-released html[data-homepage-theme-cinematic-background="false"] body.home-page.site-entered.hero-lock-released #stage .stage-wallpaper,
+html[data-homepage-theme-cinematic-background="false"] body.home-page.site-entered.hero-lock-released .stage-wallpaper-overlay{
+  opacity:0;
+  visibility:hidden;
+}
+html[data-homepage-theme-cinematic-background="true"] body.home-page.site-entered.hero-lock-released .stage-wallpaper,
+html[data-homepage-theme-cinematic-background="true"] body.home-page.site-entered.hero-lock-released html[data-homepage-theme-cinematic-background="true"] body.home-page.site-entered.hero-lock-released #stage .stage-wallpaper{
+  opacity:1;
+  visibility:visible;
+}
+/* =============================================================================
+   10) HOME HERO MOBILE / TABLET REFINEMENTS
+============================================================================= */
+@media (max-width:820px){
+  #stage .stage-container{
+    max-width:none;
+    padding:0;
+  }
+
+
+  #stage .logo-container .site-logo{
+    width:min(var(--home-layout-logo-width-mobile), calc(68vw * var(--accessibility-density-scale)));
+  }
+
+  #announcement{
+    font-size:var(--home-layout-announcement-mobile-size);
+    line-height:var(--home-layout-announcement-mobile-line-height);
+  }
+
+  #announcement.secondary{
+    font-size:var(--home-layout-announcement-secondary-mobile-size);
+    letter-spacing:var(--home-layout-announcement-secondary-mobile-tracking);
+  }
+
+  .enter-button{
+    width:var(--home-layout-enter-mobile-width);
+    height:var(--home-layout-enter-mobile-height);
+    min-width:var(--home-layout-enter-mobile-width);
+    min-height:var(--home-layout-enter-mobile-height);
+    padding:var(--home-layout-enter-mobile-padding-y) var(--home-layout-enter-mobile-padding-x);
+    font-size:var(--home-layout-enter-mobile-size);
+  }
+}
+
+@media (max-width:820px){
+  .stage-wallpaper,
+    #stage .stage-wallpaper{
+    inset:0;
+    width:calc(100vw * var(--accessibility-density-scale));
+    height:calc(100svh * var(--accessibility-density-scale));
+  }
+
+  @supports (height:100dvh){
+    .stage-wallpaper,
+        #stage .stage-wallpaper{
+      height:calc(100dvh * var(--accessibility-density-scale));
+    }
+  }
+
+  .stage-wallpaper .neuroartan-wallpaper__svg,
+    #stage .stage-wallpaper .neuroartan-wallpaper__svg,
+  #stage .neuroartan-wallpaper__svg{
+    height:100svh;
+    object-fit:cover;
+    object-position:center center;
+  }
+
+  @supports (height:100dvh){
+    .stage-wallpaper .neuroartan-wallpaper__svg,
+        #stage .stage-wallpaper .neuroartan-wallpaper__svg,
+    #stage .neuroartan-wallpaper__svg{
+      height:calc(100dvh * var(--accessibility-density-scale));
+    }
+  }
+}
+
+@media (max-width:820px){
+  .home-background-shell .stage-wallpaper,
+  .home-background-shell .stage-wallpaper-overlay{
+    width:100vw;
+    height:100dvh;
+  }
+
+  .home-background-shell .stage-wallpaper .neuroartan-wallpaper__svg{
+    height:100dvh;
+  }
+}
+
+/* =============================================================================
+   11) HOME HERO PAINT CONTAINMENT
+============================================================================= */
+.stage-wallpaper,
+.stage-wallpaper-overlay{
+  contain:paint;
+}
+
+#stage,
+#stage-intro{
+  position:relative;
+}
+
+#stage > :not(.home-hero-matte):not(.stage-wallpaper):not(.stage-wallpaper-overlay):not(.home-hero-shader):not(#home-hero-shader),
+#stage-intro{
+  position:relative;
+  z-index:40;
+}
+
+
+/* =============================================================================
+   12) HOME PRE-ENTER ISOLATION
+============================================================================= */
+body.home-page:not(.site-entered) #menu-mount,
+body.home-page:not(.site-entered) #footer-mount,
+body.home-page:not(.site-entered) footer,
+body.home-page:not(.site-entered) .site-footer,
+body.home-page:not(.site-entered) .country-overlay,
+body.home-page:not(.site-entered) .country-selector,
+body.home-page:not(.site-entered) [data-country-overlay]{
+  display:none;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+body.home-page:not(.site-entered) #site-main,
+body.home-page:not(.site-entered) main{
+  display:none;
+}
+
+/* =============================================================================
+   13) HOME INTRO LOGO ANIMATION
+============================================================================= */
+body.home-page.intro-loading{
+  overflow:hidden;
+}
+
+body.home-page.intro-loading #header-controls,
+body.home-page.intro-loading #home-dashboard-topbar-mount,
+body.home-page.intro-loading .home-shell__topbar,
+body.home-page.intro-loading .site-footer,
+body.home-page.intro-loading #home-footer-mount,
+body.home-page.intro-loading .home-shell__footer,
+body.home-page.intro-loading .footer-separator,
+body.home-page.intro-loading .home-shell__footer-separator,
+body.home-page.intro-loading #menu-overlay,
+body.home-page.intro-loading #stage-intro,
+body.home-page.intro-loading #announcement,
+body.home-page.intro-loading #enter-button,
+body.home-page.intro-loading .enter-button{
+  opacity:0;
+  pointer-events:none;
+}
+
+body.home-page.intro-loading #announcement,
+body.home-page.intro-loading #enter-button,
+body.home-page.intro-loading .enter-button{
+  transform:translateY(var(--home-layout-intro-reveal-y));
+}
+
+body.home-page.intro-reveal #stage-intro,
+body.home-page.site-entered #stage-intro{
+  opacity:1;
+  pointer-events:auto;
+  transition:opacity var(--home-layout-stage-intro-reveal-duration) var(--intro-ease);
+}
+
+body.home-page.intro-reveal #announcement,
+body.home-page.intro-reveal #enter-button,
+body.home-page.intro-reveal .enter-button{
+  opacity:1;
+  transform:translateY(0);
+  transition:opacity var(--home-layout-intro-content-opacity-duration) var(--interaction-ease-standard), transform var(--home-layout-intro-content-transform-duration) var(--intro-ease);
+}
+
+.site-logo.intro-logo{
+  position:fixed;
+  left:50%;
+  top:50%;
+  right:auto;
+  bottom:auto;
+  display:block;
+  width:min(calc(62vw * var(--accessibility-density-scale)), var(--intro-logo-max));
+  height:auto;
+  margin:0;
+  z-index:300000;
+  opacity:0;
+  transform:translate(-50%, -50%) scale(var(--home-layout-intro-logo-scale-start));
+  transition:opacity var(--intro-pop-duration) var(--interaction-ease-standard), transform var(--intro-settle-duration) var(--intro-ease);
+  will-change:transform, opacity;
+  backface-visibility:hidden;
+}
+
+.site-logo.intro-logo.intro-pop{
+  opacity:1;
+  transform:translate(-50%, -50%) scale(calc(1 * var(--accessibility-density-scale)));
+}
+
+.site-logo.intro-logo.intro-settle{
+  transform:translate(-50%, -50%) scale(var(--home-layout-intro-logo-scale-settle));
+}
+
+.site-logo.intro-logo.intro-fade{
+  opacity:0;
+  transform:translate(-50%, -50%) scale(var(--home-layout-intro-logo-scale-fade));
+  transition:opacity var(--intro-fade-duration) var(--interaction-ease-standard), transform var(--intro-fade-duration) var(--intro-ease);
+}
+
+html[dir="rtl"] .site-logo.intro-logo,
+body[dir="rtl"] .site-logo.intro-logo{
+  left:50%;
+  right:auto;
+}
+
+.site-logo.intro-docked{
+  position:relative;
+  left:auto;
+  top:auto;
+  transform:none;
+  width:var(--home-layout-logo-width);
+  margin:0 auto var(--home-layout-logo-docked-margin-bottom) auto;
+  z-index:1;
+  opacity:1;
+  will-change:transform, opacity;
+  transition:opacity var(--home-layout-logo-transition-opacity) var(--interaction-ease-standard), transform var(--home-layout-logo-transition-transform) var(--interaction-ease-standard);
+}
+
+@media (max-width:640px){
+  .site-logo.intro-logo{
+    width:min(calc(78vw * var(--accessibility-density-scale)), var(--intro-logo-mobile-max));
+  }
+
+  .site-logo.intro-docked{
+    width:var(--home-layout-logo-width-mobile);
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  body.home-page.intro-loading{
+    overflow:auto;
+  }
+
+  .site-logo.intro-logo,
+  .site-logo.intro-logo.intro-fade,
+  body.home-page.intro-reveal #announcement,
+  body.home-page.intro-reveal #enter-button,
+  body.home-page.intro-reveal .enter-button{
+    transition:none;
+    animation:none;
+    transform:none;
+  }
+}

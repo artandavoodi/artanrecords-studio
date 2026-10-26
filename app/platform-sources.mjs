@@ -25,6 +25,9 @@ export const appearanceMarkup=(await platformFragment('assets/fragments/layers/w
   .replaceAll('home-platform-theme__mode-grid"','ui-radio-list"')
   .replaceAll('</span>\n        </button>','</span><span class="ui-radio-list__indicator" aria-hidden="true"></span>\n        </button>')
   .replace('class="home-platform-theme__section-toggle-icon" aria-hidden="true">⌄','class="home-platform-theme__section-toggle-icon" aria-hidden="true"><img class="studio-icon" src="/app/neuroartan/registry/icons/public/assets/core/navigation/chevron/chevron-down.svg" alt="">');
-export const visualLayersMarkup='<div class="studio-visual-layers" aria-hidden="true">'+
- (await platformFragment('assets/fragments/layers/website/home/background/home-breathing-circle.html')).replace('class="home-breathing-circle"','class="home-breathing-circle" data-visual-surface')+
- (await platformFragment('assets/fragments/layers/website/home/background/home-hero-matte.html'))+'</div>';
+let backgroundShell=await platformFragment('assets/fragments/layers/website/home/background/home-background-shell.html');
+for(const name of ['home-cinematic-wallpaper','home-hero-shader','home-breathing-circle','home-hero-matte']){
+ const fragment=(await platformFragment('assets/fragments/layers/website/home/background/'+name+'.html')).replaceAll('="/assets/scenes/','="/app/neuroartan/assets/scenes/').replace('class="home-breathing-circle"','class="home-breathing-circle" data-visual-surface');
+ backgroundShell=backgroundShell.replace(`data-include="${name}" aria-hidden="true"></div>`,`aria-hidden="true">${fragment}</div>`);
+}
+export const visualLayersMarkup='<div class="studio-visual-layers" aria-hidden="true">'+backgroundShell+'</div>';

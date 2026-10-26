@@ -1,0 +1,143 @@
+/* Generated from pinned Neuroartan home.css background ownership. */
+:root{
+--home-layout-stage-wallpaper-motion:620ms;
+--home-layout-stage-wallpaper-overlay:
+    linear-gradient(118deg,
+      color-mix(in srgb, var(--color-primary5) 16%, transparent) 0%,
+      color-mix(in srgb, var(--color-primary6) 12%, transparent) 22%,
+      color-mix(in srgb, var(--color-secondary8) 10%, transparent) 48%,
+      color-mix(in srgb, var(--color-secondary9) 12%, transparent) 74%,
+      color-mix(in srgb, var(--color-primary1) 16%, transparent) 100%),
+    linear-gradient(24deg,
+      color-mix(in srgb, var(--bg-color) 28%, transparent) 0%,
+      transparent 38%,
+      color-mix(in srgb, var(--bg-color) 22%, transparent) 100%);
+--home-layout-stage-wallpaper-overlay-blur:var(--layout-home-stage-wallpaper-overlay-blur);
+--home-layout-stage-wallpaper-overlay-saturate:var(--layout-home-stage-wallpaper-overlay-saturate);
+--home-layout-stage-wallpaper-overlay-motion:var(--layout-home-stage-wallpaper-overlay-motion);
+--home-layout-stage-wallpaper-overlay-reveal-opacity:var(--layout-home-stage-wallpaper-overlay-reveal-opacity);
+}
+.home-background-shell,
+.home-background-shell__cinematic,
+.home-background-shell__shader,
+.home-background-shell__circle,
+.home-background-shell__matte{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  margin:0;
+  padding:0;
+  border:0;
+  overflow:hidden;
+  pointer-events:none;
+}
+
+.home-background-shell{
+  z-index:0;
+  isolation:isolate;
+  contain:paint;
+}
+
+.stage-wallpaper,
+#stage .stage-wallpaper{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  margin:0;
+  padding:0;
+  border:0;
+  z-index:0;
+  pointer-events:none;
+  overflow:hidden;
+  opacity:0;
+  visibility:hidden;
+  transition:
+    opacity var(--home-layout-stage-wallpaper-motion) var(--interaction-ease-standard),
+    visibility var(--home-layout-stage-wallpaper-motion) var(--interaction-ease-standard);
+}
+
+.stage-wallpaper .neuroartan-wallpaper__svg,
+#stage .stage-wallpaper .neuroartan-wallpaper__svg,
+#stage .neuroartan-wallpaper__svg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  margin:0;
+  padding:0;
+}
+
+.stage-wallpaper::after,
+#stage .stage-wallpaper::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:transparent;
+}
+
+html[data-homepage-theme-cinematic-background="false"] .stage-wallpaper,
+html[data-homepage-theme-cinematic-background="false"] html[data-homepage-theme-cinematic-background="false"] #stage .stage-wallpaper{
+  opacity:0;
+  visibility:hidden;
+}
+
+html[data-homepage-theme-cinematic-background="true"] .stage-wallpaper,
+html[data-homepage-theme-cinematic-background="true"] html[data-homepage-theme-cinematic-background="true"] #stage .stage-wallpaper{
+  opacity:1;
+  visibility:visible;
+}
+
+/* =============================================================================
+   06) HOME STAGE WALLPAPER OVERLAY
+============================================================================= */
+.stage-wallpaper-overlay{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:var(--home-layout-stage-wallpaper-overlay);
+  backdrop-filter:blur(var(--home-layout-stage-wallpaper-overlay-blur)) saturate(var(--home-layout-stage-wallpaper-overlay-saturate));
+  -webkit-backdrop-filter:blur(var(--home-layout-stage-wallpaper-overlay-blur)) saturate(var(--home-layout-stage-wallpaper-overlay-saturate));
+  opacity:0;
+  visibility:hidden;
+  transition:opacity var(--home-layout-stage-wallpaper-overlay-motion) var(--interaction-ease-standard), visibility var(--home-layout-stage-wallpaper-overlay-motion) var(--interaction-ease-standard);
+}
+
+.home-background-shell .stage-wallpaper,
+.home-background-shell .stage-wallpaper-overlay{
+  position:fixed;
+  inset:0;
+  width:100vw;
+  height:100dvh;
+}
+
+html[data-homepage-theme-cinematic-background="false"] .stage-wallpaper-overlay{
+  opacity:0;
+  visibility:hidden;
+}
+
+html[data-homepage-theme-cinematic-background="true"] .stage-wallpaper-overlay{
+  opacity:1;
+  visibility:visible;
+}
+
+html[data-homepage-theme-cinematic-background="true"] body.home-page.intro-loading .stage-wallpaper-overlay{
+  opacity:1;
+  visibility:visible;
+}
+
+html[data-homepage-theme-cinematic-background="true"] body.home-page.intro-reveal .stage-wallpaper-overlay{
+  opacity:var(--home-layout-stage-wallpaper-overlay-reveal-opacity);
+  visibility:visible;
+}
+
+html[data-homepage-theme-cinematic-background="true"] body.home-page.site-entered.hero-lock-released .stage-wallpaper-overlay{
+  opacity:1;
+  visibility:visible;
+}
+

@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "03fcf35a9b9b825e3daeaafd8bea0ab3880b75e2",
+  "revision": "da06e2017803d9cce7e879d6937b06515aa693ab",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
     "address": "600017791b60ee1b2414c83624c33817cd3f4671451668184882bfef7644cb5c",
@@ -27,6 +27,8 @@
     "finance": "1ea3b4b63cee6e3595b34d08f1f08956d98cbaf1ffe03b9243ce36d36d9c24a2",
     "document": "18d7e7cfc77112a4bdf7ba29963cd6cf694aef79066fd92eea58e9669001623a",
     "payment": "fddb94f7b66d3f4481e753459df9d680dcebdb27d43c3f88c7bc4e0ada6142fb",
+    "billing": "6ec3ac84b48623ef7014a0f5fd4db024dc73623eb093cfc56ed1115c32e29aa4",
+    "card": "0b821c1c55823384b12a32b40fd57354f6bf8686d860347af1dc5faff9336541",
     "contract": "ccdf28240ac7d5b21c6127226a83d4fca91f772b05306545dbdb1ea4565ae107",
     "settings": "734f57b40adbbf70f35e4a08bf531798ff10c1af2003d2a8ae3888bfc84bbb6d",
     "appearance": "27cfc3c404b443b55f762bdfc6d2ce52fb76955733332843c8e3ac265cf4956d",
@@ -52,6 +54,10 @@
     "email": "cf2c19b26e0f7313cc851db282bbf6c08c115a41854c7fe9f0a910809f9e161c",
     "image": "4375c1baa33f12fb7bb800ad31339fa51f516b317a6f2394e890e0eb40ae3aa6",
     "edit": "7e159858f866fb171948cffa2155e3a9cea3dc6669c3523e4c7ce4327dfd73d2",
+    "reset": "668c7abdf4726e2d1ff4572db11569ea4b5dc21718579bba1acaa9f9d9850433",
+    "gallery": "e12059ce8e2de342f5d92213581641c5021c69effc241edc3eae4e30bf835c57",
+    "projects": "ed6b723a4421ed140e07a02a77f3c35529b7cddcc536cbc8553d0ff30f4f5ada",
+    "chevron-down": "267f15b40d1f468dd67aa683522be1166bed34488003b70181d9f6ab00da01a6",
     "globe": "b4693a9829c4d5915df2546696c3fd0afffe41717b913651970e5fe758036b94",
     "plus": "d6e6467d134a5ff667f8b639533f677fbed1da38172ae8e995e1f7fc6e83307f",
     "concert": "c8faa597f648e8fc35359d856a7c01828ed47fc95992fd38ea7dfc09ca958c13"
@@ -82,6 +88,8 @@
     "finance": true,
     "document": true,
     "payment": true,
+    "billing": true,
+    "card": true,
     "contract": true,
     "settings": true,
     "appearance": true,
@@ -107,6 +115,10 @@
     "email": true,
     "image": true,
     "edit": true,
+    "reset": true,
+    "gallery": false,
+    "projects": true,
+    "chevron-down": true,
     "globe": true,
     "plus": true,
     "concert": true

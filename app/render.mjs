@@ -9,6 +9,8 @@ import {concertsMarkup} from './concert-render.mjs';
 import {commerceMarkup} from './commerce-render.mjs';
 import {bankMarkup} from './bank-render.mjs';
 import {agreementsMarkup} from './agreements-render.mjs';
+import {editorMarkup} from './editor-render.mjs';
+import {portfolioMarkup} from './portfolio-render.mjs';
 export {renderMenu} from './platform-render.mjs';
 export {renderNavigation,renderFooter} from './shell-render.mjs';
 export {renderActions} from './dialog-render.mjs';
@@ -23,11 +25,13 @@ export async function renderHead(){
 }
 if(programmes.referrals.enabled||programmes.payments.enabled||programmes.royaltyWithdrawals.enabled)throw Error('Programme activation requires verified backend implementation');
 export async function render(page,{config,e,search}){
-  const icon=name=>renderIcon(name,e);
+  const icon=(name,classes)=>renderIcon(name,e,classes);
   const header=page.path==='/profile/'?`<h1 class="sr-only">${e(page.heading||page.title)}</h1>`:`<header><h1>${e(page.heading||page.title)}</h1><p class="reading">${e(page.description)}</p></header>`;
   let body='';
   if(page.path==='/account/')body=`<div class="studio-hero-actions"><button class="ui-button" type="button" data-studio-account-open>${icon('signin')}Sign in</button><a href="/profile/">Manage your profile</a></div>`;
   else if(page.path==='/profile/')body=profileMarkup({settings,e,icon});
+  else if(page.path==='/editor/')body=editorMarkup(e,icon,profileMarkup({settings,e,icon}),{gallery:portfolioMarkup('gallery',e,icon),project:portfolioMarkup('project',e,icon)});
+  else if(page.path==='/gallery/'||page.path==='/projects/')body=portfolioMarkup(page.path==='/gallery/'?'gallery':'project',e,icon);
   else if(['/privacy/','/terms/','/cookies/'].includes(page.path)){const notice=legal.notices.find(item=>item.legacyPath===page.path);body=`<p class="publication-meta"><span>Effective date: ${e(notice.effectiveDate)}</span><span>Last updated: ${e(notice.lastUpdated)}</span></p>${notice.sections.map(section=>`<section class="surface-section" id="${e(section.id)}"><h2>${e(section.title)}</h2>${section.paragraphs.map(p=>`<p>${e(p)}</p>`).join('')}</section>`).join('')}`;}
   else if(page.path==='/search/')body=`<button class="ui-button" type="button" data-studio-search-open>${icon('search')}Open search</button>`;
   else if(page.path==='/')body=renderOverview(e);

@@ -1,0 +1,7 @@
+{
+ "types":{"gallery":{"title":"Gallery","singular":"photograph","icon":"gallery"},"project":{"title":"Projects","singular":"project","icon":"projects"}},
+ "fields":[{"name":"title","label":"Title","max":160,"required":true},{"name":"collection","label":"Collection","max":100},{"name":"description","label":"Description","max":4000,"multiline":true},{"name":"image_alt","label":"Image description","max":500},{"name":"year","label":"Year","max":4},{"name":"role","label":"Your role","max":200},{"name":"credits","label":"Credits","max":1000},{"name":"project_url","label":"Project website","max":500,"type":"url"},{"name":"tags","label":"Tags, separated by commas","max":1600}],
+ "imageLimit":5242880,
+ "imageDimension":2048,
+ "notice":"New items are private drafts. Publish only work you have permission to share. A published artist profile is required; hiding your artist profile also hides its gallery and projects."
+}

@@ -2,6 +2,9 @@
 @import url('./neuroartan/assets/css/core/03-primitives/character-counter.css');
 @import url('./neuroartan/assets/css/layers/website/home/background/home-breathing-circle.css');
 @import url('./neuroartan/assets/css/layers/website/home/background/home-matte-layer.css');
+@import url('./neuroartan/assets/css/layers/website/home/background/home-shell.generated.css');
+@import url('./neuroartan/assets/css/layers/website/ui/effects/wallpaper-engine.css');
+@import url('./neuroartan/assets/css/layers/website/home/background/home-hero-shader.css');
 @import url('./neuroartan/assets/css/core/04-systems/toast.css');
 @import url('./neuroartan/assets/css/core/03-primitives/loaders.css');
 @import url('./neuroartan/assets/css/core/04-systems/notifications.css');
@@ -13,6 +16,7 @@
 @import url('./platform.css');
 @import url('./commerce.css');
 @import url('./bank.css');
+@import url('./editor.css');
 @import url('./neuroartan/assets/css/core/01-tokens/editor.tokens.css');
 @import url('./neuroartan/assets/css/core/03-primitives/icons.css');
 @import url('./neuroartan/assets/css/core/03-primitives/slider.css');
@@ -28,11 +32,15 @@
 body { isolation:isolate; }
 .studio-visual-layers { position:fixed; inset:0; z-index:-1; pointer-events:none; }
 .studio-pro-badge { font-size:var(--site-type-caption-size); padding:var(--spacing-xs) var(--spacing-sm); border-radius:var(--control-radius-pill); background:var(--control-bg-hover); color:var(--cv-text-primary); }
+.studio-portfolio,.studio-portfolio-list { display:grid; gap:var(--spacing-lg); }
+.studio-portfolio-list article { display:grid; gap:var(--spacing-sm); padding-block:var(--spacing-md); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
+.studio-portfolio-list article :is(h2,p) { margin:0; }
+[data-portfolio-image] { max-inline-size:100%; max-block-size:45svh; object-fit:contain; }
 
 /* Studio composition; shared brand values and label header motion stay canonical. */
 .studio-surface { display:grid; gap:var(--spacing-xl); }
 .studio-surface > header { max-inline-size:var(--cv-reading-width); }
-.studio-header-frame { background:var(--cv-page-bg); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
+.studio-header-frame { background:transparent; border-block-end:var(--border-width-hairline) solid var(--cv-border); }
 body:has(.studio-header-frame) { min-block-size:100dvh; display:flex; flex-direction:column; }
 body:has(.studio-header-frame) > main { flex:1; display:grid; }
 @media(min-width:1025px){body:has(.studio-platform) > main { inline-size:100%; margin-inline:0; }.studio-platform-content { padding-inline-end:var(--site-gutter); }}

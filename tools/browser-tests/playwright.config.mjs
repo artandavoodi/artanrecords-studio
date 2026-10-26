@@ -1,6 +1,7 @@
 import {defineConfig,devices} from '@playwright/test';
 export default defineConfig({
   testDir:'.',testMatch:'account.spec.mjs',workers:2,timeout:30000,
+  expect:{timeout:10000},
   use:{baseURL:process.env.STUDIO_TEST_URL||'http://127.0.0.1:9038',reducedMotion:'reduce',trace:'retain-on-failure'},
   projects:[
     {name:'chromium-desktop',use:{...devices['Desktop Chrome']}},

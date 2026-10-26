@@ -1,4 +1,5 @@
 import {test,expect} from '@playwright/test';
+import {readFile} from 'node:fs/promises';
 
 const id='92000000-0000-0000-0000-000000000001';
 const user={id,aud:'authenticated',role:'authenticated',email:'artist@example.test',email_confirmed_at:'2026-10-20T00:00:00Z',created_at:'2026-10-20T00:00:00Z',app_metadata:{provider:'email'},user_metadata:{full_name:'Test artist'}};
@@ -83,21 +84,78 @@ test('subscription billing is separate from payouts and only verified access dis
  await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.goto('/settings/#subscription');await expect(page.getByRole('tabpanel',{name:'Subscription & billing',exact:true})).toBeVisible();
  await expect(page.locator('[data-subscription-status]')).toHaveText('Studio · No active paid subscription');
- await expect(page.locator('.studio-pro-badge')).toHaveCount(0);await expect(page.locator('#settings-subscription input')).toHaveCount(0);
+ await expect(page.locator('.studio-pro-badge')).toHaveCount(0);await expect(page.locator('#settings-subscription input:not([type=checkbox])')).toHaveCount(0);
  await page.route('**/rpc/studio_subscription_status',route=>route.fulfill({json:{plan:'studio-pro',status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z'}}));
  await page.reload();await expect(page.locator('.studio-pro-badge')).toHaveText('Pro');
  await page.getByRole('tab',{name:'Artist payout setup',exact:true}).click();await expect(page.locator('[data-payout-application-form]')).toBeVisible();
 });
-test('appearance reuses shared breathing and matte layers without enabling missing effects',async({page})=>{
+test('subscription card setup reports unavailable configuration without loading card fields',async({page})=>{
+ await mockBackend(page);const dialog=await openAccount(page);
+ await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.route('**/functions/v1/studio-billing',route=>route.fulfill({status:503,json:{error:'Secure card setup is not configured yet. No card details were collected.'}}));
+ await page.goto('/settings/#subscription');const card=page.locator('[data-card-setup]');await card.locator('[name=consent]').check();await card.getByRole('button',{name:'Add payment method',exact:true}).click();
+ await expect(card.locator('[data-card-status]')).toContainText('not configured');await expect(card.locator('[data-card-element-form]')).toBeHidden();await expect(page.locator('script[src="https://js.stripe.com/v3/"]')).toHaveCount(0);
+});
+test('portfolio projects save private drafts then require a distinct publish action',async({page})=>{
+ await mockBackend(page);const dialog=await openAccount(page);
+ await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ const rows=[],portfolioId='98100000-0000-0000-0000-000000000011';let publication;
+ await page.route('**/rest/v1/studio_artist_portfolio*',route=>route.fulfill({json:rows}));
+ await page.route('**/rpc/studio_save_portfolio',route=>{const data=route.request().postDataJSON();publication=data.publication;rows.splice(0,rows.length,{id:portfolioId,kind:'project',details:data.value,status:data.publication});return route.fulfill({json:portfolioId});});
+ await page.goto('/projects/');await page.getByRole('button',{name:'Add project',exact:true}).click();const edit=page.getByRole('dialog',{name:'Edit project',exact:true});await edit.locator('[name=title]').fill('New creative project');await edit.locator('[name=description]').fill('A private project story.');await edit.getByRole('button',{name:'Save draft',exact:true}).click();
+ await expect(edit).toBeHidden();expect(publication).toBe('draft');await expect(page.locator('[data-portfolio-list]')).toContainText('New creative project');await page.locator('[data-portfolio-list]').getByRole('button',{name:'Edit',exact:true}).click();await edit.getByRole('button',{name:'Publish',exact:true}).click();await expect(edit).toBeHidden();await expect(page.locator('[data-portfolio-list]')).toContainText('published');expect(publication).toBe('published');
+});
+test('appearance reuses all canonical visual layers and disables controls in plain themes',async({page})=>{
  await mockBackend(page);await page.goto('/settings/#appearance');
  await page.locator('[data-theme-option=custom]').click();
  const breathing=page.locator('[data-toggle-scope=homepage-theme][data-toggle-key=breathing-circle]');
  await expect(breathing).toBeEnabled();await breathing.click();
  await expect(page.locator('html')).toHaveAttribute('data-homepage-theme-breathing-circle','true');
  await expect(page.locator('.home-breathing-circle')).toHaveCSS('visibility','visible');
+ const cinematic=page.locator('[data-toggle-scope=homepage-theme][data-toggle-key=cinematic-background]');
+ await expect(cinematic).toBeEnabled();await cinematic.click();
+ await expect(page.locator('html')).toHaveAttribute('data-homepage-theme-cinematic-background','true');
+ await expect(page.locator('[data-neuroartan-wallpaper] svg')).toHaveCount(1);
+ await expect(page.locator('.stage-wallpaper')).toHaveCSS('visibility','visible');
+ const shader=page.locator('[data-toggle-scope=homepage-theme][data-toggle-key=hero-shader]');
+ await expect(shader).toBeEnabled();if(await shader.getAttribute('aria-checked')!=='true')await shader.click();
+ await expect(page.locator('html')).toHaveAttribute('data-homepage-theme-hero-shader','true');
+ await expect(page.locator('#home-hero-shader')).toHaveCSS('visibility','visible');
  await page.locator('[data-theme-option=light]').click();
  await expect(breathing).toBeDisabled();
  await expect(page.locator('[data-toggle-key=hero-shader][role=switch]')).toBeDisabled();
+});
+test('page editor uses only the signed-in artist handle and isolated preview controls',async({page})=>{
+ await mockBackend(page);const dialog=await openAccount(page);
+ await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+ await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.route('**/rest/v1/studio_artist_handles*',route=>route.fulfill({json:{approved_username:'testartist95'}}));
+ await page.goto('/editor/');
+ await expect(page.locator('[data-editor-frame]')).toHaveAttribute('src','http://127.0.0.1:8912/testartist95/?editor-preview=1');
+ await expect(page.locator('[data-editor-font-select]')).toBeDisabled();
+ await expect(page.getByText('Design preview only.',{exact:false})).toBeVisible();
+});
+test('artist canvas opens focused and corner editing updates only its preview',async({page})=>{
+ await mockBackend(page);const dialog=await openAccount(page);
+ await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+ await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.route('**/rest/v1/studio_artist_handles*',route=>route.fulfill({json:{approved_username:'testartist95'}}));
+ const config=JSON.parse(await readFile(new URL('../../assets/data/artists/editor.json',import.meta.url),'utf8'));
+ const module=await readFile(new URL('../../assets/js/layers/site/artist-editor-preview.js',import.meta.url),'utf8');
+ await page.route('http://127.0.0.1:8912/**',route=>{
+  const path=new URL(route.request().url()).pathname;
+  if(path==='/assets/js/layers/site/artist-editor-preview.js')return route.fulfill({contentType:'text/javascript',body:module});
+  if(path==='/testartist95/')return route.fulfill({contentType:'text/html',body:`<!doctype html><html><head></head><body><article data-public-artist><h1 data-artist-name>Test artist</h1><section data-artist-fields>Biography</section><section data-artist-links>Links</section></article><script type="module">import {bindArtistEditorPreview} from '/assets/js/layers/site/artist-editor-preview.js';bindArtistEditorPreview(document.querySelector('article'),${JSON.stringify(config)});</script></body></html>`});
+  return route.fulfill({body:''});
+ });
+ await page.goto('/editor/');
+ await expect(page.locator('[data-artist-editor]')).toHaveAttribute('data-focus','true');
+ await expect(page.locator('.studio-header-frame')).toBeHidden();await expect(page.locator('.studio-platform-rail')).toBeHidden();
+ const canvas=page.frameLocator('[data-editor-frame]');await canvas.getByRole('button',{name:'Edit Artist name',exact:true}).click();
+ await expect(page.getByRole('region',{name:'Page design'})).toBeVisible();
+ await page.locator('[data-editor-font-select]').selectOption('mono');
+ await expect(canvas.locator('[data-artist-name]')).toHaveAttribute('style',/font-family: var\(--font-mono\)/);
+ await page.getByRole('button',{name:'Workspace view',exact:true}).click();await expect(page.locator('.studio-header-frame')).toBeVisible();
 });
 test('Store prepares private products and collections without activating publication or payments',async({page})=>{
  await mockBackend(page);let prepared=false;const products=[],collections=[],domainRequests=[];

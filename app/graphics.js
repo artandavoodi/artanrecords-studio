@@ -1,5 +1,5 @@
 import config from '../content/graphics.json' with {type:'json'};
-import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
+import {showArtistSaveConfirmation as showSaveConfirmation} from './artist-save.js';
 import {colourAssignments,assignmentSelection,assignmentUnavailable} from './graphics-values.js';
 
 function logoSvg(text){
