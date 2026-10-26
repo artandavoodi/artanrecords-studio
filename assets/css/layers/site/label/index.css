@@ -1,5 +1,6 @@
 /* Label composition consumes the shared source tokens, not a parallel scale. */
 @import url('../theme-menu.css');
+@import url('../artist-portfolio.css');
 @import url('../../../../brand/presentation.css');
 :root {
   --label-artwork-motion-duration: var(--nav-institutional-motion-panel-slow);

@@ -1,0 +1,8 @@
+.artist-portfolio { display:grid; align-content:start; gap:var(--spacing-lg); }
+.artist-portfolio[hidden],.artist-portfolio-grid article[hidden] { display:none; }
+.artist-portfolio-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--spacing-xl); }
+.artist-portfolio-grid article { display:grid; align-content:start; gap:var(--spacing-sm); min-inline-size:0; }
+.artist-portfolio-grid :is(h3,p) { margin:0; }
+.artist-portfolio-grid img { inline-size:100%; max-block-size:65svh; object-fit:contain; }
+.artist-profile[data-artist-section-mode=desktop] > [data-artist-portfolio] { scroll-snap-align:none; align-content:start; }
+@media(max-width:600px){.artist-portfolio-grid { grid-template-columns:minmax(0,1fr); }}
