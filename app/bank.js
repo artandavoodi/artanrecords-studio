@@ -1,55 +1,27 @@
-export function bankSnapshot(value){
-  if(value?.mode!=='test'||typeof value.linked!=='boolean')throw Error('Invalid payout response');
-  if(!value.linked){if(!Array.isArray(value.countries)||!value.countries.length||value.countries.some(code=>typeof code!=='string'||!/^[A-Z]{2}$/.test(code)))throw Error('Invalid country response');return value;}
-  const status=value.status;
-  if(!status||['detailsSubmitted','payoutsEnabled','transfersActive','restricted'].some(key=>typeof status[key]!=='boolean')||!Number.isSafeInteger(status.informationDue)||status.informationDue<0)throw Error('Invalid payout status');
-  for(const key of ['available','pending'])if(!Array.isArray(value.balances?.[key])||value.balances[key].length>100||value.balances[key].some(item=>!Number.isSafeInteger(item.amount)||!/^[a-z]{3}$/.test(item.currency)))throw Error('Invalid payout balance');
-  return value;
-}
-export function onboardingDestination(value){
-  if(value?.mode!=='test')throw Error('Unexpected payment environment');
-  const url=new URL(value.url);
-  if(url.origin!=='https://connect.stripe.com'||url.username||url.password)throw Error('Untrusted payout destination');
-  return url.href;
+import config from '../content/payout-application.json' with {type:'json'};
+import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
+export function payoutApplicationValues(form){
+ const value={};
+ for(const field of config.fields){const text=String(form.get(field.name)||'').trim();if(field.required&&!text||field.max&&text.length>field.max||field.pattern&&!(new RegExp('^'+field.pattern+'$')).test(text)||field.options&&!field.options.some(option=>option.value===text&&text))throw Error('Complete the required application details.');value[field.name]=field.pattern?text.toUpperCase():text;}
+ if(value.recipient_type!=='individual'&&!value.business_name)throw Error('Enter the registered business name.');
+ if(form.get('consent')!=='on')throw Error('Confirm submission before applying.');value.consent=true;return value;
 }
 export function bankAmount(item){
-  if(['eur','usd','gbp'].includes(item.currency))return new Intl.NumberFormat(undefined,{style:'currency',currency:item.currency.toUpperCase()}).format(item.amount/100);
-  return `${item.amount} minor units (${item.currency.toUpperCase()})`;
+ if(['eur','usd','gbp'].includes(item.currency))return new Intl.NumberFormat(undefined,{style:'currency',currency:item.currency.toUpperCase()}).format(item.amount/100);
+ return `${item.amount} minor units (${item.currency.toUpperCase()})`;
 }
 export async function bindBank({client,resolveUser}){
-  const surface=document.querySelector('[data-bank-service]');if(!surface)return;
-  const status=surface.querySelector('[data-bank-status]'),mode=surface.querySelector('[data-bank-mode]'),onboard=surface.querySelector('[data-bank-onboard]'),refresh=surface.querySelector('[data-bank-refresh]');
-  const country=surface.querySelector('[data-bank-country]'),countryField=surface.querySelector('[data-bank-country-field]');
-  let owner=null,busy=false;
-  const total=document.querySelector('[data-bank-total]');
-  const clear=()=>{mode.hidden=true;onboard.disabled=true;countryField.hidden=true;if(total)total.textContent='—';document.querySelectorAll('[data-bank-balance]').forEach(item=>item.textContent='Unavailable');};
-  const invoke=async(action,countryCode)=>{
-    const current=client&&await resolveUser(client);
-    if(!current||(owner&&current.id!==owner))throw Error('Sign in required');
-    owner=current.id;
-    const {data,error}=await client.functions.invoke('studio-connect',{body:{action,...(countryCode?{country:countryCode}:{})}});
-    if(error||data?.error){console.error('[studio] Payout connection failed',error?.context?.status||'network');throw Error('Payout connection unavailable');}
-    if((await resolveUser(client))?.id!==owner)throw Error('Payout connection unavailable');return data;
-  };
-  async function load(){
-    if(busy)return;busy=true;refresh.disabled=true;clear();status.textContent='Checking payout connection...';
-    try{
-      const data=bankSnapshot(await invoke('status'));mode.hidden=false;onboard.disabled=false;
-      if(!data.linked){status.textContent='No payout account connected. Choose your country, then enter bank and tax information securely with Stripe.';onboard.querySelector('span').textContent='Set up payout account';const selected=country.value,names=new Intl.DisplayNames([navigator.language||'en'],{type:'region'});country.replaceChildren(new Option('Choose your country',''),...data.countries.map(code=>new Option(names.of(code)||code,code)).sort((a,b)=>a.text.localeCompare(b.text)));country.value=data.countries.includes(selected)?selected:'';countryField.hidden=false;}
-      else{
-        onboard.querySelector('span').textContent='Update payout information';
-        status.textContent=data.status.restricted?'Stripe requires attention. Review your payout information.':data.status.informationDue?'Stripe requires more information before payouts are ready.':data.status.payoutsEnabled&&data.status.transfersActive?'Sandbox payout capabilities enabled. Live withdrawals remain unavailable.':'Stripe is reviewing payout capabilities. Withdrawals are unavailable.';
-        document.querySelectorAll('[data-bank-balance]').forEach(item=>{const entries=data.balances[item.dataset.bankBalance];item.textContent=entries.length?entries.map(bankAmount).join(' · '):'No test funds in this balance';});
-        if(total)total.textContent=data.balances.available.length?data.balances.available.map(bankAmount).join(' · '):'0 test funds';
-      }
-    }catch{clear();status.textContent='Payout setup is not connected yet. No bank details were collected or withdrawal made.';}
-    finally{busy=false;refresh.disabled=false;}
-  }
-  refresh.addEventListener('click',load);
-  onboard.addEventListener('click',async()=>{
-    if(busy)return;if(!countryField.hidden&&!country.reportValidity())return;busy=true;onboard.disabled=true;refresh.disabled=true;
-    try{location.assign(onboardingDestination(await invoke('onboard',countryField.hidden?null:country.value)));}catch{status.textContent='Payout setup could not be opened. Refresh the connection and try again.';busy=false;refresh.disabled=false;}
-  });
-  // Provider return parameters are never proof of verification; load fresh server status.
-  await load();
+ const root=document.querySelector('[data-payout-application]');if(!root)return;
+ const form=root.querySelector('form'),status=root.querySelector('[data-payout-application-status]'),note=root.querySelector('[data-payout-decision]');let owner;
+ try{owner=client&&await resolveUser(client);if(!owner)throw Error();}catch{status.textContent='Sign in to manage your payout application.';return;}
+ async function refresh(){
+  const result=await client.from('studio_payout_applications').select('legal_name,recipient_type,business_name,registration_country,tax_residence_country,status,decision_note').eq('account_id',owner.id).maybeSingle();if(result.error)throw Error('Payout applications are not connected yet. No information was submitted.');
+  if((await resolveUser(client))?.id!==owner.id)throw Error('Your session changed. Refresh before continuing.');
+  const row=result.data;form.hidden=Boolean(row&&['pending','approved'].includes(row.status));status.textContent=row?config.statuses[row.status]||'Application status unavailable.':'No payout application submitted.';note.textContent=row?.decision_note||'';
+  if(row)for(const field of config.fields)form.elements[field.name].value=row[field.name]||'';
+ }
+ try{await refresh();}catch(error){status.textContent=error.message;return;}
+ form.addEventListener('submit',async event=>{event.preventDefault();const button=form.querySelector('button');button.disabled=true;
+  try{if((await resolveUser(client))?.id!==owner.id)throw Error('Your session changed.');const value=payoutApplicationValues(new FormData(form));const result=await client.rpc('studio_submit_payout_application',{value});if(result.error)throw Error('The application was not submitted. Refresh before retrying; resubmissions may require a one-hour wait.');await refresh();showSaveConfirmation('Application submitted for review.');}catch(error){status.textContent=error.message;}finally{button.disabled=false;}
+ });
 }

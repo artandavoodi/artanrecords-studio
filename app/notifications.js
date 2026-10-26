@@ -6,13 +6,13 @@ export async function bindNotifications({client,resolveUser}){
  const count=button.querySelector('[data-studio-notification-count]');count.classList.add('system-notification-badge');
  let busy=false,history=false,records=[];const acknowledged=new Set();
  function render(){
-  const items=records.map(item=>({id:item.id,title:(item.kind==='username'?'Username':'Partnership')+' · '+item.status,message:item.message,status:item.status,createdAt:item.created_at,read:Boolean(item.read_at||acknowledged.has(item.id)),openLabel:'View in your profile'}));
+  const items=records.map(item=>({id:item.id,kind:item.kind,title:(item.kind==='username'?'Username':item.kind==='payout'?'Payout application':'Partnership')+' · '+item.status,message:item.message,status:item.status,createdAt:item.created_at,read:Boolean(item.read_at||acknowledged.has(item.id)),openLabel:item.kind==='payout'?'View payout application':'View in your profile'}));
   const unread=items.filter(item=>!item.read).length;button.setAttribute('aria-label',unread?'Notifications, '+unread+' unread':'Notifications');button.dataset.unread=String(unread>0);count.hidden=!unread;count.textContent=String(unread);
   renderNotificationFeed(feed,{items,history,onHistory:value=>{history=value;render();},onRead:async item=>{
    if((await resolveUser(client))?.id!==user.id)throw Error('Your session changed.');
    const result=await client.rpc('studio_read_notification',{notification:item.id});if(result.error)throw result.error;
    acknowledged.add(item.id);render();
-  },onOpen:()=>{popover.hidePopover();location.assign('/profile/#profile-publication');}});
+  },onOpen:item=>{popover.hidePopover();location.assign(item.kind==='payout'?'/settings/#payments':'/profile/#profile-publication');}});
  }
  async function refresh(){
   if(busy||!button.isConnected)return;busy=true;

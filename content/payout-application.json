@@ -1,0 +1,13 @@
+{
+ "title":"Payout application",
+ "notice":"Apply here in Studio. Artanrecords reviews your application in Control Center; you will not be redirected to Stripe. An application does not activate payments or withdrawals.",
+ "sensitiveNotice":"Do not enter bank numbers, tax identification numbers or upload identity documents here. Secure collection of those details is not active yet.",
+ "statuses":{"pending":"Your application is under review.","needs_information":"More information is needed.","rejected":"Your application was declined.","approved":"Your payout application was approved. Withdrawal availability is checked separately."},
+ "fields":[
+  {"name":"legal_name","label":"Legal name","max":100,"required":true},
+  {"name":"recipient_type","label":"Recipient type","options":[{"value":"","label":"Choose recipient type"},{"value":"individual","label":"Individual / self-employed"},{"value":"company","label":"Registered company"},{"value":"non_profit","label":"Non-profit organization"}],"required":true},
+  {"name":"business_name","label":"Registered business name, if applicable","max":200},
+  {"name":"registration_country","label":"Country of residence or business registration","max":2,"pattern":"[A-Za-z]{2}","hint":"Two-letter country code, for example HR for Croatia.","required":true},
+  {"name":"tax_residence_country","label":"Country of tax residence","max":2,"pattern":"[A-Za-z]{2}","hint":"Use the two-letter code for your actual tax residence, which may differ from your current location.","required":true}
+ ]
+}

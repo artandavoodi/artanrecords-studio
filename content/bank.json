@@ -12,10 +12,10 @@
     {"id":"bank-withdrawals","label":"Withdrawals","icon":"payment"}
   ],
   "metrics":["Available","Pending","Paid out"],
-  "notice":"Live earnings and withdrawals are not active. Connected sandbox balances are test funds only.",
+  "notice":"Earnings and withdrawals are not active. Submit a payout application for review before payment setup can proceed.",
   "earningsNotice":"Verified distributor statements and settled store sales will be shown separately. No earnings have been imported into Bank.",
   "analyticsNotice":"Earnings analytics will appear when verified financial records are connected.",
   "withdrawalNotice":"Withdrawals are unavailable. Your payout account, verification, agreement and withdrawal policy must be connected first.",
   "minimumNotice":"Minimum withdrawal: not set. No minimum or commission has been applied.",
-  "settingsNotice":"Enter bank accounts and required identity or tax information through secure Stripe onboarding. Check the connection status below. Do not send bank or identity documents to the label through profile fields."
+  "settingsNotice":"Submit your payout application inside Studio. Do not enter bank numbers, tax identifiers or identity documents; secure collection is not active."
 }

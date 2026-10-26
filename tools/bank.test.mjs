@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {bankMarkup,payoutSettingsMarkup} from '../app/bank-render.mjs';
 import {renderSettings} from '../app/platform-render.mjs';
 import {profileMarkup} from '../app/profile-render.mjs';
-import {bankSnapshot,onboardingDestination,bankAmount} from '../app/bank.js';
+import {payoutApplicationValues,bankAmount} from '../app/bank.js';
 const e=value=>String(value).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;');
 test('Bank records approval without enabling money or inventing policy',async()=>{
   const config=JSON.parse(await readFile('content/bank.json','utf8'));
@@ -16,16 +16,13 @@ test('Bank records approval without enabling money or inventing policy',async()=
   assert.match(html,/disabled[^>]*>.*Request withdrawal/);
   assert.match(html,/Unavailable/);
   assert.doesNotMatch(html,/€0|\$0|15%/);
-  assert.match(payoutSettingsMarkup(e),/secure Stripe onboarding/);
+  assert.match(payoutSettingsMarkup(e),/will not be redirected to Stripe/);
 });
-test('payout responses require sandbox provenance and preserve currency boundaries',()=>{
-  assert.throws(()=>bankSnapshot({mode:'live',linked:false}));
-  assert.throws(()=>onboardingDestination({mode:'test',url:'https://connect.stripe.com.evil.example/setup'}));
-  assert.throws(()=>onboardingDestination({mode:'live',url:'https://connect.stripe.com/setup'}));
-  assert.equal(onboardingDestination({mode:'test',url:'https://connect.stripe.com/setup'}),'https://connect.stripe.com/setup');
+test('internal payout applications validate declarations without financial account fields',()=>{
+  const fields=new Map([['legal_name','Test Artist'],['recipient_type','individual'],['registration_country','hr'],['tax_residence_country','hr'],['consent','on'],['bank_account','must not pass']]);
+  const value=payoutApplicationValues(fields);assert.equal(value.registration_country,'HR');assert.equal(value.bank_account,undefined);fields.set('recipient_type','company');assert.throws(()=>payoutApplicationValues(fields));
   assert.match(bankAmount({amount:100,currency:'eur'}),/1/);
   assert.equal(bankAmount({amount:100,currency:'jpy'}),'100 minor units (JPY)');
-  assert.throws(()=>bankSnapshot({mode:'test',linked:true,status:{}}));
 });
 test('private addresses and payment methods belong to Settings, not profile or Business',async()=>{
   const config=JSON.parse(await readFile('content/account.json','utf8'));

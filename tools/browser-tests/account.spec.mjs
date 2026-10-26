@@ -328,33 +328,13 @@ test('signup and recovery keep distinct fields, required consent and usable clos
   await expect(dialog).toBeHidden();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
 });
-test('new payout setup requires an explicit provider-supported country before the Stripe handoff',async({page})=>{
- await mockBackend(page);const actions=[];
- await page.route('**/functions/v1/studio-connect',async route=>{const body=route.request().postDataJSON();actions.push(body);await route.fulfill({contentType:'application/json',body:JSON.stringify(body.action==='status'?{mode:'test',linked:false,countries:['HR','US']}:{mode:'test',url:'https://connect.stripe.com/setup/test-only'})});});
+test('payout applications submit inside Studio, persist under review and never invoke Stripe',async({page})=>{
+ const requests=await mockBackend(page);let application=null;
+ await page.route('**/rest/v1/studio_payout_applications*',route=>route.fulfill({contentType:'application/json',body:JSON.stringify(application?[application]:[])}));
+ await page.route('**/rest/v1/rpc/studio_submit_payout_application',async route=>{application={...route.request().postDataJSON().value,status:'pending',decision_note:''};await route.fulfill({contentType:'application/json',body:'null'});});
  const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();await expect(page).toHaveURL(/\/profile\/$/);
- await page.goto('/settings/#payments');const country=page.getByRole('combobox',{name:'Country of residence or business registration'});await expect(country).toBeVisible();await expect(country).toHaveValue('');
- await page.locator('[data-bank-onboard]').click();expect(actions.some(item=>item.action==='onboard')).toBe(false);
- await country.selectOption('HR');await page.route('https://connect.stripe.com/setup/test-only',route=>route.fulfill({contentType:'text/html',body:'<h1>Sandbox onboarding fixture</h1>'}));await page.locator('[data-bank-onboard]').click();await expect(page).toHaveURL('https://connect.stripe.com/setup/test-only');expect(actions.at(-1)).toEqual({action:'onboard',country:'HR'});
-});
-test('payout setup uses owner-authenticated sandbox status and a validated Stripe handoff',async({page})=>{
-  await mockBackend(page);const actions=[];
-  await page.route('**/functions/v1/studio-connect',async route=>{
-    const input=route.request().postDataJSON();actions.push(input);
-    expect(Object.keys(input)).toEqual(['action']);
-    await route.fulfill({contentType:'application/json',body:JSON.stringify(input.action==='onboard'?{mode:'test',url:'https://connect.stripe.com/setup/test-only'}:{mode:'test',linked:true,status:{detailsSubmitted:true,payoutsEnabled:false,transfersActive:false,informationDue:1,restricted:false},balances:{available:[{amount:1234,currency:'eur'}],pending:[{amount:500,currency:'usd'}]}})});
-  });
-  const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page).toHaveURL(/\/profile\/$/);
-  await page.goto('/payouts/');
-  await expect(page.locator('[data-bank-mode]')).toBeVisible();
-  await expect(page.locator('[data-bank-balance=available]')).toContainText('12.34');
-  await expect(page.locator('[data-bank-balance=pending]')).toContainText('5.00');
-  await page.goto('/settings/?payout=return#payments');
-  await expect(page.locator('[data-bank-status]')).toContainText('requires more information');
-  await expect(page.locator('[data-bank-onboard]')).toBeEnabled();
-  await page.route('https://connect.stripe.com/setup/test-only',route=>route.fulfill({contentType:'text/html',body:'<h1>Sandbox onboarding fixture</h1>'}));
-  await page.locator('[data-bank-onboard]').click();
-  await expect(page).toHaveURL('https://connect.stripe.com/setup/test-only');
-  expect(actions.some(item=>item.action==='onboard')).toBe(true);
+ await page.goto('/settings/#payments');const form=page.locator('[data-payout-application-form]');await expect(form).toBeVisible();await form.getByLabel('Legal name',{exact:true}).fill('Test Artist');await form.getByLabel('Recipient type').selectOption('individual');await form.getByLabel('Country of residence or business registration').fill('HR');await form.getByLabel('Country of tax residence').fill('HR');await form.getByRole('checkbox').check();await form.getByRole('button',{name:'Submit application'}).click();
+ await expect(page.locator('[data-payout-application-status]')).toContainText('under review');await expect(form).toBeHidden();await page.reload();await expect(page.locator('[data-payout-application-status]')).toContainText('under review');expect(requests.some(item=>item.path.includes('/functions/v1/studio-connect'))).toBe(false);await expect(page).toHaveURL(/\/settings\/#payments$/);
 });
 test('Bank and payout settings never simulate money or enable withdrawals',async({page})=>{
   await mockBackend(page);
@@ -367,7 +347,7 @@ test('Bank and payout settings never simulate money or enable withdrawals',async
   await expect(page.getByRole('tab',{name:'Withdrawals',exact:true})).toHaveAttribute('aria-selected','true');
   await page.getByRole('link',{name:'Payment & payout settings',exact:true}).click();
   await expect(page.getByRole('tab',{name:'Payment & payout methods',exact:true})).toHaveAttribute('aria-selected','true');
-  await expect(page.getByRole('tabpanel',{name:'Payment & payout methods',exact:true})).toContainText('not connected yet');
+  await expect(page.getByRole('tabpanel',{name:'Payment & payout methods',exact:true})).toContainText('Sign in to manage your payout application.');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
 });
 test('sign-in opens a private profile and sign-out does not revoke other applications',async({page})=>{

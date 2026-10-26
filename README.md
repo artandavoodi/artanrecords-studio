@@ -172,15 +172,13 @@ and a disabled withdrawal action. Account return redirects are not verification.
 Do not activate these views by changing a client flag or infer money permissions
 from an artist tier. Existing Store checkout and Stripe accounts are unchanged.
 
-`app/bank.js` now calls the owner-authenticated `studio-connect` server function
-for sandbox status and an explicit onboarding handoff. It accepts only Stripe's
-Connect destination, rechecks account identity, labels all returned balances as
-test funds and never treats an onboarding return URL as verification. It does not
-collect tax IDs, bank/card numbers or identity documents. A missing deployment
-or rejected provider response keeps setup disabled and offers a status retry.
-Deployment and private credentials are still required; browser fixtures are not
-proof of a connected hosted provider. See the backend owner's
-`supabase/README.md` for the exact deployment gates and deferred decisions.
+`app/bank.js` submits a private payout application through the authenticated
+database procedure. Artists remain inside Studio and receive an under-review
+status; the enabled CEO owner reviews applications in Control Center. No Stripe
+handoff is created. Bank/card numbers, tax identifiers and identity documents
+are not collected. Approval requires trusted provider evidence, whose connector
+is not yet implemented; live money movement remains disabled. Browser fixtures
+verify interface behaviour, not provider approval or financial activation.
 
 Studio should use the Artan Records shared visual foundation while prioritizing:
 
@@ -199,7 +197,7 @@ This directory deploys independently to:
 
 `studio.artanrecords.com`
 
-The payout connection is sandbox-only. Bank and tax information belong in Stripe-hosted onboarding, not artist profile fields. Connection status is fetched server-side; an incomplete connection is not a zero balance or proof of verification. Live payments and withdrawals remain disabled.
+Payout applications stay internal. Secure bank/tax intake and the trusted provider-evidence connector remain launch gates; an internal review is not provider verification. Live payments and withdrawals remain disabled.
 
 Private account email and contact phone are managed in Settings > Account security. Profile saves cannot clear the private phone or change verification status. Public contact links remain separate, artist-selected metadata.
 
