@@ -1,0 +1,6 @@
+/* Only loaded inside the authenticated Studio editor's public-page preview. */
+[data-artist-edit-target] { position:relative; }
+.artist-canvas-edit { position:absolute; inset-block-start:var(--spacing-sm); inset-inline-end:var(--spacing-sm); display:grid; place-items:center; inline-size:var(--control-height-md); block-size:var(--control-height-md); padding:var(--spacing-sm); border:0; border-radius:var(--control-radius-pill); background:var(--cv-page-bg); color:var(--cv-text-primary); cursor:pointer; z-index:1; }
+.artist-canvas-edit img { inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); }
+.artist-canvas-edit:hover { opacity:var(--hover-opacity-strong); }
+.artist-canvas-edit:focus-visible { outline:var(--border-width-hairline) solid currentColor; outline-offset:var(--spacing-xs); }
