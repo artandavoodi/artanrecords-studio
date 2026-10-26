@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "7e04ee1f61fae92ec633c7c6f74d3e30dde65a70",
+  "commit": "2074ec0985c169e9016e3fed4bc2d6ae183e65c0",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "bf2d7bab84057768d028b0e3be924690b931ffdd97a8a3a4eb7594540c6db6f3",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -23,7 +23,7 @@
     "assets/css/core/04-systems/search-close.css": "b5ad572ef1c8bad5d0c36107b80d6293bc08c511f68838ec981b9dd1ec38d60e",
     "assets/css/core/04-systems/startup.css": "73f7e032ac2c67869379cee0efcc0c7c87883cd85cef379c256522d95bab31cc",
     "assets/css/layers/00-orchestrator/00-layers-all.css": "8037edc9e1ce0e0e49a6617b090daad3c1f0497b469835e87039b6d3d32b522e",
-    "assets/css/layers/site/artist-editor-preview.css": "503e8a19903e276fc640e68737338c84d312bdcf56c36113d5a7696a344f4fa3",
+    "assets/css/layers/site/artist-editor-preview.css": "b9acf74db9c38510c7fc7dd84bc5a3f82e43d677d905357eb964f6bd6954ad59",
     "assets/css/layers/site/contact/index.css": "94173ea68756beb7a16b358c4b32c6aa946e5f0b652779d54bf352c2517b4094",
     "assets/css/layers/site/for-artists/index.css": "17ae00f8c36535226213acb6d50a67a060f23a37d4bfed16181b0f667e5fed72",
     "assets/css/layers/site/hub/index.css": "ff59cee8904b774f20e8ce6dadbba8f51e6f85e830c375fa614ebe2e9304ca9f",
@@ -72,6 +72,7 @@
     "assets/data/artists/editor.json": "ef46d0215ab724449acefe48b772c0e0670ec7162a4390a94cd5d27575a1842d",
     "assets/js/layers/site/artist-editor-preview.js": "9352577c536481af7963c84a690bd2ca75c4407df8e367a0c0bb0b00d09507cc",
     "assets/js/layers/site/creator-routes.js": "8ef9a3119aaffd6143af6d5dce967e43374bd575ede483d7122c89380709c3f5",
+    "registry/icons/public/assets/core/actions/edit/edit.svg": "7e159858f866fb171948cffa2155e3a9cea3dc6669c3523e4c7ce4327dfd73d2",
     "registry/icons/public/assets/core/identity/access/visibility-on.svg": "d499bf0b785f4a5910794a4fc77e9a975592d21c022117ad906aeb67b1aad3e7",
     "registry/icons/public/assets/core/identity/access/visibility-off.svg": "655bfe844eb290946a3fb9622fc8ca5433ca261b1c3531346442c6b1b6d7e190",
     "registry/icons/public/assets/core/navigation/chevron/chevron-down.svg": "267f15b40d1f468dd67aa683522be1166bed34488003b70181d9f6ab00da01a6",
