@@ -2,9 +2,15 @@ import {readFile,writeFile,mkdir,access} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {resolve,dirname} from 'node:path';
 import {searchMarkup} from './search.mjs';
+import {recordingReference} from './partnerships.mjs';
 const root=process.cwd();
 const read=p=>readFile(resolve(root,p),'utf8');
 const config=JSON.parse(await read('content/site.json'));
+const partnershipTerms=JSON.parse(await read('assets/data/partnerships.json'));
+if(!config.application){
+  const guidance=config.pages.find(page=>page.path==='/partnerships/');
+  if(guidance)guidance.sections.push(...recordingReference(partnershipTerms));
+}
 const application=config.application?await import(resolve(root,config.application.renderer)):null;
 const brand=JSON.parse(await read('assets/data/site.json'));
 const iconRegistry=JSON.parse(await read('assets/data/icons.json'));
