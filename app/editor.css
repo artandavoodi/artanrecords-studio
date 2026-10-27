@@ -16,6 +16,7 @@
 .studio-back { display:inline-flex; align-items:center; justify-content:center; padding:var(--spacing-sm); border:0; background:none; }
 .studio-surface:has([data-studio-search-page]) { gap:var(--spacing-md); }
 .studio-surface:has([data-studio-search-page]) > header h1 { font-size:var(--font-size-h3); }
+.studio-surface:has([data-studio-search-page]) > header { inline-size:100%; max-inline-size:var(--reading-width-md); margin-inline:auto; }
 .studio-surface:has([data-studio-search-page]) > header p { font-size:var(--site-type-caption-size); margin-block-end:0; }
 .studio-surface:has([data-studio-search-page]) > .studio-search-navigation { grid-row:1; margin-block-end:0; }
 [data-studio-search-page] > h2 { font-size:var(--site-type-body-size); }
