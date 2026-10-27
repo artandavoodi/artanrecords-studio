@@ -85,12 +85,13 @@ export async function bindGraphics({client,resolveUser}){
  };
  const swatches=form.querySelector('[data-colour-swatches]');
  const syncSwatches=()=>{
-  [...fields.children].forEach((row,index)=>{row.dataset.colourRole=config.paletteRoles[index];});
+  [...fields.children].forEach((row,index)=>{row.dataset.colourRole='primary-'+(index+1);});
   const rows=[...fields.children].map(row=>({assignment:row.querySelector('[data-colour-assignment]').value}));
   [...fields.children].forEach((row,index)=>{for(const option of row.querySelector('select').options)option.disabled=assignmentUnavailable(rows,index,option.value);});
   const selected=[...fields.querySelectorAll('input[type=text]')].filter(input=>/^#[0-9a-f]{6}$/i.test(input.value));
   const options=selected.length?selected.map(input=>({value:input.value.toUpperCase(),label:'Edit '+input.value.toUpperCase(),input})):config.defaultColors;
   swatches.replaceChildren(...options.map(option=>{const button=document.createElement('button');button.type='button';button.dataset.colourSwatch=option.value;button.style.backgroundColor=option.value;button.setAttribute('aria-label',option.label);button.title=option.value;button.onclick=()=>{if(!option.input){append(option.value);return;}colourDialog.showModal();option.input.focus();};return button;}));
+  try{const palette=[...fields.querySelectorAll('input[type=text]')].map(input=>input.value);if(palette.every(value=>/^#[0-9a-f]{6}$/i.test(value)))document.dispatchEvent(new CustomEvent('studio:graphics-preview',{detail:form.elements.share_palette.checked?{palette,palette_assignments:colourAssignments(rows)}:{}}));}catch{/* An incomplete assignment stays local until it is valid. */}
  };
  const append=(color,assignment='')=>{
   if(fields.children.length>=config.maxColors)return;
@@ -114,6 +115,7 @@ export async function bindGraphics({client,resolveUser}){
   const result=await client.from('studio_artist_graphics').select('palette,palette_assignments,logo_public,palette_public').eq('account_id',owner.id).maybeSingle();if(result.error)throw Error('Artist graphics are not available yet. No changes have been saved.');
   for(const [index,color] of (result.data?.palette||[]).entries())append(color,assignmentSelection(result.data?.palette_assignments,index));
   form.elements.share_logo.checked=result.data?.logo_public===true;form.elements.share_palette.checked=result.data?.palette_public===true;
+  form.elements.share_palette.onchange=syncSwatches;syncSwatches();
   const logo=await client.storage.from('studio-logos').download(owner.id+'/logo');if(!logo.error){show(logo.data);form.querySelector('[data-logo-status]').textContent=result.data?.logo_public?'Public display selected':'Saved privately';}
   save.disabled=false;choose.disabled=false;
  }catch(error){status.textContent=error.message;return;}

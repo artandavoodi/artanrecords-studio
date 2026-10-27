@@ -328,20 +328,24 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile [data-artist-header]:empty { display:none; }
 .artist-profile [data-artist-fields] { display:grid; gap:var(--spacing-lg); inline-size:min(100%,var(--cv-reading-width)); }
 .artist-profile [data-artist-fields] section { display:grid; gap:var(--spacing-sm); }
-.artist-profile [data-artist-divider] { border-block-start:var(--border-width-hairline) solid var(--cv-border); padding-block-start:var(--spacing-xl); }
-.artist-profile [data-artist-fields] h2,.artist-link-group h2 { margin:0; font-size:var(--site-type-caption-size); font-weight:var(--font-weight-medium); color:var(--cv-text-secondary); }
-.artist-profile [data-artist-fields] :is(h2,[data-artist-since]) { font-family:inherit; font-size:var(--artist-detail-size,var(--site-type-caption-size)); font-weight:var(--font-weight-medium); color:var(--cv-text-secondary); }
+.artist-profile [data-artist-divider] { border-block-start:var(--border-width-hairline) solid var(--artist-separator-colour,var(--cv-border)); padding-block-start:var(--spacing-xl); }
+.artist-profile [data-artist-fields] h2,.artist-link-group h2 { margin:0; font-size:var(--site-type-caption-size); font-weight:var(--font-weight-medium); color:var(--artist-heading-colour,var(--cv-text-secondary)); }
+.artist-profile [data-artist-fields] :is(h2,[data-artist-since]) { font-family:inherit; font-size:var(--artist-detail-size,var(--site-type-caption-size)); font-weight:var(--font-weight-medium); color:var(--artist-detail-colour,var(--cv-text-secondary)); }
 .artist-profile [data-artist-fields] [hidden] { display:none; }
 .artist-profile[data-artist-subpage] { display:grid; align-content:start; gap:var(--spacing-xl); }
 .artist-profile[data-artist-subpage] > section { min-block-size:0; scroll-snap-align:none; }
 .artist-page-copy { max-inline-size:var(--cv-reading-width); white-space:pre-line; overflow-wrap:anywhere; }
 .artist-concerts > h2 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
 .artist-profile [data-artist-fields] p { margin:0; font-size:var(--site-type-body-size); line-height:var(--line-height-body); }
+.artist-profile [data-artist-name] { color:var(--artist-name-colour,inherit); }
+.artist-profile [data-artist-fields] section p { color:var(--artist-biography-colour,inherit); }
+.artist-profile [data-artist-directory] a { color:var(--artist-icon-colour,inherit); }
+[data-artist-copyright] { color:var(--artist-copyright-colour,inherit); }
 .artist-profile .artist-connections { display:grid; grid-template-columns:minmax(0,1fr); inline-size:100%; align-items:start; }
 .artist-destination-tabs { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-lg); inline-size:100%; padding-block:var(--spacing-md); }
 .artist-destination-tabs[hidden] { display:none; }
 [data-fragment="navigation"]:has(.artist-destination-tabs[data-in-header]) { background:var(--artist-header-ribbon,var(--cv-page-bg)); }
-.artist-destination-tabs button { font:inherit; color:inherit; background:none; border:0; padding:var(--spacing-sm) 0; cursor:pointer; opacity:var(--state-opacity-muted); }
+.artist-destination-tabs button { font:inherit; color:var(--artist-tab-colour,inherit); background:none; border:0; padding:var(--spacing-sm) 0; cursor:pointer; opacity:var(--state-opacity-muted); }
 .artist-destination-tabs button[aria-selected=true],.artist-destination-tabs button:hover { opacity:var(--cv-opacity-full); }
 .artist-profile [data-artist-group][hidden],.artist-profile > section[hidden],.artist-profile [data-artist-fields][hidden] { display:none; }
 .artist-profile [data-artist-group] > h2 { display:none; }

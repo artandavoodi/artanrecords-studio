@@ -3,7 +3,7 @@ import {bindReorderList} from '../../core/02-systems/reorder-list.js';
 let bound=false;
 let replay=()=>{};
 // Preview messages affect this frame only. They never write artist metadata.
-export function bindArtistEditorPreview(root,config){
+export function bindArtistEditorPreview(root,config,previewGraphics){
  if(window.parent===window||new URL(location.href).searchParams.get('editor-preview')!=='1')return;
  const targets=[{id:'name',label:'Artist name',selector:'[data-artist-name]'},...config.sections,{id:'buttons',label:'Main buttons',selector:'[data-artist-directory]'}];
  for(const target of targets){
@@ -25,7 +25,9 @@ export function bindArtistEditorPreview(root,config){
  bound=true;
  const style=document.createElement('link');style.rel='stylesheet';style.href='/assets/css/layers/site/artist-editor-preview.css';document.head.append(style);
  const receive=event=>{
-  if(event.source!==window.parent||!config.studioOrigins.includes(event.origin)||event.data?.type!=='artanrecords:artist-preview')return;
+  if(event.source!==window.parent||!config.studioOrigins.includes(event.origin))return;
+  if(event.data?.type==='artanrecords:artist-graphics-preview'){const fields=event.data.fields;if(fields&&typeof fields==='object'&&(!fields.palette||Array.isArray(fields.palette)&&fields.palette.length<=12&&fields.palette.every(value=>typeof value==='string'&&/^#[0-9a-f]{6}$/i.test(value))))previewGraphics?.(fields);return;}
+  if(event.data?.type!=='artanrecords:artist-preview')return;
   const draft=event.data.draft;
   if(!validArtistDesign(draft,config))return;
   applyArtistDesign(root,draft,config);

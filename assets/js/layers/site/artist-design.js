@@ -26,7 +26,7 @@ export function applyArtistDesign(root,draft,config){
  const logo=document.querySelector('.label-header-logo[data-artist-logo]');if(logo)logo.style.setProperty('--artist-logo-size',presentation?.logoSize?presentation.logoSize+'px':'');
  for(const item of config.sections){const section=root.querySelector(item.selector);if(!section)continue;if(!section.id)section.id='artist-'+item.id;section.hidden=!draft.sections.includes(item.id);section.toggleAttribute('data-artist-divider',(draft.dividers||[]).includes(item.id));}
  const navigation=document.querySelector('[data-fragment=navigation]');
- const ribbon=draft.ribbon||root.style.getPropertyValue('--artist-header-ribbon');if(ribbon)navigation?.style.setProperty('--artist-header-ribbon',ribbon);else navigation?.style.removeProperty('--artist-header-ribbon');
+ const ribbon=root.style.getPropertyValue('--artist-header-ribbon');if(ribbon)navigation?.style.setProperty('--artist-header-ribbon',ribbon);else navigation?.style.removeProperty('--artist-header-ribbon');
  const buttons=root.querySelector('[data-artist-directory]');
  if(buttons&&Array.isArray(draft.buttons)){const edit=buttons.querySelector(':scope > .artist-canvas-edit');buttons.replaceChildren();for(const item of draft.buttons){const link=document.createElement('a');link.href=item.url;link.textContent=item.label;link.rel='noopener';buttons.append(link);}if(edit)buttons.append(edit);}
  const credit=document.querySelector('[data-artist-copyright]');if(credit)credit.textContent=draft.copyright||credit.dataset.artistCopyright;

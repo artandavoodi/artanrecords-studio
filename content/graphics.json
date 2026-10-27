@@ -2,7 +2,7 @@
   "title": "Graphics",
   "notice": "Choose a transparent PNG or a self-contained SVG, up to 2 MB and 8192 pixels per side. For a horizontal header wordmark, a 2048 × 256 px canvas is recommended; other proportions are welcome. Keep the artwork close to the canvas edges. Empty transparent margins are removed from the display export, never from your private original. Public display requires an approved, published artist page.",
   "paletteLabel": "Artist colours",
-  "paletteNotice": "Choose up to five colours. Enter a six-digit hex code or use your browser’s colour picker. Assign each surface once; targets used by another colour are unavailable. Shared colours override the theme only for their assigned surfaces. Your public logo follows the light or dark theme unless you assign and share a logo colour.",
+  "paletteNotice": "Choose up to twelve colours. Click a colour circle to use your browser’s picker, or enter a six-digit hex code. Assign each surface once. Choose Share my artist colours, then Save to update your public page. Unassigned surfaces keep their theme colours. Check readability in both themes before sharing.",
   "logoPreview": {
     "title": "Preview logo",
     "notice": "Check your logo on light and dark backgrounds. Its proportions and colours stay unchanged. Choose Use logo, then Save to update your profile.",
@@ -11,8 +11,7 @@
   "maxBytes": 2097152,
   "maxDimension": 8192,
   "exportDimension": 1024,
-  "maxColors": 5,
-  "paletteRoles": ["primary-1", "primary-2", "primary-3", "primary-4", "primary-5"],
-  "assignments":[{"id":"","label":"Not assigned","targets":[]},{"id":"icons","label":"Buttons & icons","targets":["icons"]},{"id":"header","label":"Header fade & ribbon","targets":["header_fade","header_ribbon"]},{"id":"fade","label":"Header fade","targets":["header_fade"]},{"id":"ribbon","label":"Header ribbon","targets":["header_ribbon"]},{"id":"logo","label":"Artist logo","targets":["logo"]}],
+  "maxColors": 12,
+  "assignments":[{"id":"","label":"Not assigned","targets":[]},{"id":"icons","label":"Buttons & icons","targets":["icons"]},{"id":"header","label":"Header fade & ribbon","targets":["header_fade","header_ribbon"]},{"id":"fade","label":"Header fade","targets":["header_fade"]},{"id":"ribbon","label":"Header ribbon","targets":["header_ribbon"]},{"id":"logo","label":"Artist logo","targets":["logo"]},{"id":"name","label":"Artist name","targets":["name"]},{"id":"biography","label":"Biography text","targets":["biography"]},{"id":"details","label":"Biography label & Since year","targets":["details"]},{"id":"headings","label":"Section headings","targets":["headings"]},{"id":"tabs","label":"Listen, Follow & other tabs","targets":["tabs"]},{"id":"separators","label":"Section separators","targets":["separators"]},{"id":"copyright","label":"Copyright notice","targets":["copyright"]}],
   "defaultColors": [{"value":"#000000","label":"Use black"},{"value":"#FFFFFF","label":"Use white"}]
 }

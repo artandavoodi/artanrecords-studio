@@ -22,11 +22,11 @@ export async function bindArtistEditor({client,resolveUser}){
   designTools.dataset.overview=String(!selectedDesign);
   profileTools.querySelector('[data-artist-navigation]').hidden=target!=='menu';profileTools.querySelector('[data-artist-pages]').hidden=target!=='pages';
   for(const button of root.querySelectorAll('[data-editor-context]'))button.setAttribute('aria-pressed',String(button.dataset.editorContext===target));
-  const profile=['biography','connections','menu','pages'].includes(target);
+  const profile=['biography','graphics','connections','menu','pages'].includes(target);
   profileTools.hidden=!profile;designTools.hidden=profile||['gallery','project','latest','archive'].includes(target);
   root.querySelector('[data-editor-selection]').textContent=({name:'Design',biography:'Profile',menu:'Menu',pages:'Pages',footer:'Footer & copyright',buttons:'Main buttons',links:'Streaming & social order'})[target]||config.sections.find(item=>item.id===target)?.label||'Page design';
   panel.getBoundingClientRect();
-  if(profile){const tab=['menu','footer','pages'].includes(target)?'profile-website':target==='connections'?'profile-catalogue':'profile-details';profileTools.querySelector('[data-settings-tab="'+tab+'"]').click();profileTools.querySelector('[data-settings-panel="'+tab+'"] '+(target==='pages'?'[data-site-page-new]':target==='biography'?'[name=biography]':target==='footer'?'[name=footer_text]':'input'))?.focus();}
+  if(profile){const tab=['menu','footer','pages'].includes(target)?'profile-website':target==='graphics'?'profile-graphics':target==='connections'?'profile-catalogue':'profile-details';profileTools.querySelector('[data-settings-tab="'+tab+'"]').click();if(target==='graphics')root.querySelector('[data-editor-selection]').textContent='Graphics';profileTools.querySelector('[data-settings-panel="'+tab+'"] '+(target==='graphics'?'[data-choose-logo]':target==='pages'?'[data-site-page-new]':target==='biography'?'[name=biography]':target==='footer'?'[name=footer_text]':'input'))?.focus();}
   else{const portfolio=portfolioTools.find(item=>item.dataset.editorPortfolioTools===target);if(portfolio){portfolio.hidden=false;portfolio.querySelector('button,input,a')?.focus();}else if(['latest','archive'].includes(target)){releaseLink.hidden=false;releaseLink.focus();}else root.querySelector(target==='buttons'?'[data-editor-button-label]':target==='footer'?'[data-editor-copyright]':target==='links'?'[data-editor-link-order] button':'[data-editor-font-select]')?.focus();}
  };
  const layout=root.querySelector('.studio-editor-layout');
@@ -54,7 +54,7 @@ export async function bindArtistEditor({client,resolveUser}){
  root.querySelector('[data-editor-profile-open]').addEventListener('click',()=>showContext('biography'));
  for(const button of root.querySelectorAll('[data-editor-open-portfolio]'))button.addEventListener('click',()=>{resetContext();profileTools.hidden=true;designTools.hidden=true;portfolioTools.find(item=>item.dataset.editorPortfolioTools===button.dataset.editorOpenPortfolio).hidden=false;setTools(true);});
  document.addEventListener('keydown',event=>{if(event.key!=='Escape'||document.querySelector('dialog[open]'))return;if(!panel.hidden){setTools(false);tools.focus();}else setFocus(false);});
- const status=root.querySelector('[data-editor-status]'),frame=root.querySelector('iframe'),controls=[...root.querySelectorAll('[data-editor-focus],[data-editor-tools],[data-editor-font-select],[data-editor-size],[data-editor-ribbon],[data-editor-section],[data-editor-reset],[data-editor-profile-open],[data-editor-presentation] input,[data-editor-presentation] select,[data-editor-presentation] button')];controls.forEach(item=>item.disabled=true);
+ const status=root.querySelector('[data-editor-status]'),frame=root.querySelector('iframe'),controls=[...root.querySelectorAll('[data-editor-focus],[data-editor-tools],[data-editor-font-select],[data-editor-size],[data-editor-section],[data-editor-reset],[data-editor-profile-open],[data-editor-presentation] input,[data-editor-presentation] select,[data-editor-presentation] button')];controls.forEach(item=>item.disabled=true);
  const canvas=root.querySelector('.studio-editor-canvas'),viewport=root.querySelector('.studio-editor-viewport');let device=editor.views[0];
  const measurePreview=()=>{const width=canvas.clientWidth,height=canvas.clientHeight;if(!width||!height)return;const scale=Math.min(1,width/device.width);viewport.style.setProperty('--preview-width',device.width+'px');viewport.style.setProperty('--preview-height',height/scale+'px');viewport.style.setProperty('--preview-scale',String(scale));viewport.style.setProperty('--preview-offset',Math.max(0,(width-device.width*scale)/2)+'px');};
  const observer=new ResizeObserver(measurePreview);observer.observe(canvas);
@@ -68,7 +68,9 @@ export async function bindArtistEditor({client,resolveUser}){
  const local=location.hostname==='127.0.0.1';
  const url=new URL('/'+encodeURIComponent(username)+'/',local?'http://127.0.0.1:8912':'https://artanrecords.com');url.searchParams.set('editor-preview','1');
  const initial=()=>({font:config.fonts[0].id,size:'standard',ribbon:null,sections:config.sections.map(item=>item.id),order:config.sections.map(item=>item.id),linkOrder:{},dividers:[],buttons:[{label:'Releases',url:'#artist-releases'}],copyright:''});
- let draft=initial(),ready=false;
+ let draft=initial(),ready=false,graphicsPreview;
+ const sendGraphics=()=>{if(ready&&graphicsPreview)frame.contentWindow.postMessage({type:'artanrecords:artist-graphics-preview',fields:graphicsPreview},url.origin);};
+ document.addEventListener('studio:graphics-preview',event=>{graphicsPreview=event.detail;sendGraphics();});
  const defaultPresentation=()=>({portraitSize:config.presentation.portrait.default,portraitAlign:'left',biographyLabel:true,since:true,textSize:'small'});
  let storageReady=false;
  const save=root.querySelector('[data-editor-save]'),publish=root.querySelector('[data-editor-publish]');
@@ -96,12 +98,12 @@ export async function bindArtistEditor({client,resolveUser}){
   for(const [index,row] of [...root.querySelectorAll('[data-editor-button-row]')].entries()){row.querySelector('[data-editor-button-label]').value=draft.buttons?.[index]?.label||'';row.querySelector('[data-editor-button-url]').value=draft.buttons?.[index]?.url||'';}
   root.querySelector('[data-editor-copyright]').value=draft.copyright||'';
   const list=root.querySelector('[data-editor-section-order]');for(const id of draft.order||config.sections.map(item=>item.id)){const row=list.querySelector('[data-reorder-id="'+id+'"]');if(row)list.append(row);}
-  root.querySelector('[data-editor-ribbon]').value=draft.ribbon||'#000000';send();
+  send();sendGraphics();
  };
  addEventListener('message',event=>{
   if(event.source!==frame.contentWindow||event.origin!==url.origin)return;
   if(event.data?.type==='artanrecords:artist-menu-order'&&Array.isArray(event.data.links)){document.dispatchEvent(new CustomEvent('studio:artist-menu-order',{detail:event.data.links}));showContext('menu');}
-  if(event.data?.type==='artanrecords:artist-preview-ready'){const first=!ready;ready=true;controls.forEach(item=>item.disabled=false);save.disabled=publish.disabled=!storageReady;status.textContent=storageReady?'Preview ready.':'Preview ready. Design storage is unavailable; saving and publishing are disabled.';status.classList.toggle('sr-only',storageReady);if(first){setFocus(true);setTools(false);}sync();renderLinkOrder(event.data.links);const target=new URL(location.href).searchParams.get('tool');if(first&&['name','menu','footer','buttons','links',...config.sections.map(item=>item.id)].includes(target))showContext(target);}
+  if(event.data?.type==='artanrecords:artist-preview-ready'){const first=!ready;ready=true;controls.forEach(item=>item.disabled=false);save.disabled=publish.disabled=!storageReady;status.textContent=storageReady?'Preview ready.':'Preview ready. Design storage is unavailable; saving and publishing are disabled.';status.classList.toggle('sr-only',storageReady);if(first){setFocus(true);setTools(false);}sync();renderLinkOrder(event.data.links);const target=new URL(location.href).searchParams.get('tool');if(first&&[...editor.tools.map(item=>item.id),...config.sections.map(item=>item.id)].includes(target))showContext(target);}
   if(event.data?.type==='artanrecords:artist-preview-select'&&['name','menu','footer','buttons',...config.sections.map(item=>item.id)].includes(event.data.target))showContext(event.data.target);
  });
  root.querySelector('[data-editor-font-select]').addEventListener('change',event=>{draft.font=event.target.value;sync();});
@@ -114,7 +116,6 @@ export async function bindArtistEditor({client,resolveUser}){
  root.querySelector('[data-editor-biography-label]').onclick=()=>updatePresentation('biographyLabel',!(draft.presentation||defaultPresentation()).biographyLabel);
  root.querySelector('[data-editor-since]').onclick=()=>updatePresentation('since',!(draft.presentation||defaultPresentation()).since);
  for(const button of root.querySelectorAll('[data-editor-size]'))button.addEventListener('click',()=>{draft.size=button.dataset.editorSize;sync();});
- root.querySelector('[data-editor-ribbon]').addEventListener('input',event=>{draft.ribbon=event.target.value;send();});
  for(const button of root.querySelectorAll('[data-editor-section]'))button.addEventListener('click',()=>{const id=button.dataset.editorSection;draft.sections=draft.sections.includes(id)?draft.sections.filter(item=>item!==id):[...draft.sections,id];sync();});
  for(const button of root.querySelectorAll('[data-editor-divider]'))button.onclick=()=>{const id=button.dataset.editorDivider;draft.dividers=(draft.dividers||[]).includes(id)?draft.dividers.filter(item=>item!==id):[...(draft.dividers||[]),id];sync();};
  const updateButtons=()=>{const feedback=root.querySelector('[data-editor-button-status]');try{const buttons=navigationLinks([...root.querySelectorAll('[data-editor-button-row]')].map(row=>({label:row.querySelector('[data-editor-button-label]').value,url:row.querySelector('[data-editor-button-url]').value})));const next={...draft,buttons};save.disabled=publish.disabled=!storageReady||!validEditorDraft(next);if(validEditorDraft(next)){draft=next;send();feedback.textContent='';}}catch(error){save.disabled=publish.disabled=true;feedback.textContent=error.message;}};

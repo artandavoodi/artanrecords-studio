@@ -2,6 +2,7 @@
  "tools":[
   {"id":"name","label":"Design","icon":"edit"},
   {"id":"biography","label":"Profile","icon":"profile"},
+  {"id":"graphics","label":"Graphics","icon":"image"},
   {"id":"menu","label":"Menu","icon":"editor-menu"},
   {"id":"pages","label":"Pages","icon":"document"},
   {"id":"buttons","label":"Buttons","icon":"editor-buttons"},
