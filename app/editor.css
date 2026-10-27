@@ -15,6 +15,13 @@
 .studio-editor-colour input { inline-size:var(--control-height-md); block-size:var(--control-height-md); padding:0; background:none; border:0; cursor:pointer; }
 .studio-editor-section { justify-content:flex-start; gap:var(--spacing-sm); }
 .studio-editor-section[aria-pressed=false] { opacity:var(--state-opacity-muted); }
+.studio-editor-sections,.studio-editor-button-row,[data-editor-design-tools], [data-editor-search-results] { display:grid; gap:var(--spacing-md); }
+.studio-editor-section-row { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--spacing-sm); }
+.studio-editor-section-row .studio-editor-section { display:flex; justify-content:space-between; inline-size:100%; }
+[data-editor-divider][aria-pressed=false] { opacity:var(--state-opacity-muted); }
+[data-editor-search-dialog] { inline-size:min(var(--reading-width-md),90vw); }
+[data-editor-search-results] { margin-block-start:var(--spacing-lg); }
+.studio-editor-toolbar [data-editor-save] { margin-inline-start:auto; }
 .studio-editor-canvas { grid-column:1; grid-row:1; min-inline-size:0; background:var(--cv-page-bg); }
 .studio-editor-canvas iframe { display:block; inline-size:100%; block-size:75svh; border:0; }
 .studio-editor-canvas iframe[hidden] { display:none; }

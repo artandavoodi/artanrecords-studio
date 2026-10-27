@@ -148,7 +148,7 @@ test('page editor uses only the signed-in artist handle and isolated preview con
  await page.goto('/editor/');
  await expect(page.locator('[data-editor-frame]')).toHaveAttribute('src','http://127.0.0.1:8912/testartist95/?editor-preview=1');
  await expect(page.locator('[data-editor-font-select]')).toBeDisabled();
- await expect(page.getByText('Design preview only.',{exact:false})).toBeVisible();
+ await expect(page.getByText('Design preview only until you publish.',{exact:false})).toBeVisible();
 });
 test('artist website navigation saves privately before explicit sharing',async({page})=>{
  await mockBackend(page);let saved;
@@ -161,14 +161,18 @@ test('artist website navigation saves privately before explicit sharing',async({
 });
 test('artist canvas opens focused and corner editing updates only its preview',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);
+ let savedDesign;
+ await page.route('**/rest/v1/studio_artist_designs*',route=>{if(route.request().method()==='GET')return route.fulfill({json:null});savedDesign=route.request().postDataJSON();return route.fulfill({status:201,json:savedDesign});});
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
  await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.route('**/rest/v1/studio_artist_handles*',route=>route.fulfill({json:{approved_username:'testartist95'}}));
  const config=JSON.parse(await readFile(new URL('../../assets/data/artists/editor.json',import.meta.url),'utf8'));
  const module=await readFile(new URL('../../assets/js/layers/site/artist-editor-preview.js',import.meta.url),'utf8');
+ const designModule=await readFile(new URL('../../assets/js/layers/site/artist-design.js',import.meta.url),'utf8');
  await page.route('http://127.0.0.1:8912/**',route=>{
   const path=new URL(route.request().url()).pathname;
   if(path==='/assets/js/layers/site/artist-editor-preview.js')return route.fulfill({contentType:'text/javascript',body:module});
+  if(path==='/assets/js/layers/site/artist-design.js')return route.fulfill({contentType:'text/javascript',body:designModule});
   if(path==='/testartist95/')return route.fulfill({contentType:'text/html',body:`<!doctype html><html><head></head><body><article data-public-artist><h1 data-artist-name>Test artist</h1><section data-artist-fields>Biography</section><section data-artist-links>Links</section></article><script type="module">import {bindArtistEditorPreview} from '/assets/js/layers/site/artist-editor-preview.js';bindArtistEditorPreview(document.querySelector('article'),${JSON.stringify(config)});</script></body></html>`});
   return route.fulfill({body:''});
  });
@@ -186,6 +190,17 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  }
  await page.locator('[data-editor-font-select]').selectOption('mono');
  await expect(canvas.locator('[data-artist-name]')).toHaveAttribute('style',/font-family: var\(--font-mono\)/);
+ await expect(page.locator('.studio-editor-toolbar')).not.toContainText('Page editor');
+ await page.getByRole('button',{name:'Divider before Biography',exact:true}).click();
+ await expect(canvas.locator('[data-artist-fields]')).toHaveAttribute('data-artist-divider','');
+ await page.getByRole('button',{name:'Save draft',exact:true}).click();
+ await expect.poll(()=>savedDesign?.draft?.dividers).toEqual(['biography']);expect(savedDesign.published_design).toBeUndefined();
+ await page.getByRole('button',{name:'Publish design',exact:true}).click();
+ await expect.poll(()=>savedDesign?.published_design?.font).toBe('mono');
+ await page.getByRole('button',{name:'Search',exact:true}).click();
+ const toolSearch=page.getByRole('dialog',{name:'Search page tools'});await toolSearch.getByRole('searchbox').fill('main buttons');await toolSearch.getByRole('button',{name:'Main buttons & links',exact:true}).click();
+ await expect(page.locator('[data-editor-selection]')).toHaveText('Main buttons');
+ await expect(page.locator('[data-editor-button-label]').first()).toBeFocused();
  await page.keyboard.press('Escape');await expect(page.locator('.studio-editor-controls')).toBeHidden();
  await expect(page.locator('[data-artist-editor]')).toHaveAttribute('data-focus','true');
  await page.getByRole('button',{name:'Workspace view',exact:true}).click();await expect(page.locator('.studio-header-frame')).toBeVisible();

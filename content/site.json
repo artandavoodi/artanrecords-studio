@@ -42,7 +42,7 @@
   "pages": [
     {"path":"/gallery/","title":"Gallery","description":"Manage private photographs, collections, captions and selected public images.","category":"Workspace","indexable":false,"sections":[]},
     {"path":"/projects/","title":"Projects","description":"Manage project descriptions, credits, images and publication choices.","category":"Workspace","indexable":false,"sections":[]},
-    {"path":"/editor/","title":"Artist page editor","description":"Preview changes to your artist page design. Public editor publication and subscription eligibility are not active yet.","category":"Workspace","indexable":false,"sections":[]},
+    {"path":"/editor/","title":"Artist page editor","description":"Design your artist page, save private drafts and publish your chosen design on your approved page.","category":"Workspace","indexable":false,"sections":[]},
     {"path":"/store/","title":"Store","description":"Prepare private products, collections and website or shop domain requests. Commerce payments and withdrawals are not active.","category":"Workspace","indexable":false,"sections":[]},
     {"path":"/concerts/","title":"Concerts","description":"Manage concert drafts, venue details, ticket links and public announcements.","category":"Workspace","indexable":false,"sections":[]},
     {

@@ -13,7 +13,7 @@ export function applyArtistDesign(root,draft,config){
  let sheet=document.querySelector('[data-artist-font]');
  if(font.google){if(!sheet){sheet=document.createElement('link');sheet.rel='stylesheet';sheet.dataset.artistFont='';sheet.referrerPolicy='no-referrer';document.head.append(sheet);}const url=new URL('https://fonts.googleapis.com/css2');url.searchParams.set('family',font.google);url.searchParams.set('display','swap');if(sheet.href!==url.href)sheet.href=url.href;}else sheet?.remove();
  if(heading){heading.style.fontFamily=font.value||'';heading.style.fontSize=config.sizes.find(item=>item.id===draft.size).value||'';}
- for(const item of config.sections){const section=root.querySelector(item.selector);if(!section)continue;section.hidden=!draft.sections.includes(item.id);section.toggleAttribute('data-artist-divider',(draft.dividers||[]).includes(item.id));}
+ for(const item of config.sections){const section=root.querySelector(item.selector);if(!section)continue;if(!section.id)section.id='artist-'+item.id;section.hidden=!draft.sections.includes(item.id);section.toggleAttribute('data-artist-divider',(draft.dividers||[]).includes(item.id));}
  const navigation=document.querySelector('[data-fragment=navigation]');
  if(draft.ribbon)navigation?.style.setProperty('--artist-header-ribbon',draft.ribbon);else navigation?.style.removeProperty('--artist-header-ribbon');
  const buttons=root.querySelector('[data-artist-directory]');

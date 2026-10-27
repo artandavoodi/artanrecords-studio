@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "1df36774a7e57fbe4b824f9de4453f99b487ab82",
+  "commit": "74e9b8bbcf28c04f806a39ade37e0af620d1e254",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "bf2d7bab84057768d028b0e3be924690b931ffdd97a8a3a4eb7594540c6db6f3",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -70,13 +70,13 @@
     "assets/data/studio-legal.json": "8d31474b88114eaf84cdf1a59427e5cb9ebbe346b296a0e5d44da6538872fd20",
     "assets/data/commerce.json": "0206487c6a6b4f7f965838864172b101d71a7d5b74e3911397accd6cb0caf429",
     "assets/data/artists/reserved-routes.json": "2c58f36344ba49af081ff71d3e8962edcb85f6cb28d67dc7da6633daa2769876",
-    "assets/data/artists/editor.json": "6b0ee51eb1826343217c8bf50a93d74844f558857377778e132ea17c0bb2fed7",
+    "assets/data/artists/editor.json": "1159a6be3d7170884f46194c1d86aeec1fa7a582dcc7fb0113900ce653d01e8e",
     "assets/data/studio-plans.json": "a858a0aac717ee7c1fedde71056c96d89844a536e2d064f49aa2b9460c869736",
     "assets/data/partnerships.json": "9a4d7cd3d705be4d3625566e7454bbd5d1dd64ffaf3ef8e75f44cddc30926140",
     "foundation/partnerships.mjs": "6364160895222c78b3f6be5c46de8eea4458bd4472a04ce922103ff590167a20",
     "foundation/studio-plans.mjs": "c8d8b379959e107327630887579308a7510b6f9f6133d35401db470f8c713a5a",
     "assets/js/layers/site/artist-editor-preview.js": "7e766f430304eb03a057964cefabb4b23a8146541090110f87b2449c537d9cae",
-    "assets/js/layers/site/artist-design.js": "b6c568380a9247bcad86694284527e90579ee0701d506b628bcd4b4743de327f",
+    "assets/js/layers/site/artist-design.js": "95136d3764510b5e8a4dbe087fc54843e7d06807b8f235b9b52e629c6ee6db46",
     "assets/js/layers/site/creator-routes.js": "8ef9a3119aaffd6143af6d5dce967e43374bd575ede483d7122c89380709c3f5",
     "registry/icons/public/assets/core/actions/edit/edit.svg": "7e159858f866fb171948cffa2155e3a9cea3dc6669c3523e4c7ce4327dfd73d2",
     "registry/icons/public/assets/core/identity/access/visibility-on.svg": "d499bf0b785f4a5910794a4fc77e9a975592d21c022117ad906aeb67b1aad3e7",
