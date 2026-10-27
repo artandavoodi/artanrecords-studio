@@ -16,12 +16,13 @@ export async function bindArtistEditor({client,resolveUser}){
  const showContext=target=>{
   resetContext();setTools(true);
   root.querySelector('.studio-editor-tool-navigation').hidden=target!=='name';root.querySelector('[data-editor-context-back]').hidden=target==='name';
+  for(const action of root.querySelectorAll('[data-editor-profile-open],[data-editor-open-portfolio]'))action.hidden=target!=='name';
   const selectedDesign=({buttons:'[data-editor-buttons]',links:'[data-editor-links]',footer:'[data-editor-footer]'})[target];for(const child of designTools.children)child.hidden=Boolean(selectedDesign)&&!child.matches(selectedDesign);
   profileTools.querySelector('[data-artist-navigation]').hidden=target!=='menu';profileTools.querySelector('[data-artist-pages]').hidden=target!=='pages';
   for(const button of root.querySelectorAll('[data-editor-context]'))button.setAttribute('aria-pressed',String(button.dataset.editorContext===target));
   const profile=['biography','connections','menu','pages'].includes(target);
   profileTools.hidden=!profile;designTools.hidden=profile||['gallery','project','latest','archive'].includes(target);
-  root.querySelector('[data-editor-selection]').textContent=({name:'Artist name',menu:'Menu',pages:'Pages',footer:'Footer & copyright',buttons:'Main buttons',links:'Streaming & social order'})[target]||config.sections.find(item=>item.id===target)?.label||'Page design';
+  root.querySelector('[data-editor-selection]').textContent=({name:'Design',biography:'Profile',menu:'Menu',pages:'Pages',footer:'Footer & copyright',buttons:'Main buttons',links:'Streaming & social order'})[target]||config.sections.find(item=>item.id===target)?.label||'Page design';
   if(profile){const tab=['menu','footer','pages'].includes(target)?'profile-website':target==='connections'?'profile-catalogue':'profile-details';profileTools.querySelector('[data-settings-tab="'+tab+'"]').click();profileTools.querySelector('[data-settings-panel="'+tab+'"] '+(target==='pages'?'[data-site-page-new]':target==='biography'?'[name=biography]':target==='footer'?'[name=footer_text]':'input'))?.focus();}
   else{const portfolio=portfolioTools.find(item=>item.dataset.editorPortfolioTools===target);if(portfolio){portfolio.hidden=false;portfolio.querySelector('button,input,a')?.focus();}else if(['latest','archive'].includes(target)){releaseLink.hidden=false;releaseLink.focus();}else root.querySelector(target==='buttons'?'[data-editor-button-label]':target==='footer'?'[data-editor-copyright]':target==='links'?'[data-editor-link-order] button':'[data-editor-font-select]')?.focus();}
  };
