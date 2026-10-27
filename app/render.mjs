@@ -27,11 +27,11 @@ export async function renderHead(){
 if(programmes.referrals.enabled||programmes.payments.enabled||programmes.royaltyWithdrawals.enabled)throw Error('Programme activation requires verified backend implementation');
 export async function render(page,{config,e,search}){
   const icon=(name,classes)=>renderIcon(name,e,classes);
-  const header=page.path==='/profile/'?`<h1 class="sr-only">${e(page.heading||page.title)}</h1>`:`<header><h1>${e(page.heading||page.title)}</h1><p class="reading">${e(page.description)}</p></header>`;
+  const header=['/profile/','/editor/'].includes(page.path)?`<h1 class="sr-only">${e(page.heading||page.title)}</h1>`:`<header><h1>${e(page.heading||page.title)}</h1><p class="reading">${e(page.description)}</p></header>`;
   let body='';
   if(page.path==='/account/')body=`<div class="studio-hero-actions"><button class="ui-button" type="button" data-studio-account-open>${icon('signin')}Sign in</button><a href="/profile/">Manage your profile</a></div>`;
   else if(page.path==='/profile/')body=profileMarkup({settings,e,icon});
-  else if(page.path==='/editor/')body=editorMarkup(e,icon,profileMarkup({settings,e,icon}),{gallery:portfolioMarkup('gallery',e,icon),project:portfolioMarkup('project',e,icon)});
+  else if(page.path==='/editor/')body=editorMarkup(e,icon,profileMarkup({settings,e,icon,embedded:true}),{gallery:portfolioMarkup('gallery',e,icon),project:portfolioMarkup('project',e,icon)});
   else if(page.path==='/gallery/'||page.path==='/projects/')body=portfolioMarkup(page.path==='/gallery/'?'gallery':'project',e,icon);
   else if(['/privacy/','/terms/','/cookies/'].includes(page.path)){const notice=legal.notices.find(item=>item.legacyPath===page.path);body=`<p class="publication-meta"><span>Effective date: ${e(notice.effectiveDate)}</span><span>Last updated: ${e(notice.lastUpdated)}</span></p>${notice.sections.map(section=>`<section class="surface-section" id="${e(section.id)}"><h2>${e(section.title)}</h2>${section.paragraphs.map(p=>`<p>${e(p)}</p>`).join('')}</section>`).join('')}`;}
   else if(page.path==='/search/')body=`<nav class="studio-search-navigation" aria-label="Search navigation"><a class="ui-button studio-back" href="/editor/" aria-label="Back to editor" title="Back to editor">${icon('back')}</a></nav>${searchMarkup({title:'Search tools & content',titleId:'page-tool-search',placeholder:'Search tools, sections and artist content',icon,page:true})}`;

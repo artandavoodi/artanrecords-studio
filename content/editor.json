@@ -1,0 +1,7 @@
+{
+ "views":[
+  {"id":"desktop","label":"Desktop preview","icon":"editor-desktop","width":1280},
+  {"id":"tablet","label":"Tablet preview","icon":"editor-tablet","width":820},
+  {"id":"mobile","label":"Mobile preview","icon":"editor-mobile","width":390}
+ ]
+}

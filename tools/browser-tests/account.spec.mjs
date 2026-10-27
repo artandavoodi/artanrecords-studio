@@ -214,14 +214,21 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await expect(page.locator('[data-artist-editor]')).toHaveAttribute('data-focus','true');
  await expect(page.locator('.studio-header-frame')).toBeHidden();await expect(page.locator('.studio-platform-rail')).toBeHidden();
  const canvas=page.frameLocator('[data-editor-frame]');await canvas.getByRole('button',{name:'Edit Artist name',exact:true}).click();
+ const devices=JSON.parse(await readFile(new URL('../../content/editor.json',import.meta.url),'utf8'));
+ for(const device of devices.views){await page.getByRole('button',{name:device.label,exact:true}).click();await expect.poll(()=>canvas.locator('body').evaluate(element=>element.ownerDocument.defaultView.innerWidth)).toBe(device.width);await expect(page.getByRole('button',{name:device.label,exact:true})).toHaveAttribute('aria-pressed','true');}
+ await page.getByRole('button',{name:'Desktop preview',exact:true}).click();
+ await expect(page.locator('.studio-editor-toolbar')).toHaveCSS('border-bottom-style','solid');
+ await expect(page.locator('[data-editor-save] img')).toHaveAttribute('src','/app/icons/editor-save.svg');await expect(page.locator('[data-editor-publish] img')).toHaveAttribute('src','/app/icons/editor-publish.svg');
  await expect(page.getByRole('region',{name:'Page design'})).toBeVisible();
  await expect(page.locator('[data-editor-profile-tools]')).toBeHidden();
  await expect(page.locator('[data-editor-release-link]')).toBeHidden();
  await page.getByRole('navigation',{name:'Editing tools'}).getByRole('button',{name:'Copyright',exact:true}).click();
  await expect(page.locator('[data-editor-copyright]')).toBeFocused();
- await page.getByRole('navigation',{name:'Editing tools'}).getByRole('button',{name:'Design',exact:true}).click();
+ await expect(page.getByRole('navigation',{name:'Editing tools'})).toBeHidden();
+ await page.getByRole('button',{name:'Back to Design',exact:true}).click();
  await expect(page.locator('[data-editor-font-select]')).toBeFocused();
  await expect(page.getByRole('navigation',{name:'Editing tools'}).getByRole('link',{name:'Store',exact:true})).toHaveAttribute('href','/store/');
+ await page.getByRole('navigation',{name:'Editing tools'}).getByRole('button',{name:'Profile',exact:true}).click();await expect(page.locator('[data-editor-profile-tools] .studio-profile-tabs')).toBeHidden();await expect(page.locator('[data-profile-form]')).toBeVisible();await page.getByRole('button',{name:'Back to Design',exact:true}).click();
  if(page.viewportSize().width>1024){
   const resize=page.getByRole('separator',{name:'Resize design tools'}),box=await resize.boundingBox();const before=await page.locator('.studio-editor-canvas').boundingBox();
   await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+80,box.y+box.height/2);await page.mouse.up();
@@ -256,7 +263,7 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  expect(savedDesign.draft.presentation).toEqual({portraitSize:240,portraitAlign:'center',biographyLabel:false,since:false,textSize:'large',nameAlign:'center',biographyAlign:'right'});
  await page.getByRole('button',{name:'Publish design',exact:true}).click();
  await expect.poll(()=>savedDesign?.published_design?.font).toBe('mono');
- await page.getByRole('link',{name:'Search',exact:true}).click();
+ await page.getByRole('link',{name:'Search tools and content',exact:true}).click();
  await expect(page).toHaveURL(/\/search\/\?scope=editor/);const toolSearch=page.locator('[data-studio-search-page]');await toolSearch.getByRole('searchbox').fill('main buttons');await toolSearch.getByRole('link',{name:'Main buttons & links',exact:false}).click();
  await expect(page.locator('[data-editor-selection]')).toHaveText('Main buttons');
  await expect(page.locator('[data-editor-button-label]').first()).toBeFocused();
@@ -265,7 +272,7 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await expect(page.locator('[data-editor-profile-tools] [data-navigation-links=menu] [data-link-label]').first()).toHaveValue('Journal');
  await page.keyboard.press('Escape');await expect(page.locator('.studio-editor-controls')).toBeHidden();
  await expect(page.locator('[data-artist-editor]')).toHaveAttribute('data-focus','true');
- await page.getByRole('button',{name:'Workspace view',exact:true}).click();await expect(page.locator('.studio-header-frame')).toBeVisible();
+ await page.getByRole('button',{name:'Exit focus mode',exact:true}).click();await expect(page.locator('.studio-header-frame')).toBeVisible();
 });
 test('Store prepares private products and collections without activating publication or payments',async({page})=>{
  await mockBackend(page);let prepared=false;const products=[],collections=[],domainRequests=[];

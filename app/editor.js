@@ -3,6 +3,7 @@ import {validArtistDesign} from '../assets/js/layers/site/artist-design.js';
 import {showArtistSaveConfirmation} from './artist-save.js';
 import {bindReorderList} from './neuroartan/assets/js/core/02-systems/reorder-list.js';
 import {navigationLinks} from './artist-navigation-values.js';
+import editor from '../content/editor.json';
 export function validEditorDraft(draft){
  return validArtistDesign(draft,config);
 }
@@ -14,6 +15,9 @@ export async function bindArtistEditor({client,resolveUser}){
  const resetContext=()=>{portfolioTools.forEach(item=>item.hidden=true);releaseLink.hidden=true;};
  const showContext=target=>{
   resetContext();setTools(true);
+  root.querySelector('.studio-editor-tool-navigation').hidden=target!=='name';root.querySelector('[data-editor-context-back]').hidden=target==='name';
+  const selectedDesign=({buttons:'[data-editor-buttons]',links:'[data-editor-links]',footer:'[data-editor-footer]'})[target];for(const child of designTools.children)child.hidden=Boolean(selectedDesign)&&!child.matches(selectedDesign);
+  profileTools.querySelector('[data-artist-navigation]').hidden=target!=='menu';profileTools.querySelector('[data-artist-pages]').hidden=target!=='pages';
   for(const button of root.querySelectorAll('[data-editor-context]'))button.setAttribute('aria-pressed',String(button.dataset.editorContext===target));
   const profile=['biography','connections','menu','pages'].includes(target);
   profileTools.hidden=!profile;designTools.hidden=profile||['gallery','project','latest','archive'].includes(target);
@@ -27,15 +31,20 @@ export async function bindArtistEditor({client,resolveUser}){
  resize.addEventListener('pointerdown',event=>{if(event.button!==0||!matchMedia('(min-width:1025px)').matches)return;event.preventDefault();resize.setPointerCapture(event.pointerId);const move=event=>setWidth(layout.getBoundingClientRect().right-event.clientX);const end=()=>{resize.removeEventListener('pointermove',move);resize.removeEventListener('pointerup',end);resize.removeEventListener('pointercancel',end);};resize.addEventListener('pointermove',move);resize.addEventListener('pointerup',end);resize.addEventListener('pointercancel',end);});
  resize.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight'].includes(event.key))return;event.preventDefault();setWidth(panel.getBoundingClientRect().width+(event.key==='ArrowLeft'?1:-1)*parseFloat(getComputedStyle(panel).paddingInlineStart));});
  const setTools=open=>{panel.hidden=!open;layout.dataset.toolsOpen=String(open);tools.setAttribute('aria-expanded',String(open));};
- const setFocus=active=>{root.dataset.focus=String(active);focus.setAttribute('aria-pressed',String(active));focus.lastChild.textContent=active?'Workspace view':'Focus view';};
+ const setFocus=active=>{root.dataset.focus=String(active);focus.setAttribute('aria-pressed',String(active));focus.setAttribute('aria-label',active?'Exit focus mode':'Enter focus mode');focus.title=focus.getAttribute('aria-label');};
  for(const button of root.querySelectorAll('[data-editor-context]'))button.onclick=()=>showContext(button.dataset.editorContext);
  focus.addEventListener('click',()=>setFocus(root.dataset.focus!=='true'));
- tools.addEventListener('click',()=>{resetContext();profileTools.hidden=true;designTools.hidden=false;root.querySelector('[data-editor-selection]').textContent='Page design';setTools(panel.hidden);});
- root.querySelector('[data-editor-panel-close]').addEventListener('click',()=>{setTools(false);tools.focus();});
+ tools.addEventListener('click',()=>{const opening=panel.hidden;showContext('name');setTools(opening);});
+ root.querySelector('[data-editor-context-back]').onclick=()=>showContext('name');
+ root.querySelector('[data-editor-panel-close]').addEventListener('click',()=>{showContext('name');setTools(false);tools.focus();});
  root.querySelector('[data-editor-profile-open]').addEventListener('click',()=>showContext('biography'));
  for(const button of root.querySelectorAll('[data-editor-open-portfolio]'))button.addEventListener('click',()=>{resetContext();profileTools.hidden=true;designTools.hidden=true;portfolioTools.find(item=>item.dataset.editorPortfolioTools===button.dataset.editorOpenPortfolio).hidden=false;setTools(true);});
  document.addEventListener('keydown',event=>{if(event.key!=='Escape'||document.querySelector('dialog[open]'))return;if(!panel.hidden){setTools(false);tools.focus();}else setFocus(false);});
  const status=root.querySelector('[data-editor-status]'),frame=root.querySelector('iframe'),controls=[...root.querySelectorAll('[data-editor-focus],[data-editor-tools],[data-editor-font-select],[data-editor-size],[data-editor-ribbon],[data-editor-section],[data-editor-reset],[data-editor-profile-open],[data-editor-presentation] input,[data-editor-presentation] select,[data-editor-presentation] button')];controls.forEach(item=>item.disabled=true);
+ const canvas=root.querySelector('.studio-editor-canvas'),viewport=root.querySelector('.studio-editor-viewport');let device=editor.views[0];
+ const measurePreview=()=>{const width=canvas.clientWidth,height=canvas.clientHeight;if(!width||!height)return;const scale=Math.min(1,width/device.width);viewport.style.setProperty('--preview-width',device.width+'px');viewport.style.setProperty('--preview-height',height/scale+'px');viewport.style.setProperty('--preview-scale',String(scale));viewport.style.setProperty('--preview-offset',Math.max(0,(width-device.width*scale)/2)+'px');};
+ const observer=new ResizeObserver(measurePreview);observer.observe(canvas);
+ for(const button of root.querySelectorAll('[data-editor-view]'))button.onclick=()=>{device=editor.views.find(item=>item.id===button.dataset.editorView);for(const item of root.querySelectorAll('[data-editor-view]'))item.setAttribute('aria-pressed',String(item===button));measurePreview();};
  if(!client)return;
  const owner=await resolveUser(client).catch(()=>null);if(!owner)return;
  const response=await client.from('studio_artist_handles').select('approved_username').eq('account_id',owner.id).maybeSingle();

@@ -6,10 +6,10 @@ import {renderIcon} from './icon-render.mjs';
 import {readFile} from 'node:fs/promises';
 const artistAccount=JSON.parse(await readFile(new URL('../content/artist-account.json',import.meta.url),'utf8'));
 const mediaEditor=await readFile(new URL('./neuroartan/assets/fragments/layers/website/profile/private/media/profile-media-editor.html',import.meta.url),'utf8');
-export function profileMarkup({settings,e,icon}){
+export function profileMarkup({settings,e,icon,embedded=false}){
   const camera=renderIcon('camera',e,'studio-icon ui-icon-theme-aware');
   const tabs=[['profile-details','account','Profile'],['profile-graphics','image','Graphics'],['profile-content','artist-content','Artist content'],['profile-catalogue','globe','Links & catalogue'],['profile-website','panel','Website'],['profile-publication','visibility-on','Publication']];
-  return `<nav class="studio-profile-tabs" role="tablist" aria-label="Artist profile sections">${tabs.map(([id,symbol,label],index)=>`<button type="button" role="tab" id="tab-${id}" aria-controls="${id}" aria-selected="${index===0}" tabindex="${index===0?0:-1}" data-settings-tab="${id}">${icon(symbol)}<span>${label}</span></button>`).join('')}</nav><div id="profile-details" role="tabpanel" aria-labelledby="tab-profile-details" data-settings-panel="profile-details"><section class="studio-account" data-profile-view>
+  return `<nav class="studio-profile-tabs" role="tablist" aria-label="Artist profile sections" ${embedded?'hidden':''}>${tabs.map(([id,symbol,label],index)=>`<button type="button" role="tab" id="tab-${id}" aria-controls="${id}" aria-selected="${index===0}" tabindex="${index===0?0:-1}" data-settings-tab="${id}">${icon(symbol)}<span>${label}</span></button>`).join('')}</nav><div id="profile-details" role="tabpanel" aria-labelledby="tab-profile-details" data-settings-panel="profile-details"><section class="studio-account" data-profile-view>
     <p role="status" data-profile-status>Checking your account...</p>
     <div data-profile-guest hidden><a class="ui-button" href="/account/">${icon('signin')}Sign in</a></div>
     <form data-profile-form hidden>
