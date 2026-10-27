@@ -6,3 +6,5 @@ html:has([data-artist-editor-preview]),body:has([data-artist-editor-preview]) { 
 .artist-canvas-edit img { inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); }
 .artist-canvas-edit:hover { opacity:var(--hover-opacity-strong); }
 .artist-canvas-edit:focus-visible { outline:var(--border-width-hairline) solid currentColor; outline-offset:var(--spacing-xs); }
+.site-menu__links[data-artist-edit-target],.site-footer[data-artist-edit-target] { position:relative; }
+[data-chrome-edit] { position:absolute; inset-block-start:0; inset-inline-end:0; }

@@ -1,14 +1,19 @@
+import {applyArtistDesign,validArtistDesign} from './artist-design.js';
 let bound=false;
 let replay=()=>{};
 // Preview messages affect this frame only. They never write artist metadata.
 export function bindArtistEditorPreview(root,config){
  if(window.parent===window||new URL(location.href).searchParams.get('editor-preview')!=='1')return;
- const targets=[{id:'name',label:'Artist name',selector:'[data-artist-name]'},...config.sections];
+ const targets=[{id:'name',label:'Artist name',selector:'[data-artist-name]'},...config.sections,{id:'buttons',label:'Main buttons',selector:'[data-artist-directory]'}];
  for(const target of targets){
   const node=root.querySelector(target.selector);if(!node||node.querySelector(':scope > .artist-canvas-edit'))continue;
   node.dataset.artistEditTarget=target.id;
   const button=document.createElement('button'),image=document.createElement('img');button.type='button';button.className='artist-canvas-edit';button.setAttribute('aria-label','Edit '+target.label);button.title='Edit '+target.label;image.src=config.editIcon;image.alt='';image.dataset.monochrome='true';button.append(image);
   button.addEventListener('click',()=>{for(const origin of config.studioOrigins)window.parent.postMessage({type:'artanrecords:artist-preview-select',target:target.id},origin);});node.append(button);
+ }
+ for(const [id,label,selector] of [['menu','Menu','.site-menu__links'],['footer','Footer & copyright','.site-footer']]){
+  const node=document.querySelector(selector);if(!node||node.querySelector('[data-chrome-edit]'))continue;
+  node.dataset.artistEditTarget=id;const button=document.createElement('button'),image=document.createElement('img');button.type='button';button.className='artist-canvas-edit';button.dataset.chromeEdit='';button.setAttribute('aria-label','Edit '+label);image.src=config.editIcon;image.alt='';image.dataset.monochrome='true';button.append(image);button.onclick=()=>{for(const origin of config.studioOrigins)window.parent.postMessage({type:'artanrecords:artist-preview-select',target:id},origin);};node.append(button);
  }
  if(bound){replay();return;}
  bound=true;
@@ -17,12 +22,14 @@ export function bindArtistEditorPreview(root,config){
  const receive=event=>{
   if(event.source!==window.parent||!config.studioOrigins.includes(event.origin)||event.data?.type!=='artanrecords:artist-preview')return;
   const draft=event.data.draft;
+  if(!validArtistDesign(draft,config))return;
   if(!draft||typeof draft!=='object'||!config.fonts.some(item=>item.id===draft.font)||!config.sizes.some(item=>item.id===draft.size)||!Array.isArray(draft.sections)||draft.sections.length>config.sections.length||new Set(draft.sections).size!==draft.sections.length||draft.sections.some(id=>!config.sections.some(item=>item.id===id)))return;
   const heading=root.querySelector('[data-artist-name]');
   if(heading){heading.style.fontFamily=config.fonts.find(item=>item.id===draft.font).value||'';heading.style.fontSize=config.sizes.find(item=>item.id===draft.size).value||'';}
   for(const item of config.sections){const section=root.querySelector(item.selector);if(section)section.hidden=!draft.sections.includes(item.id);}
   if(typeof draft.ribbon==='string'&&/^#[0-9a-f]{6}$/i.test(draft.ribbon))navigation?.style.setProperty('--artist-header-ribbon',draft.ribbon);
   else if(draft.ribbon===null){if(originalRibbon)navigation?.style.setProperty('--artist-header-ribbon',originalRibbon);else navigation?.style.removeProperty('--artist-header-ribbon');}
+  applyArtistDesign(root,draft,config);
   replay=()=>receive(event);
   window.parent.postMessage({type:'artanrecords:artist-preview-applied'},event.origin);
  };
