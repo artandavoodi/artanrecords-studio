@@ -16,8 +16,10 @@ export async function bindArtistEditor({client,resolveUser}){
  const showContext=target=>{
   resetContext();setTools(true);
   root.querySelector('.studio-editor-tool-navigation').hidden=target!=='name';root.querySelector('[data-editor-context-back]').hidden=target==='name';
+  root.querySelector('[data-editor-selection]').hidden=target==='name';
   for(const action of root.querySelectorAll('[data-editor-profile-open],[data-editor-open-portfolio]'))action.hidden=target!=='name';
   const selectedDesign=({buttons:'[data-editor-buttons]',links:'[data-editor-links]',footer:'[data-editor-footer]'})[target];for(const child of designTools.children)child.hidden=Boolean(selectedDesign)&&!child.matches(selectedDesign);
+  designTools.dataset.overview=String(!selectedDesign);
   profileTools.querySelector('[data-artist-navigation]').hidden=target!=='menu';profileTools.querySelector('[data-artist-pages]').hidden=target!=='pages';
   for(const button of root.querySelectorAll('[data-editor-context]'))button.setAttribute('aria-pressed',String(button.dataset.editorContext===target));
   const profile=['biography','connections','menu','pages'].includes(target);

@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "2abe68ce2798edad6c18a0b9135625cffc3aea1c",
+  "revision": "6220ab7d4a21f3d1c8fc3417222d371a85987f3f",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
     "address": "600017791b60ee1b2414c83624c33817cd3f4671451668184882bfef7644cb5c",
@@ -62,6 +62,9 @@
     "editor-mobile": "a4192dc106f53f25ac5987d2d6f6e6d6099a87379557c044a4ffd33e1501c727",
     "editor-save": "a012b9e309780a987176d65c826a2985b5f4dcf9c8c8e2e09fa41f14acf97dc2",
     "editor-publish": "a4192dc106f53f25ac5987d2d6f6e6d6099a87379557c044a4ffd33e1501c727",
+    "editor-menu": "b6556fc4501686d5d7f537a97e47e6ef4caf79737f76608a019e4cc500f43ab5",
+    "editor-buttons": "4d83d68e1ca1e69a756ca1b36a5ed331760e904da73528b850e9fec96da67439",
+    "editor-copyright": "4d83d68e1ca1e69a756ca1b36a5ed331760e904da73528b850e9fec96da67439",
     "gallery": "f0f046a6dc89f8c70da1f120080d69c219bfcf48d0448b0bcef3186dbeb45944",
     "projects": "ed6b723a4421ed140e07a02a77f3c35529b7cddcc536cbc8553d0ff30f4f5ada",
     "chevron-down": "267f15b40d1f468dd67aa683522be1166bed34488003b70181d9f6ab00da01a6",
@@ -132,6 +135,9 @@
     "editor-mobile": false,
     "editor-save": true,
     "editor-publish": false,
+    "editor-menu": true,
+    "editor-buttons": false,
+    "editor-copyright": false,
     "gallery": false,
     "projects": true,
     "chevron-down": true,

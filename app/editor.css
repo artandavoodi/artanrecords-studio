@@ -9,10 +9,11 @@
 .studio-editor-controls :is(h2,p) { margin:0; }
 .studio-editor-controls h2:not(:first-child) { margin-block-start:var(--spacing-lg); }
 .studio-editor-panel-heading { display:flex; justify-content:space-between; align-items:center; gap:var(--spacing-md); }
+.studio-editor-panel-heading [data-editor-panel-close] { margin-inline-start:auto; }
 .studio-editor-controls [hidden] { display:none; }
 .studio-editor-controls label { display:grid; gap:var(--spacing-sm); }
 .studio-editor-tool-navigation { display:flex; flex-wrap:wrap; gap:var(--spacing-sm); }
-.studio-editor-tool-navigation button { border:0; background:none; color:inherit; font:inherit; padding:var(--spacing-sm); cursor:pointer; }
+.studio-editor-tool-navigation :is(button,a) { display:inline-flex; align-items:center; gap:var(--spacing-sm); border:0; background:none; color:inherit; font:inherit; font-size:var(--site-type-caption-size); padding:var(--spacing-sm); cursor:pointer; text-decoration:none; }
 .studio-editor-tool-navigation button[aria-pressed=false] { opacity:var(--state-opacity-muted); }
 .studio-search-navigation { inline-size:100%; max-inline-size:var(--reading-width-md); margin-inline:auto; margin-block-end:var(--spacing-lg); }
 .studio-back { display:inline-flex; align-items:center; justify-content:center; padding:var(--spacing-sm); border:0; background:none; }
@@ -38,6 +39,9 @@
 .studio-editor-section { justify-content:flex-start; gap:var(--spacing-sm); }
 .studio-editor-section[aria-pressed=false] { opacity:var(--state-opacity-muted); }
 .studio-editor-sections,.studio-editor-button-row,[data-editor-design-tools], [data-editor-search-results] { display:grid; gap:var(--spacing-md); }
+[data-editor-design-tools][data-overview=true] { gap:var(--spacing-xl); }
+[data-editor-design-tools][data-overview=true] > section { display:grid; gap:var(--spacing-md); }
+[data-editor-design-tools][data-overview=true] > section + section { border-block-start:var(--border-width-hairline) solid var(--cv-border); padding-block-start:var(--spacing-xl); }
 .studio-editor-section-row { gap:var(--spacing-sm); }
 .studio-editor-section-row .studio-editor-section { flex:1; min-inline-size:0; }
 .studio-editor-section-row .studio-editor-section { display:flex; justify-content:space-between; inline-size:100%; }

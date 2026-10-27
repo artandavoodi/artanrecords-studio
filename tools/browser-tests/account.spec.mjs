@@ -222,6 +222,12 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await expect(page.getByRole('region',{name:'Page design'})).toBeVisible();
  await expect(page.locator('[data-editor-profile-tools]')).toBeHidden();
  await expect(page.locator('[data-editor-release-link]')).toBeHidden();
+ const designNavigation=page.getByRole('navigation',{name:'Editing tools'}),closeBox=await page.locator('[data-editor-panel-close]').boundingBox(),navBox=await designNavigation.boundingBox();
+ expect(closeBox.y+closeBox.height).toBeLessThanOrEqual(navBox.y);
+ const toolConfig=JSON.parse(await readFile(new URL('../../content/editor.json',import.meta.url),'utf8'));
+ for(const tool of toolConfig.tools)await expect(designNavigation.locator('[data-editor-context="'+tool.id+'"] img')).toHaveAttribute('src','/app/icons/'+tool.icon+'.svg');
+ const groups=page.locator('[data-editor-design-tools] > section');await expect(groups).toHaveCount(8);
+ for(let index=1;index<8;index++)await expect(groups.nth(index)).toHaveCSS('border-top-style','solid');
  await page.emulateMedia({reducedMotion:'no-preference'});
  const drawer=page.locator('.studio-editor-controls'),drawerToggle=page.locator('[data-editor-tools]');
  const closeMotion=await drawerToggle.evaluate(button=>{button.click();const panel=document.querySelector('.studio-editor-controls'),layout=document.querySelector('.studio-editor-layout');panel.getBoundingClientRect();return {hidden:panel.hidden,inert:panel.inert,animated:[...layout.getAnimations(),...panel.getAnimations()].some(animation=>animation.effect.getTiming().duration>0)};});
@@ -234,6 +240,7 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await page.emulateMedia({reducedMotion:'reduce'});await drawerToggle.click();await expect(drawer).toBeHidden();await drawerToggle.click();await expect(drawer).toBeVisible();
  await page.getByRole('navigation',{name:'Editing tools'}).getByRole('button',{name:'Copyright',exact:true}).click();
  await expect(page.locator('[data-editor-copyright]')).toBeFocused();
+ await expect(page.locator('[data-editor-footer]')).toHaveCSS('border-top-style','none');
  await expect(page.getByRole('navigation',{name:'Editing tools'})).toBeHidden();
  await page.getByRole('button',{name:'Back to Design',exact:true}).click();
  await expect(page.locator('[data-editor-font-select]')).toBeFocused();

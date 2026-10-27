@@ -1,4 +1,13 @@
 {
+ "tools":[
+  {"id":"name","label":"Design","icon":"edit"},
+  {"id":"biography","label":"Profile","icon":"profile"},
+  {"id":"menu","label":"Menu","icon":"editor-menu"},
+  {"id":"pages","label":"Pages","icon":"document"},
+  {"id":"buttons","label":"Buttons","icon":"editor-buttons"},
+  {"id":"links","label":"Links","icon":"connections"},
+  {"id":"footer","label":"Copyright","icon":"editor-copyright"}
+ ],
  "views":[
   {"id":"desktop","label":"Desktop preview","icon":"editor-desktop","width":1280},
   {"id":"tablet","label":"Tablet preview","icon":"editor-tablet","width":820},
