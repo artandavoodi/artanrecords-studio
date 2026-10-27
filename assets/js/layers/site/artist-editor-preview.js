@@ -1,4 +1,5 @@
 import {applyArtistDesign,validArtistDesign} from './artist-design.js';
+import {artistShowcaseChoices} from './artist-showcase.js';
 import {bindReorderList} from '../../core/02-systems/reorder-list.js';
 let bound=false;
 let replay=()=>{};
@@ -36,5 +37,5 @@ export function bindArtistEditorPreview(root,config,previewGraphics){
  };
  addEventListener('message',receive);
  const links=[...root.querySelectorAll('[data-artist-group]')].map(group=>({id:group.dataset.artistGroup,label:group.querySelector('h2')?.textContent||group.dataset.artistGroup,items:[...group.querySelectorAll('[data-artist-link-key]')].map(link=>({id:link.dataset.artistLinkKey,label:link.getAttribute('aria-label')||link.textContent.trim()}))}));
- for(const origin of config.studioOrigins)window.parent.postMessage({type:'artanrecords:artist-preview-ready',links},origin);
+ for(const origin of config.studioOrigins)window.parent.postMessage({type:'artanrecords:artist-preview-ready',links,showcase:artistShowcaseChoices(root,config)},origin);
 }

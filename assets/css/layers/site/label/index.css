@@ -387,4 +387,16 @@ html:not([data-enhanced]) .site-menu { position: static; }
 html:not([data-enhanced]) .site-menu__surface { min-block-size: auto; padding-block: var(--spacing-lg); }
 html:not([data-enhanced]) .site-menu__links { display: flex; flex-wrap: wrap; }
 html:not([data-enhanced]) .site-menu__links a { font-size: var(--site-type-body-size); }
+.artist-music { display:grid; gap:var(--spacing-xl); }
+.artist-music-tabs { display:flex; flex-wrap:wrap; gap:var(--spacing-lg); }
+.artist-music-tabs button { border:0; background:none; color:var(--artist-tab-colour,inherit); font:inherit; padding:var(--spacing-sm) 0; cursor:pointer; opacity:var(--state-opacity-muted); }
+.artist-music-tabs button:is([aria-selected=true],:hover,:focus-visible) { opacity:var(--cv-opacity-full); }
+.artist-music [hidden] { display:none; }
+.artist-music .release-card { display:grid; align-content:start; gap:var(--spacing-md); }
+.artist-music .release-card > img { inline-size:100%; aspect-ratio:1; object-fit:cover; }
+.artist-track-directory { display:grid; gap:var(--spacing-xl); }
+.artist-track-directory > article { display:grid; gap:var(--spacing-md); padding-block-end:var(--spacing-xl); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
+.artist-release-label a { display:inline-flex; }
+.artist-release-label img { inline-size:auto; max-inline-size:100%; block-size:var(--icon-size-md); }
+.artist-showcase { display:grid; gap:var(--spacing-xl); }
 a { text-decoration:none; }

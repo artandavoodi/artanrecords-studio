@@ -1,6 +1,8 @@
 // The same allowlisted design contract is used by the public page and its editor.
+import {validArtistShowcase,applyArtistShowcase} from './artist-showcase.js';
 const originalLinkOrders=new WeakMap();
 export function validArtistDesign(draft,config){
+ if(!validArtistShowcase(draft?.showcase,config))return false;
  const ids=items=>Array.isArray(items)&&items.length<=config.sections.length&&new Set(items).size===items.length&&items.every(id=>config.sections.some(item=>item.id===id));
  const linkOrder=draft?.linkOrder||{};
  const presentation=draft?.presentation;
@@ -14,6 +16,7 @@ export function validArtistDesign(draft,config){
 }
 export function applyArtistDesign(root,draft,config){
  if(!validArtistDesign(draft,config))return false;
+ if(config.showcase)applyArtistShowcase(root,draft.showcase,config);
  const font=config.fonts.find(item=>item.id===draft.font),heading=root.querySelector('[data-artist-name]');
  let sheet=document.querySelector('[data-artist-font]');
  if(font.google){if(!sheet){sheet=document.createElement('link');sheet.rel='stylesheet';sheet.dataset.artistFont='';sheet.referrerPolicy='no-referrer';document.head.append(sheet);}const url=new URL('https://fonts.googleapis.com/css2');url.searchParams.set('family',font.google);url.searchParams.set('display','swap');if(sheet.href!==url.href)sheet.href=url.href;}else sheet?.remove();

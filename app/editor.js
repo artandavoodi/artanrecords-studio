@@ -4,6 +4,7 @@ import {showArtistSaveConfirmation} from './artist-save.js';
 import {bindReorderList} from './neuroartan/assets/js/core/02-systems/reorder-list.js';
 import {navigationLinks} from './artist-navigation-values.js';
 import editor from '../content/editor.json';
+import {bindEditorShowcase} from './editor-showcase.js';
 export function validEditorDraft(draft){
  return validArtistDesign(draft,config);
 }
@@ -18,7 +19,7 @@ export async function bindArtistEditor({client,resolveUser}){
   root.querySelector('.studio-editor-tool-navigation').hidden=target!=='name';root.querySelector('[data-editor-context-back]').hidden=target==='name';
   root.querySelector('[data-editor-selection]').hidden=target==='name';
   for(const action of root.querySelectorAll('[data-editor-profile-open],[data-editor-open-portfolio]'))action.hidden=target!=='name';
-  const selectedDesign=({buttons:'[data-editor-buttons]',links:'[data-editor-links]',footer:'[data-editor-footer]'})[target];for(const child of designTools.children)child.hidden=Boolean(selectedDesign)&&!child.matches(selectedDesign);
+  const selectedDesign=({buttons:'[data-editor-buttons]',links:'[data-editor-links]',footer:'[data-editor-footer]',selected:'[data-editor-showcase=music]',visual:'[data-editor-showcase=gallery]'})[target];for(const child of designTools.children)child.hidden=Boolean(selectedDesign)&&!child.matches(selectedDesign);
   designTools.dataset.overview=String(!selectedDesign);
   profileTools.querySelector('[data-artist-navigation]').hidden=target!=='menu';profileTools.querySelector('[data-artist-pages]').hidden=target!=='pages';
   for(const button of root.querySelectorAll('[data-editor-context]'))button.setAttribute('aria-pressed',String(button.dataset.editorContext===target));
@@ -86,6 +87,7 @@ export async function bindArtistEditor({client,resolveUser}){
  };
  save.onclick=()=>persist(false);publish.onclick=()=>persist(true);
  const send=()=>{if(!validEditorDraft(draft))return;try{sessionStorage.setItem(workingKey,JSON.stringify(draft));}catch{}if(ready)frame.contentWindow.postMessage({type:'artanrecords:artist-preview',draft},url.origin);};
+ const showcase=bindEditorShowcase(root,config,()=>draft,(group,ids)=>{draft.showcase={...(draft.showcase||{}),[group.id]:ids};if(ids.length&&!draft.sections.includes(group.section))draft.sections.push(group.section);if(ids.length&&!(draft.order||[]).includes(group.section))draft.order=[...(draft.order||draft.sections),group.section].filter((id,index,all)=>all.indexOf(id)===index);sync();});
  const sync=()=>{
   const presentation=draft.presentation||defaultPresentation();
   for(const select of root.querySelectorAll('[data-editor-align]'))select.value=presentation[select.dataset.editorAlign]||'left';root.querySelector('[data-editor-logo-size]').value=presentation.logoSize||config.presentation.portrait.max;root.querySelector('[data-editor-logo-output]').textContent=(presentation.logoSize||config.presentation.portrait.max)+' px';
@@ -98,12 +100,12 @@ export async function bindArtistEditor({client,resolveUser}){
   for(const [index,row] of [...root.querySelectorAll('[data-editor-button-row]')].entries()){row.querySelector('[data-editor-button-label]').value=draft.buttons?.[index]?.label||'';row.querySelector('[data-editor-button-url]').value=draft.buttons?.[index]?.url||'';}
   root.querySelector('[data-editor-copyright]').value=draft.copyright||'';
   const list=root.querySelector('[data-editor-section-order]');for(const id of draft.order||config.sections.map(item=>item.id)){const row=list.querySelector('[data-reorder-id="'+id+'"]');if(row)list.append(row);}
-  send();sendGraphics();
+  showcase.render();send();sendGraphics();
  };
  addEventListener('message',event=>{
   if(event.source!==frame.contentWindow||event.origin!==url.origin)return;
   if(event.data?.type==='artanrecords:artist-menu-order'&&Array.isArray(event.data.links)){document.dispatchEvent(new CustomEvent('studio:artist-menu-order',{detail:event.data.links}));showContext('menu');}
-  if(event.data?.type==='artanrecords:artist-preview-ready'){const first=!ready;ready=true;controls.forEach(item=>item.disabled=false);save.disabled=publish.disabled=!storageReady;status.textContent=storageReady?'Preview ready.':'Preview ready. Design storage is unavailable; saving and publishing are disabled.';status.classList.toggle('sr-only',storageReady);if(first){setFocus(true);setTools(false);}sync();renderLinkOrder(event.data.links);const target=new URL(location.href).searchParams.get('tool');if(first&&[...editor.tools.map(item=>item.id),...config.sections.map(item=>item.id)].includes(target))showContext(target);}
+  if(event.data?.type==='artanrecords:artist-preview-ready'){const first=!ready;ready=true;controls.forEach(item=>item.disabled=false);save.disabled=publish.disabled=!storageReady;status.textContent=storageReady?'Preview ready.':'Preview ready. Design storage is unavailable; saving and publishing are disabled.';status.classList.toggle('sr-only',storageReady);if(first){setFocus(true);setTools(false);}showcase.update(event.data.showcase);sync();renderLinkOrder(event.data.links);const target=new URL(location.href).searchParams.get('tool');if(first&&[...editor.tools.map(item=>item.id),...config.sections.map(item=>item.id)].includes(target))showContext(target);}
   if(event.data?.type==='artanrecords:artist-preview-select'&&['name','menu','footer','buttons',...config.sections.map(item=>item.id)].includes(event.data.target))showContext(event.data.target);
  });
  root.querySelector('[data-editor-font-select]').addEventListener('change',event=>{draft.font=event.target.value;sync();});

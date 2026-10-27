@@ -3,6 +3,8 @@
   {"id":"name","label":"Design","icon":"edit"},
   {"id":"biography","label":"Profile","icon":"profile"},
   {"id":"graphics","label":"Graphics","icon":"image"},
+  {"id":"selected","label":"Selected music","icon":"music"},
+  {"id":"visual","label":"Featured art","icon":"gallery"},
   {"id":"menu","label":"Menu","icon":"editor-menu"},
   {"id":"pages","label":"Pages","icon":"document"},
   {"id":"buttons","label":"Buttons","icon":"editor-buttons"},

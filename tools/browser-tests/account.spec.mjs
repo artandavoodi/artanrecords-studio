@@ -201,11 +201,13 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  const config=JSON.parse(await readFile(new URL('../../assets/data/artists/editor.json',import.meta.url),'utf8'));
  const module=await readFile(new URL('../../assets/js/layers/site/artist-editor-preview.js',import.meta.url),'utf8');
  const designModule=await readFile(new URL('../../assets/js/layers/site/artist-design.js',import.meta.url),'utf8');
+ const showcaseModule=await readFile(new URL('../../assets/js/layers/site/artist-showcase.js',import.meta.url),'utf8');
  const reorderModule=await readFile(new URL('../../assets/js/core/02-systems/reorder-list.js',import.meta.url),'utf8');
  await page.route('http://127.0.0.1:8912/**',route=>{
   const path=new URL(route.request().url()).pathname;
   if(path==='/assets/js/layers/site/artist-editor-preview.js')return route.fulfill({contentType:'text/javascript',body:module});
   if(path==='/assets/js/layers/site/artist-design.js')return route.fulfill({contentType:'text/javascript',body:designModule});
+  if(path==='/assets/js/layers/site/artist-showcase.js')return route.fulfill({contentType:'text/javascript',body:showcaseModule});
   if(path==='/assets/js/core/02-systems/reorder-list.js')return route.fulfill({contentType:'text/javascript',body:reorderModule});
   if(path==='/testartist95/')return route.fulfill({contentType:'text/html',body:`<!doctype html><html><head></head><body><nav class="site-menu__links"><a href="#music">Music</a><a href="#journal">Journal</a></nav><article data-public-artist><div data-artist-portrait></div><h1 data-artist-name>Test artist</h1><section data-artist-fields><h2>Biography</h2><p>Artist story</p><p data-artist-since>Since 2024</p></section><section data-artist-links><section data-artist-group="streaming"><h2>Listen</h2><div class="hub__group-links"><a data-artist-link-key="spotify" aria-label="Spotify" href="https://open.spotify.com/artist/test">Spotify</a><a data-artist-link-key="amazon_music" aria-label="Amazon Music" href="https://music.amazon.com/artists/test">Amazon Music</a></div></section></section></article><script type="module">import {bindArtistEditorPreview} from '/assets/js/layers/site/artist-editor-preview.js';bindArtistEditorPreview(document.querySelector('article'),${JSON.stringify(config)});</script></body></html>`});
   return route.fulfill({body:''});
@@ -226,9 +228,17 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  expect(closeBox.y+closeBox.height).toBeLessThanOrEqual(navBox.y);
  const toolConfig=JSON.parse(await readFile(new URL('../../content/editor.json',import.meta.url),'utf8'));
  for(const tool of toolConfig.tools)await expect(designNavigation.locator('[data-editor-context="'+tool.id+'"] img')).toHaveAttribute('src','/app/icons/'+tool.icon+'.svg');
- const groups=page.locator('[data-editor-design-tools] > section');await expect(groups).toHaveCount(7);
- for(let index=1;index<7;index++)await expect(groups.nth(index)).toHaveCSS('border-top-style','solid');
+ const groups=page.locator('[data-editor-design-tools] > section');await expect(groups).toHaveCount(9);
+ for(let index=1;index<9;index++)await expect(groups.nth(index)).toHaveCSS('border-top-style','solid');
  await expect(page.locator('[data-editor-ribbon]')).toHaveCount(0);
+ await canvas.locator('[data-public-artist]').evaluate(root=>{
+  const archive=document.createElement('section');archive.dataset.artistArchive='';for(const id of ['example-release','second-release']){const card=document.createElement('article'),heading=document.createElement('h3');card.dataset.releaseId=id;card.dataset.releaseStatus='Released';heading.textContent=id;card.append(heading);archive.append(card);}root.append(archive);
+  parent.postMessage({type:'artanrecords:artist-preview-ready',showcase:[{id:'music',items:[{id:'example-release',label:'example-release'},{id:'second-release',label:'second-release'}]}]},'*');
+ });
+ await designNavigation.getByRole('button',{name:'Selected music',exact:true}).click();await page.locator('[data-showcase-choices=music]').getByRole('button',{name:'example-release',exact:true}).click();await page.locator('[data-showcase-choices=music]').getByRole('button',{name:'second-release',exact:true}).click();
+ await expect(canvas.locator('[data-artist-showcase=music] [data-release-id]')).toHaveCount(2);
+ await page.getByRole('button',{name:'Reorder second-release',exact:true}).focus();await page.keyboard.press('ArrowUp');await expect(canvas.locator('[data-artist-showcase=music] [data-release-id]').first()).toHaveAttribute('data-release-id','second-release');
+ await page.getByRole('button',{name:'Back to Design',exact:true}).click();
  await designNavigation.getByRole('button',{name:'Graphics',exact:true}).click();await expect(page.locator('[data-graphics-form]')).toBeVisible();await expect(page.locator('[data-editor-design-tools]')).toBeHidden();await page.getByRole('button',{name:'Back to Design',exact:true}).click();
  await page.emulateMedia({reducedMotion:'no-preference'});
  const drawer=page.locator('.studio-editor-controls'),drawerToggle=page.locator('[data-editor-tools]');
@@ -287,6 +297,7 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await page.getByRole('button',{name:'Save draft',exact:true}).click();
  await expect.poll(()=>savedDesign?.draft?.dividers).toEqual(['biography']);expect(savedDesign.published_design).toBeUndefined();
  expect(savedDesign.draft.order[0]).toBe('connections');expect(savedDesign.draft.linkOrder.streaming).toEqual(['amazon_music','spotify']);
+ expect(savedDesign.draft.showcase.music).toEqual(['second-release','example-release']);
  expect(savedDesign.draft.presentation).toEqual({portraitSize:240,portraitAlign:'center',biographyLabel:false,since:false,textSize:'large',nameAlign:'center',biographyAlign:'right'});
  await page.getByRole('button',{name:'Publish design',exact:true}).click();
  await expect.poll(()=>savedDesign?.published_design?.font).toBe('mono');
