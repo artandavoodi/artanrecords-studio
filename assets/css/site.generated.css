@@ -7473,8 +7473,8 @@ html[data-theme-effective="dark"] .label-wordmark--light { display: none; }
 }
 .partnership-next-step { margin-block-start:var(--spacing-2xl); padding-block-start:var(--spacing-xl); }
 .partnership-state { font-weight:var(--font-weight-semibold); }
-.pricing-period-tabs { display:flex; justify-content:center; gap:var(--spacing-lg); margin-block:var(--spacing-lg); }
-.pricing-period-tabs button { border:0; background:none; color:var(--cv-text-primary); padding:var(--spacing-sm); font:inherit; opacity:var(--state-opacity-muted); cursor:pointer; }
+.pricing-period-tabs { display:flex; justify-content:center; gap:var(--spacing-sm); margin-block:var(--spacing-lg); }
+.pricing-period-tabs button { flex:0 0 auto; inline-size:auto; min-inline-size:0; border:0; background:none; color:var(--cv-text-primary); padding:var(--spacing-sm); font:inherit; opacity:var(--state-opacity-muted); cursor:pointer; }
 .pricing-period-tabs [aria-selected=true] { opacity:1; }
 .partnership-comparison tr[hidden] { display:none; }
 .partnership-price { font-size:var(--font-size-h2); color:var(--cv-text-primary); font-weight:var(--font-weight-semibold); }
