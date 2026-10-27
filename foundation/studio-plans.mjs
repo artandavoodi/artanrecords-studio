@@ -15,7 +15,7 @@ export function studioComparison(config){
 }
 export function studioPricingSections(config){
  validateStudioPlans(config);
- return [...config.items.map(plan=>({id:plan.id,title:plan.name,paragraphs:[`${formatPlanPrice(plan.monthlyPrice,config.currency)}/month or ${formatPlanPrice(plan.annualPrice,config.currency)}/year.`,plan.description]})),{id:'included-access',title:'Included access and continuation',paragraphs:['Silver includes Studio while its qualifying partnership is active. Gold and Platinum include Studio Pro while their qualifying partnership is active. This entitlement does not change list prices or create a separate subscription charge.','A partnership preference grants no access. Grace periods, cancellation and retention require approved policies. No automatic paid conversion or deletion is enabled. Recording shares, commerce and project-specific expenses remain separate.']}];
+ return [...config.items.map(plan=>({id:plan.id,title:plan.name,paragraphs:[`${formatPlanPrice(plan.monthlyPrice,config.currency)}/month or ${formatPlanPrice(plan.annualPrice,config.currency)}/year.`,plan.description]})),config.includedAccess];
 }
 // Evaluate server-owned evidence only; this helper does not grant or persist access.
 export function resolveStudioEntitlement(config,evidence,now=Date.now()){

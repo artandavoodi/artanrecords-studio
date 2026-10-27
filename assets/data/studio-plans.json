@@ -13,7 +13,7 @@
       "monthlyPrice": 999,
       "annualPrice": 9900,
       "url": "/studio-plans/#studio",
-      "description": "The standard creator platform. List pricing is separate from access included through an active Silver partnership. Paid subscriptions are not available yet."
+      "description": "Manage your artist profile, prepare releases and organise store drafts in one workspace. Studio is included with an active Silver partnership."
     },
     {
       "id": "studio-pro",
@@ -22,7 +22,7 @@
       "monthlyPrice": 1999,
       "annualPrice": 19900,
       "url": "/studio-plans/#studio-pro",
-      "description": "The advanced creator platform. Included through a verified active Gold or Platinum partnership. Advanced features require operational, approved services; paid subscriptions are not available yet."
+      "description": "For a broader website and business toolkit, according to the services available to your account. Studio Pro is included with an active Gold or Platinum partnership."
     }
   ],
   "comparison": {
@@ -54,7 +54,7 @@
           "price",
           "price"
         ],
-        "details": "Approved monthly list prices come from the versioned plan register. They are independent of annual billing and recording shares. Checkout is not active; choosing a period creates no subscription, charge, trial or renewal."
+        "details": "Monthly prices cover software access. Each plan has its own annual option, shown under Annual. Prices do not change recording revenue shares or store fees. Contact Artanrecords to arrange access; selecting a billing period here does not start a subscription or charge."
       },
       {
         "label": "Annual price",
@@ -64,7 +64,7 @@
           "price",
           "price"
         ],
-        "details": "Annual prices are independently approved amounts, not the monthly rate multiplied by twelve. Billing and renewal remain unavailable. Tax treatment and the final amount due must be confirmed before purchase; no VAT inclusion or exclusion is claimed."
+        "details": "Annual billing uses the yearly prices shown, not a monthly rate multiplied by twelve. Compare the two billing options before choosing. Any applicable tax and final amount due must be confirmed before payment. Selecting this tab does not purchase or renew a subscription."
       },
       {
         "label": "Profile and private preparation",
@@ -105,8 +105,8 @@
       {
         "label": "Payments and continuation",
         "values": [
-          "Checkout not active",
-          "Checkout not active"
+          "Contact Artanrecords",
+          "Contact Artanrecords"
         ],
         "states": [
           "pending",
@@ -147,5 +147,13 @@
     "graceDays": null,
     "automaticConversion": false,
     "deleteDataOnExpiry": false
+  },
+  "includedAccess": {
+    "id": "included-access",
+    "title": "Access through your partnership",
+    "paragraphs": [
+      "Silver includes Studio. Gold and Platinum include Studio Pro for the duration of the qualifying partnership, with no separate software subscription charge.",
+      "When your partnership ends, contact Artanrecords to discuss continued access. Your work is not automatically deleted, and no paid subscription starts without your consent. Recording agreements, software subscriptions and store sales have separate terms."
+    ]
   }
 }
