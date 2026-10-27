@@ -22,6 +22,7 @@ import {bindCommerce} from './commerce.js';
 import {bindBank} from './bank.js';
 import {bindSubscriptions} from './subscriptions.js';
 import {bindArtistEditor} from './editor.js';
+import {bindEditorSearch} from './editor-search.js';
 import {bindPortfolio} from './portfolio.js';
 import {bindSubscriptionPayments} from './subscription-payments.js';
 import {bindAccountSecurity} from './account-security.js';
@@ -45,7 +46,7 @@ document.querySelectorAll('[data-reset-password]').forEach(button=>button.addEve
 bindPlatform(context);
 const callback=readAccountCallback(new URL(location.href));
 const accountCallback=Boolean(callback.code||callback.token||callback.error);
-client?.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){document.querySelectorAll('[data-profile-form],[data-artist-metadata],[data-release-controls],[data-submissions-list],[data-contracts-list]').forEach(element=>element.replaceChildren());document.querySelector('[data-avatar]')?.removeAttribute('src');location.replace('/account/');}});
+client?.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){try{for(const key of Object.keys(sessionStorage))if(key.startsWith('artanrecords-editor:'))sessionStorage.removeItem(key);}catch{}document.querySelectorAll('[data-profile-form],[data-artist-metadata],[data-release-controls],[data-submissions-list],[data-contracts-list]').forEach(element=>element.replaceChildren());document.querySelector('[data-avatar]')?.removeAttribute('src');location.replace('/account/');}});
 try{
 await bindAccount(context);await bindProfile(context);
 await bindAccountAppearance(context);
@@ -71,6 +72,7 @@ await bindBank(context);
 await bindSubscriptions(context);
 await bindSubscriptionPayments(context);
 await bindArtistEditor(context);
+await bindEditorSearch(context);
 await bindPortfolio(context);
 await window.NeuroartanPageLoading?.images(document.body);
 }catch(error){console.error('[studio] Workspace initialization failed',error);}finally{window.NeuroartanPageLoading?.finish();}

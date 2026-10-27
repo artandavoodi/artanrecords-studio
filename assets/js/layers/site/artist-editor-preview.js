@@ -1,4 +1,5 @@
 import {applyArtistDesign,validArtistDesign} from './artist-design.js';
+import {bindReorderList} from '../../core/02-systems/reorder-list.js';
 let bound=false;
 let replay=()=>{};
 // Preview messages affect this frame only. They never write artist metadata.
@@ -14,6 +15,11 @@ export function bindArtistEditorPreview(root,config){
  for(const [id,label,selector] of [['menu','Menu','.site-menu__links'],['footer','Footer & copyright','.site-footer']]){
   const node=document.querySelector(selector);if(!node||node.querySelector('[data-chrome-edit]'))continue;
   node.dataset.artistEditTarget=id;const button=document.createElement('button'),image=document.createElement('img');button.type='button';button.className='artist-canvas-edit';button.dataset.chromeEdit='';button.setAttribute('aria-label','Edit '+label);image.src=config.editIcon;image.alt='';image.dataset.monochrome='true';button.append(image);button.onclick=()=>{for(const origin of config.studioOrigins)window.parent.postMessage({type:'artanrecords:artist-preview-select',target:id},origin);};node.append(button);
+ }
+ const menu=document.querySelector('.site-menu__links');
+ if(menu){
+  for(const link of menu.querySelectorAll(':scope > a')){const row=document.createElement('div'),handle=document.createElement('button'),image=document.createElement('img');row.dataset.artistMenuRow='';row.draggable=true;handle.type='button';handle.dataset.reorderHandle='';handle.setAttribute('aria-label','Reorder '+link.textContent);image.src=config.dragIcon;image.alt='';image.dataset.monochrome='true';handle.append(image);link.before(row);row.append(handle,link);}
+  bindReorderList(menu,{rowSelector:'[data-artist-menu-row]',handleSelector:'[data-reorder-handle]',onChange:rows=>{const links=rows.map(row=>{const link=row.querySelector('a');return {label:link.textContent,url:link.getAttribute('href')};});for(const origin of config.studioOrigins)window.parent.postMessage({type:'artanrecords:artist-menu-order',links},origin);}});
  }
  if(bound){replay();return;}
  bound=true;

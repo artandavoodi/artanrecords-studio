@@ -158,6 +158,14 @@ test('artist website navigation saves privately before explicit sharing',async({
  const form=page.locator('[data-artist-navigation]');await form.locator('[data-navigation-add=menu]').click();await form.getByLabel('Link name',{exact:true}).fill('My music');await form.getByLabel('Address',{exact:true}).fill('#artist-releases');await form.getByRole('button',{name:'Save',exact:true}).click();
  await expect.poll(()=>saved?.menu).toEqual([{label:'My music',url:'#artist-releases'}]);expect(saved.published).toBe(false);
  await form.locator('[name=published]').check();await form.getByRole('button',{name:'Save',exact:true}).click();await expect.poll(()=>saved.published).toBe(true);
+ await form.locator('[data-navigation-add=menu]').click();const second=form.locator('[data-navigation-links=menu] [data-navigation-row]').last();await second.getByLabel('Link name',{exact:true}).fill('Journal');await second.getByLabel('Address',{exact:true}).fill('https://example.test/journal');await second.getByRole('button',{name:'Reorder Journal',exact:true}).focus();await page.keyboard.press('ArrowUp');await form.getByRole('button',{name:'Save',exact:true}).click();await expect.poll(()=>saved.menu.map(item=>item.label)).toEqual(['Journal','My music']);
+});
+test('shared priority handle reorders rows with desktop pointer dragging',async({page})=>{
+ if(!test.info().project.name.endsWith('desktop')){test.skip(true,'Touch surfaces use the shared pointer handler; keyboard ordering is covered in the artist tests.');return;}
+ await page.route('**/reorder-test',route=>route.fulfill({contentType:'text/html',body:`<!doctype html><html><head><link rel="stylesheet" href="/app/dist/studio.css"></head><body><div id="priority">${['spotify','amazon_music'].map(id=>`<div data-row data-reorder-id="${id}" draggable="true"><button data-handle type="button" aria-label="Move ${id}"><img class="studio-icon" src="/app/neuroartan/registry/icons/public/assets/core/actions/drag/drag.svg" alt=""></button><span>${id}</span></div>`).join('')}</div><script type="module">import {bindReorderList} from '/app/neuroartan/assets/js/core/02-systems/reorder-list.js';const list=document.getElementById('priority');bindReorderList(list,{rowSelector:'[data-row]',handleSelector:'[data-handle]',onChange:rows=>list.dataset.order=rows.map(row=>row.dataset.reorderId).join(',')});list.dataset.ready='true';</script></body></html>`}));
+ await page.goto('/reorder-test');await expect(page.locator('#priority')).toHaveAttribute('data-ready','true');
+ await page.getByRole('button',{name:'Move amazon_music',exact:true}).dragTo(page.getByRole('button',{name:'Move spotify',exact:true}),{targetPosition:{x:8,y:1}});
+ await expect(page.locator('#priority')).toHaveAttribute('data-order','amazon_music,spotify');
 });
 test('artist canvas opens focused and corner editing updates only its preview',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);
@@ -169,11 +177,13 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  const config=JSON.parse(await readFile(new URL('../../assets/data/artists/editor.json',import.meta.url),'utf8'));
  const module=await readFile(new URL('../../assets/js/layers/site/artist-editor-preview.js',import.meta.url),'utf8');
  const designModule=await readFile(new URL('../../assets/js/layers/site/artist-design.js',import.meta.url),'utf8');
+ const reorderModule=await readFile(new URL('../../assets/js/core/02-systems/reorder-list.js',import.meta.url),'utf8');
  await page.route('http://127.0.0.1:8912/**',route=>{
   const path=new URL(route.request().url()).pathname;
   if(path==='/assets/js/layers/site/artist-editor-preview.js')return route.fulfill({contentType:'text/javascript',body:module});
   if(path==='/assets/js/layers/site/artist-design.js')return route.fulfill({contentType:'text/javascript',body:designModule});
-  if(path==='/testartist95/')return route.fulfill({contentType:'text/html',body:`<!doctype html><html><head></head><body><article data-public-artist><h1 data-artist-name>Test artist</h1><section data-artist-fields>Biography</section><section data-artist-links>Links</section></article><script type="module">import {bindArtistEditorPreview} from '/assets/js/layers/site/artist-editor-preview.js';bindArtistEditorPreview(document.querySelector('article'),${JSON.stringify(config)});</script></body></html>`});
+  if(path==='/assets/js/core/02-systems/reorder-list.js')return route.fulfill({contentType:'text/javascript',body:reorderModule});
+  if(path==='/testartist95/')return route.fulfill({contentType:'text/html',body:`<!doctype html><html><head></head><body><nav class="site-menu__links"><a href="#music">Music</a><a href="#journal">Journal</a></nav><article data-public-artist><h1 data-artist-name>Test artist</h1><section data-artist-fields>Biography</section><section data-artist-links><section data-artist-group="streaming"><h2>Listen</h2><div class="hub__group-links"><a data-artist-link-key="spotify" aria-label="Spotify" href="https://open.spotify.com/artist/test">Spotify</a><a data-artist-link-key="amazon_music" aria-label="Amazon Music" href="https://music.amazon.com/artists/test">Amazon Music</a></div></section></section></article><script type="module">import {bindArtistEditorPreview} from '/assets/js/layers/site/artist-editor-preview.js';bindArtistEditorPreview(document.querySelector('article'),${JSON.stringify(config)});</script></body></html>`});
   return route.fulfill({body:''});
  });
  await page.goto('/editor/');
@@ -193,14 +203,23 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await expect(page.locator('.studio-editor-toolbar')).not.toContainText('Page editor');
  await page.getByRole('button',{name:'Divider before Biography',exact:true}).click();
  await expect(canvas.locator('[data-artist-fields]')).toHaveAttribute('data-artist-divider','');
+ await page.locator('[data-editor-section=biography]').click();await expect(canvas.locator('[data-artist-fields]')).toBeHidden();await page.locator('[data-editor-section=biography]').click();
+ await page.getByRole('button',{name:'Reorder Biography',exact:true}).focus();await page.keyboard.press('ArrowDown');
+ await expect(page.locator('[data-editor-section-order] > div').first()).toHaveAttribute('data-reorder-id','connections');
+ await page.getByRole('button',{name:'Reorder Amazon Music',exact:true}).focus();await page.keyboard.press('ArrowUp');
+ await expect(canvas.locator('[data-artist-group=streaming] a').first()).toHaveAttribute('data-artist-link-key','amazon_music');
  await page.getByRole('button',{name:'Save draft',exact:true}).click();
  await expect.poll(()=>savedDesign?.draft?.dividers).toEqual(['biography']);expect(savedDesign.published_design).toBeUndefined();
+ expect(savedDesign.draft.order[0]).toBe('connections');expect(savedDesign.draft.linkOrder.streaming).toEqual(['amazon_music','spotify']);
  await page.getByRole('button',{name:'Publish design',exact:true}).click();
  await expect.poll(()=>savedDesign?.published_design?.font).toBe('mono');
- await page.getByRole('button',{name:'Search',exact:true}).click();
- const toolSearch=page.getByRole('dialog',{name:'Search page tools'});await toolSearch.getByRole('searchbox').fill('main buttons');await toolSearch.getByRole('button',{name:'Main buttons & links',exact:true}).click();
+ await page.getByRole('link',{name:'Search',exact:true}).click();
+ await expect(page).toHaveURL(/\/search\/\?scope=editor/);const toolSearch=page.locator('[data-studio-search-page]');await toolSearch.getByRole('searchbox').fill('main buttons');await toolSearch.getByRole('link',{name:'Main buttons & links',exact:false}).click();
  await expect(page.locator('[data-editor-selection]')).toHaveText('Main buttons');
  await expect(page.locator('[data-editor-button-label]').first()).toBeFocused();
+ await page.locator('[data-editor-button-url]').first().fill('javascript:alert(1)');await expect(page.getByRole('button',{name:'Save draft',exact:true})).toBeDisabled();await expect(page.locator('[data-editor-button-status]')).not.toHaveText('');await page.locator('[data-editor-button-url]').first().fill('#artist-releases');
+ await canvas.getByRole('button',{name:'Reorder Journal',exact:true}).focus();await canvas.getByRole('button',{name:'Reorder Journal',exact:true}).press('ArrowUp');
+ await expect(page.locator('[data-editor-profile-tools] [data-navigation-links=menu] [data-link-label]').first()).toHaveValue('Journal');
  await page.keyboard.press('Escape');await expect(page.locator('.studio-editor-controls')).toBeHidden();
  await expect(page.locator('[data-artist-editor]')).toHaveAttribute('data-focus','true');
  await page.getByRole('button',{name:'Workspace view',exact:true}).click();await expect(page.locator('.studio-header-frame')).toBeVisible();
@@ -278,6 +297,11 @@ test('artist graphics isolate their tab and save explicit palette visibility',as
  await expect(form.locator('[data-colour-swatch]')).toHaveCount(1);await expect(form.locator('[data-colour-swatch]')).toHaveAttribute('data-colour-swatch','#123456');
  await expect(form.locator('.studio-color-field')).toHaveCSS('display','grid');await expect(form.getByRole('button',{name:'Remove colour'})).toHaveText('');
  const colours=page.getByRole('dialog',{name:'Custom artist colours'});await expect(colours).toBeVisible();await expect(colours.getByRole('button',{name:'Close custom colours'}).locator('.global-close-button__line')).toHaveCount(2);
+ const headings=colours.locator('.studio-colour-column-headings');
+ if(page.viewportSize().width<=1024)await expect(headings).toBeHidden();else{
+  const labels=await headings.locator('span').all(),inputs=[colours.getByLabel('Artist colour hex code'),colours.getByRole('combobox',{name:'Assign colour',exact:true})];
+  for(let index=0;index<2;index++)expect(Math.abs((await labels[index].boundingBox()).x-(await inputs[index].boundingBox()).x)).toBeLessThan(1);
+ }
  expect(await colours.evaluate(el=>getComputedStyle(el,'::backdrop').backdropFilter)).not.toBe('none');
  if(test.info().project.name==='chromium-desktop')await page.screenshot({path:'/tmp/studio-graphics-refined-proof.png'});
  await colours.getByRole('button',{name:'Close custom colours'}).click();await expect(colours).toBeHidden();await expect(form.getByRole('button',{name:'Custom colour'})).toBeFocused();

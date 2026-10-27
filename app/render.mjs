@@ -11,6 +11,7 @@ import {bankMarkup} from './bank-render.mjs';
 import {agreementsMarkup} from './agreements-render.mjs';
 import {editorMarkup} from './editor-render.mjs';
 import {portfolioMarkup} from './portfolio-render.mjs';
+import {searchMarkup} from '../foundation/search.mjs';
 export {renderMenu} from './platform-render.mjs';
 export {renderNavigation,renderFooter} from './shell-render.mjs';
 export {renderActions} from './dialog-render.mjs';
@@ -33,7 +34,7 @@ export async function render(page,{config,e,search}){
   else if(page.path==='/editor/')body=editorMarkup(e,icon,profileMarkup({settings,e,icon}),{gallery:portfolioMarkup('gallery',e,icon),project:portfolioMarkup('project',e,icon)});
   else if(page.path==='/gallery/'||page.path==='/projects/')body=portfolioMarkup(page.path==='/gallery/'?'gallery':'project',e,icon);
   else if(['/privacy/','/terms/','/cookies/'].includes(page.path)){const notice=legal.notices.find(item=>item.legacyPath===page.path);body=`<p class="publication-meta"><span>Effective date: ${e(notice.effectiveDate)}</span><span>Last updated: ${e(notice.lastUpdated)}</span></p>${notice.sections.map(section=>`<section class="surface-section" id="${e(section.id)}"><h2>${e(section.title)}</h2>${section.paragraphs.map(p=>`<p>${e(p)}</p>`).join('')}</section>`).join('')}`;}
-  else if(page.path==='/search/')body=`<button class="ui-button" type="button" data-studio-search-open>${icon('search')}Open search</button>`;
+  else if(page.path==='/search/')body=`<a href="/editor/">Back to editor</a>${searchMarkup({title:'Search tools & content',titleId:'page-tool-search',placeholder:'Search tools, sections and artist content',icon,page:true})}`;
   else if(page.path==='/')body=renderOverview(e);
   else if(page.path==='/settings/')body=renderSettings(e);
   else if(page.path==='/releases/')body=`<nav class="studio-profile-tabs" role="tablist" aria-label="Releases"><button type="button" role="tab" id="tab-released" aria-selected="true" aria-controls="released" data-settings-tab="released">${icon('release')}<span>Released</span></button><button type="button" role="tab" id="tab-release-drafts" aria-selected="false" aria-controls="release-drafts" tabindex="-1" data-settings-tab="release-drafts">${icon('plus')}<span>New release & drafts</span></button></nav><section id="released" role="tabpanel" aria-labelledby="tab-released" data-settings-panel="released" data-published-releases><p role="status">Checking your released catalogue...</p><div class="studio-published-list" data-published-list></div></section><section id="release-drafts" role="tabpanel" aria-labelledby="tab-release-drafts" data-settings-panel="release-drafts" hidden>${releaseMetadataEditor(e)}</section>`;

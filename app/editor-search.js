@@ -1,0 +1,24 @@
+import config from '../assets/data/artists/editor.json';
+import {searchStore} from './shared/search.js';
+import metadata from '../content/metadata.json';
+export async function bindEditorSearch({client,resolveUser}){
+ const root=document.querySelector('[data-studio-search-page]');if(!root)return;
+ const input=root.querySelector('input[type=search]'),results=root.querySelector('[data-search-results]'),filters=root.querySelector('[data-search-filters]'),status=root.querySelector('[role=status]'),clear=root.querySelector('[data-search-clear]');
+ const fields=metadata.artist.groups.flatMap(group=>group.fields);
+ const tools=[{id:'name',label:'Artist name, fonts & size',keywords:config.fonts.map(item=>item.label).join(' ')},{id:'menu',label:'Menu links & order'},{id:'buttons',label:'Main buttons & links'},{id:'footer',label:'Footer & copyright'},{id:'links',label:'Streaming & social order',keywords:fields.filter(field=>field.type==='url').map(field=>field.label).join(' ')},...config.sections.map(item=>({...item,keywords:'section divider separation visibility priority order'}))];
+ const index=tools.map(item=>({title:item.label,text:'Edit this part of your artist page.',keywords:item.keywords||'',category:'tools',path:'/editor/?tool='+item.id}));
+ let category='all';const categories=[['all','All'],['tools','Tools'],['content','Artist content'],['workspace','Studio']];
+ const render=()=>{
+  const query=input.value.trim(),all=query?searchStore(index,query,{limit:Infinity}):[],matches=(category==='all'?all:all.filter(item=>item.category===category)).slice(0,50);
+  clear.hidden=!query;filters.hidden=!query;results.replaceChildren();status.textContent=query?(matches.length===1?'1 result':matches.length+' results'):'Search tools, sections or your saved artist content.';
+  for(const button of filters.children){const active=button.dataset.category===category,id=button.dataset.category;button.setAttribute('aria-pressed',String(active));button.textContent=categories.find(item=>item[0]===id)[1]+' ('+(id==='all'?all.length:all.filter(item=>item.category===id).length)+')';button.tabIndex=active?0:-1;}
+  for(const item of matches){const link=document.createElement('a'),title=document.createElement('h2'),description=document.createElement('p');link.href=item.path;title.textContent=item.title;description.textContent=item.text;link.append(title,description);results.append(link);}
+  const url=new URL(location.href);if(query)url.searchParams.set('q',query);else url.searchParams.delete('q');history.replaceState(null,'',url);
+ };
+ filters.setAttribute('aria-label','Search categories');
+ for(const [id,label] of categories){const button=document.createElement('button');button.type='button';button.dataset.category=id;button.textContent=label;button.onclick=()=>{category=id;render();};button.onkeydown=event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const buttons=[...filters.children],current=buttons.indexOf(button),next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(current+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length;buttons[next].click();buttons[next].focus();};filters.append(button);}
+ if(!input.value)input.value=new URL(location.href).searchParams.get('q')||'';input.oninput=render;root.querySelector('form').onsubmit=event=>{event.preventDefault();render();};clear.onclick=()=>{input.value='';category='all';render();input.focus();};root.querySelector('[data-search-more]').hidden=true;root.dataset.searchReady='true';input.disabled=false;render();input.focus();
+ try{const response=await fetch('/search-index.json');if(response.ok)index.push(...(await response.json()).filter(item=>item.path.startsWith('/')&&!item.path.startsWith('//')).map(item=>({...item,category:'workspace'})));}catch{}
+ if(client)try{const user=await resolveUser(client);if(user){const {data,error}=await client.from('studio_profiles').select('artist_name,biography').eq('id',user.id).maybeSingle(),catalogue=await client.from('studio_artist_metadata').select('metadata').eq('account_id',user.id).maybeSingle();if((await resolveUser(client))?.id===user.id){if(!error&&data)for(const [key,label] of [['artist_name','Artist name'],['biography','Biography']])if(typeof data[key]==='string'&&data[key])index.push({title:label,text:data[key],category:'content',path:'/editor/?tool='+(key==='artist_name'?'name':'biography')});if(!catalogue.error)for(const field of fields){const value=catalogue.data?.metadata?.[field.name];if((typeof value==='string'||typeof value==='number')&&String(value))index.push({title:field.label,text:String(value),category:'content',path:'/editor/?tool=connections'});}}}}catch{}
+ render();
+}

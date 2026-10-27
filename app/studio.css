@@ -1,4 +1,5 @@
 /* Pinned Store owners. Do not edit generated distributions in app/shared. */
+@import url('./neuroartan/assets/css/core/03-primitives/reorder-list.css');
 @import url('./neuroartan/assets/css/core/03-primitives/character-counter.css');
 @import url('./neuroartan/assets/css/layers/website/home/background/home-breathing-circle.css');
 @import url('./neuroartan/assets/css/layers/website/home/background/home-matte-layer.css');
@@ -203,6 +204,8 @@ html[data-theme-effective=dark] .studio-signout .studio-icon { filter:brightness
 .studio-colour-assignment select { inline-size:100%; }
 @media(max-width:600px){.studio-color-field { grid-template-columns:var(--control-height-md) minmax(0,1fr) var(--control-height-md); }.studio-colour-assignment { grid-column:1 / -1; grid-row:2; }.studio-color-field input[type=text] { inline-size:100%; }}
 .studio-colour-dialog [data-color-fields] { display:grid; gap:var(--spacing-md); margin-block-end:var(--spacing-lg); }
+[data-navigation-row] { grid-template-columns:var(--control-height-sm) minmax(0,1fr) minmax(0,1fr) auto; align-items:end; }
+@media(max-width:600px){[data-navigation-row] { grid-template-columns:var(--control-height-sm) minmax(0,1fr); }[data-navigation-row] > label,[data-navigation-row] > .ui-button { grid-column:2; }}
 .studio-logo-dialog > p { margin-block:var(--spacing-lg); }
 .studio-logo-dialog [data-logo-loading] { display:grid; place-items:center; min-block-size:var(--control-height-xl); padding:var(--spacing-xl); }
 .studio-logo-comparison { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--spacing-md); }

@@ -1,4 +1,5 @@
 /* Only loaded inside the authenticated Studio editor's public-page preview. */
+@import url('../../core/03-primitives/reorder-list.css');
 html:has([data-artist-editor-preview]),body:has([data-artist-editor-preview]) { scroll-snap-type:none; scroll-behavior:auto; }
 .artist-profile [data-artist-edit-target] { position:relative; display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:var(--spacing-md); inline-size:100%; max-inline-size:none; box-sizing:border-box; }
 [data-artist-edit-target] > :not(.artist-canvas-edit) { grid-column:1; }
@@ -8,3 +9,4 @@ html:has([data-artist-editor-preview]),body:has([data-artist-editor-preview]) { 
 .artist-canvas-edit:focus-visible { outline:var(--border-width-hairline) solid currentColor; outline-offset:var(--spacing-xs); }
 .site-menu__links[data-artist-edit-target],.site-footer[data-artist-edit-target] { position:relative; }
 [data-chrome-edit] { position:absolute; inset-block-start:0; inset-inline-end:0; }
+[data-artist-menu-row] { gap:var(--spacing-md); }
