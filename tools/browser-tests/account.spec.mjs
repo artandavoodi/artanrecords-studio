@@ -233,6 +233,14 @@ test('artist canvas opens focused and corner editing updates only its preview',a
   const resize=page.getByRole('separator',{name:'Resize design tools'}),box=await resize.boundingBox();const before=await page.locator('.studio-editor-canvas').boundingBox();
   await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+80,box.y+box.height/2);await page.mouse.up();
   await expect.poll(async()=>Math.round((await page.locator('.studio-editor-canvas').boundingBox()).width)).toBeGreaterThan(Math.round(before.width));
+  const minimum=devices.views.find(view=>view.id==='mobile').width;
+  const grip=await resize.boundingBox(),panelWidth=(await page.locator('.studio-editor-controls').boundingBox()).width;
+  await page.mouse.move(grip.x+grip.width/2,grip.y+grip.height/2);await page.mouse.down();await page.mouse.move(grip.x+grip.width/2+panelWidth-minimum+8,grip.y+grip.height/2);await page.mouse.up();
+  await expect.poll(async()=>Math.round((await page.locator('.studio-editor-controls').boundingBox()).width)).toBe(minimum);
+  const closeGrip=await resize.boundingBox();await page.mouse.move(closeGrip.x+closeGrip.width/2,closeGrip.y+closeGrip.height/2);await page.mouse.down();await page.mouse.move(closeGrip.x+closeGrip.width/2+minimum/2,closeGrip.y+closeGrip.height/2);await page.mouse.up();
+  await expect(page.locator('.studio-editor-controls')).toBeHidden();await expect(page.getByRole('button',{name:'Design tools',exact:true})).toHaveAttribute('aria-expanded','false');
+  await page.getByRole('button',{name:'Design tools',exact:true}).click();await expect(page.locator('.studio-editor-controls')).toBeVisible();await expect.poll(async()=>Math.round((await page.locator('.studio-editor-controls').boundingBox()).width)).toBe(minimum);
+  await resize.focus();await page.keyboard.press('ArrowRight');await expect(page.locator('.studio-editor-controls')).toBeHidden();await expect(page.getByRole('button',{name:'Design tools',exact:true})).toBeFocused();await page.getByRole('button',{name:'Design tools',exact:true}).click();
  }
  await page.locator('[data-editor-font-select]').selectOption('mono');
  for(const selector of ['[data-editor-font-select]','[data-editor-portrait-align]','[data-editor-detail-size]','[data-editor-align=nameAlign]']){
