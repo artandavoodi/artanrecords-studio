@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "16b4cf820897b05788282a8f74cbc9b7a391f8dc",
+  "commit": "f837a42149a26a9c0158a980619094f8ac6703c2",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "bf2d7bab84057768d028b0e3be924690b931ffdd97a8a3a4eb7594540c6db6f3",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -30,13 +30,13 @@
     "assets/css/layers/site/hub/index.css": "ff59cee8904b774f20e8ce6dadbba8f51e6f85e830c375fa614ebe2e9304ca9f",
     "assets/css/layers/site/label/enquiry-response.css": "d47608a69429ad06288ca5949f46a3c72d938564f5c6500c462084a8d8e604e6",
     "assets/css/layers/site/label/home-showcase.css": "4fc731c42ccfd6f8c98927722a3b4033ef389deb1dd04e609c885a57fcb0fa13",
-    "assets/css/layers/site/label/index.css": "182ec63bec93cda19611a7c0ea20293646d4e85188b4f438bb6b8b15e24159d1",
+    "assets/css/layers/site/label/index.css": "f8af28e114c78566237edd707ef3ced841116ada3999b7337901d3e211454d79",
     "assets/css/layers/site/navigation.css": "b93be75b7d311a733a42b9d22cffea537b9ac10cb8f06c1deb952f7b797c391b",
     "assets/css/layers/site/not-found.css": "c51474c208784714eecfaedf2bcb277fd1a8321184e7abef844e07564b573422",
     "assets/css/layers/site/site.css": "1fe324dc08e2a5f4e98b6cf1f0acb5612cd473b25ec1c5b037e0ab4436fe65ce",
     "assets/css/layers/site/submission/index.css": "3249ad0f7519a091c2acb7ace5473b7c90ee77430dc31b53c6d08fdb42c1ede8",
     "assets/css/layers/site/theme-menu.css": "9570198870280d8ab0843cbcbd95c0b5e13ab74cffa3088ea9df3a3067cc7d43",
-    "assets/css/site.generated.css": "c7ced8dd0dbe9b344e50bdc03040ad31497288b9c997fe8f878503b57ae0e4e1",
+    "assets/css/site.generated.css": "1d19fe3220a261799639534b18c52b58913d8d25396e6dea3ce81e9588a160b1",
     "assets/brand/logo/artan-records-symbol-black.svg": "3df4c9471e7c952a8108d903eedc40583428fdbdef3760518babd50dc03d0a26",
     "assets/brand/logo/artan-records-symbol-white.svg": "d369d87b98b4282a57945450b2d0b4d677e81f765c718fce234f5ae51c5dbbe7",
     "assets/brand/logo/artan-records-wordmark-black.svg": "664aeca69fcebfb9d9d4cc92d6cad46d9336e9229e9fc2a66f6e60a3a7c686ca",
@@ -75,8 +75,8 @@
     "assets/data/partnerships.json": "9a4d7cd3d705be4d3625566e7454bbd5d1dd64ffaf3ef8e75f44cddc30926140",
     "foundation/partnerships.mjs": "6364160895222c78b3f6be5c46de8eea4458bd4472a04ce922103ff590167a20",
     "foundation/studio-plans.mjs": "c8d8b379959e107327630887579308a7510b6f9f6133d35401db470f8c713a5a",
-    "assets/js/layers/site/artist-editor-preview.js": "7e766f430304eb03a057964cefabb4b23a8146541090110f87b2449c537d9cae",
-    "assets/js/layers/site/artist-design.js": "df84639421202d05348fd9b431feacdc7e10d6e94f5fb4f2b93fa968a99eb035",
+    "assets/js/layers/site/artist-editor-preview.js": "ed83ff9fe85d0be0007e14856bcb96cc44695385a13f986acb23eadeada20e98",
+    "assets/js/layers/site/artist-design.js": "384eee6142fcb36ff3d69ffb536467e06cd552b41cf36481b8f6e6daa2aaac17",
     "assets/js/layers/site/creator-routes.js": "8ef9a3119aaffd6143af6d5dce967e43374bd575ede483d7122c89380709c3f5",
     "registry/icons/public/assets/core/actions/edit/edit.svg": "7e159858f866fb171948cffa2155e3a9cea3dc6669c3523e4c7ce4327dfd73d2",
     "registry/icons/public/assets/core/identity/access/visibility-on.svg": "d499bf0b785f4a5910794a4fc77e9a975592d21c022117ad906aeb67b1aad3e7",
@@ -99,6 +99,6 @@
     "foundation/shell.html": "c445931a615369aef2d72b5f3660988ae1be578b4a198b8e7173f859648ef04c",
     "foundation/surface.css": "f6e47efe21e4b2f256a7b5ff2e83dbc39b42868cf99a06162fa4a851e7159d0e",
     "foundation/app.js": "572e494f0bb9e8da1eb9df5782b778b960e356d769cfde4ddbe4f83eedc5f86a",
-    "foundation/search.mjs": "562dee8645f11d8d2a5c7a8bdaec54a1772594c6d1dc8b7ac7e2e56a054c11fe"
+    "foundation/search.mjs": "f8472b0f3e2ecb4e192cd85e5bda592d8dbcd33fa68a2ced5bae4c8676198312"
   }
 }

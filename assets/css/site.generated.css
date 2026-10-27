@@ -7575,6 +7575,7 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
 .artist-profile .artist-connections { align-content:start; justify-content:start; gap:var(--spacing-lg); }
 @media(min-width:1025px) and (hover:hover) and (pointer:fine){
  html:has(main[data-fragment="artist"] [data-artist-section-mode=desktop]:not([data-artist-free-scroll])) { scroll-snap-type:y mandatory; scroll-padding-block-start:var(--artist-header-height,var(--site-header-height)); }
+ html[data-menu-open]:has(main[data-fragment="artist"]) { scroll-snap-type:none; }
  .artist-profile[data-artist-section-mode=desktop] > section:not([data-artist-archive]) { min-block-size:calc(100svh - var(--artist-header-height,var(--site-header-height))); scroll-snap-align:start; scroll-snap-stop:always; overflow-anchor:none; }
  .artist-profile[data-artist-section-mode=desktop] > [data-artist-archive] { scroll-snap-align:start; scroll-snap-stop:normal; align-content:start; }
  .artist-profile[data-artist-free-scroll] > [data-artist-archive] { scroll-snap-align:none; }

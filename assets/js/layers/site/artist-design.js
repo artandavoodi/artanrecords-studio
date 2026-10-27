@@ -1,7 +1,9 @@
 // The same allowlisted design contract is used by the public page and its editor.
+const originalLinkOrders=new WeakMap();
 export function validArtistDesign(draft,config){
  const ids=items=>Array.isArray(items)&&items.length<=config.sections.length&&new Set(items).size===items.length&&items.every(id=>config.sections.some(item=>item.id===id));
- return Boolean(draft&&config.fonts.some(item=>item.id===draft.font)&&config.sizes.some(item=>item.id===draft.size)&&(draft.ribbon===null||/^#[0-9a-f]{6}$/i.test(draft.ribbon))&&ids(draft.sections)&&ids(draft.dividers||[])&&typeof(draft.copyright||'')==='string'&&(draft.copyright||'').length<=160&&Array.isArray(draft.buttons||[])&&(draft.buttons||[]).length<=3&&(draft.buttons||[]).every(item=>{
+ const linkOrder=draft?.linkOrder||{};
+ return Boolean(draft&&config.fonts.some(item=>item.id===draft.font)&&config.sizes.some(item=>item.id===draft.size)&&(draft.ribbon===null||/^#[0-9a-f]{6}$/i.test(draft.ribbon))&&ids(draft.sections)&&ids(draft.order||draft.sections)&&ids(draft.dividers||[])&&typeof linkOrder==='object'&&!Array.isArray(linkOrder)&&Object.keys(linkOrder).length<=6&&Object.entries(linkOrder).every(([key,items])=>/^[a-z_]+$/.test(key)&&Array.isArray(items)&&items.length<=40&&new Set(items).size===items.length&&items.every(id=>typeof id==='string'&&/^[a-z_]+$/.test(id)))&&typeof(draft.copyright||'')==='string'&&(draft.copyright||'').length<=160&&Array.isArray(draft.buttons||[])&&(draft.buttons||[]).length<=3&&(draft.buttons||[]).every(item=>{
   if(!item||typeof item.label!=='string'||!item.label.trim()||item.label.length>60||typeof item.url!=='string'||item.url.length>2000)return false;
   if(/^#[a-zA-Z][a-zA-Z0-9_-]*$/.test(item.url))return true;
   try{const url=new URL(item.url);return url.protocol==='https:'&&!url.username&&!url.password;}catch{return false;}
@@ -15,10 +17,12 @@ export function applyArtistDesign(root,draft,config){
  if(heading){heading.style.fontFamily=font.value||'';heading.style.fontSize=config.sizes.find(item=>item.id===draft.size).value||'';}
  for(const item of config.sections){const section=root.querySelector(item.selector);if(!section)continue;if(!section.id)section.id='artist-'+item.id;section.hidden=!draft.sections.includes(item.id);section.toggleAttribute('data-artist-divider',(draft.dividers||[]).includes(item.id));}
  const navigation=document.querySelector('[data-fragment=navigation]');
- if(draft.ribbon)navigation?.style.setProperty('--artist-header-ribbon',draft.ribbon);else navigation?.style.removeProperty('--artist-header-ribbon');
+ const ribbon=draft.ribbon||root.style.getPropertyValue('--artist-header-ribbon');if(ribbon)navigation?.style.setProperty('--artist-header-ribbon',ribbon);else navigation?.style.removeProperty('--artist-header-ribbon');
  const buttons=root.querySelector('[data-artist-directory]');
  if(buttons&&Array.isArray(draft.buttons)){const edit=buttons.querySelector(':scope > .artist-canvas-edit');buttons.replaceChildren();for(const item of draft.buttons){const link=document.createElement('a');link.href=item.url;link.textContent=item.label;link.rel='noopener';buttons.append(link);}if(edit)buttons.append(edit);}
  const credit=document.querySelector('[data-artist-copyright]');if(credit)credit.textContent=draft.copyright||credit.dataset.artistCopyright;
+ for(const id of draft.order||[]){let section=root.querySelector(config.sections.find(item=>item.id===id).selector);while(section&&section.parentElement!==root)section=section.parentElement;if(section)root.append(section);}
+ for(const group of root.querySelectorAll('[data-artist-group] .hub__group-links')){const links=[...group.querySelectorAll('[data-artist-link-key]')];if(!originalLinkOrders.has(group))originalLinkOrders.set(group,links.map(link=>link.dataset.artistLinkKey));const order=draft.linkOrder?.[group.closest('[data-artist-group]').dataset.artistGroup]||originalLinkOrders.get(group),rank=key=>order.includes(key)?order.indexOf(key):order.length;links.sort((a,b)=>rank(a.dataset.artistLinkKey)-rank(b.dataset.artistLinkKey));for(const link of links)group.append(link);}
  return true;
 }
 export async function renderArtistDesign(root,record,config){
