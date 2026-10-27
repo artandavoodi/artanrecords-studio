@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "470d1a08eaee6cd408c64364cfaaeee8d2849c90",
+  "commit": "912aceaf8193c30593202c4e710f3fd0a76224c6",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "bf2d7bab84057768d028b0e3be924690b931ffdd97a8a3a4eb7594540c6db6f3",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -30,13 +30,13 @@
     "assets/css/layers/site/hub/index.css": "ff59cee8904b774f20e8ce6dadbba8f51e6f85e830c375fa614ebe2e9304ca9f",
     "assets/css/layers/site/label/enquiry-response.css": "d47608a69429ad06288ca5949f46a3c72d938564f5c6500c462084a8d8e604e6",
     "assets/css/layers/site/label/home-showcase.css": "4fc731c42ccfd6f8c98927722a3b4033ef389deb1dd04e609c885a57fcb0fa13",
-    "assets/css/layers/site/label/index.css": "2cc5d3e3d79b3f88c0a5501d834e0e8748103f7b61b1f9c0f3e1726d32d9a9aa",
+    "assets/css/layers/site/label/index.css": "18be718232be453c8655db2b20f7f8317919719600fa7119f9f283462f959f61",
     "assets/css/layers/site/navigation.css": "b93be75b7d311a733a42b9d22cffea537b9ac10cb8f06c1deb952f7b797c391b",
     "assets/css/layers/site/not-found.css": "c51474c208784714eecfaedf2bcb277fd1a8321184e7abef844e07564b573422",
     "assets/css/layers/site/site.css": "1fe324dc08e2a5f4e98b6cf1f0acb5612cd473b25ec1c5b037e0ab4436fe65ce",
     "assets/css/layers/site/submission/index.css": "3249ad0f7519a091c2acb7ace5473b7c90ee77430dc31b53c6d08fdb42c1ede8",
     "assets/css/layers/site/theme-menu.css": "9570198870280d8ab0843cbcbd95c0b5e13ab74cffa3088ea9df3a3067cc7d43",
-    "assets/css/site.generated.css": "5977e4c318aa46ce7894af95a06bec5487496639ab58e78e2e2493c068e02f25",
+    "assets/css/site.generated.css": "4dcf52312288248facb0cac3d0cb2854a568ddabbd10d628c33292fd62f8fcf1",
     "assets/brand/logo/artan-records-symbol-black.svg": "3df4c9471e7c952a8108d903eedc40583428fdbdef3760518babd50dc03d0a26",
     "assets/brand/logo/artan-records-symbol-white.svg": "d369d87b98b4282a57945450b2d0b4d677e81f765c718fce234f5ae51c5dbbe7",
     "assets/brand/logo/artan-records-wordmark-black.svg": "664aeca69fcebfb9d9d4cc92d6cad46d9336e9229e9fc2a66f6e60a3a7c686ca",

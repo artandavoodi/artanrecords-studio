@@ -7587,6 +7587,8 @@ html:has(main[data-fragment="artist"]) { scroll-snap-type: none; scroll-behavior
  .label-navigation .artist-destination-tabs[data-in-header] { grid-area:1/1; inline-size:auto; flex-wrap:nowrap; padding:0; gap:var(--spacing-md); font-size:var(--site-type-caption-size); }
  .label-navigation .artist-destination-tabs[data-in-header] { animation:artist-tab-arrive var(--duration-base) var(--ease-standard) both; }
  .label-navigation .artist-destination-tabs[data-leaving] { animation:artist-tab-leave var(--duration-base) var(--ease-standard) both; pointer-events:none; }
+ .label-navigation .artist-destination-tabs[data-in-header] { transition:opacity var(--duration-base) var(--ease-standard),visibility var(--duration-base); }
+ html[data-menu-open] .label-navigation .artist-destination-tabs[data-in-header] { animation:none; opacity:0; pointer-events:none; visibility:hidden; }
  @keyframes artist-tab-arrive{from{opacity:0;transform:translateY(var(--spacing-xs))}to{opacity:1;transform:none}}
  @keyframes artist-tab-leave{from{opacity:1;transform:none}to{opacity:0;transform:translateY(calc(0px - var(--spacing-xs)))}}
  .artist-profile .artist-destination-tabs { justify-content:center; }
