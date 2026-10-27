@@ -168,6 +168,8 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await expect(page.locator('.studio-header-frame')).toBeHidden();await expect(page.locator('.studio-platform-rail')).toBeHidden();
  const canvas=page.frameLocator('[data-editor-frame]');await canvas.getByRole('button',{name:'Edit Artist name',exact:true}).click();
  await expect(page.getByRole('region',{name:'Page design'})).toBeVisible();
+ await expect(page.locator('[data-editor-profile-tools]')).toBeHidden();
+ await expect(page.locator('[data-editor-release-link]')).toBeHidden();
  if(page.viewportSize().width>1024){
   const resize=page.getByRole('separator',{name:'Resize design tools'}),box=await resize.boundingBox();const before=await page.locator('.studio-editor-canvas').boundingBox();
   await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+80,box.y+box.height/2);await page.mouse.up();
@@ -175,6 +177,8 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  }
  await page.locator('[data-editor-font-select]').selectOption('mono');
  await expect(canvas.locator('[data-artist-name]')).toHaveAttribute('style',/font-family: var\(--font-mono\)/);
+ await page.keyboard.press('Escape');await expect(page.locator('.studio-editor-controls')).toBeHidden();
+ await expect(page.locator('[data-artist-editor]')).toHaveAttribute('data-focus','true');
  await page.getByRole('button',{name:'Workspace view',exact:true}).click();await expect(page.locator('.studio-header-frame')).toBeVisible();
 });
 test('Store prepares private products and collections without activating publication or payments',async({page})=>{
