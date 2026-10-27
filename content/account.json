@@ -184,6 +184,7 @@
     "image": "core/media/image/image.svg",
     "edit": "core/actions/edit/edit.svg",
     "reset": "core/actions/reset/reset.svg",
+    "back": "core/navigation/direction/back.svg",
     "gallery": "core/media/gallery/gallery.svg",
     "projects": "core/files/folder/folder.svg",
     "chevron-down": "core/navigation/chevron/chevron-down.svg",

@@ -35,7 +35,7 @@ export async function bindArtistEditor({client,resolveUser}){
  root.querySelector('[data-editor-profile-open]').addEventListener('click',()=>showContext('biography'));
  for(const button of root.querySelectorAll('[data-editor-open-portfolio]'))button.addEventListener('click',()=>{resetContext();profileTools.hidden=true;designTools.hidden=true;portfolioTools.find(item=>item.dataset.editorPortfolioTools===button.dataset.editorOpenPortfolio).hidden=false;setTools(true);});
  document.addEventListener('keydown',event=>{if(event.key!=='Escape'||document.querySelector('dialog[open]'))return;if(!panel.hidden){setTools(false);tools.focus();}else setFocus(false);});
- const status=root.querySelector('[data-editor-status]'),frame=root.querySelector('iframe'),controls=[...root.querySelectorAll('[data-editor-focus],[data-editor-tools],[data-editor-font-select],[data-editor-size],[data-editor-ribbon],[data-editor-section],[data-editor-reset],[data-editor-profile-open]')];controls.forEach(item=>item.disabled=true);
+ const status=root.querySelector('[data-editor-status]'),frame=root.querySelector('iframe'),controls=[...root.querySelectorAll('[data-editor-focus],[data-editor-tools],[data-editor-font-select],[data-editor-size],[data-editor-ribbon],[data-editor-section],[data-editor-reset],[data-editor-profile-open],[data-editor-presentation] input,[data-editor-presentation] select,[data-editor-presentation] button')];controls.forEach(item=>item.disabled=true);
  if(!client)return;
  const owner=await resolveUser(client).catch(()=>null);if(!owner)return;
  const response=await client.from('studio_artist_handles').select('approved_username').eq('account_id',owner.id).maybeSingle();
@@ -46,6 +46,7 @@ export async function bindArtistEditor({client,resolveUser}){
  const url=new URL('/'+encodeURIComponent(username)+'/',local?'http://127.0.0.1:8912':'https://artanrecords.com');url.searchParams.set('editor-preview','1');
  const initial=()=>({font:config.fonts[0].id,size:'standard',ribbon:null,sections:config.sections.map(item=>item.id),order:config.sections.map(item=>item.id),linkOrder:{},dividers:[],buttons:[{label:'Releases',url:'#artist-releases'}],copyright:''});
  let draft=initial(),ready=false;
+ const defaultPresentation=()=>({portraitSize:config.presentation.portrait.default,portraitAlign:'left',biographyLabel:true,since:true,textSize:'small'});
  let storageReady=false;
  const save=root.querySelector('[data-editor-save]'),publish=root.querySelector('[data-editor-publish]');
  try{const result=await client.from('studio_artist_designs').select('draft,published_design').eq('account_id',owner.id).eq('surface','website').maybeSingle();if(result.error)throw result.error;if(validEditorDraft(result.data?.draft))draft=result.data.draft;storageReady=true;}catch{status.textContent='Design storage is unavailable. You can preview changes, but saving and publishing are disabled.';}
@@ -61,6 +62,9 @@ export async function bindArtistEditor({client,resolveUser}){
  save.onclick=()=>persist(false);publish.onclick=()=>persist(true);
  const send=()=>{if(!validEditorDraft(draft))return;try{sessionStorage.setItem(workingKey,JSON.stringify(draft));}catch{}if(ready)frame.contentWindow.postMessage({type:'artanrecords:artist-preview',draft},url.origin);};
  const sync=()=>{
+  const presentation=draft.presentation||defaultPresentation();
+  root.querySelector('[data-editor-portrait-size]').value=presentation.portraitSize;root.querySelector('[data-editor-portrait-output]').textContent=presentation.portraitSize+' px';root.querySelector('[data-editor-portrait-align]').value=presentation.portraitAlign;root.querySelector('[data-editor-detail-size]').value=presentation.textSize;
+  root.querySelector('[data-editor-biography-label]').setAttribute('aria-pressed',String(presentation.biographyLabel));root.querySelector('[data-editor-since]').setAttribute('aria-pressed',String(presentation.since));
   root.querySelector('[data-editor-font-select]').value=draft.font;
   for(const button of root.querySelectorAll('[data-editor-size]'))button.setAttribute('aria-pressed',String(button.dataset.editorSize===draft.size));
   for(const button of root.querySelectorAll('[data-editor-section]'))button.setAttribute('aria-pressed',String(draft.sections.includes(button.dataset.editorSection)));
@@ -77,6 +81,12 @@ export async function bindArtistEditor({client,resolveUser}){
   if(event.data?.type==='artanrecords:artist-preview-select'&&['name','menu','footer','buttons',...config.sections.map(item=>item.id)].includes(event.data.target))showContext(event.data.target);
  });
  root.querySelector('[data-editor-font-select]').addEventListener('change',event=>{draft.font=event.target.value;sync();});
+ const updatePresentation=(key,value)=>{draft.presentation={...(draft.presentation||defaultPresentation()),[key]:value};sync();};
+ root.querySelector('[data-editor-portrait-size]').oninput=event=>updatePresentation('portraitSize',Number(event.target.value));
+ root.querySelector('[data-editor-portrait-align]').onchange=event=>updatePresentation('portraitAlign',event.target.value);
+ root.querySelector('[data-editor-detail-size]').onchange=event=>updatePresentation('textSize',event.target.value);
+ root.querySelector('[data-editor-biography-label]').onclick=()=>updatePresentation('biographyLabel',!(draft.presentation||defaultPresentation()).biographyLabel);
+ root.querySelector('[data-editor-since]').onclick=()=>updatePresentation('since',!(draft.presentation||defaultPresentation()).since);
  for(const button of root.querySelectorAll('[data-editor-size]'))button.addEventListener('click',()=>{draft.size=button.dataset.editorSize;sync();});
  root.querySelector('[data-editor-ribbon]').addEventListener('input',event=>{draft.ribbon=event.target.value;send();});
  for(const button of root.querySelectorAll('[data-editor-section]'))button.addEventListener('click',()=>{const id=button.dataset.editorSection;draft.sections=draft.sections.includes(id)?draft.sections.filter(item=>item!==id):[...draft.sections,id];sync();});

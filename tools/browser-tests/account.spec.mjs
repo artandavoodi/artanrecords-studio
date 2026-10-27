@@ -197,7 +197,7 @@ test('artist canvas opens focused and corner editing updates only its preview',a
   if(path==='/assets/js/layers/site/artist-editor-preview.js')return route.fulfill({contentType:'text/javascript',body:module});
   if(path==='/assets/js/layers/site/artist-design.js')return route.fulfill({contentType:'text/javascript',body:designModule});
   if(path==='/assets/js/core/02-systems/reorder-list.js')return route.fulfill({contentType:'text/javascript',body:reorderModule});
-  if(path==='/testartist95/')return route.fulfill({contentType:'text/html',body:`<!doctype html><html><head></head><body><nav class="site-menu__links"><a href="#music">Music</a><a href="#journal">Journal</a></nav><article data-public-artist><h1 data-artist-name>Test artist</h1><section data-artist-fields>Biography</section><section data-artist-links><section data-artist-group="streaming"><h2>Listen</h2><div class="hub__group-links"><a data-artist-link-key="spotify" aria-label="Spotify" href="https://open.spotify.com/artist/test">Spotify</a><a data-artist-link-key="amazon_music" aria-label="Amazon Music" href="https://music.amazon.com/artists/test">Amazon Music</a></div></section></section></article><script type="module">import {bindArtistEditorPreview} from '/assets/js/layers/site/artist-editor-preview.js';bindArtistEditorPreview(document.querySelector('article'),${JSON.stringify(config)});</script></body></html>`});
+  if(path==='/testartist95/')return route.fulfill({contentType:'text/html',body:`<!doctype html><html><head></head><body><nav class="site-menu__links"><a href="#music">Music</a><a href="#journal">Journal</a></nav><article data-public-artist><div data-artist-portrait></div><h1 data-artist-name>Test artist</h1><section data-artist-fields><h2>Biography</h2><p>Artist story</p><p data-artist-since>Since 2024</p></section><section data-artist-links><section data-artist-group="streaming"><h2>Listen</h2><div class="hub__group-links"><a data-artist-link-key="spotify" aria-label="Spotify" href="https://open.spotify.com/artist/test">Spotify</a><a data-artist-link-key="amazon_music" aria-label="Amazon Music" href="https://music.amazon.com/artists/test">Amazon Music</a></div></section></section></article><script type="module">import {bindArtistEditorPreview} from '/assets/js/layers/site/artist-editor-preview.js';bindArtistEditorPreview(document.querySelector('article'),${JSON.stringify(config)});</script></body></html>`});
   return route.fulfill({body:''});
  });
  await page.goto('/editor/');
@@ -218,9 +218,15 @@ test('artist canvas opens focused and corner editing updates only its preview',a
   await expect.poll(async()=>Math.round((await page.locator('.studio-editor-canvas').boundingBox()).width)).toBeGreaterThan(Math.round(before.width));
  }
  await page.locator('[data-editor-font-select]').selectOption('mono');
+ await page.locator('[data-editor-portrait-size]').fill('240');await page.locator('[data-editor-portrait-align]').selectOption('center');
+ await expect(canvas.locator('[data-artist-portrait]')).toHaveAttribute('style',/--artist-portrait-size: 240px/);
+ await expect(canvas.locator('[data-artist-portrait]')).toHaveAttribute('style',/justify-self: center/);
+ await page.locator('[data-editor-biography-label]').click();await expect(canvas.locator('[data-artist-fields] h2')).toBeHidden();
+ await page.locator('[data-editor-since]').click();await expect(canvas.locator('[data-artist-since]')).toBeHidden();
+ await page.locator('[data-editor-detail-size]').selectOption('large');await expect(canvas.locator('[data-artist-fields]')).toHaveAttribute('style',/--artist-detail-size: var\(--font-size-h3\)/);
  await expect(canvas.locator('[data-artist-name]')).toHaveAttribute('style',/font-family: var\(--font-mono\)/);
  await expect(page.locator('.studio-editor-toolbar')).not.toContainText('Page editor');
- await page.getByRole('button',{name:'Divider before Biography',exact:true}).click();
+ await page.getByRole('button',{name:'Separator before Biography',exact:true}).click();
  await expect(canvas.locator('[data-artist-fields]')).toHaveAttribute('data-artist-divider','');
  await page.locator('[data-editor-section=biography]').click();await expect(canvas.locator('[data-artist-fields]')).toBeHidden();await page.locator('[data-editor-section=biography]').click();
  await page.getByRole('button',{name:'Reorder Biography',exact:true}).focus();await page.keyboard.press('ArrowDown');
@@ -230,6 +236,7 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await page.getByRole('button',{name:'Save draft',exact:true}).click();
  await expect.poll(()=>savedDesign?.draft?.dividers).toEqual(['biography']);expect(savedDesign.published_design).toBeUndefined();
  expect(savedDesign.draft.order[0]).toBe('connections');expect(savedDesign.draft.linkOrder.streaming).toEqual(['amazon_music','spotify']);
+ expect(savedDesign.draft.presentation).toEqual({portraitSize:240,portraitAlign:'center',biographyLabel:false,since:false,textSize:'large'});
  await page.getByRole('button',{name:'Publish design',exact:true}).click();
  await expect.poll(()=>savedDesign?.published_design?.font).toBe('mono');
  await page.getByRole('link',{name:'Search',exact:true}).click();
