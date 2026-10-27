@@ -222,6 +222,16 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await expect(page.getByRole('region',{name:'Page design'})).toBeVisible();
  await expect(page.locator('[data-editor-profile-tools]')).toBeHidden();
  await expect(page.locator('[data-editor-release-link]')).toBeHidden();
+ await page.emulateMedia({reducedMotion:'no-preference'});
+ const drawer=page.locator('.studio-editor-controls'),drawerToggle=page.locator('[data-editor-tools]');
+ const closeMotion=await drawerToggle.evaluate(button=>{button.click();const panel=document.querySelector('.studio-editor-controls'),layout=document.querySelector('.studio-editor-layout');panel.getBoundingClientRect();return {hidden:panel.hidden,inert:panel.inert,animated:[...layout.getAnimations(),...panel.getAnimations()].some(animation=>animation.effect.getTiming().duration>0)};});
+ expect(closeMotion).toEqual({hidden:false,inert:true,animated:true});await expect(drawer).toBeHidden();
+ const openMotion=await drawerToggle.evaluate(button=>{button.click();const panel=document.querySelector('.studio-editor-controls'),layout=document.querySelector('.studio-editor-layout');panel.getBoundingClientRect();return {hidden:panel.hidden,inert:panel.inert,animated:[...layout.getAnimations(),...panel.getAnimations()].some(animation=>animation.effect.getTiming().duration>0)};});
+ expect(openMotion).toEqual({hidden:false,inert:false,animated:true});
+ await drawer.evaluate(async panel=>{await Promise.all([...panel.getAnimations(),...panel.parentElement.getAnimations()].map(animation=>animation.finished.catch(()=>{})));});
+ await drawerToggle.evaluate(button=>{button.click();document.querySelector('.studio-editor-controls').getBoundingClientRect();button.click();});await expect(drawerToggle).toHaveAttribute('aria-expanded','true');
+ await drawer.evaluate(async panel=>{await Promise.all([...panel.getAnimations(),...panel.parentElement.getAnimations()].map(animation=>animation.finished.catch(()=>{})));});await expect(drawer).toBeVisible();await expect(drawer).not.toHaveAttribute('inert','');
+ await page.emulateMedia({reducedMotion:'reduce'});await drawerToggle.click();await expect(drawer).toBeHidden();await drawerToggle.click();await expect(drawer).toBeVisible();
  await page.getByRole('navigation',{name:'Editing tools'}).getByRole('button',{name:'Copyright',exact:true}).click();
  await expect(page.locator('[data-editor-copyright]')).toBeFocused();
  await expect(page.getByRole('navigation',{name:'Editing tools'})).toBeHidden();

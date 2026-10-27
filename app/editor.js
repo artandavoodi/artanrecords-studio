@@ -23,6 +23,7 @@ export async function bindArtistEditor({client,resolveUser}){
   const profile=['biography','connections','menu','pages'].includes(target);
   profileTools.hidden=!profile;designTools.hidden=profile||['gallery','project','latest','archive'].includes(target);
   root.querySelector('[data-editor-selection]').textContent=({name:'Design',biography:'Profile',menu:'Menu',pages:'Pages',footer:'Footer & copyright',buttons:'Main buttons',links:'Streaming & social order'})[target]||config.sections.find(item=>item.id===target)?.label||'Page design';
+  panel.getBoundingClientRect();
   if(profile){const tab=['menu','footer','pages'].includes(target)?'profile-website':target==='connections'?'profile-catalogue':'profile-details';profileTools.querySelector('[data-settings-tab="'+tab+'"]').click();profileTools.querySelector('[data-settings-panel="'+tab+'"] '+(target==='pages'?'[data-site-page-new]':target==='biography'?'[name=biography]':target==='footer'?'[name=footer_text]':'input'))?.focus();}
   else{const portfolio=portfolioTools.find(item=>item.dataset.editorPortfolioTools===target);if(portfolio){portfolio.hidden=false;portfolio.querySelector('button,input,a')?.focus();}else if(['latest','archive'].includes(target)){releaseLink.hidden=false;releaseLink.focus();}else root.querySelector(target==='buttons'?'[data-editor-button-label]':target==='footer'?'[data-editor-copyright]':target==='links'?'[data-editor-link-order] button':'[data-editor-font-select]')?.focus();}
  };
@@ -32,13 +33,20 @@ export async function bindArtistEditor({client,resolveUser}){
  const setWidth=width=>{const {minimum,maximum}=limits(),next=Math.max(minimum,Math.min(maximum,width));layout.style.setProperty('--studio-editor-panel-width',next+'px');resize.setAttribute('aria-valuemin',String(minimum));resize.setAttribute('aria-valuemax',String(Math.round(maximum)));resize.setAttribute('aria-valuenow',String(Math.round(next)));};
  // Match the shared rail's magnetic threshold; never squeeze the open controls.
  const dragWidth=width=>{const {minimum,step}=limits();if(width<minimum-step*2){setTools(false);tools.focus({preventScroll:true});return;}setWidth(width);};
- resize.addEventListener('pointerdown',event=>{if(event.button!==0||!matchMedia('(min-width:1025px) and (pointer:fine)').matches)return;event.preventDefault();resize.setPointerCapture(event.pointerId);const start=event.clientX,width=panel.getBoundingClientRect().width;const move=event=>dragWidth(width+start-event.clientX);const end=()=>{resize.removeEventListener('pointermove',move);resize.removeEventListener('pointerup',end);resize.removeEventListener('pointercancel',end);resize.removeEventListener('lostpointercapture',end);};resize.addEventListener('pointermove',move);resize.addEventListener('pointerup',end);resize.addEventListener('pointercancel',end);resize.addEventListener('lostpointercapture',end);});
+ resize.addEventListener('pointerdown',event=>{if(event.button!==0||!matchMedia('(min-width:1025px) and (pointer:fine)').matches)return;event.preventDefault();resize.setPointerCapture(event.pointerId);layout.dataset.resizing='true';const start=event.clientX,width=panel.getBoundingClientRect().width;const move=event=>{if(layout.dataset.toolsOpen==='true')dragWidth(width+start-event.clientX);};const end=()=>{delete layout.dataset.resizing;resize.removeEventListener('pointermove',move);resize.removeEventListener('pointerup',end);resize.removeEventListener('pointercancel',end);resize.removeEventListener('lostpointercapture',end);};resize.addEventListener('pointermove',move);resize.addEventListener('pointerup',end);resize.addEventListener('pointercancel',end);resize.addEventListener('lostpointercapture',end);});
  resize.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight'].includes(event.key))return;event.preventDefault();const {minimum,step}=limits(),width=panel.getBoundingClientRect().width;if(event.key==='ArrowRight'&&width<=minimum){setTools(false);tools.focus({preventScroll:true});}else setWidth(width+(event.key==='ArrowLeft'?step:-step));});
- const setTools=open=>{panel.hidden=!open;layout.dataset.toolsOpen=String(open);tools.setAttribute('aria-expanded',String(open));if(open&&matchMedia('(min-width:1025px)').matches)setWidth(parseFloat(layout.style.getPropertyValue('--studio-editor-panel-width'))||panel.getBoundingClientRect().width);};
+ let drawerVersion=0;
+ const setTools=open=>{
+  const version=++drawerVersion;delete layout.dataset.resizing;
+  if(open){panel.hidden=false;if(panel.inert)panel.inert=false;panel.removeAttribute('aria-hidden');if(matchMedia('(min-width:1025px)').matches)setWidth(parseFloat(layout.style.getPropertyValue('--studio-editor-panel-width'))||panel.getBoundingClientRect().width);}
+  // Establish the current position before changing tracks, including on reversal.
+  panel.getBoundingClientRect();layout.dataset.toolsOpen=String(open);tools.setAttribute('aria-expanded',String(open));
+  if(!open){panel.inert=true;panel.setAttribute('aria-hidden','true');panel.getBoundingClientRect();Promise.all([...layout.getAnimations(),...panel.getAnimations()].map(animation=>animation.finished.catch(()=>{}))).then(()=>{if(version===drawerVersion&&layout.dataset.toolsOpen!=='true')panel.hidden=true;});}
+ };
  const setFocus=active=>{root.dataset.focus=String(active);focus.setAttribute('aria-pressed',String(active));focus.setAttribute('aria-label',active?'Exit focus mode':'Enter focus mode');focus.title=focus.getAttribute('aria-label');};
  for(const button of root.querySelectorAll('[data-editor-context]'))button.onclick=()=>showContext(button.dataset.editorContext);
  focus.addEventListener('click',()=>setFocus(root.dataset.focus!=='true'));
- tools.addEventListener('click',()=>{const opening=panel.hidden;showContext('name');setTools(opening);});
+ tools.addEventListener('click',()=>{const opening=layout.dataset.toolsOpen!=='true';if(opening)showContext('name');else setTools(false);});
  root.querySelector('[data-editor-context-back]').onclick=()=>showContext('name');
  root.querySelector('[data-editor-panel-close]').addEventListener('click',()=>{showContext('name');setTools(false);tools.focus();});
  root.querySelector('[data-editor-profile-open]').addEventListener('click',()=>showContext('biography'));
