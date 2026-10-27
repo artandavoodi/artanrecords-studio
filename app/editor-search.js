@@ -7,6 +7,7 @@ export async function bindEditorSearch({client,resolveUser}){
  const fields=metadata.artist.groups.flatMap(group=>group.fields);
  const tools=[{id:'name',label:'Artist name, fonts & size',keywords:config.fonts.map(item=>item.label).join(' ')},{id:'menu',label:'Menu links & order'},{id:'buttons',label:'Main buttons & links'},{id:'footer',label:'Footer & copyright'},{id:'links',label:'Streaming & social order',keywords:fields.filter(field=>field.type==='url').map(field=>field.label).join(' ')},...config.sections.map(item=>({...item,keywords:'section divider separation visibility priority order'}))];
  const index=tools.map(item=>({title:item.label,text:'Edit this part of your artist page.',keywords:item.keywords||'',category:'tools',path:'/editor/?tool='+item.id}));
+ index.push({title:'Pages & privacy notice',text:'Create pages, save private drafts and publish selected content.',keywords:'about hub privacy legal website pages',category:'tools',path:'/profile/#profile-website'});
  index.push(...[['store-products','Products','merchandise price product'],['store-collections','Collections','group organise merchandise'],['store-domains','Store domains','custom domain shop website']].map(([id,title,keywords])=>({title,text:'Manage your private Store preparation.',keywords,category:'workspace',path:'/store/#'+id})));
  let category='all';const categories=[['all','All'],['tools','Tools'],['content','Artist content'],['workspace','Studio']];
  const render=()=>{

@@ -21,6 +21,8 @@
 .studio-surface:has([data-studio-search-page]) > .studio-search-navigation { grid-row:1; margin-block-end:0; }
 [data-studio-search-page] > h2 { font-size:var(--site-type-body-size); }
 [data-editor-presentation] { display:grid; gap:var(--spacing-md); }
+[data-site-page-defaults] { display:flex; flex-wrap:wrap; gap:var(--spacing-md); }
+[data-site-page-list] > div { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--spacing-md); padding-block:var(--spacing-sm); }
 [data-studio-search-page] { inline-size:100%; min-inline-size:0; }
 [data-studio-search-page] .store-search-field input { flex:1 1 0; inline-size:0; }
 [data-studio-search-page] .store-search-field > img { flex:none; }

@@ -167,6 +167,16 @@ test('shared priority handle reorders rows with desktop pointer dragging',async(
  await page.getByRole('button',{name:'Move amazon_music',exact:true}).dragTo(page.getByRole('button',{name:'Move spotify',exact:true}),{targetPosition:{x:8,y:1}});
  await expect(page.locator('#priority')).toHaveAttribute('data-order','amazon_music,spotify');
 });
+test('artist pages save private drafts separately from published snapshots',async({page})=>{
+ await mockBackend(page);let record=null;
+ await page.route('**/rest/v1/studio_artist_site_pages*',route=>{const request=route.request();if(request.method()==='GET')return route.fulfill({json:record?[record]:[]});const values=request.postDataJSON();record={id:'98400000-0000-0000-0000-000000000001',...record,...values};return route.fulfill({status:200,json:record});});
+ const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.locator('[data-settings-tab=profile-website]').click();const pages=page.locator('[data-artist-pages]');await expect(pages.locator('[data-site-page-status]')).toContainText('0 of 12');
+ await pages.locator('[data-site-page-new]').click();await pages.locator('[name=title]').fill('My Hub');await pages.locator('[name=slug]').fill('hub');await pages.locator('[name=body]').fill('My private page');await pages.getByRole('button',{name:'Save draft',exact:true}).click();await expect.poll(()=>record?.draft?.title).toBe('My Hub');expect(record.published).toBeUndefined();
+ await pages.getByRole('button',{name:'My Hub · Private draft',exact:true}).click();await pages.getByRole('button',{name:'Publish page',exact:true}).click();await expect.poll(()=>record?.published?.body).toBe('My private page');
+ await pages.getByRole('button',{name:'My Hub · Published',exact:true}).click();await pages.locator('[name=body]').fill('Private revision');await pages.getByRole('button',{name:'Save draft',exact:true}).click();await expect.poll(()=>record?.draft?.body).toBe('Private revision');expect(record.published.body).toBe('My private page');
+ await pages.getByRole('button',{name:'My Hub · Published',exact:true}).click();await pages.getByRole('button',{name:'Hide page',exact:true}).click();await expect.poll(()=>record?.published).toBeNull();
+});
 test('editor search keeps its field stable and links directly to Store tools',async({page})=>{
  await page.goto('/search/?scope=editor');
  const search=page.locator('[data-studio-search-page]'),input=search.getByRole('searchbox');
@@ -218,6 +228,13 @@ test('artist canvas opens focused and corner editing updates only its preview',a
   await expect.poll(async()=>Math.round((await page.locator('.studio-editor-canvas').boundingBox()).width)).toBeGreaterThan(Math.round(before.width));
  }
  await page.locator('[data-editor-font-select]').selectOption('mono');
+ for(const selector of ['[data-editor-font-select]','[data-editor-portrait-align]','[data-editor-detail-size]','[data-editor-align=nameAlign]']){
+  const arrow=page.locator(selector).locator('..').locator('.ui-inline-dropdown__icon-wrapper');
+  await arrow.scrollIntoViewIfNeeded();
+  expect(await arrow.evaluate(element=>{const rect=element.getBoundingClientRect();return document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2)?.tagName;})).toBe('SELECT');
+ }
+ await page.locator('[data-editor-align=nameAlign]').selectOption('center');await expect(canvas.locator('[data-artist-name]')).toHaveAttribute('style',/text-align: center/);
+ await page.locator('[data-editor-align=biographyAlign]').selectOption('right');await expect(canvas.locator('[data-artist-fields]')).toHaveAttribute('style',/text-align: right/);
  await page.locator('[data-editor-portrait-size]').fill('240');await page.locator('[data-editor-portrait-align]').selectOption('center');
  await expect(canvas.locator('[data-artist-portrait]')).toHaveAttribute('style',/--artist-portrait-size: 240px/);
  await expect(canvas.locator('[data-artist-portrait]')).toHaveAttribute('style',/justify-self: center/);
@@ -236,7 +253,7 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await page.getByRole('button',{name:'Save draft',exact:true}).click();
  await expect.poll(()=>savedDesign?.draft?.dividers).toEqual(['biography']);expect(savedDesign.published_design).toBeUndefined();
  expect(savedDesign.draft.order[0]).toBe('connections');expect(savedDesign.draft.linkOrder.streaming).toEqual(['amazon_music','spotify']);
- expect(savedDesign.draft.presentation).toEqual({portraitSize:240,portraitAlign:'center',biographyLabel:false,since:false,textSize:'large'});
+ expect(savedDesign.draft.presentation).toEqual({portraitSize:240,portraitAlign:'center',biographyLabel:false,since:false,textSize:'large',nameAlign:'center',biographyAlign:'right'});
  await page.getByRole('button',{name:'Publish design',exact:true}).click();
  await expect.poll(()=>savedDesign?.published_design?.font).toBe('mono');
  await page.getByRole('link',{name:'Search',exact:true}).click();

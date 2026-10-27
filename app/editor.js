@@ -15,10 +15,10 @@ export async function bindArtistEditor({client,resolveUser}){
  const showContext=target=>{
   resetContext();setTools(true);
   for(const button of root.querySelectorAll('[data-editor-context]'))button.setAttribute('aria-pressed',String(button.dataset.editorContext===target));
-  const profile=['biography','connections','menu'].includes(target);
+  const profile=['biography','connections','menu','pages'].includes(target);
   profileTools.hidden=!profile;designTools.hidden=profile||['gallery','project','latest','archive'].includes(target);
-  root.querySelector('[data-editor-selection]').textContent=({name:'Artist name',menu:'Menu',footer:'Footer & copyright',buttons:'Main buttons',links:'Streaming & social order'})[target]||config.sections.find(item=>item.id===target)?.label||'Page design';
-  if(profile){const tab=['menu','footer'].includes(target)?'profile-website':target==='connections'?'profile-catalogue':'profile-details';profileTools.querySelector('[data-settings-tab="'+tab+'"]').click();profileTools.querySelector('[data-settings-panel="'+tab+'"] '+(target==='biography'?'[name=biography]':target==='footer'?'[name=footer_text]':'input'))?.focus();}
+  root.querySelector('[data-editor-selection]').textContent=({name:'Artist name',menu:'Menu',pages:'Pages',footer:'Footer & copyright',buttons:'Main buttons',links:'Streaming & social order'})[target]||config.sections.find(item=>item.id===target)?.label||'Page design';
+  if(profile){const tab=['menu','footer','pages'].includes(target)?'profile-website':target==='connections'?'profile-catalogue':'profile-details';profileTools.querySelector('[data-settings-tab="'+tab+'"]').click();profileTools.querySelector('[data-settings-panel="'+tab+'"] '+(target==='pages'?'[data-site-page-new]':target==='biography'?'[name=biography]':target==='footer'?'[name=footer_text]':'input'))?.focus();}
   else{const portfolio=portfolioTools.find(item=>item.dataset.editorPortfolioTools===target);if(portfolio){portfolio.hidden=false;portfolio.querySelector('button,input,a')?.focus();}else if(['latest','archive'].includes(target)){releaseLink.hidden=false;releaseLink.focus();}else root.querySelector(target==='buttons'?'[data-editor-button-label]':target==='footer'?'[data-editor-copyright]':target==='links'?'[data-editor-link-order] button':'[data-editor-font-select]')?.focus();}
  };
  const layout=root.querySelector('.studio-editor-layout');
@@ -63,6 +63,7 @@ export async function bindArtistEditor({client,resolveUser}){
  const send=()=>{if(!validEditorDraft(draft))return;try{sessionStorage.setItem(workingKey,JSON.stringify(draft));}catch{}if(ready)frame.contentWindow.postMessage({type:'artanrecords:artist-preview',draft},url.origin);};
  const sync=()=>{
   const presentation=draft.presentation||defaultPresentation();
+  for(const select of root.querySelectorAll('[data-editor-align]'))select.value=presentation[select.dataset.editorAlign]||'left';root.querySelector('[data-editor-logo-size]').value=presentation.logoSize||config.presentation.portrait.max;root.querySelector('[data-editor-logo-output]').textContent=(presentation.logoSize||config.presentation.portrait.max)+' px';
   root.querySelector('[data-editor-portrait-size]').value=presentation.portraitSize;root.querySelector('[data-editor-portrait-output]').textContent=presentation.portraitSize+' px';root.querySelector('[data-editor-portrait-align]').value=presentation.portraitAlign;root.querySelector('[data-editor-detail-size]').value=presentation.textSize;
   root.querySelector('[data-editor-biography-label]').setAttribute('aria-pressed',String(presentation.biographyLabel));root.querySelector('[data-editor-since]').setAttribute('aria-pressed',String(presentation.since));
   root.querySelector('[data-editor-font-select]').value=draft.font;
@@ -85,6 +86,8 @@ export async function bindArtistEditor({client,resolveUser}){
  root.querySelector('[data-editor-portrait-size]').oninput=event=>updatePresentation('portraitSize',Number(event.target.value));
  root.querySelector('[data-editor-portrait-align]').onchange=event=>updatePresentation('portraitAlign',event.target.value);
  root.querySelector('[data-editor-detail-size]').onchange=event=>updatePresentation('textSize',event.target.value);
+ for(const select of root.querySelectorAll('[data-editor-align]'))select.onchange=()=>updatePresentation(select.dataset.editorAlign,select.value);
+ root.querySelector('[data-editor-logo-size]').oninput=event=>updatePresentation('logoSize',Number(event.target.value));
  root.querySelector('[data-editor-biography-label]').onclick=()=>updatePresentation('biographyLabel',!(draft.presentation||defaultPresentation()).biographyLabel);
  root.querySelector('[data-editor-since]').onclick=()=>updatePresentation('since',!(draft.presentation||defaultPresentation()).since);
  for(const button of root.querySelectorAll('[data-editor-size]'))button.addEventListener('click',()=>{draft.size=button.dataset.editorSize;sync();});

@@ -1,0 +1,5 @@
+{
+ "limit":12,
+ "builtins":[{"slug":"music","title":"Music","selectors":[".artist-latest-release","[data-artist-archive]"]},{"slug":"concerts","title":"Concerts","selectors":["[data-artist-concerts]"]},{"slug":"gallery","title":"Gallery","selectors":["[data-artist-portfolio]"]},{"slug":"shop","title":"Store","selectors":[]}],
+ "privacyDraft":{"title":"Privacy notice","body":"Draft for your review — do not publish until completed.\n\nIdentify who operates your artist website and how visitors can contact you.\n\nDescribe the information you collect, why you use it, the services that process it, retention periods and visitors’ applicable rights.\n\nExplain your actual cookies, storage and external links. Link the platform’s separate notices where relevant.\n\nAdd an effective date after reviewing the completed notice."}
+}
