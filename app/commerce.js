@@ -15,6 +15,9 @@ export async function bindCommerce({client,resolveUser}){
  async function action(button,work){if(busy)return;busy=true;button.disabled=true;status.textContent='';try{await owner();await work();await refresh();showSaveConfirmation('Changes saved.');}catch(error){status.textContent=error.message;}finally{busy=false;button.disabled=false;}}
  function showEditor(kind,record){
   current[kind]=record;const form=root.querySelector(`[data-commerce-editor="${kind}"]`);form.reset();form.hidden=false;
+  let heading=form.querySelector('[data-commerce-editor-title]');if(!heading){heading=node('h2');heading.dataset.commerceEditorTitle='';form.prepend(heading);}
+  heading.textContent=record?'Edit '+record.title:'New '+kind;
+  root.querySelector(`[data-commerce-new="${kind}"]`).hidden=true;
   for(const field of kind==='product'?config.productFields:config.collectionFields){let value=record?.[field.name]??'';if(kind==='product'&&field.name==='price')value=record?priceInput(record):'';if(field.name==='sku')value=record?.details?.sku||'';if(field.name==='image_url')value=record?.details?.media?.[0]?.url||'';form.elements[field.name].value=value;}
   if(kind==='product'){form.elements.kind.value=record?.kind||contract.productKinds[0].id;form.elements.currency.value=record?.currency||'';form.elements.collection_id.value=record?.collection_id||'';}
   form.elements.title.focus();
@@ -47,11 +50,11 @@ export async function bindCommerce({client,resolveUser}){
  }
  prepare.onclick=()=>action(prepare,async()=>{await checked(client.rpc('studio_prepare_store'));});
  for(const kind of ['product','collection']){
-  const form=root.querySelector(`[data-commerce-editor="${kind}"]`);root.querySelector(`[data-commerce-new="${kind}"]`).onclick=()=>showEditor(kind,null);form.querySelector('[data-commerce-cancel]').onclick=()=>{form.hidden=true;current[kind]=null;};
+  const form=root.querySelector(`[data-commerce-editor="${kind}"]`),create=root.querySelector(`[data-commerce-new="${kind}"]`);create.onclick=()=>showEditor(kind,null);form.querySelector('[data-commerce-cancel]').onclick=()=>{form.hidden=true;current[kind]=null;create.hidden=false;create.focus();};
   form.onsubmit=event=>{event.preventDefault();action(form.querySelector('[type=submit]'),async()=>{
    const values=draftValues(new FormData(form),kind,current[kind]?.details),table=kind==='product'?'studio_store_products':'studio_store_collections';
    const result=current[kind]?await checked(client.from(table).update(values).eq('id',current[kind].id).eq('store_id',store.id).select('id').single()):await checked(client.from(table).insert(ownDraft(values,store)).select('id').single());
-   if(!result)throw Error('The draft could not be saved.');form.hidden=true;current[kind]=null;
+   if(!result)throw Error('The draft could not be saved.');form.hidden=true;current[kind]=null;create.hidden=false;create.focus();
   });};
  }
  const settings=root.querySelector('[data-commerce-settings]');settings.onsubmit=event=>{event.preventDefault();action(settings.querySelector('button'),async()=>{

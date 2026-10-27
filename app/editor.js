@@ -14,6 +14,7 @@ export async function bindArtistEditor({client,resolveUser}){
  const resetContext=()=>{portfolioTools.forEach(item=>item.hidden=true);releaseLink.hidden=true;};
  const showContext=target=>{
   resetContext();setTools(true);
+  for(const button of root.querySelectorAll('[data-editor-context]'))button.setAttribute('aria-pressed',String(button.dataset.editorContext===target));
   const profile=['biography','connections','menu'].includes(target);
   profileTools.hidden=!profile;designTools.hidden=profile||['gallery','project','latest','archive'].includes(target);
   root.querySelector('[data-editor-selection]').textContent=({name:'Artist name',menu:'Menu',footer:'Footer & copyright',buttons:'Main buttons',links:'Streaming & social order'})[target]||config.sections.find(item=>item.id===target)?.label||'Page design';
@@ -27,6 +28,7 @@ export async function bindArtistEditor({client,resolveUser}){
  resize.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight'].includes(event.key))return;event.preventDefault();setWidth(panel.getBoundingClientRect().width+(event.key==='ArrowLeft'?1:-1)*parseFloat(getComputedStyle(panel).paddingInlineStart));});
  const setTools=open=>{panel.hidden=!open;layout.dataset.toolsOpen=String(open);tools.setAttribute('aria-expanded',String(open));};
  const setFocus=active=>{root.dataset.focus=String(active);focus.setAttribute('aria-pressed',String(active));focus.lastChild.textContent=active?'Workspace view':'Focus view';};
+ for(const button of root.querySelectorAll('[data-editor-context]'))button.onclick=()=>showContext(button.dataset.editorContext);
  focus.addEventListener('click',()=>setFocus(root.dataset.focus!=='true'));
  tools.addEventListener('click',()=>{resetContext();profileTools.hidden=true;designTools.hidden=false;root.querySelector('[data-editor-selection]').textContent='Page design';setTools(panel.hidden);});
  root.querySelector('[data-editor-panel-close]').addEventListener('click',()=>{setTools(false);tools.focus();});

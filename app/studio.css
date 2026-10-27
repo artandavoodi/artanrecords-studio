@@ -39,7 +39,7 @@ body { isolation:isolate; }
 [data-portfolio-image] { max-inline-size:100%; max-block-size:45svh; object-fit:contain; }
 
 /* Studio composition; shared brand values and label header motion stay canonical. */
-.studio-surface { display:grid; gap:var(--spacing-xl); }
+.studio-surface { display:grid; align-content:start; gap:var(--spacing-xl); }
 .studio-surface > header { max-inline-size:var(--cv-reading-width); }
 .studio-header-frame { background:var(--cv-page-bg); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
 body:has(.studio-header-frame) { min-block-size:100dvh; display:flex; flex-direction:column; }

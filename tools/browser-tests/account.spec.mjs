@@ -167,6 +167,20 @@ test('shared priority handle reorders rows with desktop pointer dragging',async(
  await page.getByRole('button',{name:'Move amazon_music',exact:true}).dragTo(page.getByRole('button',{name:'Move spotify',exact:true}),{targetPosition:{x:8,y:1}});
  await expect(page.locator('#priority')).toHaveAttribute('data-order','amazon_music,spotify');
 });
+test('editor search keeps its field stable and links directly to Store tools',async({page})=>{
+ await page.goto('/search/?scope=editor');
+ const search=page.locator('[data-studio-search-page]'),input=search.getByRole('searchbox');
+ await expect(input).toBeEnabled();
+ const before=await input.boundingBox(),filters=await search.locator('[data-search-filters]').boundingBox();
+ for(const query of ['s','Spotify','collections','']){
+  await input.fill(query);
+  const after=await input.boundingBox(),nextFilters=await search.locator('[data-search-filters]').boundingBox();
+  expect(Math.abs(after.x-before.x)).toBeLessThan(1);expect(Math.abs(after.width-before.width)).toBeLessThan(1);
+  expect(Math.abs(nextFilters.y-filters.y)).toBeLessThan(1);
+ }
+ await input.fill('collections');await expect(search.getByRole('link',{name:'Collections Manage your private Store preparation.',exact:true})).toHaveAttribute('href','/store/#store-collections');
+ await expect(page.getByRole('link',{name:'Back to editor',exact:true})).toHaveAttribute('href','/editor/');
+});
 test('artist canvas opens focused and corner editing updates only its preview',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);
  let savedDesign;
@@ -193,6 +207,11 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await expect(page.getByRole('region',{name:'Page design'})).toBeVisible();
  await expect(page.locator('[data-editor-profile-tools]')).toBeHidden();
  await expect(page.locator('[data-editor-release-link]')).toBeHidden();
+ await page.getByRole('navigation',{name:'Editing tools'}).getByRole('button',{name:'Copyright',exact:true}).click();
+ await expect(page.locator('[data-editor-copyright]')).toBeFocused();
+ await page.getByRole('navigation',{name:'Editing tools'}).getByRole('button',{name:'Design',exact:true}).click();
+ await expect(page.locator('[data-editor-font-select]')).toBeFocused();
+ await expect(page.getByRole('navigation',{name:'Editing tools'}).getByRole('link',{name:'Store',exact:true})).toHaveAttribute('href','/store/');
  if(page.viewportSize().width>1024){
   const resize=page.getByRole('separator',{name:'Resize design tools'}),box=await resize.boundingBox();const before=await page.locator('.studio-editor-canvas').boundingBox();
   await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+80,box.y+box.height/2);await page.mouse.up();
