@@ -17,7 +17,7 @@ export function applyArtistDesign(root,draft,config){
  const navigation=document.querySelector('[data-fragment=navigation]');
  if(draft.ribbon)navigation?.style.setProperty('--artist-header-ribbon',draft.ribbon);else navigation?.style.removeProperty('--artist-header-ribbon');
  const buttons=root.querySelector('[data-artist-directory]');
- if(buttons&&Array.isArray(draft.buttons)){buttons.replaceChildren();for(const item of draft.buttons){const link=document.createElement('a');link.href=item.url;link.textContent=item.label;link.rel='noopener';buttons.append(link);}}
+ if(buttons&&Array.isArray(draft.buttons)){const edit=buttons.querySelector(':scope > .artist-canvas-edit');buttons.replaceChildren();for(const item of draft.buttons){const link=document.createElement('a');link.href=item.url;link.textContent=item.label;link.rel='noopener';buttons.append(link);}if(edit)buttons.append(edit);}
  const credit=document.querySelector('[data-artist-copyright]');if(credit)credit.textContent=draft.copyright||credit.dataset.artistCopyright;
  return true;
 }
@@ -25,7 +25,7 @@ export async function renderArtistDesign(root,record,config){
  if(root.hasAttribute('data-artist-editor-preview'))return;
  try{
   const endpoint=new URL('/rest/v1/studio_public_artist_designs',config.backend);endpoint.searchParams.set('select','design');endpoint.searchParams.set('username','eq.'+record.username);
-  const response=await fetch(endpoint,{headers:{apikey:config.publishableKey},credentials:'omit',cache:'no-store'});if(!response.ok)return;
+  const response=await fetch(endpoint,{headers:{apikey:config.publishableKey},credentials:'omit',cache:'no-store',signal:AbortSignal.timeout(config.designTimeoutMs)});if(!response.ok)return;
   const [recordDesign]=await response.json();if(!recordDesign?.design)return;
   const editor=await fetch('/assets/data/artists/editor.json').then(response=>response.json());applyArtistDesign(root,recordDesign.design,editor);
  }catch{/* Retain the published artist page when design preferences are unavailable. */}
