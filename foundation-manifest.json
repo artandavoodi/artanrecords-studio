@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "0d7ab9b750615099406c65b4caa40d0ca0a03050",
+  "commit": "470d1a08eaee6cd408c64364cfaaeee8d2849c90",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "bf2d7bab84057768d028b0e3be924690b931ffdd97a8a3a4eb7594540c6db6f3",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -23,7 +23,7 @@
     "assets/css/core/04-systems/search-close.css": "b5ad572ef1c8bad5d0c36107b80d6293bc08c511f68838ec981b9dd1ec38d60e",
     "assets/css/core/04-systems/startup.css": "73f7e032ac2c67869379cee0efcc0c7c87883cd85cef379c256522d95bab31cc",
     "assets/css/layers/00-orchestrator/00-layers-all.css": "8037edc9e1ce0e0e49a6617b090daad3c1f0497b469835e87039b6d3d32b522e",
-    "assets/css/layers/site/artist-editor-preview.css": "b9acf74db9c38510c7fc7dd84bc5a3f82e43d677d905357eb964f6bd6954ad59",
+    "assets/css/layers/site/artist-editor-preview.css": "a31a072f5433bd6786711df060abff89e7220653234d2a7d531d666cd9bb66e3",
     "assets/css/layers/site/artist-portfolio.css": "5fc0ec84afd422bb7cca499472d17c932150259efa25e934d14de38a0f95ad1d",
     "assets/css/layers/site/contact/index.css": "94173ea68756beb7a16b358c4b32c6aa946e5f0b652779d54bf352c2517b4094",
     "assets/css/layers/site/for-artists/index.css": "17ae00f8c36535226213acb6d50a67a060f23a37d4bfed16181b0f667e5fed72",

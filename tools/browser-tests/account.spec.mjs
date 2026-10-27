@@ -150,6 +150,15 @@ test('page editor uses only the signed-in artist handle and isolated preview con
  await expect(page.locator('[data-editor-font-select]')).toBeDisabled();
  await expect(page.getByText('Design preview only.',{exact:false})).toBeVisible();
 });
+test('artist website navigation saves privately before explicit sharing',async({page})=>{
+ await mockBackend(page);let saved;
+ await page.route('**/rest/v1/studio_artist_navigation*',async route=>{if(route.request().method()==='GET')return route.fulfill({json:saved?[saved]:[]});saved=route.request().postDataJSON();return route.fulfill({status:201,json:saved});});
+ const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
+ await page.getByRole('tab',{name:'Website',exact:true}).click();
+ const form=page.locator('[data-artist-navigation]');await form.locator('[data-navigation-add=menu]').click();await form.getByLabel('Link name',{exact:true}).fill('My music');await form.getByLabel('Address',{exact:true}).fill('#artist-releases');await form.getByRole('button',{name:'Save',exact:true}).click();
+ await expect.poll(()=>saved?.menu).toEqual([{label:'My music',url:'#artist-releases'}]);expect(saved.published).toBe(false);
+ await form.locator('[name=published]').check();await form.getByRole('button',{name:'Save',exact:true}).click();await expect.poll(()=>saved.published).toBe(true);
+});
 test('artist canvas opens focused and corner editing updates only its preview',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
@@ -349,6 +358,8 @@ test('profile tabs isolate sections, retain the selected address and use standar
   expect(Number(await catalogue.evaluate(el=>getComputedStyle(el).opacity))).toBeGreaterThan(Number(await profile.evaluate(el=>getComputedStyle(el).opacity)));
   await expect(catalogue).toHaveCSS('align-items','center');
   await catalogue.press('ArrowRight');
+  await expect(page.getByRole('tab',{name:'Website',exact:true})).toBeFocused();
+  await page.getByRole('tab',{name:'Website',exact:true}).press('ArrowRight');
   await expect(page.getByRole('tab',{name:'Publication',exact:true})).toBeFocused();
   await expect(page.locator('#profile-publication')).toBeVisible();
   await expect(page.locator('#profile-catalogue')).toBeHidden();
