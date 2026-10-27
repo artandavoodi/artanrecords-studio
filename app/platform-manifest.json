@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/website",
-  "revision": "a0f0f124edec0d0ef70cb7be15a0764c062240db",
+  "revision": "3ecec75c75728f8fe306ca2948f6663c3f4a7f39",
   "files": {
     "assets/css/layers/website/layout/home.css": "2ee1172bb8d6b1b1d43e7a66caa1fdda1c6bec3068377b02844d34700eed62b7",
     "assets/css/layers/website/ui/effects/wallpaper-engine.css": "984059c6eaef39a1bd3726109b7e8ea396dae14818bf98f1e5448cb3ac554bfd",
@@ -39,7 +39,7 @@
     "registry/icons/public/assets/layers/website/home/platform-menu/settings/platform-menue-settings-security.svg": "a0bf0d55cdc0a10661a6afa6826324d202f8198bcfc6bdf0c57259118b0d2111",
     "assets/js/core/02-systems/theme.js": "5698e16826265da8a02b4df7d149abf273e5c481659373b2672bd70731258e15",
     "assets/js/core/01-foundation/toggle.js": "6097773948c6265680bb2e25a8698d1146deeb3853a6e8e45eb0294a5044ca7a",
-    "assets/js/core/02-systems/magnetic-navigation.js": "9aab4752f6542dc30dd5a4d4e9c603c2d996e7fa3322b1e9b33e5741b4c4de85",
+    "assets/js/core/02-systems/magnetic-navigation.js": "d4ea49568edc7f5d8e0348b745283e36da452384a15ae6637a667b4c320dd379",
     "assets/css/core/03-primitives/loaders.css": "ed634b772b8f1ef3f1c4bbd7a46858fd59dd12a18d95170cc98aec450d9711ee",
     "assets/js/layers/website/overlays/cookie/cookie-consent.js": "2e4ca3f200e381b4bc555f3f6fe7e1013d4988fd8e91ada38e2d1520fa07403f",
     "assets/css/core/03-primitives/radio-list.css": "ee8a4f19a799bc1d3a45f28e2a16809bde19f01a1bac0f0d6999f963aad13aa0",
