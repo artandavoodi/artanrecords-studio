@@ -109,6 +109,9 @@ html[data-home-free-scroll]:has(main[data-fragment="home"]) { scroll-snap-type:n
 .label-home-actions a[href], .label-actions a[href] { display: inline-flex; align-items: center; justify-content: center; min-block-size: var(--control-height-md); max-inline-size: 100%; box-sizing: border-box; padding: var(--spacing-sm) var(--spacing-lg); border:0; border-radius: var(--radius-md); background: transparent; color: var(--cv-text-primary); text-decoration: none; text-align: center; font-size:var(--site-type-body-size); font-weight: var(--font-weight-semibold); transition: background-color var(--duration-base) var(--ease-standard),opacity var(--duration-base) var(--ease-standard); }
 .label-home-actions a:hover, .label-home-actions a:focus-visible, .label-actions a:hover, .label-actions a:focus-visible { outline:none; background:var(--control-bg-hover); text-decoration: none; }
 .label-home-actions a[data-emphasis="primary"], .label-actions a[data-emphasis="primary"] { background:var(--label-primary-action-background); color:var(--label-primary-action-text); }
+.label-actions a:has(> img) { gap:var(--spacing-sm); }
+.label-actions a > img { inline-size:var(--icon-size-md); block-size:var(--icon-size-md); flex-shrink:0; }
+.label-actions a[data-emphasis="primary"] > img[data-monochrome] { filter:brightness(0) invert(1); }
 html[data-theme-effective="dark"] .label-wordmark--light { display: none; }
 @media (max-width: 1024px), (hover: none), (pointer: coarse) {
   .site-footer > .hub .hub__group-links { display: flex; }
