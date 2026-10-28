@@ -7510,14 +7510,17 @@ html[data-theme-effective="dark"] .label-wordmark--light { display: none; }
 .artist-enquiry__review section, .artist-discovery { display:grid; gap:var(--spacing-md); }
 .artist-enquiry__review section { padding-block:var(--spacing-md); }
 .artist-enquiry__review section > *, .artist-discovery > p, .artist-discovery > h3 { margin:0; }
-.artist-discovery__search { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:var(--spacing-md); }
-.artist-discovery__search label { display:grid; min-inline-size:0; gap:var(--spacing-sm); }
+.artist-discovery__search { display:grid; min-inline-size:0; gap:var(--spacing-sm); }
+.artist-discovery__query { display:flex; align-items:center; gap:var(--spacing-sm); }
+.artist-discovery__query input { flex:1; min-inline-size:0; inline-size:100%; border:0; background:transparent; color:inherit; font:inherit; outline:none; }
+.artist-discovery__query input::-webkit-search-cancel-button,.artist-discovery__query input::-webkit-search-decoration { -webkit-appearance:none; display:none; }
+.artist-discovery__query [data-artist-search] { display:grid; place-items:center; flex:none; padding:var(--spacing-xs); border:0; background:transparent; color:inherit; }
+.artist-discovery__query [data-artist-clear] { flex:none; }
 .artist-discovery__result { display:flex; align-items:center; gap:var(--spacing-md); padding-block:var(--spacing-md); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
 .artist-discovery__result a { flex:1; overflow-wrap:anywhere; }
 .artist-discovery__portrait { inline-size:var(--avatar-size); block-size:var(--avatar-size); object-fit:contain; }
 .artist-discovery__initials { display:grid; place-items:center; flex:none; inline-size:var(--avatar-size); block-size:var(--avatar-size); background:var(--cv-surface); color:var(--cv-text-primary); }
 .artist-discovery__platform { inline-size:var(--icon-size-md); block-size:var(--icon-size-md); filter:var(--site-monochrome-icon-filter); }
-.artist-discovery__search button { display:flex; align-items:center; gap:var(--spacing-sm); }
 .artist-discovery__search button img { inline-size:var(--icon-size-md); block-size:var(--icon-size-md); }
 @media(max-width:768px){.artist-discovery__search { grid-template-columns:minmax(0,1fr); }.artist-discovery__result { flex-wrap:wrap; }}
 .artist-enquiry__consent { display: flex; align-items: baseline; gap: var(--spacing-sm); }
