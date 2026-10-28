@@ -698,5 +698,9 @@ test('release covers validate square originals and save privately with a retryab
  const attached=requests.find(request=>request.method==='PATCH'&&request.body?.metadata?.artwork).body.metadata.artwork;expect(attached.path).toMatch(new RegExp('^'+id+'/94000000-0000-0000-0000-000000000001/'));expect(attached.width).toBe(1000);
  await view.locator('[data-new-draft]').click();await expect(view.locator('[data-cover-preview]')).toBeHidden();await view.locator('[data-draft-picker]').selectOption('94000000-0000-0000-0000-000000000001');await expect(notice).toContainText('cover.png');await expect(view.locator('[data-cover-preview]')).toBeVisible();await expect.poll(()=>view.locator('[data-cover-preview]').evaluate(el=>el.naturalWidth)).toBe(1000);
  expect(requests.some(request=>/publish|deliver/.test(request.path))).toBe(false);
+ await view.locator('[data-submit-release]').click();await expect(view.locator('[data-submission-status]')).toContainText('Confirm that you have permission');
+ let submitted;await page.route('**/rest/v1/rpc/studio_submit_release',async route=>{submitted=route.request().postDataJSON();await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify('98900000-0000-4000-8000-000000000008')});});
+ await view.locator('[data-submission-rights]').check();await view.locator('[data-submit-partnership]').check();await view.locator('[data-submission-tier]').selectOption('gold');page.once('dialog',dialog=>dialog.accept());await view.locator('[data-submit-release]').click();
+ await expect.poll(()=>submitted).toEqual({draft:'94000000-0000-0000-0000-000000000001',tier:'gold',rights_confirmed:true,apply_partnership:true});
  if(test.info().project.name==='chromium-desktop')await page.screenshot({path:'/tmp/studio-release-artwork.png'});
 });

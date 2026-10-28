@@ -40,6 +40,7 @@ export function releaseMetadata(values,schema){
   if(result.type==='Single'&&values.tracks.length!==1)throw Error('A single draft must contain one track; choose EP or Album for more tracks.');
   result.tracks=values.tracks.map((value,index)=>{
     const track={...fields(value,schema.release.trackFields),number:index+1};
+    if(value.id!==undefined){if(typeof value.id!=='string'||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value.id))throw Error('Check the track identity.');track.id=value.id;}
     if(track.isrc&&!/^[A-Z]{2}[A-Z0-9]{3}\d{7}$/.test(track.isrc))throw Error('Use the existing 12-character ISRC, without spaces or dashes.');
     if(track.duration&&!/^\d{1,4}:[0-5]\d$/.test(track.duration))throw Error('Use minutes:seconds for duration.');
     if(track.preview_start&&!/^\d{1,4}:[0-5]\d$/.test(track.preview_start))throw Error('Use minutes:seconds for the preview start.');
@@ -53,6 +54,7 @@ export function releaseMetadata(values,schema){
       return {name,role:person.role};
     });return track;
   });
+  const trackIds=result.tracks.map(track=>track.id).filter(Boolean);if(new Set(trackIds).size!==trackIds.length)throw Error('Each track needs its own identity.');
   if(new TextEncoder().encode(JSON.stringify(result)).length>450000)throw Error('This draft is too large. Shorten the notes or lyrics.');
   return result;
 }

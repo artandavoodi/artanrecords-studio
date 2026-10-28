@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "6220ab7d4a21f3d1c8fc3417222d371a85987f3f",
+  "revision": "71f499ff02e670caa82400db64861b42bc55e4a1",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
     "address": "600017791b60ee1b2414c83624c33817cd3f4671451668184882bfef7644cb5c",
@@ -72,11 +72,12 @@
     "plus": "d6e6467d134a5ff667f8b639533f677fbed1da38172ae8e995e1f7fc6e83307f",
     "concert": "c8faa597f648e8fc35359d856a7c01828ed47fc95992fd38ea7dfc09ca958c13",
     "introductions": "f0f046a6dc89f8c70da1f120080d69c219bfcf48d0448b0bcef3186dbeb45944",
-    "connections": "c7a99ce917d3d8b69756244f8387944b23a60027bdb65b065f4d1ec9d4f22329"
+    "connections": "c7a99ce917d3d8b69756244f8387944b23a60027bdb65b065f4d1ec9d4f22329",
+    "upload": "64ba0abb266047965a2d2cdcf45d7b68df906e1bc9b517b5d047c99b340472b4"
   },
   "available": {
     "placeholder": true,
-    "address": false,
+    "address": true,
     "artist-content": true,
     "bank": true,
     "store": true,
@@ -145,6 +146,7 @@
     "plus": true,
     "concert": true,
     "introductions": false,
-    "connections": true
+    "connections": true,
+    "upload": true
   }
 }

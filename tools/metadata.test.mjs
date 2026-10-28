@@ -3,6 +3,15 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {artistMetadata,releaseMetadata,releaseArtworkValues,googlePhoto,catalogueSelection,releaseSelection} from '../app/metadata-values.js';
 import {portfolioValues} from '../app/portfolio.js';
+import {inspectMaster} from '../app/release-audio-values.js';
+test('master inspection accepts PCM headers and rejects truncated or disguised files',async()=>{
+ const buffer=new ArrayBuffer(48),view=new DataView(buffer),bytes=new Uint8Array(buffer);
+ for(const [offset,value] of [[0,'RIFF'],[8,'WAVE'],[12,'fmt '],[36,'data']])bytes.set(new TextEncoder().encode(value),offset);
+ view.setUint32(4,40,true);view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,2,true);view.setUint32(24,48000,true);view.setUint32(28,192000,true);view.setUint16(32,4,true);view.setUint16(34,16,true);view.setUint32(40,4,true);
+ const result=await inspectMaster(new File([buffer],'master.wav'));assert.equal(result.sampleRate,48000);assert.equal(result.channels,2);assert.equal(result.bitDepth,16);
+ view.setUint32(40,48,true);await assert.rejects(()=>inspectMaster(new File([buffer],'truncated.wav')));
+ await assert.rejects(()=>inspectMaster(new File(['not audio'],'renamed.wav')));
+});
 test('portfolio drafts validate registered fields, tags and secure project links',()=>{
  const form=new FormData();form.set('title','A project');form.set('tags','music, photography');form.set('project_url','https://example.test/project');
  assert.deepEqual(portfolioValues(form).tags,['music','photography']);assert.equal(portfolioValues(form).rights_confirmed,false);
@@ -11,6 +20,12 @@ test('portfolio drafts validate registered fields, tags and secure project links
 const schema=JSON.parse(await readFile(new URL('../content/metadata.json',import.meta.url),'utf8'));
 const artwork=JSON.parse(await readFile(new URL('../content/release-artwork.json',import.meta.url),'utf8'));
 const release=()=>({title:'Test single',type:'Single',tracks:[{title:'Test track',explicit:'Clean',contributors:[{name:'Test writer',role:'Songwriter'}]}]});
+test('stable track identifiers survive private drafts without leaking into public selection',()=>{
+ const id='98900000-0000-4000-8000-000000000005';
+ const value=releaseMetadata({...release(),tracks:[{...release().tracks[0],id}],visibility:{tracks:'public'}},schema);
+ assert.equal(value.tracks[0].id,id);assert.equal(releaseSelection(value,schema).tracks[0].id,undefined);
+ assert.throws(()=>releaseMetadata({...release(),type:'Album',tracks:[{title:'One',id},{title:'Two',id}]},schema));
+});
 test('catalogue fields are allowlisted and private by default',()=>{
   const value=artistMetadata({spotify:'https://open.spotify.com/artist/test',role:'admin',visibility:{spotify:'public',email:'public'}},schema);
   assert.equal(value.role,undefined);assert.equal(value.visibility.email,undefined);assert.equal(value.visibility.spotify,'public');assert.equal(value.visibility.biography,'private');

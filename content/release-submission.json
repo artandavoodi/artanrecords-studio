@@ -1,0 +1,11 @@
+{
+ "bucket":"studio-release-masters",
+ "maxBytes":536870912,
+ "sampleRates":[44100,48000,88200,96000,176400,192000],
+ "bitDepths":[16,24,32],
+ "types":["audio/wav","audio/flac"],
+ "notice":"Upload the final WAV or FLAC master for each track. Up to 512 MiB per file, subject to the project’s upload and storage limits. Masters stay private. Uploading or submitting does not distribute your music or approve a partnership.",
+ "declaration":"I have permission to submit these recordings and artwork for label review, and the credits and rights information are accurate.",
+ "partnershipDeclaration":"Also request partnership review for this tier. An existing pending or approved application will remain unchanged; this does not approve a tier or sign an agreement.",
+ "tiers":[{"id":"silver","label":"Silver"},{"id":"gold","label":"Gold"},{"id":"platinum","label":"Platinum"}]
+}
