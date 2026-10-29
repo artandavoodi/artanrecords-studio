@@ -1,9 +1,9 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "71f499ff02e670caa82400db64861b42bc55e4a1",
+  "revision": "cce1622a68b8d797d661e8c08f01cb84fa1014bb",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
-    "address": "600017791b60ee1b2414c83624c33817cd3f4671451668184882bfef7644cb5c",
+    "address": "a886e26597d7b4b1dc39e37ad800a27da5031b3cd5523fbada77403360d722e6",
     "artist-content": "413c8c591ed8299fbc75b8ce74940ca1ed3cf2942b1359754727be23aafef5c1",
     "bank": "763f4ce77510fe2bacbfe6b3ad0fd89e60d51f737dd9a81cdc56dbf5b73ce9fc",
     "store": "bb431b7c0c7379cde0ba1fa7ee82a4f00aa1131f2df999570dc0f21bcec845e8",
@@ -77,7 +77,7 @@
   },
   "available": {
     "placeholder": true,
-    "address": true,
+    "address": false,
     "artist-content": true,
     "bank": true,
     "store": true,
