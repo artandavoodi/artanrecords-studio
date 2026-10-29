@@ -6,7 +6,6 @@ function loadStripe(){
 }
 export async function bindSubscriptionPayments({client,config,resolveUser}){
  const root=document.querySelector('[data-card-setup]');if(!root)return;
- document.querySelectorAll('[data-billing-period]').forEach(button=>button.onclick=()=>{for(const option of document.querySelectorAll('[data-billing-period]'))option.setAttribute('aria-pressed',String(option===button));document.querySelector('[data-billing-period-status]').textContent=(button.dataset.billingPeriod==='year'?'Yearly':'Monthly')+' price preview. No subscription has been purchased.';});
  if(!client)return;const owner=await resolveUser(client).catch(()=>null);if(!owner)return;
  const status=root.querySelector('[data-card-status]'),consent=root.querySelector('[data-card-consent-form]'),elementForm=root.querySelector('[data-card-element-form]'),open=root.querySelector('[data-card-open]');let stripe,elements;
  const call=async body=>{

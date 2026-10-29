@@ -1,0 +1,15 @@
+{
+ "title":"Connections",
+ "notice":"Catalogue lookup, personal account authorization and financial reporting are separate connections. A catalogue result does not verify artist ownership or provide earnings reports.",
+ "checkLabel":"Check catalogue services",
+ "services":[
+  {"id":"account","label":"Account services","icon":"account","detail":"Verified shared Store and Studio sign-in."},
+  {"id":"spotify","label":"Spotify catalogue","icon":"spotify","detail":"Server-side artist search. This does not connect a personal Spotify account."},
+  {"id":"apple","label":"Apple Music catalogue lookup","icon":"apple_music","detail":"Public artist lookup through Apple's catalogue search; MusicKit authorization is separate."},
+  {"id":"musickit","label":"Apple Music API / MusicKit","icon":"connections","detail":"Requires an Apple Developer MusicKit key and verified server-side token before activation."},
+  {"id":"reports","label":"Streaming reports","icon":"analytics","detail":"Requires verified distributor reporting access; catalogue APIs do not provide royalty statements."},
+  {"id":"royalties","label":"Royalty statements","icon":"finance","detail":"Requires verified statements and an approved earnings ledger."},
+  {"id":"payments","label":"Live payments and payouts","icon":"bank","detail":"Stripe verification, live configuration and payout policy are required. Sandbox card setup is separate."},
+  {"id":"signatures","label":"Digital signatures","icon":"contract","detail":"A non-binding signing preview exists; production signing and evidence are not active."}
+ ]
+}

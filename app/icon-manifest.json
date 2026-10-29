@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "cce1622a68b8d797d661e8c08f01cb84fa1014bb",
+  "revision": "cb8a01c6179ceff57a5c2246ff03a5534d9c5c9b",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
     "address": "a886e26597d7b4b1dc39e37ad800a27da5031b3cd5523fbada77403360d722e6",
@@ -72,7 +72,8 @@
     "plus": "d6e6467d134a5ff667f8b639533f677fbed1da38172ae8e995e1f7fc6e83307f",
     "concert": "c8faa597f648e8fc35359d856a7c01828ed47fc95992fd38ea7dfc09ca958c13",
     "introductions": "f0f046a6dc89f8c70da1f120080d69c219bfcf48d0448b0bcef3186dbeb45944",
-    "connections": "c7a99ce917d3d8b69756244f8387944b23a60027bdb65b065f4d1ec9d4f22329",
+    "connections": "f78281a54fc50307caf499b8dd50738654085838fc0fb4766f6964623819c48c",
+    "refresh": "629e26e5dd6ad50db4c0d6607976d9bef7a756b7440f77dea1e5e08a73df187f",
     "upload": "64ba0abb266047965a2d2cdcf45d7b68df906e1bc9b517b5d047c99b340472b4"
   },
   "available": {
@@ -147,6 +148,7 @@
     "concert": true,
     "introductions": false,
     "connections": true,
+    "refresh": true,
     "upload": true
   }
 }

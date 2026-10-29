@@ -168,9 +168,9 @@ test('Studio footer is copyright-only and public notices retain a single website
 });
 test('overview distinguishes active private profiles from inactive artist operations',async()=>{
   const platform=JSON.parse(await readFile('content/platform.json','utf8'));
-  const cards=platform.features.map(item=>item.description).join(' ');
-  assert.match(cards,/Available now/);assert.match(cards,/Prepared, not active/);assert.match(cards,/Requires activation/);
-  assert.doesNotMatch(cards,/when account services are connected/);
+  const cards=platform.overview.actions.map(item=>item.detail).join(' ');
+  assert.match(cards,/private drafts/);assert.match(cards,/for review/);assert.match(cards,/non-binding signing preview/);
+  assert.doesNotMatch(cards,/Plans and partnerships|\/month|\/year/);
   const account=JSON.parse(await readFile('content/account.json','utf8'));
   assert.equal(account.workspace.submissions,false);assert.equal(account.workspace.contracts,false);assert.equal(account.payments.enabled,false);
 });

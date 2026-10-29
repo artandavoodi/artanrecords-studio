@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "505157811dfd94883c1362241189de39dc59377c",
+  "commit": "281126064d370ff72c883043f412f7e02d30ccda",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "bf2d7bab84057768d028b0e3be924690b931ffdd97a8a3a4eb7594540c6db6f3",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -72,7 +72,7 @@
     "assets/data/commerce.json": "0206487c6a6b4f7f965838864172b101d71a7d5b74e3911397accd6cb0caf429",
     "assets/data/artists/reserved-routes.json": "2c58f36344ba49af081ff71d3e8962edcb85f6cb28d67dc7da6633daa2769876",
     "assets/data/artists/editor.json": "d06fad2b5a0eb34b67f24462e34570d37739264411ca4a1e03d2768096291fff",
-    "assets/data/studio-plans.json": "a858a0aac717ee7c1fedde71056c96d89844a536e2d064f49aa2b9460c869736",
+    "assets/data/studio-plans.json": "2efa5a820fc1983b842e1ba4ff148501a784b15e278a0223aa88e9f02b66d3c7",
     "assets/data/partnerships.json": "9a4d7cd3d705be4d3625566e7454bbd5d1dd64ffaf3ef8e75f44cddc30926140",
     "foundation/partnerships.mjs": "6364160895222c78b3f6be5c46de8eea4458bd4472a04ce922103ff590167a20",
     "foundation/studio-plans.mjs": "c8d8b379959e107327630887579308a7510b6f9f6133d35401db470f8c713a5a",
@@ -98,7 +98,7 @@
     "assets/js/core/preference-config.js": "413d73da6da32663da1e2802a9824f3bab79b4f8e4b3ecff8edbf4a7ad375acb",
     "assets/js/layers/site/navigation.js": "293b014f562dcd257513c17ee3359602c9be2551987847f494cc8414da5ea18d",
     "assets/fragments/navigation/index.html": "4f1e7a8bb19c8447c913c16ec544d967ca9a6a34fae20b46fcda6e5de7d95a2b",
-    "assets/data/site.json": "7a93040e394ebffbc17918724e2453f98b05b6b5490457dca999bb7da1777494",
+    "assets/data/site.json": "fe79aef04c5043b425c232aae2addff2c74ec060218f3ad8aa8a0310583e4530",
     "assets/data/icons.json": "cc0fa8d6666c220e2bf809f5336ea19bb53cb4839f1141323dc67ca30a9c3c6e",
     "foundation/build.mjs": "9bea7f3fc2107906d7a2fd63dddbc11aee708f8048766cb2fce9313b4222ee4e",
     "foundation/shell.html": "c445931a615369aef2d72b5f3660988ae1be578b4a198b8e7173f859648ef04c",

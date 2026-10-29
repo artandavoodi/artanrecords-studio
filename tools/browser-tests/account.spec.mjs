@@ -5,6 +5,20 @@ const id='92000000-0000-0000-0000-000000000001';
 const user={id,aud:'authenticated',role:'authenticated',email:'artist@example.test',email_confirmed_at:'2026-10-20T00:00:00Z',created_at:'2026-10-20T00:00:00Z',app_metadata:{provider:'email'},user_metadata:{full_name:'Test artist'}};
 const access=[{alg:'HS256',typ:'JWT'},{sub:id,role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600},'test-signature'].map(value=>Buffer.from(typeof value==='string'?value:JSON.stringify(value)).toString('base64url')).join('.');
 const session={access_token:access,refresh_token:'test-refresh-not-a-real-credential',token_type:'bearer',expires_in:3600,user};
+test('overview shows approved tier separately from active software access',async({page})=>{
+ await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.route('**/rest/v1/studio_artist_applications*',route=>route.fulfill({json:{status:'approved',approved_tier:'gold',requested_tier:'gold'}}));
+ await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText('Gold');await expect(page.locator('[data-overview-access]')).toHaveText('No verified paid or included access');await expect(page.locator('[data-studio-overview]')).not.toContainText('Plans and partnerships');await expect(page.locator('[data-studio-overview]')).not.toContainText('/month');expect(await page.locator('body').evaluate(el=>el.scrollWidth<=innerWidth)).toBe(true);
+});
+test('connectors color verified catalogue services without activating reporting and themes sync privately',async({page})=>{
+ await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.route('**/functions/v1/artist-discovery',route=>route.fulfill({json:{artists:[],unavailable:[]}}));let saved;
+ await page.route('**/rest/v1/studio_user_preferences*',route=>{if(route.request().method()==='GET')return route.fulfill({json:null});saved=route.request().postDataJSON();return route.fulfill({status:201,json:null});});
+ await page.goto('/settings/#connections');await expect(page.locator('[data-service=account]')).toHaveAttribute('data-connected','true');await page.getByRole('button',{name:'Check catalogue services',exact:true}).click();
+ for(const service of ['spotify','apple']){const row=page.locator(`[data-service=${service}]`);await expect(row).toHaveAttribute('data-connected','true');const color=await row.locator('[data-service-status]').evaluate(el=>getComputedStyle(el).color);await expect(row.locator('.studio-connection-icon')).toHaveCSS('background-color',color);}
+ for(const service of ['musickit','reports','payments','signatures'])await expect(page.locator(`[data-service=${service}]`)).toHaveAttribute('data-connected','false');
+ await page.goto('/settings/#appearance');await page.getByRole('button',{name:'Gold',exact:true}).click();await expect(page.locator('html')).toHaveAttribute('data-partnership-theme','gold');await expect.poll(()=>saved?.appearance?.partnershipTheme).toBe('gold');
+});
 test('internal signing preview requires initials and remains a non-binding local record',async({page})=>{
  await mockBackend(page);await page.goto('/agreements/');
  await page.getByRole('button',{name:'Preview internal signing',exact:true}).click();
@@ -84,7 +98,7 @@ test('subscription billing is separate from payouts and only verified access dis
  await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.goto('/settings/#subscription');await expect(page.getByRole('tabpanel',{name:'Subscription & billing',exact:true})).toBeVisible();
  await expect(page.locator('[data-subscription-status]')).toHaveText('No active paid subscription or verified included access');
- for(const price of ['€9.99/month','€99/year','€19.99/month','€199/year'])await expect(page.locator('#settings-subscription')).toContainText(price);
+ await expect(page.locator('#settings-subscription')).not.toContainText('€9.99');await expect(page.locator('#settings-subscription [data-billing-period]')).toHaveCount(0);
  await expect(page.locator('.studio-pro-badge')).toHaveCount(0);await expect(page.locator('#settings-subscription input:not([type=checkbox])')).toHaveCount(0);
  await page.route('**/rpc/studio_subscription_status',route=>route.fulfill({json:{plan:'studio-pro',status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z'}}));
  await page.reload();await expect(page.locator('.studio-pro-badge')).toHaveText('Pro');
@@ -148,7 +162,7 @@ test('page editor uses only the signed-in artist handle and isolated preview con
  await page.goto('/editor/');
  await expect(page.locator('[data-editor-frame]')).toHaveAttribute('src','http://127.0.0.1:8912/testartist95/?editor-preview=1');
  await expect(page.locator('[data-editor-font-select]')).toBeDisabled();
- await expect(page.getByText('Design preview only until you publish.',{exact:false})).toBeVisible();
+ await expect(page.locator('[data-editor-status]')).toContainText('Opening your public page preview.');
 });
 test('artist website navigation saves privately before explicit sharing',async({page})=>{
  await mockBackend(page);let saved;

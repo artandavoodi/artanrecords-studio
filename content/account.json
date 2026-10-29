@@ -201,7 +201,8 @@
     "plus": "core/actions/create/add.svg",
     "concert": "core/productivity/calendar/calendar.svg",
     "introductions": "core/identity/profile/team.svg",
-    "connections": "core/actions/link/link.svg",
+    "connections": "layers/website/home/platform-menu/settings/platform-menue-settings-connectors.svg",
+    "refresh": "core/actions/refresh/refresh.svg",
     "upload": "core/actions/transfer/upload.svg"
   }
 }

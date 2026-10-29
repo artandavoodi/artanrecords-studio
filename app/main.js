@@ -28,6 +28,8 @@ import {bindPortfolio} from './portfolio.js';
 import {bindSubscriptionPayments} from './subscription-payments.js';
 import {bindAccountSecurity} from './account-security.js';
 import {bindSigningPreview} from './signing-preview.js';
+import {bindConnections} from './connections.js';
+import {bindOverview,bindPartnershipThemes} from './overview.js';
 await bindPreferences();
 await bindVisualLayers();
 bindSearch();
@@ -51,6 +53,9 @@ client?.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){try{for(const ke
 try{
 await bindAccount(context);await bindProfile(context);
 await bindAccountAppearance(context);
+bindPartnershipThemes();
+await bindConnections(context);
+await bindOverview(context);
 if(client)try{chrome.setUser(await resolveUser(client));}catch{console.error('[studio] Account verification unavailable');}
 if(location.pathname==='/account/')requestAnimationFrame(()=>{
   if(document.body.classList.contains('cookie-consent-open'))document.addEventListener('cookie-consent:closed',()=>chrome.openAccount(accountCallback),{once:true});

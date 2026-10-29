@@ -18,5 +18,4 @@ export function bindPlatform({client}){
   document.querySelector('[data-home-platform-theme-palette-select]')?.addEventListener('change',event=>window.NeuroartanTheme.setThemePalette(event.target.value));
   const syncAppearance=()=>{const state=window.NeuroartanTheme?.getCurrentThemeState();const surface=document.querySelector('.home-platform-theme');if(!state||!surface)return;surface.dataset.activeTheme=state.theme;surface.querySelectorAll('[data-home-platform-theme-palette-select]').forEach(field=>field.disabled=state.theme!=='custom');surface.querySelectorAll('[data-theme-token]').forEach(field=>field.disabled=false);surface.querySelectorAll('[data-toggle-scope=homepage-theme]').forEach(button=>{button.disabled=!['custom','company'].includes(state.theme);});};
   document.addEventListener('neuroartan:theme-changed',syncAppearance);syncAppearance();
-  const account=document.querySelector('[data-connection=account]');if(account)account.textContent=client?'Configured; sign in to verify access':'Not connected';
 }
