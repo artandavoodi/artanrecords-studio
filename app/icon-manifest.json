@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "cb8a01c6179ceff57a5c2246ff03a5534d9c5c9b",
+  "revision": "39029e4499efc85822a4c93262c152746dd00066",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
     "address": "a886e26597d7b4b1dc39e37ad800a27da5031b3cd5523fbada77403360d722e6",
@@ -57,9 +57,9 @@
     "reset": "668c7abdf4726e2d1ff4572db11569ea4b5dc21718579bba1acaa9f9d9850433",
     "back": "78d015c37800e318e22b1afbafdc0f0d5a561e90646ad55d9475898f08cb43d6",
     "editor-focus": "a4192dc106f53f25ac5987d2d6f6e6d6099a87379557c044a4ffd33e1501c727",
-    "editor-desktop": "a4192dc106f53f25ac5987d2d6f6e6d6099a87379557c044a4ffd33e1501c727",
-    "editor-tablet": "a4192dc106f53f25ac5987d2d6f6e6d6099a87379557c044a4ffd33e1501c727",
-    "editor-mobile": "a4192dc106f53f25ac5987d2d6f6e6d6099a87379557c044a4ffd33e1501c727",
+    "editor-desktop": "76215fe9cc07e031b93329770bae3d26da6563593c2ec24ea0c05bfc851d6627",
+    "editor-tablet": "b0b3f9d1378492fd3ee8a882587f22749decf7b0e16bd622b887f5d1a45f50e4",
+    "editor-mobile": "a04bb4f3824eafbfc4bc532febc8f579979e321406133960ac29d9b1ba43296c",
     "editor-save": "a012b9e309780a987176d65c826a2985b5f4dcf9c8c8e2e09fa41f14acf97dc2",
     "editor-publish": "a4192dc106f53f25ac5987d2d6f6e6d6099a87379557c044a4ffd33e1501c727",
     "editor-menu": "b6556fc4501686d5d7f537a97e47e6ef4caf79737f76608a019e4cc500f43ab5",
