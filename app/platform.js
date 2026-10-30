@@ -1,4 +1,6 @@
 import config from '../content/account.json';
+import appearance from '../content/appearance.json';
+import {resolveAppearanceTokens} from './overview.js';
 import {bindMagneticNavigation} from './neuroartan/assets/js/core/02-systems/magnetic-navigation.js';
 export function bindPlatform({client}){
   const layout=document.querySelector('[data-platform-layout]'),toggle=document.querySelector('[data-platform-rail-toggle]');
@@ -15,7 +17,12 @@ export function bindPlatform({client}){
   tabs.forEach((tab,index)=>{tab.addEventListener('click',()=>{history.replaceState(null,'','#'+tab.dataset.settingsTab);select();});tab.addEventListener('keydown',event=>{const direction={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[event.key];let target;if(direction)target=tabs[(index+direction+tabs.length)%tabs.length];else if(event.key==='Home')target=tabs[0];else if(event.key==='End')target=tabs.at(-1);if(target){event.preventDefault();target.click();target.focus();}});});
   addEventListener('hashchange',select);select();
   document.querySelectorAll('[data-home-platform-theme-section-toggle]').forEach(button=>button.addEventListener('click',()=>{const expanded=button.getAttribute('aria-expanded')!=='true';button.setAttribute('aria-expanded',String(expanded));const section=button.closest('[data-home-platform-theme-section]');if(expanded)section.removeAttribute('data-home-platform-theme-section-collapsed');else section.setAttribute('data-home-platform-theme-section-collapsed','true');}));
-  document.querySelector('[data-home-platform-theme-palette-select]')?.addEventListener('change',event=>window.NeuroartanTheme.setThemePalette(event.target.value));
-  const syncAppearance=()=>{const state=window.NeuroartanTheme?.getCurrentThemeState();const surface=document.querySelector('.home-platform-theme');if(!state||!surface)return;surface.dataset.activeTheme=state.theme;surface.querySelectorAll('[data-home-platform-theme-palette-select]').forEach(field=>field.disabled=state.theme!=='custom');surface.querySelectorAll('[data-theme-token]').forEach(field=>field.disabled=false);surface.querySelectorAll('[data-toggle-scope=homepage-theme]').forEach(button=>{button.disabled=!['custom','company'].includes(state.theme);});};
+  document.querySelector('[data-home-platform-theme-palette-select]')?.addEventListener('change',event=>{
+   const preset=appearance.presets.find(item=>item.id===appearance.palettes[event.target.value]);if(!preset)return;
+   delete document.documentElement.dataset.partnershipTheme;
+   const tokens=resolveAppearanceTokens(preset.tokens,key=>getComputedStyle(document.documentElement).getPropertyValue(key).trim());
+   window.NeuroartanTheme.applyThemeState({theme:'custom',effective:preset.effective,palette:event.target.value,tokens});
+  });
+  const syncAppearance=()=>{const state=window.NeuroartanTheme?.getCurrentThemeState();const surface=document.querySelector('.home-platform-theme');if(!state||!surface)return;surface.dataset.activeTheme=state.theme;surface.querySelectorAll('[data-home-platform-theme-palette-select]').forEach(field=>{field.disabled=state.theme!=='custom';field.value=state.palette;const label=surface.querySelector('[data-home-platform-dropdown-value=palette]');if(label)label.textContent=field.selectedOptions[0]?.textContent||'';});surface.querySelectorAll('[data-theme-token]').forEach(field=>field.disabled=false);surface.querySelectorAll('[data-toggle-scope=homepage-theme]').forEach(button=>{button.disabled=!['custom','company'].includes(state.theme);});};
   document.addEventListener('neuroartan:theme-changed',syncAppearance);syncAppearance();
 }

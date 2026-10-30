@@ -15,9 +15,27 @@ test('connectors color verified catalogue services without activating reporting 
  await page.route('**/functions/v1/artist-discovery',route=>route.fulfill({json:{artists:[],unavailable:[]}}));let saved;
  await page.route('**/rest/v1/studio_user_preferences*',route=>{if(route.request().method()==='GET')return route.fulfill({json:null});saved=route.request().postDataJSON();return route.fulfill({status:201,json:null});});
  await page.goto('/settings/#connections');await expect(page.locator('[data-service=account]')).toHaveAttribute('data-connected','true');await page.getByRole('button',{name:'Check catalogue services',exact:true}).click();
- for(const service of ['spotify','apple']){const row=page.locator(`[data-service=${service}]`);await expect(row).toHaveAttribute('data-connected','true');const color=await row.locator('[data-service-status]').evaluate(el=>getComputedStyle(el).color);await expect(row.locator('.studio-connection-icon')).toHaveCSS('background-color',color);}
+ for(const service of ['spotify','apple']){const row=page.locator(`[data-service=${service}]`);await expect(row).toHaveAttribute('data-connected','true');const color=await row.locator('[data-service-status]').evaluate(el=>getComputedStyle(el).color);await expect(row.locator('.studio-connection-icon')).toHaveCSS('background-color',color);expect(await row.locator('[data-service-status]').evaluate(el=>getComputedStyle(el,'::before').backgroundColor)).not.toBe(color);}
  for(const service of ['musickit','reports','payments','signatures'])await expect(page.locator(`[data-service=${service}]`)).toHaveAttribute('data-connected','false');
  await page.goto('/settings/#appearance');await page.getByRole('button',{name:'Gold',exact:true}).click();await expect(page.locator('html')).toHaveAttribute('data-partnership-theme','gold');await expect.poll(()=>saved?.appearance?.partnershipTheme).toBe('gold');
+});
+test('appearance circles remain visible and complete themes survive account restoration',async({page})=>{
+ await mockBackend(page);let saved;
+ await page.route('**/rest/v1/studio_user_preferences*',route=>{if(route.request().method()==='GET')return route.fulfill({json:saved?{appearance:saved.appearance}:null});saved=route.request().postDataJSON();return route.fulfill({status:201,json:null});});
+ const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.goto('/settings/#appearance');await expect(page.getByRole('heading',{name:'Theme',exact:true})).toBeVisible();
+ await expect(page.locator('[data-settings-panel=appearance]')).not.toContainText('Partnership-inspired');
+ for(const [label,effective] of [['Silver','light'],['Gold','dark'],['Platinum','dark']]){
+  await page.getByRole('button',{name:label,exact:true}).click();await expect(page.getByRole('button',{name:label,exact:true})).toHaveAttribute('aria-pressed','true');await expect(page.locator('html')).toHaveAttribute('data-theme-effective',effective);
+  await expect.poll(()=>saved?.appearance?.partnershipTheme).toBe(label.toLowerCase());expect(Object.values(saved.appearance.theme.tokens).every(value=>/^#[0-9a-f]{6}$/i.test(value))).toBe(true);
+  if(label==='Gold')expect(saved.appearance.theme.tokens.accent).toBe('#917c6f');
+ }
+ await page.reload();await expect(page.locator('html')).toHaveAttribute('data-partnership-theme','platinum');await expect(page.locator('html')).toHaveAttribute('data-theme-effective','dark');
+ await page.getByRole('button',{name:'Custom colors',exact:true}).click();
+ const field=page.getByLabel('Custom background color',{exact:true});await expect(field).toBeVisible();
+ const size=await field.evaluate(el=>{const s=getComputedStyle(el);return {width:el.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight),height:el.clientHeight-parseFloat(s.paddingTop)-parseFloat(s.paddingBottom),radius:s.borderRadius};});expect(size.width).toBeGreaterThan(10);expect(size.height).toBeGreaterThan(10);expect(size.radius).toBe('50%');
+ await field.fill('#234567');await expect(page.locator('body')).toHaveCSS('background-color','rgb(35, 69, 103)');await expect.poll(()=>saved?.appearance?.theme?.tokens.background).toBe('#234567');
+ await page.locator('[data-home-platform-theme-palette-select]').selectOption('mono');await expect(page.locator('body')).not.toHaveCSS('background-color','rgb(35, 69, 103)');
 });
 test('internal signing preview requires initials and remains a non-binding local record',async({page})=>{
  await mockBackend(page);await page.goto('/agreements/');

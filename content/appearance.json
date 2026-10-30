@@ -1,0 +1,9 @@
+{
+  "title": "Theme",
+  "palettes": {"mono":"silver","sovereign":"gold","neuroartan":"platinum"},
+  "presets": [
+    {"id":"silver","label":"Silver","effective":"light","tokens":{"accent":["--color-primary3"],"accentHover":["--color-black","--color-primary3",45],"background":["--color-white","--color-primary3",8],"text":["--color-black"],"surface":["--color-white"],"border":["--color-white","--color-primary3",45]}},
+    {"id":"gold","label":"Gold","effective":"dark","tokens":{"accent":["--studio-brand-primary1"],"accentHover":["--studio-brand-primary1","--color-white",20],"background":["--color-black","--studio-brand-primary1",8],"text":["--color-white"],"surface":["--color-black","--studio-brand-primary1",16],"border":["--color-black","--studio-brand-primary1",50]}},
+    {"id":"platinum","label":"Platinum","effective":"dark","tokens":{"accent":["--color-white","--color-primary3",24],"accentHover":["--color-white"],"background":["--color-black","--color-primary5",8],"text":["--color-white"],"surface":["--color-black","--color-primary3",15],"border":["--color-black","--color-primary3",45]}}
+  ]
+}

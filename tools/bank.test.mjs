@@ -6,9 +6,16 @@ import {renderSettings} from '../app/platform-render.mjs';
 import {profileMarkup} from '../app/profile-render.mjs';
 import {payoutApplicationValues,bankAmount} from '../app/bank.js';
 import {hasProAccess} from '../app/subscriptions.js';
-import {partnershipSummary} from '../app/overview.js';
+import {partnershipSummary,resolveAppearanceTokens} from '../app/overview.js';
 import {catalogueConnections} from '../app/connections.js';
-import {overviewMarkup} from '../app/overview-render.mjs';
+import {overviewMarkup,partnershipThemesMarkup} from '../app/overview-render.mjs';
+test('appearance presets define complete palettes without partnership messaging',async()=>{
+ const config=JSON.parse(await readFile('content/appearance.json','utf8'));
+ const colors={'--color-black':'#000000','--color-white':'#ffffff','--color-primary3':'#999999','--color-primary5':'#008080','--studio-brand-primary1':'#917c6f'};
+ for(const preset of config.presets){const tokens=resolveAppearanceTokens(preset.tokens,key=>colors[key]);assert.equal(Object.keys(tokens).length,6);Object.values(tokens).forEach(color=>assert.match(color,/^#[0-9a-f]{6}$/));}
+ assert.equal(resolveAppearanceTokens(config.presets[1].tokens,key=>colors[key]).accent,colors['--studio-brand-primary1']);
+ const html=partnershipThemesMarkup(String);assert.match(html,/<h2 class="home-platform-theme__section-title">Theme<\/h2>/);assert.doesNotMatch(html,/Partnership-inspired|not your partnership/);
+});
 test('overview separates requested and approved partnerships from paid access',()=>{
  assert.equal(partnershipSummary({status:'pending',requested_tier:'platinum',approved_tier:'platinum'}).tier,null);
  assert.equal(partnershipSummary({status:'approved',approved_tier:'gold'}).tier,'gold');

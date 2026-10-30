@@ -4,7 +4,7 @@ const tokens=['accent','accentHover','background','text','surface','border'];
 export function appearanceValues(value){
  const theme=value?.theme;if(!theme||!['company','system','custom','dark','light'].includes(theme.theme))return null;
  const colors={};for(const key of tokens){const color=theme.tokens?.[key];if(color!==undefined&&color!==''&&!/^#[0-9a-f]{6}$/i.test(color))return null;colors[key]=color||'';}
- return {theme:{theme:theme.theme,contrast:['low','standard','high'].includes(theme.contrast)?theme.contrast:'standard',palette:['neuroartan','mono','sovereign'].includes(theme.palette)?theme.palette:'neuroartan',tokens:colors},toggles:Object.fromEntries(effects.filter(key=>typeof value.toggles?.[key]==='boolean').map(key=>[key,value.toggles[key]])),...(['silver','gold','platinum'].includes(value.partnershipTheme)?{partnershipTheme:value.partnershipTheme}:{})};
+ return {theme:{theme:theme.theme,...(['light','dark'].includes(theme.effective)?{effective:theme.effective}:{}),contrast:['low','standard','high'].includes(theme.contrast)?theme.contrast:'standard',palette:['neuroartan','mono','sovereign'].includes(theme.palette)?theme.palette:'neuroartan',tokens:colors},toggles:Object.fromEntries(effects.filter(key=>typeof value.toggles?.[key]==='boolean').map(key=>[key,value.toggles[key]])),...(['silver','gold','platinum'].includes(value.partnershipTheme)?{partnershipTheme:value.partnershipTheme}:{})};
 }
 export async function bindAccountAppearance({client,resolveUser}){
  if(!client)return;const owner=await resolveUser(client).catch(()=>null);if(!owner)return;

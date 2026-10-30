@@ -311,9 +311,9 @@
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:var(--home-platform-shell-nav-icon-size);
-  height:var(--home-platform-shell-nav-icon-size);
-  flex:0 0 var(--home-platform-shell-nav-icon-size);
+  width:var(--home-platform-shell-nav-icon-size,var(--ui-dropdown-icon-size));
+  height:var(--home-platform-shell-nav-icon-size,var(--ui-dropdown-icon-size));
+  flex:0 0 var(--home-platform-shell-nav-icon-size,var(--ui-dropdown-icon-size));
 }
 
 .home-platform-theme__dropdown-icon{
@@ -445,7 +445,7 @@
   border:var(--spacing-none);
 }
 
-.home-platform-theme__token-input{
+.home-platform-theme__token-input:not([type="color"]){
   border:var(--border-width-hairline) solid var(--account-sign-in-input-border);
   border-radius:var(--account-sign-in-field-radius);
   background:transparent;
