@@ -17,7 +17,9 @@ export async function bindPersonalMusic({client,resolveUser}){
  const buttons=[...root.querySelectorAll('[data-connect-music]')];let configuration,owner;
  buttons.forEach(button=>button.disabled=true);
  const update=(id,connected,label)=>{const row=root.querySelector(`[data-service="${id}"]`);row.dataset.connected=String(connected);row.querySelector('[data-service-status]').textContent=label;};
- const explain=(provider,text)=>root.querySelector(`[data-music-message="${provider}"]`).textContent=text;
+ const explain=(provider,text)=>{const message=root.querySelector(`[data-music-message="${provider}"]`);message.replaceChildren();if(provider==='spotify'&&root.querySelector('[data-service="spotify-account"]').dataset.connected==='true'){
+  const icon=document.createElement('img');icon.src='/app/icons/spotify.svg';icon.alt='Spotify';icon.className='studio-icon';message.append(icon);
+ }message.append(document.createTextNode(text));};
  try{
   owner=client&&await resolveUser(client);if(!owner){
    buttons.forEach(button=>{button.disabled=false;button.textContent='Sign in to connect';button.onclick=()=>location.assign('/account/');});

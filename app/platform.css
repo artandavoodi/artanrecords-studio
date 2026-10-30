@@ -2,6 +2,7 @@
 .studio-connection-list > div { padding-block:var(--spacing-lg); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
 .studio-connection-list dt { display:flex; align-items:center; gap:var(--spacing-sm); }
 .studio-connection-list dd { margin-inline-start:0; margin-block-start:var(--spacing-sm); }
+.studio-connection-list [data-music-message] { display:flex; align-items:center; gap:var(--spacing-sm); }
 .studio-connection-list [data-service-status] { display:inline-flex; align-items:center; gap:var(--spacing-sm); color:var(--cv-text-primary); }
 .studio-connection-list [data-service-status]::before { content:''; inline-size:var(--spacing-sm); block-size:var(--spacing-sm); flex:none; border-radius:50%; background:var(--status-error-color); }
 .studio-connection-list [data-connected=true] [data-service-status]::before { background:var(--status-success-color); }

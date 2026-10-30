@@ -10,7 +10,8 @@ export async function bindAccountAppearance({client,resolveUser}){
  if(!client)return;const owner=await resolveUser(client).catch(()=>null);if(!owner)return;
  let applying=false,changed=false,timer;
  const read=()=>{let saved={};try{saved=JSON.parse(window.__NEURO_MAIN_RUNTIME__?.preferenceStorage?.getItem('neuroartan.toggle.state')||'{}');}catch{}return appearanceValues({partnershipTheme:document.documentElement.dataset.partnershipTheme,theme:window.NeuroartanTheme.getCurrentThemeState(),toggles:Object.fromEntries(effects.map(key=>[key,document.querySelector('[data-toggle-scope=homepage-theme][data-toggle-key="'+key+'"]')?.getAttribute('aria-checked')==='true'||saved['homepage-theme:'+key]===true]))});};
- const save=()=>{if(applying)return;changed=true;clearTimeout(timer);timer=setTimeout(async()=>{
+ let previous=JSON.stringify(read());
+ const save=()=>{if(applying)return;const current=JSON.stringify(read());if(current===previous)return;previous=current;changed=true;clearTimeout(timer);timer=setTimeout(async()=>{
   const value=read();if(!value||(await resolveUser(client).catch(()=>null))?.id!==owner.id)return;
   const result=await client.from('studio_user_preferences').upsert({account_id:owner.id,appearance:value},{onConflict:'account_id'});
   showSaveConfirmation(result.error?'Appearance changed on this device. Account sync could not finish; try again.':'Appearance saved to your account.');
@@ -26,5 +27,5 @@ export async function bindAccountAppearance({client,resolveUser}){
   storage?.setItem('neuroartan.toggle.state',JSON.stringify(states));
   window.NeuroartanToggle.syncHomepageThemeToggleAttributesFromStorage();
   document.querySelectorAll('[data-toggle-scope=homepage-theme]').forEach(toggle=>window.NeuroartanToggle.syncToggleState(toggle,value.toggles[toggle.dataset.toggleKey]??true,{persist:false,emit:true}));
- }finally{applying=false;}
+ }finally{previous=JSON.stringify(read());applying=false;}
 }

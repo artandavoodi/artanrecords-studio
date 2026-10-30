@@ -31,6 +31,7 @@ test('appearance circles remain visible and complete themes survive account rest
   if(label==='Gold')expect(saved.appearance.theme.tokens.accent).toBe('#917c6f');
  }
  await page.reload();await expect(page.locator('html')).toHaveAttribute('data-partnership-theme','platinum');await expect(page.locator('html')).toHaveAttribute('data-theme-effective','dark');
+ const restored=JSON.stringify(saved);await page.evaluate(()=>document.dispatchEvent(new CustomEvent('neuroartan:theme-changed')));await page.waitForTimeout(800);expect(JSON.stringify(saved)).toBe(restored);await expect(page.locator('.system-save-confirmation[data-visible=true]')).toHaveCount(0);
  await page.getByRole('button',{name:'Custom colors',exact:true}).click();
  const field=page.getByLabel('Custom background color',{exact:true});await expect(field).toBeVisible();
  const size=await field.evaluate(el=>{const s=getComputedStyle(el);return {width:el.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight),height:el.clientHeight-parseFloat(s.paddingTop)-parseFloat(s.paddingBottom),radius:s.borderRadius};});expect(size.width).toBeGreaterThan(10);expect(size.height).toBeGreaterThan(10);expect(size.radius).toBe('50%');
@@ -47,7 +48,7 @@ test('Spotify PKCE sign-in is isolated from Studio login and verifies the listen
  await page.route('https://accounts.spotify.com/api/token',route=>route.fulfill({json:{access_token:'fixture-not-a-real-token',expires_in:3600}}));
  await page.route('https://api.spotify.com/v1/me',route=>route.fulfill({json:{id:'fixture-account',display_name:'Test listener'}}));
  await page.goto(authorization.searchParams.get('redirect_uri')+'&code=fixture-code&state='+state);
- await expect(page.locator('[data-service=spotify-account]')).toHaveAttribute('data-connected','true');await expect(page.locator('[data-music-message=spotify]')).toHaveText('Test listener');expect(new URL(page.url()).search).toBe('');
+ await expect(page.locator('[data-service=spotify-account]')).toHaveAttribute('data-connected','true');await expect(page.locator('[data-music-message=spotify]')).toHaveText('Test listener');await expect(page.locator('[data-music-message=spotify] img')).toHaveAttribute('src','/app/icons/spotify.svg');expect(new URL(page.url()).search).toBe('');
  await page.getByRole('button',{name:'Disconnect',exact:true}).click();await expect(page.locator('[data-service=spotify-account]')).toHaveAttribute('data-connected','false');await expect(page.locator('[data-connect-music=apple]')).toHaveCount(0);
 });
 test('internal signing preview requires initials and remains a non-binding local record',async({page})=>{
