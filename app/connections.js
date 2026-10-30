@@ -1,3 +1,4 @@
+import {bindPersonalMusic} from './music-connections.js';
 export function catalogueConnections(result){
  if(!Array.isArray(result?.artists)||!Array.isArray(result?.unavailable))throw Error('Catalogue response could not be verified.');
  return Object.fromEntries(['apple','spotify'].map(id=>[id,!result.unavailable.includes(id)]));
@@ -16,6 +17,9 @@ export async function bindConnections({client,config,resolveUser}){
   }catch{for(const id of ['apple','spotify'])set(id,false,'Could not verify');status.textContent='Catalogue services could not be verified. Try again later.';}
   finally{button.disabled=false;}
  };
- const verifyVisible=()=>{if(!root.hidden&&!checked)button.onclick();};
- document.querySelector('[data-settings-tab=connections]')?.addEventListener('click',verifyVisible);addEventListener('hashchange',verifyVisible);verifyVisible();
+ let personalBound=false;
+ const verifyVisible=()=>{if(root.hidden)return;if(!checked)button.onclick();if(!personalBound){personalBound=true;bindPersonalMusic({client,resolveUser}).catch(()=>{status.textContent='Account connections could not be loaded.';});}};
+ const tab=document.querySelector('[data-settings-tab=connections]');tab?.addEventListener('click',verifyVisible);addEventListener('hashchange',verifyVisible);
+ if(new URL(location.href).searchParams.get('music-provider')==='spotify')tab?.click();
+ verifyVisible();
 }

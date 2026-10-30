@@ -24,6 +24,7 @@ export async function requestGoogleSignIn(client,config,redirectTo){
 }
 export function readAccountCallback(url){
   const query=new URLSearchParams(url.search),hash=new URLSearchParams(url.hash.slice(1));
+  if(url.pathname==='/settings/'&&query.get('music-provider')==='spotify')return {code:null,token:null,type:null,recovery:false,error:false};
   return {code:query.get('code'),token:query.get('token_hash')||hash.get('token_hash'),type:query.get('type')||hash.get('type'),recovery:query.get('flow')==='recovery'||query.get('type')==='recovery'||hash.get('type')==='recovery',error:query.has('error')||hash.has('error')};
 }
 export function profileValues(form){

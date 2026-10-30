@@ -5,8 +5,9 @@
  "services":[
   {"id":"account","label":"Account services","icon":"account","detail":"Verified shared Store and Studio sign-in."},
   {"id":"spotify","label":"Spotify catalogue","icon":"spotify","detail":"Server-side artist search. This does not connect a personal Spotify account."},
+  {"id":"spotify-account","label":"Spotify account","icon":"spotify","connect":"spotify","detail":"Authorize your listening account in Spotify. This connection lasts for this tab; it does not verify your artist identity or provide royalties."},
   {"id":"apple","label":"Apple Music catalogue lookup","icon":"apple_music","detail":"Public artist lookup through Apple's catalogue search; MusicKit authorization is separate."},
-  {"id":"musickit","label":"Apple Music API / MusicKit","icon":"connections","detail":"Requires an Apple Developer MusicKit key and verified server-side token before activation."},
+  {"id":"musickit","label":"Apple Music account","icon":"apple_music","detail":"Not enabled. Public artist search above remains available without a paid developer membership."},
   {"id":"reports","label":"Streaming reports","icon":"analytics","detail":"Requires verified distributor reporting access; catalogue APIs do not provide royalty statements."},
   {"id":"royalties","label":"Royalty statements","icon":"finance","detail":"Requires verified statements and an approved earnings ledger."},
   {"id":"payments","label":"Live payments and payouts","icon":"bank","detail":"Stripe verification, live configuration and payout policy are required. Sandbox card setup is separate."},

@@ -2,7 +2,7 @@ import appearance from '../content/appearance.json' with {type:'json'};
 import {hasProAccess} from './subscriptions.js';
 export function partnershipSummary(application){
  const tier=application?.status==='approved'&&['silver','gold','platinum'].includes(application.approved_tier)?application.approved_tier:null;
- return {tier,label:tier?tier[0].toUpperCase()+tier.slice(1):application?.status==='pending'?'Under review':application?.status==='rejected'?'Not approved':'No approved partnership',detail:tier?'Tier approved. Active agreement and included access must be verified separately.':application?.status==='pending'?'Your requested tier is a preference, not an approval.':'Introduce your music to discuss a partnership.'};
+ return {tier,label:tier?tier[0].toUpperCase()+tier.slice(1):application?.status==='pending'?'Under review':application?.status==='rejected'?'Not approved':'No approved partnership',detail:tier?'Partnership approved.':application?.status==='pending'?'Awaiting review.':'Introduce your music to discuss a partnership.'};
 }
 export async function bindOverview({client,resolveUser}){
  const root=document.querySelector('[data-studio-overview]');if(!root||!client)return;
@@ -11,9 +11,8 @@ export async function bindOverview({client,resolveUser}){
   if((await resolveUser(client))?.id!==user.id)return;
   if(application.error)throw Error('Your partnership could not be verified.');const summary=partnershipSummary(application.data);
   root.querySelector('[data-overview-tier]').textContent=summary.label;root.querySelector('[data-overview-partnership]').textContent=summary.detail;if(summary.tier)root.querySelector('.studio-overview-membership').dataset.partnershipTier=summary.tier;
-  root.querySelector('[data-overview-access]').textContent=access.error?'Could not verify':hasProAccess(access.data)?'Studio Pro · active':'No verified paid or included access';
-  root.querySelector('[data-overview-entitlement]').textContent=hasProAccess(access.data)?'Current server-verified access. Partnership inclusion follows the qualifying agreement.':'Your existing profile and draft tools remain available. A tier request does not activate a subscription.';
-  if(summary.tier){const included=JSON.parse(root.querySelector('[data-included-plans]').dataset.includedPlans)[summary.tier];root.querySelector('[data-overview-partnership]').textContent=summary.detail+' Your '+summary.label+' partnership includes '+included+' while its qualifying agreement is active.';}
+  root.querySelector('[data-overview-access]').textContent=access.error?'Access unavailable':hasProAccess(access.data)?'Studio Pro active':'Studio Pro not active';
+  root.querySelector('[data-overview-entitlement]').textContent=hasProAccess(access.data)?'Included access is verified.':'Profile and draft tools are available.';
  }catch(error){root.querySelector('[data-overview-status]').textContent=error.message||'Account overview could not be loaded.';}
 }
 export function bindPartnershipThemes(){

@@ -9,6 +9,17 @@ import {hasProAccess} from '../app/subscriptions.js';
 import {partnershipSummary,resolveAppearanceTokens} from '../app/overview.js';
 import {catalogueConnections} from '../app/connections.js';
 import {overviewMarkup,partnershipThemesMarkup} from '../app/overview-render.mjs';
+import {spotifyAuthorization,validMusicCallback} from '../app/music-connections.js';
+import {readAccountCallback} from '../app/account.js';
+test('Spotify authorization binds PKCE to a short-lived account-specific callback',async()=>{
+ const flow=await spotifyAuthorization({clientId:'a'.repeat(32),redirectUri:'https://studio.artanrecords.com/settings/?music-provider=spotify',accountId:'owner'});
+ const url=new URL(flow.url);assert.equal(url.hostname,'accounts.spotify.com');assert.equal(url.searchParams.get('code_challenge_method'),'S256');assert.equal(url.searchParams.get('scope'),'user-read-private');
+ assert.equal(validMusicCallback(flow.pending,flow.pending.state,'owner','https://studio.artanrecords.com'),true);
+ assert.equal(validMusicCallback(flow.pending,flow.pending.state,'another','https://studio.artanrecords.com'),false);
+ assert.equal(validMusicCallback(flow.pending,flow.pending.state,'owner','https://studio.artanrecords.com',Date.now()+700000),false);
+ assert.equal(readAccountCallback(new URL('https://studio.artanrecords.com/settings/?music-provider=spotify&code=spotify-code')).code,null);
+ await assert.rejects(spotifyAuthorization({clientId:'a'.repeat(32),redirectUri:'https://evil.test/',accountId:'owner'}));
+});
 test('appearance presets define complete palettes without partnership messaging',async()=>{
  const config=JSON.parse(await readFile('content/appearance.json','utf8'));
  const colors={'--color-black':'#000000','--color-white':'#ffffff','--color-primary3':'#999999','--color-primary5':'#008080','--studio-brand-primary1':'#917c6f'};
@@ -19,7 +30,7 @@ test('appearance presets define complete palettes without partnership messaging'
 test('overview separates requested and approved partnerships from paid access',()=>{
  assert.equal(partnershipSummary({status:'pending',requested_tier:'platinum',approved_tier:'platinum'}).tier,null);
  assert.equal(partnershipSummary({status:'approved',approved_tier:'gold'}).tier,'gold');
- assert.match(partnershipSummary({status:'approved',approved_tier:'gold'}).detail,/verified separately/);
+ assert.equal(partnershipSummary({status:'approved',approved_tier:'gold'}).detail,'Partnership approved.');
  const html=overviewMarkup(value=>String(value),()=>'<span></span>');assert.match(html,/Your Studio/);assert.match(html,/data-overview-tier/);assert.doesNotMatch(html,/Plans and partnerships|Compare plan|\/month|\/year/);
  assert.deepEqual(catalogueConnections({artists:[],unavailable:['spotify']}),{apple:true,spotify:false});assert.throws(()=>catalogueConnections({}));
 });

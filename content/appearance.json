@@ -1,6 +1,6 @@
 {
   "title": "Theme",
-  "palettes": {"mono":"silver","sovereign":"gold","neuroartan":"platinum"},
+  "palettes": {"mono":"silver","sovereign":"platinum","neuroartan":"gold"},
   "presets": [
     {"id":"silver","label":"Silver","effective":"light","tokens":{"accent":["--color-primary3"],"accentHover":["--color-black","--color-primary3",45],"background":["--color-white","--color-primary3",8],"text":["--color-black"],"surface":["--color-white"],"border":["--color-white","--color-primary3",45]}},
     {"id":"gold","label":"Gold","effective":"dark","tokens":{"accent":["--studio-brand-primary1"],"accentHover":["--studio-brand-primary1","--color-white",20],"background":["--color-black","--studio-brand-primary1",8],"text":["--color-white"],"surface":["--color-black","--studio-brand-primary1",16],"border":["--color-black","--studio-brand-primary1",50]}},

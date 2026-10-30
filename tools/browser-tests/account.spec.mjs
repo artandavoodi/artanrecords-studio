@@ -8,7 +8,7 @@ const session={access_token:access,refresh_token:'test-refresh-not-a-real-creden
 test('overview shows approved tier separately from active software access',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.route('**/rest/v1/studio_artist_applications*',route=>route.fulfill({json:{status:'approved',approved_tier:'gold',requested_tier:'gold'}}));
- await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText('Gold');await expect(page.locator('[data-overview-access]')).toHaveText('No verified paid or included access');await expect(page.locator('[data-studio-overview]')).not.toContainText('Plans and partnerships');await expect(page.locator('[data-studio-overview]')).not.toContainText('/month');expect(await page.locator('body').evaluate(el=>el.scrollWidth<=innerWidth)).toBe(true);
+ await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText('Gold');await expect(page.locator('[data-overview-access]')).toHaveText('Studio Pro not active');await expect(page.locator('[data-studio-overview]')).not.toContainText('Plans and partnerships');await expect(page.locator('[data-studio-overview]')).not.toContainText('/month');expect(await page.locator('body').evaluate(el=>el.scrollWidth<=innerWidth)).toBe(true);
 });
 test('connectors color verified catalogue services without activating reporting and themes sync privately',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
@@ -34,8 +34,21 @@ test('appearance circles remain visible and complete themes survive account rest
  await page.getByRole('button',{name:'Custom colors',exact:true}).click();
  const field=page.getByLabel('Custom background color',{exact:true});await expect(field).toBeVisible();
  const size=await field.evaluate(el=>{const s=getComputedStyle(el);return {width:el.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight),height:el.clientHeight-parseFloat(s.paddingTop)-parseFloat(s.paddingBottom),radius:s.borderRadius};});expect(size.width).toBeGreaterThan(10);expect(size.height).toBeGreaterThan(10);expect(size.radius).toBe('50%');
- await field.fill('#234567');await expect(page.locator('body')).toHaveCSS('background-color','rgb(35, 69, 103)');await expect.poll(()=>saved?.appearance?.theme?.tokens.background).toBe('#234567');
+ await field.fill('#234567');await expect(page.locator('body')).toHaveCSS('background-color','rgb(35, 69, 103)');await expect.poll(()=>saved?.appearance?.theme?.tokens.background).toBe('#234567');await expect(page.locator('.system-save-confirmation')).toHaveCSS('box-shadow','none');
  await page.locator('[data-home-platform-theme-palette-select]').selectOption('mono');await expect(page.locator('body')).not.toHaveCSS('background-color','rgb(35, 69, 103)');
+});
+test('Spotify PKCE sign-in is isolated from Studio login and verifies the listening account',async({page})=>{
+ await mockBackend(page);
+ await page.route('**/functions/v1/music-connections',route=>route.fulfill({json:{spotify:{clientId:'a'.repeat(32),redirectUri:new URL('/settings/?music-provider=spotify',page.url()).href},storage:'tab-only'}}));
+ const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.route('https://accounts.spotify.com/authorize**',route=>route.fulfill({contentType:'text/html',body:'Spotify authorization fixture'}));
+ await page.goto('/settings/#connections');await page.getByRole('button',{name:'Connect Spotify',exact:true}).click();await page.waitForURL('https://accounts.spotify.com/authorize**');
+ const authorization=new URL(page.url());expect(authorization.searchParams.get('code_challenge_method')).toBe('S256');const state=authorization.searchParams.get('state');
+ await page.route('https://accounts.spotify.com/api/token',route=>route.fulfill({json:{access_token:'fixture-not-a-real-token',expires_in:3600}}));
+ await page.route('https://api.spotify.com/v1/me',route=>route.fulfill({json:{id:'fixture-account',display_name:'Test listener'}}));
+ await page.goto(authorization.searchParams.get('redirect_uri')+'&code=fixture-code&state='+state);
+ await expect(page.locator('[data-service=spotify-account]')).toHaveAttribute('data-connected','true');await expect(page.locator('[data-music-message=spotify]')).toHaveText('Test listener');expect(new URL(page.url()).search).toBe('');
+ await page.getByRole('button',{name:'Disconnect',exact:true}).click();await expect(page.locator('[data-service=spotify-account]')).toHaveAttribute('data-connected','false');await expect(page.locator('[data-connect-music=apple]')).toHaveCount(0);
 });
 test('internal signing preview requires initials and remains a non-binding local record',async({page})=>{
  await mockBackend(page);await page.goto('/agreements/');
@@ -97,6 +110,8 @@ async function mockBackend(page,{releaseCover}={}){
     }
     else if(url.pathname.includes('/storage/v1/object/list/'))body=[];
     else if(url.pathname.includes('/storage/v1/object/studio-logos/')){status=request.method()==='GET'?404:200;body=request.method()==='GET'?{message:'Not found'}:{Key:'logo'};}
+    else if(url.pathname.endsWith('/functions/v1/music-connections')){status=503;body={error:'Not configured in this fixture'};}
+    else if(url.pathname.endsWith('/functions/v1/artist-discovery'))body={artists:[],unavailable:[]};
     else throw Error('Unexpected mocked request: '+url.pathname);
     await route.fulfill({status,contentType:'application/json',body:status===204?undefined:JSON.stringify(body)});
   });
