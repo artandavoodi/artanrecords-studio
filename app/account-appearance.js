@@ -8,10 +8,15 @@ export function appearanceValues(value){
 }
 export async function bindAccountAppearance({client,resolveUser}){
  if(!client)return;const owner=await resolveUser(client).catch(()=>null);if(!owner)return;
- let applying=false,changed=false,timer;
+ let applying=false,changed=false,timer,editing=false,editingTimer;
+ const controls='.home-platform-theme button,.home-platform-theme input,.home-platform-theme select,button[data-partnership-theme],[data-theme-option],[data-theme-mode],[data-theme-token],[data-home-platform-theme-palette-select]';
+ for(const type of ['click','input','change','keydown'])document.addEventListener(type,event=>{
+  if(!event.target.closest?.(controls))return;
+  editing=true;clearTimeout(editingTimer);editingTimer=setTimeout(()=>{editing=false;},0);
+ },true);
  const read=()=>{let saved={};try{saved=JSON.parse(window.__NEURO_MAIN_RUNTIME__?.preferenceStorage?.getItem('neuroartan.toggle.state')||'{}');}catch{}return appearanceValues({partnershipTheme:document.documentElement.dataset.partnershipTheme,theme:window.NeuroartanTheme.getCurrentThemeState(),toggles:Object.fromEntries(effects.map(key=>[key,document.querySelector('[data-toggle-scope=homepage-theme][data-toggle-key="'+key+'"]')?.getAttribute('aria-checked')==='true'||saved['homepage-theme:'+key]===true]))});};
  let previous=JSON.stringify(read());
- const save=()=>{if(applying)return;const current=JSON.stringify(read());if(current===previous)return;previous=current;changed=true;clearTimeout(timer);timer=setTimeout(async()=>{
+ const save=()=>{if(applying)return;const current=JSON.stringify(read());if(current===previous)return;previous=current;if(!editing)return;changed=true;clearTimeout(timer);timer=setTimeout(async()=>{
   const value=read();if(!value||(await resolveUser(client).catch(()=>null))?.id!==owner.id)return;
   const result=await client.from('studio_user_preferences').upsert({account_id:owner.id,appearance:value},{onConflict:'account_id'});
   showSaveConfirmation(result.error?'Appearance changed on this device. Account sync could not finish; try again.':'Appearance saved to your account.');

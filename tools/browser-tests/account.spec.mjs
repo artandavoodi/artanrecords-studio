@@ -31,11 +31,12 @@ test('appearance circles remain visible and complete themes survive account rest
   if(label==='Gold')expect(saved.appearance.theme.tokens.accent).toBe('#917c6f');
  }
  await page.reload();await expect(page.locator('html')).toHaveAttribute('data-partnership-theme','platinum');await expect(page.locator('html')).toHaveAttribute('data-theme-effective','dark');
- const restored=JSON.stringify(saved);await page.evaluate(()=>document.dispatchEvent(new CustomEvent('neuroartan:theme-changed')));await page.waitForTimeout(800);expect(JSON.stringify(saved)).toBe(restored);await expect(page.locator('.system-save-confirmation[data-visible=true]')).toHaveCount(0);
+ const restored=JSON.stringify(saved);await page.mouse.dblclick(page.viewportSize().width-8,120);await page.evaluate(()=>document.dispatchEvent(new CustomEvent('neuroartan:theme-changed')));await page.waitForTimeout(800);expect(JSON.stringify(saved)).toBe(restored);await expect(page.locator('.system-save-confirmation[data-visible=true]')).toHaveCount(0);
  await page.getByRole('button',{name:'Custom colors',exact:true}).click();
  const field=page.getByLabel('Custom background color',{exact:true});await expect(field).toBeVisible();
  const size=await field.evaluate(el=>{const s=getComputedStyle(el);return {width:el.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight),height:el.clientHeight-parseFloat(s.paddingTop)-parseFloat(s.paddingBottom),radius:s.borderRadius};});expect(size.width).toBeGreaterThan(10);expect(size.height).toBeGreaterThan(10);expect(size.radius).toBe('50%');
  await field.fill('#234567');await expect(page.locator('body')).toHaveCSS('background-color','rgb(35, 69, 103)');await expect.poll(()=>saved?.appearance?.theme?.tokens.background).toBe('#234567');await expect(page.locator('.system-save-confirmation')).toHaveCSS('box-shadow','none');
+ const toast=await page.locator('.system-save-confirmation').boundingBox(),viewport=page.viewportSize();expect(Math.abs(toast.x+toast.width/2-viewport.width/2)).toBeLessThan(2);expect(Math.abs(toast.y+toast.height/2-viewport.height/2)).toBeLessThan(2);
  await page.locator('[data-home-platform-theme-palette-select]').selectOption('mono');await expect(page.locator('body')).not.toHaveCSS('background-color','rgb(35, 69, 103)');
 });
 test('Spotify PKCE sign-in is isolated from Studio login and verifies the listening account',async({page})=>{
