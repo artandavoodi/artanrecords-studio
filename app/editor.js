@@ -53,9 +53,9 @@ export async function bindArtistEditor({client,resolveUser}){
  root.querySelector('[data-editor-context-back]').onclick=()=>showContext('name');
  root.querySelector('[data-editor-panel-close]').addEventListener('click',()=>{showContext('name');setTools(false);tools.focus();});
  root.querySelector('[data-editor-profile-open]').addEventListener('click',()=>showContext('biography'));
- for(const button of root.querySelectorAll('[data-editor-open-portfolio]'))button.addEventListener('click',()=>{resetContext();profileTools.hidden=true;designTools.hidden=true;portfolioTools.find(item=>item.dataset.editorPortfolioTools===button.dataset.editorOpenPortfolio).hidden=false;setTools(true);});
+ for(const button of root.querySelectorAll('[data-editor-open-portfolio]'))button.addEventListener('click',()=>showContext(button.dataset.editorOpenPortfolio));
  document.addEventListener('keydown',event=>{if(event.key!=='Escape'||document.querySelector('dialog[open]'))return;if(!panel.hidden){setTools(false);tools.focus();}else setFocus(false);});
- const status=root.querySelector('[data-editor-status]'),frame=root.querySelector('iframe'),controls=[...root.querySelectorAll('[data-editor-focus],[data-editor-tools],[data-editor-font-select],[data-editor-size],[data-editor-section],[data-editor-reset],[data-editor-profile-open],[data-editor-presentation] input,[data-editor-presentation] select,[data-editor-presentation] button')];controls.forEach(item=>item.disabled=true);
+ const status=root.querySelector('[data-editor-status]'),frame=root.querySelector('iframe'),controls=[...root.querySelectorAll('[data-editor-focus],[data-editor-tools],[data-editor-font-select],[data-editor-size],[data-editor-section],[data-editor-reset],[data-editor-profile-open],[data-editor-presentation] input,[data-editor-presentation] select,[data-editor-presentation] button,[data-editor-gallery] input,[data-editor-gallery] select,[data-editor-gallery] button')];controls.forEach(item=>item.disabled=true);
  const canvas=root.querySelector('.studio-editor-canvas'),viewport=root.querySelector('.studio-editor-viewport');let device=editor.views[0];
  const measurePreview=()=>{const width=canvas.clientWidth,height=canvas.clientHeight;if(!width||!height)return;const scale=Math.min(1,width/device.width);viewport.style.setProperty('--preview-width',device.width+'px');viewport.style.setProperty('--preview-height',height/scale+'px');viewport.style.setProperty('--preview-scale',String(scale));viewport.style.setProperty('--preview-offset',Math.max(0,(width-device.width*scale)/2)+'px');};
  const observer=new ResizeObserver(measurePreview);observer.observe(canvas);
@@ -73,23 +73,36 @@ export async function bindArtistEditor({client,resolveUser}){
  const sendGraphics=()=>{if(ready&&graphicsPreview)frame.contentWindow.postMessage({type:'artanrecords:artist-graphics-preview',fields:graphicsPreview},url.origin);};
  document.addEventListener('studio:graphics-preview',event=>{graphicsPreview=event.detail;sendGraphics();});
  const defaultPresentation=()=>({portraitSize:config.presentation.portrait.default,portraitAlign:'left',biographyLabel:true,since:true,textSize:'small'});
- let storageReady=false;
+ const defaultGallery=()=>({view:config.gallery.defaultView,grain:config.gallery.headerGrain,grainStrength:config.gallery.grainStrength.default});
+ let storageReady=false,saving=false;
  const save=root.querySelector('[data-editor-save]'),publish=root.querySelector('[data-editor-publish]');
  try{const result=await client.from('studio_artist_designs').select('draft,published_design').eq('account_id',owner.id).eq('surface','website').maybeSingle();if(result.error)throw result.error;if(validEditorDraft(result.data?.draft))draft=result.data.draft;storageReady=true;}catch{status.textContent='Design storage is unavailable. You can preview changes, but saving and publishing are disabled.';}
+ let savedDraft=JSON.stringify(draft),navigationPreview,navigationDirty=false,saveError=false;
+ const buttonRows=[...root.querySelectorAll('[data-editor-button-row]')];
+ const loadButtons=()=>{for(const [index,row] of buttonRows.entries()){row.hidden=index>=(draft.buttons||[]).length;row.querySelector('[data-editor-button-label]').value=draft.buttons?.[index]?.label||'';row.querySelector('[data-editor-button-url]').value=draft.buttons?.[index]?.url||'';}};
+ const readButtons=()=>{const rows=buttonRows.filter(row=>!row.hidden).map(row=>({label:row.querySelector('[data-editor-button-label]').value,url:row.querySelector('[data-editor-button-url]').value}));if(rows.some(row=>!row.label.trim()||!row.url.trim()))throw Error('Enter a name and address for each button, or remove the button.');return navigationLinks(rows);};
+ const eligibility=()=>{let valid=true,current;try{current={...draft,buttons:readButtons()};valid=validEditorDraft(current);}catch{valid=false;}save.disabled=saving||!storageReady||!valid;publish.disabled=save.disabled||!config.publicationEnabled;const dirty=JSON.stringify(current)!==savedDraft||!valid||navigationDirty,changed=root.dataset.dirty!==String(dirty);root.dataset.dirty=String(dirty);save.dataset.dirty=String(dirty);save.title=dirty?'Unsaved changes. Save draft to keep design changes across browsers and apply navigation sharing choices.':'Design saved. Save draft also applies navigation sharing choices.';if(storageReady&&!saveError)status.classList.add('sr-only');if(changed)document.dispatchEvent(new CustomEvent('studio:artist-editor-dirty',{detail:{dirty}}));};
+ const sendNavigation=()=>{if(ready&&navigationPreview)frame.contentWindow.postMessage({type:'artanrecords:artist-navigation-preview',navigation:navigationPreview},url.origin);};
+ document.addEventListener('studio:artist-navigation-preview',event=>{navigationPreview=event.detail;sendNavigation();});
+ document.addEventListener('studio:artist-navigation-dirty',event=>{navigationDirty=event.detail?.dirty===true;eligibility();});
  const workingKey='artanrecords-editor:'+owner.id;
+ const workingButtonsKey=workingKey+':buttons';
  try{const working=JSON.parse(sessionStorage.getItem(workingKey));if(validEditorDraft(working))draft=working;}catch{}
+ loadButtons();
+ try{const rows=JSON.parse(sessionStorage.getItem(workingButtonsKey));if(Array.isArray(rows)&&rows.length<=3&&rows.every(row=>row&&typeof row.label==='string'&&row.label.length<=60&&typeof row.url==='string'&&row.url.length<=2000)){for(const [index,row] of buttonRows.entries()){row.hidden=index>=rows.length;row.querySelector('[data-editor-button-label]').value=rows[index]?.label||'';row.querySelector('[data-editor-button-url]').value=rows[index]?.url||'';}}}catch{}
  const persist=async publishing=>{
-  if(!storageReady||!validEditorDraft(draft)||(publishing&&!config.publicationEnabled))return;
-  save.disabled=publish.disabled=true;
-  try{if((await resolveUser(client))?.id!==owner.id)throw Error('Your session changed. Refresh before saving.');const snapshot=structuredClone(draft),next={account_id:owner.id,surface:'website',draft:snapshot,updated_at:new Date().toISOString()};if(publishing)next.published_design=snapshot;const result=await client.from('studio_artist_designs').upsert(next,{onConflict:'account_id,surface'});if(result.error)throw Error('Your design could not be saved. Please try again.');showArtistSaveConfirmation(publishing?'Artist design published.':'Design draft saved privately.');}
-  catch(error){status.classList.remove('sr-only');status.textContent=error.message;}
-  finally{save.disabled=publish.disabled=false;}
+  if(saving||!storageReady||(publishing&&!config.publicationEnabled))return;
+  saving=true;saveError=false;status.classList.add('sr-only');save.disabled=publish.disabled=true;
+  try{draft={...draft,buttons:readButtons()};if(!validEditorDraft(draft))throw Error('Check your design before saving.');if((await resolveUser(client))?.id!==owner.id)throw Error('Your session changed. Refresh before saving.');const snapshot=structuredClone({...draft,buttons:readButtons()}),next={account_id:owner.id,surface:'website',draft:snapshot,updated_at:new Date().toISOString()};const saves=[];document.dispatchEvent(new CustomEvent('studio:artist-navigation-save',{detail:{register:promise=>saves.push(promise)}}));const navigationSaved=(await Promise.all(saves)).some(Boolean);if(publishing)next.published_design=snapshot;const result=await client.from('studio_artist_designs').upsert(next,{onConflict:'account_id,surface'});if(result.error)throw Error('Your design could not be saved. Please try again.');savedDraft=JSON.stringify(snapshot);eligibility();showArtistSaveConfirmation(publishing?'Artist design published.':navigationSaved?'Design draft saved privately. Navigation sharing choices applied.':'Design draft saved privately.');}
+  catch(error){saveError=true;status.classList.remove('sr-only');status.textContent=error.message;}
+  finally{saving=false;eligibility();}
  };
  save.onclick=()=>persist(false);publish.onclick=()=>persist(true);
- const send=()=>{if(!validEditorDraft(draft))return;try{sessionStorage.setItem(workingKey,JSON.stringify(draft));}catch{}if(ready)frame.contentWindow.postMessage({type:'artanrecords:artist-preview',draft},url.origin);};
+ const send=()=>{eligibility();if(!validEditorDraft(draft))return;try{sessionStorage.setItem(workingKey,JSON.stringify(draft));sessionStorage.setItem(workingButtonsKey,JSON.stringify(buttonRows.filter(row=>!row.hidden).map(row=>({label:row.querySelector('[data-editor-button-label]').value,url:row.querySelector('[data-editor-button-url]').value}))));}catch{}if(ready)frame.contentWindow.postMessage({type:'artanrecords:artist-preview',draft},url.origin);};
  const showcase=bindEditorShowcase(root,config,()=>draft,(group,ids)=>{draft.showcase={...(draft.showcase||{}),[group.id]:ids};if(ids.length&&!draft.sections.includes(group.section))draft.sections.push(group.section);if(ids.length&&!(draft.order||[]).includes(group.section))draft.order=[...(draft.order||draft.sections),group.section].filter((id,index,all)=>all.indexOf(id)===index);sync();});
  const sync=()=>{
   const presentation=draft.presentation||defaultPresentation();
+  if(config.gallery){const gallery=draft.gallery||defaultGallery();root.querySelector('[data-editor-gallery-view]').value=gallery.view;root.querySelector('[data-editor-gallery-grain]').setAttribute('aria-pressed',String(gallery.grain));root.querySelector('[data-editor-gallery-strength]').value=gallery.grainStrength;root.querySelector('[data-editor-gallery-strength]').disabled=!gallery.grain;root.querySelector('[data-editor-gallery-strength-output]').textContent=Math.round(gallery.grainStrength*100)+'%';}
   for(const select of root.querySelectorAll('[data-editor-align]'))select.value=presentation[select.dataset.editorAlign]||'left';root.querySelector('[data-editor-logo-size]').value=presentation.logoSize||config.presentation.portrait.max;root.querySelector('[data-editor-logo-output]').textContent=(presentation.logoSize||config.presentation.portrait.max)+' px';
   root.querySelector('[data-editor-portrait-size]').value=presentation.portraitSize;root.querySelector('[data-editor-portrait-output]').textContent=presentation.portraitSize+' px';root.querySelector('[data-editor-portrait-align]').value=presentation.portraitAlign;root.querySelector('[data-editor-detail-size]').value=presentation.textSize;
   root.querySelector('[data-editor-biography-label]').setAttribute('aria-pressed',String(presentation.biographyLabel));root.querySelector('[data-editor-since]').setAttribute('aria-pressed',String(presentation.since));
@@ -97,10 +110,9 @@ export async function bindArtistEditor({client,resolveUser}){
   for(const button of root.querySelectorAll('[data-editor-size]'))button.setAttribute('aria-pressed',String(button.dataset.editorSize===draft.size));
   for(const button of root.querySelectorAll('[data-editor-section]'))button.setAttribute('aria-pressed',String(draft.sections.includes(button.dataset.editorSection)));
   for(const button of root.querySelectorAll('[data-editor-divider]'))button.setAttribute('aria-pressed',String((draft.dividers||[]).includes(button.dataset.editorDivider)));
-  for(const [index,row] of [...root.querySelectorAll('[data-editor-button-row]')].entries()){row.querySelector('[data-editor-button-label]').value=draft.buttons?.[index]?.label||'';row.querySelector('[data-editor-button-url]').value=draft.buttons?.[index]?.url||'';}
   root.querySelector('[data-editor-copyright]').value=draft.copyright||'';
   const list=root.querySelector('[data-editor-section-order]');for(const id of draft.order||config.sections.map(item=>item.id)){const row=list.querySelector('[data-reorder-id="'+id+'"]');if(row)list.append(row);}
-  showcase.render();send();sendGraphics();
+  showcase.render();send();sendGraphics();sendNavigation();
  };
  addEventListener('message',event=>{
   if(event.source!==frame.contentWindow||event.origin!==url.origin)return;
@@ -109,6 +121,12 @@ export async function bindArtistEditor({client,resolveUser}){
   if(event.data?.type==='artanrecords:artist-preview-select'&&['name','menu','footer','buttons',...config.sections.map(item=>item.id)].includes(event.data.target))showContext(event.data.target);
  });
  root.querySelector('[data-editor-font-select]').addEventListener('change',event=>{draft.font=event.target.value;sync();});
+ if(config.gallery){
+  const updateGallery=(key,value)=>{draft.gallery={...(draft.gallery||defaultGallery()),[key]:value};sync();};
+  root.querySelector('[data-editor-gallery-view]').onchange=event=>updateGallery('view',event.target.value);
+  root.querySelector('[data-editor-gallery-grain]').onclick=()=>updateGallery('grain',!(draft.gallery||defaultGallery()).grain);
+  root.querySelector('[data-editor-gallery-strength]').oninput=event=>updateGallery('grainStrength',Number(event.target.value));
+ }
  const updatePresentation=(key,value)=>{draft.presentation={...(draft.presentation||defaultPresentation()),[key]:value};sync();};
  root.querySelector('[data-editor-portrait-size]').oninput=event=>updatePresentation('portraitSize',Number(event.target.value));
  root.querySelector('[data-editor-portrait-align]').onchange=event=>updatePresentation('portraitAlign',event.target.value);
@@ -120,10 +138,12 @@ export async function bindArtistEditor({client,resolveUser}){
  for(const button of root.querySelectorAll('[data-editor-size]'))button.addEventListener('click',()=>{draft.size=button.dataset.editorSize;sync();});
  for(const button of root.querySelectorAll('[data-editor-section]'))button.addEventListener('click',()=>{const id=button.dataset.editorSection;draft.sections=draft.sections.includes(id)?draft.sections.filter(item=>item!==id):[...draft.sections,id];sync();});
  for(const button of root.querySelectorAll('[data-editor-divider]'))button.onclick=()=>{const id=button.dataset.editorDivider;draft.dividers=(draft.dividers||[]).includes(id)?draft.dividers.filter(item=>item!==id):[...(draft.dividers||[]),id];sync();};
- const updateButtons=()=>{const feedback=root.querySelector('[data-editor-button-status]');try{const buttons=navigationLinks([...root.querySelectorAll('[data-editor-button-row]')].map(row=>({label:row.querySelector('[data-editor-button-label]').value,url:row.querySelector('[data-editor-button-url]').value})));const next={...draft,buttons};save.disabled=publish.disabled=!storageReady||!validEditorDraft(next);if(validEditorDraft(next)){draft=next;send();feedback.textContent='';}}catch(error){save.disabled=publish.disabled=true;feedback.textContent=error.message;}};
+ const updateButtons=()=>{const feedback=root.querySelector('[data-editor-button-status]');try{const next={...draft,buttons:readButtons()};if(!validEditorDraft(next))throw Error('Use up to three valid buttons.');draft=next;feedback.textContent='';}catch(error){feedback.textContent=error.message;}send();for(const button of root.querySelectorAll('[data-editor-button-add]'))button.disabled=buttonRows.every(row=>!row.hidden);};
  for(const input of root.querySelectorAll('[data-editor-button-row] input'))input.oninput=updateButtons;
+ for(const button of root.querySelectorAll('[data-editor-button-add]'))button.onclick=()=>{const row=buttonRows.find(row=>row.hidden);if(row){row.hidden=false;updateButtons();row.querySelector('input')?.focus();}};
+ for(const button of root.querySelectorAll('[data-editor-button-remove]'))button.onclick=()=>{const row=button.closest('[data-editor-button-row]');if(row){row.hidden=true;for(const input of row.querySelectorAll('input'))input.value='';updateButtons();}};
  root.querySelector('[data-editor-copyright]').oninput=event=>{draft.copyright=event.target.value;send();};
- root.querySelector('[data-editor-reset]').addEventListener('click',()=>{draft=initial();sync();});
+ root.querySelector('[data-editor-reset]').addEventListener('click',()=>{draft=initial();loadButtons();updateButtons();sync();});
  bindReorderList(root.querySelector('[data-editor-section-order]'),{rowSelector:'[data-reorder-id]',handleSelector:'[data-reorder-handle]',onChange:rows=>{draft.order=rows.map(row=>row.dataset.reorderId);send();}});
  function renderLinkOrder(groups){
   if(!Array.isArray(groups)||groups.length>6)return;const mount=root.querySelector('[data-editor-link-order]');mount.replaceChildren();
@@ -134,5 +154,7 @@ export async function bindArtistEditor({client,resolveUser}){
   }
  }
  document.addEventListener('studio:artist-saved',()=>{frame.src=url.href;});
+ document.dispatchEvent(new CustomEvent('studio:artist-navigation-preview-request'));
+ updateButtons();
  frame.src=url.href;frame.hidden=false;root.querySelector('[data-editor-empty]').hidden=true;status.textContent='Opening your public page preview. If it does not load, check that your artist page is published.';
 }

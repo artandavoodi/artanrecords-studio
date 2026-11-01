@@ -126,6 +126,24 @@
       "src": "assets/icons/actions/account.svg",
       "alt": "",
       "monochrome": true
+    },
+    {
+      "id": "filter",
+      "src": "assets/icons/actions/filter.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "gallery-view",
+      "src": "assets/icons/actions/preview.svg",
+      "alt": "",
+      "monochrome": true
+    },
+    {
+      "id": "reset",
+      "src": "assets/icons/actions/reset.svg",
+      "alt": "",
+      "monochrome": true
     }
   ]
 }

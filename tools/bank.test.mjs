@@ -5,7 +5,7 @@ import {bankMarkup,payoutSettingsMarkup} from '../app/bank-render.mjs';
 import {renderSettings} from '../app/platform-render.mjs';
 import {profileMarkup} from '../app/profile-render.mjs';
 import {payoutApplicationValues,bankAmount} from '../app/bank.js';
-import {hasProAccess} from '../app/subscriptions.js';
+import {hasProAccess,hasStudioAccess} from '../app/subscriptions.js';
 import {partnershipSummary,resolveAppearanceTokens} from '../app/overview.js';
 import {catalogueConnections} from '../app/connections.js';
 import {overviewMarkup,partnershipThemesMarkup} from '../app/overview-render.mjs';
@@ -35,6 +35,8 @@ test('overview separates requested and approved partnerships from paid access',(
  assert.deepEqual(catalogueConnections({artists:[],unavailable:['spotify']}),{apple:true,spotify:false});assert.throws(()=>catalogueConnections({}));
 });
 test('Pro access requires current provider-owned entitlement, never a plan label alone',()=>{
+ assert.equal(hasStudioAccess({plan:'studio',status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z',entitlement_source:'PARTNERSHIP_INCLUDED'}),true);
+ assert.equal(hasProAccess({plan:'studio',status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z',entitlement_source:'PARTNERSHIP_INCLUDED'}),false);
  assert.equal(hasProAccess({plan:'studio-pro'}),false);
  assert.equal(hasProAccess({plan:'studio-pro',status:'active',entitled:true,period_ends_at:'2000-01-01T00:00:00Z'}),false);
  assert.equal(hasProAccess({plan:'studio-pro',status:'past_due',entitled:true,period_ends_at:'2099-01-01T00:00:00Z'}),false);

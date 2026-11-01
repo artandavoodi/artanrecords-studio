@@ -1,6 +1,6 @@
 {
  "tools":[
-  {"id":"name","label":"Design","icon":"edit"},
+  {"id":"name","label":"Design","icon":"editor-design"},
   {"id":"biography","label":"Profile","icon":"profile"},
   {"id":"graphics","label":"Graphics","icon":"image"},
   {"id":"selected","label":"Selected music","icon":"music"},

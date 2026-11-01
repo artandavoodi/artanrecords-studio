@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {artistMetadata,releaseMetadata,releaseArtworkValues,googlePhoto,catalogueSelection,releaseSelection} from '../app/metadata-values.js';
-import {portfolioValues} from '../app/portfolio.js';
+import {portfolioValues,portfolioVideoUrl} from '../app/portfolio.js';
 import {inspectMaster} from '../app/release-audio-values.js';
 test('master inspection accepts PCM headers and rejects truncated or disguised files',async()=>{
  const buffer=new ArrayBuffer(48),view=new DataView(buffer),bytes=new Uint8Array(buffer);
@@ -16,6 +16,12 @@ test('portfolio drafts validate registered fields, tags and secure project links
  const form=new FormData();form.set('title','A project');form.set('tags','music, photography');form.set('project_url','https://example.test/project');
  assert.deepEqual(portfolioValues(form).tags,['music','photography']);assert.equal(portfolioValues(form).rights_confirmed,false);
  form.set('project_url','javascript:alert(1)');assert.throws(()=>portfolioValues(form));form.set('project_url','https://user:secret@example.test');assert.throws(()=>portfolioValues(form));form.set('project_url','');form.set('year','twenty');assert.throws(()=>portfolioValues(form));
+ form.set('year','1899');assert.throws(()=>portfolioValues(form));form.set('year',String(new Date().getFullYear()+1));assert.throws(()=>portfolioValues(form));form.set('year','2024');form.set('description','a'.repeat(500));assert.equal(portfolioValues(form).description.length,500);form.set('description','a'.repeat(501));assert.throws(()=>portfolioValues(form));
+});
+test('gallery video addresses normalize to approved provider routes',()=>{
+ for(const url of ['https://youtu.be/abcdefghijk','https://m.youtube.com/shorts/abcdefghijk','https://www.youtube.com/embed/abcdefghijk'])assert.equal(portfolioVideoUrl(url),'https://www.youtube.com/watch?v=abcdefghijk');
+ for(const url of ['https://vimeo.com/123456/abc123','https://player.vimeo.com/video/123456?h=abc123'])assert.equal(portfolioVideoUrl(url),'https://vimeo.com/123456?h=abc123');
+ for(const url of ['https://youtube.com.evil.test/watch?v=abcdefghijk','http://youtu.be/abcdefghijk','https://user:secret@vimeo.com/123456','https://vimeo.com:444/123456'])assert.throws(()=>portfolioVideoUrl(url));
 });
 const schema=JSON.parse(await readFile(new URL('../content/metadata.json',import.meta.url),'utf8'));
 const artwork=JSON.parse(await readFile(new URL('../content/release-artwork.json',import.meta.url),'utf8'));

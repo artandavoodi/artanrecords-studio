@@ -1,0 +1,12 @@
+{
+  "title":"Domains",
+  "description":"Give your artist website and store their own addresses.",
+  "notice":"Saving a domain starts a private connection request. Keep your current DNS records until ownership, hosting and HTTPS have been confirmed. A website and a store need separate hostnames.",
+  "steps":[{"title":"Add your address","description":"Enter a domain you own. Add each hostname separately, including www or a shop subdomain if needed."},{"title":"Verify ownership","description":"Follow the exact verification instructions provided for this request. Do not change existing records without confirmed instructions."},{"title":"Connect hosting","description":"Confirm the destination: artist website or artist store. The correct hosting target must be supplied before DNS changes."},{"title":"Enable secure access","description":"The connection becomes active only after ownership and HTTPS are confirmed. Domain renewal stays with your registrar."}],
+  "protectedHosts":["artanrecords.com","neuroartan.com","artan.live"],
+  "surfaces":[
+    {"id":"profile","label":"Artist website","description":"Your artist pages, music, gallery and projects.","placeholder":"yourname.com"},
+    {"id":"store","label":"Artist store","description":"Your shop and product pages, separate from your website.","placeholder":"shop.yourname.com"}
+  ],
+  "statuses":{"requested":"Connection requested","verified":"Ownership verified · hosting pending","active":"Connected","rejected":"Needs attention","removed":"Disconnected"}
+}

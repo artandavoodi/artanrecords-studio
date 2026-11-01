@@ -11,6 +11,7 @@ import {bankMarkup} from './bank-render.mjs';
 import {agreementsMarkup} from './agreements-render.mjs';
 import {editorMarkup} from './editor-render.mjs';
 import {portfolioMarkup} from './portfolio-render.mjs';
+import {sharesMarkup} from './shares-render.mjs';
 import {searchMarkup} from '../foundation/search.mjs';
 export {renderMenu} from './platform-render.mjs';
 export {renderNavigation,renderFooter} from './shell-render.mjs';
@@ -40,6 +41,7 @@ export async function render(page,{config,e,search}){
   else if(page.path==='/releases/')body=`<nav class="studio-profile-tabs" role="tablist" aria-label="Releases"><button type="button" role="tab" id="tab-released" aria-selected="true" aria-controls="released" data-settings-tab="released">${icon('release')}<span>Released</span></button><button type="button" role="tab" id="tab-release-drafts" aria-selected="false" aria-controls="release-drafts" tabindex="-1" data-settings-tab="release-drafts">${icon('plus')}<span>New release & drafts</span></button></nav><section id="released" role="tabpanel" aria-labelledby="tab-released" data-settings-panel="released" data-published-releases><p role="status">Checking your released catalogue...</p><div class="studio-published-list" data-published-list></div></section><section id="release-drafts" role="tabpanel" aria-labelledby="tab-release-drafts" data-settings-panel="release-drafts" hidden>${releaseMetadataEditor(e)}</section>`;
   else if(page.path==='/concerts/')body=concertsMarkup(e);
   else if(page.path==='/store/')body=commerceMarkup(e,icon);
+  else if(page.path==='/shares/')body=sharesMarkup(e,icon);
   else if(page.path==='/payouts/')body=bankMarkup(e);
   else if(page.path==='/payments/')body=`<a class="ui-button" href="/settings/#payments">${icon('settings')}Open payment & payout settings</a>`;
   else if(page.path==='/agreements/')body=agreementsMarkup(e,icon);

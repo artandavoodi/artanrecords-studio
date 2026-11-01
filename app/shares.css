@@ -1,0 +1,13 @@
+/* Private collaboration workspace; all colors and spacing follow Studio tokens. */
+.studio-shares { display:grid; gap:var(--spacing-lg); min-inline-size:0; }
+.studio-shares :is(form,.surface-section,[data-share-workspace]) { display:grid; gap:var(--spacing-md); min-inline-size:0; }
+.studio-shares :is(h2,h3,p) { margin-block:0; }
+.studio-shares :is(h2,summary,.studio-share-state) { display:flex; align-items:center; gap:var(--spacing-sm); }
+.studio-shares summary { cursor:pointer; }
+.studio-shares details > :not(summary) { margin-block-start:var(--spacing-sm); }
+.studio-shares code { display:block; overflow-wrap:anywhere; }
+.studio-share-record { padding-block:var(--spacing-lg); border-block-end:var(--border-width-hairline) solid var(--cv-border); display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-md); }
+.studio-share-record > :is(h3,p,details,label,time) { flex-basis:100%; min-inline-size:0; overflow-wrap:anywhere; }
+.studio-shares fieldset { margin:0; padding:0; border:0; }
+.studio-shares [data-share-track-options] { display:grid; gap:var(--spacing-sm); }
+.studio-shares input[type=checkbox] { margin-inline-end:var(--spacing-sm); }

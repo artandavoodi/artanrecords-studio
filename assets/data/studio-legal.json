@@ -47,7 +47,7 @@
       "title": "Privacy and cookies",
       "description": "How Artanrecords Studio handles account information and your choices.",
       "effectiveDate": "2026-10-19",
-      "lastUpdated": "2026-10-20",
+      "lastUpdated": "2026-11-01",
       "sections": [
         {
           "id": "account",
@@ -67,10 +67,15 @@
           "paragraphs":["Username requests and partnership applications are stored privately for review by authorized label staff. Requested and approved partnership tiers are kept separately. Office assignments do not by themselves grant staff access. Username and tier decisions, and staff access changes, are recorded with the reviewing staff account and decision time.","A label-approved username does not automatically publish your information or create a contract. After approval you can publish the saved catalogue fields you selected for public sharing, and hide that public page again. Account identifiers, sign-in email, phone, billing details, portrait permission notes and raw release drafts are not part of that public snapshot. Public contact addresses are included only if you entered and selected them for sharing. A copy of an already viewed public page may remain in search engines or third-party caches after you hide it.","Uploaded header images and profile photographs remain in private account storage. They are not automatically copied to a public artist page. A custom domain requires separate ownership verification and setup; a username request does not register or purchase a domain."]
         },
         {
+          "id":"collaboration-and-domains",
+          "title":"Collaboration proposals and domain requests",
+          "paragraphs":["Revenue Shares stores contributor professional names, invitation email addresses, contribution roles, proposed percentages, scope, effective dates, terms versions, invitation responses and workflow history. The workspace administrator can review their workspace; a participant can review their own delivered terms after an exact verified-email account match, not other contributors' private percentages. Preparing an invitation is not confirmation that email delivery occurred. Public release credits remain separate; these proposal records are not published on an artist page.","Domain settings store requested website or store hostnames and connection status in your private creator records. Saving a request does not change DNS, verify ownership, register a domain or enable HTTPS. Keep credentials, tax identifiers, banking details and identity documents out of contribution, proposal and domain fields.","Terms versions and audit records are retained as immutable workflow history rather than overwritten through the browser. Contact the label using the rights procedure below for access, correction or deletion requests. A proposal response is not a legal signature or payment authorization."]
+        },
+        {
           "id": "storage",
           "title": "Cookies and similar technologies",
           "paragraphs": [
-            "Essential browser storage supports security and your consent choices. Optional preference memory stores appearance, contrast, palette and sidebar choices across visits only when permitted. Declining optional storage keeps interface changes in session storage until the tab session ends. Analytics are not connected. These preferences do not currently synchronize to an artist account. See the Cookie Policy for storage categories and controls."
+            "Essential browser storage supports security and your consent choices. Optional browser preference memory stores appearance and navigation choices across visits only when permitted. Signed-in Studio appearance settings are also saved privately to your account so they can be restored on another signed-in browser. Browser storage consent and account preferences are separate controls; declining optional browser storage does not delete your saved account settings. Analytics are not connected. See the Cookie Policy for storage categories and controls."
           ]
         },
         {
@@ -89,7 +94,7 @@
       "title": "Studio terms",
       "description": "Access to Artanrecords Studio and artist services.",
       "effectiveDate": "2026-10-19",
-      "lastUpdated": "2026-10-20",
+      "lastUpdated": "2026-11-01",
       "sections": [
         {
           "id": "access",
@@ -104,6 +109,11 @@
           "paragraphs": [
             "Submit only material you are entitled to share. A submission is not an agreement to release or distribute a recording. Distribution, rights, royalty splits and payment obligations require a separate confirmed agreement."
           ]
+        },
+        {
+          "id":"revenue-share-proposals",
+          "title":"Revenue-share proposals and domain requests",
+          "paragraphs":["Record contributor information only when you are entitled to provide it and have authority to propose the arrangement. A credit does not create a revenue share; a proposed share does not publish a credit or transfer master ownership, publishing rights, company equity or unrelated income. Acceptance records a response to proposed terms, not an executed contract. Binding obligations and active financial entitlements require a separate legally reviewed execution process.","Domain requests identify your intended website or store destination. Use a domain you control and keep existing DNS records until verified ownership, hosting and HTTPS instructions have been confirmed. Saving a request does not purchase a domain, connect hosting or alter an existing site. Registration, renewals and any separate hosting costs must be agreed independently."]
         },
         {
           "id": "payments",

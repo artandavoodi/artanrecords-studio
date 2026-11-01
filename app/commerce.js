@@ -1,6 +1,6 @@
 import config from '../content/commerce.json' with {type:'json'};
 import reserved from '../assets/data/artists/reserved-routes.json' with {type:'json'};
-import {contract,creatorPath,domainHostname,draftValues,ownDraft,priceInput} from './commerce-model.js';
+import {contract,creatorPath,draftValues,ownDraft,priceInput} from './commerce-model.js';
 import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
 const node=(tag,text,classes)=>{const element=document.createElement(tag);if(text)element.textContent=text;if(classes)element.className=classes;return element;};
 export async function bindCommerce({client,resolveUser}){
@@ -8,7 +8,7 @@ export async function bindCommerce({client,resolveUser}){
  const status=root.querySelector('[data-commerce-status]'),controls=root.querySelector('[data-commerce-controls]'),prepare=root.querySelector('[data-commerce-prepare]');
  if(!client)return;
  const user=await resolveUser(client).catch(()=>null);if(!user)return;
- let store=null,products=[],collections=[],domains=[],busy=false;
+ let store=null,products=[],collections=[],busy=false;
  const current={product:null,collection:null};
  async function owner(){if((await resolveUser(client))?.id!==user.id)throw Error('Your session changed. Sign in again.');}
  async function checked(query){const result=await query;if(result.error)throw Error('Store drafts could not be saved or loaded. Please try again.');return result.data;}
@@ -34,17 +34,14 @@ export async function bindCommerce({client,resolveUser}){
   if(!next)throw Error('Your private store could not be loaded.');
   const records=await Promise.all([
    checked(client.from('studio_store_products').select('*').eq('store_id',next.id).order('created_at')),
-   checked(client.from('studio_store_collections').select('*').eq('store_id',next.id).order('created_at')),
-   checked(client.from('studio_creator_domains').select('id,surface,hostname,status').eq('creator_id',identity.id).order('created_at'))
+   checked(client.from('studio_store_collections').select('*').eq('store_id',next.id).order('created_at'))
   ]);
-  await owner();store=next;[products,collections,domains]=records;prepare.hidden=true;controls.hidden=false;status.textContent='Private preparation · not published';
+  await owner();store=next;[products,collections]=records;prepare.hidden=true;controls.hidden=false;status.textContent='Private preparation · not published';
   root.querySelector('[data-commerce-summary]').textContent=products.length+' product drafts · '+collections.length+' collections. No public shop is active.';
   const settings=root.querySelector('[data-commerce-settings]');settings.elements.title.value=store.title;settings.elements.introduction.value=store.introduction;
   settings.querySelector('button').disabled=store.status!=='draft';
   const collection=root.querySelector('[data-commerce-collection]'),selected=collection.value;collection.replaceChildren(new Option('No collection',''),...collections.map(record=>new Option(record.title,record.id)));collection.value=selected;
   renderList('product',products);renderList('collection',collections);
-  const list=root.querySelector('[data-commerce-domains]');list.replaceChildren();if(!domains.length)list.append(node('p','No domain requests yet.','studio-field-note'));
-  for(const record of domains){const row=node('article',null,'studio-commerce-row'),copy=node('div');copy.append(node('h3',record.hostname),node('p',(record.surface==='profile'?'Official website':'Shop')+' · '+record.status+' · connection not activated','studio-field-note'));row.append(copy);list.append(row);}
   const handle=await checked(client.from('studio_artist_handles').select('approved_username').eq('account_id',user.id).maybeSingle());
   root.querySelector('[data-commerce-fallback]').textContent=handle?.approved_username?'Planned shop address: https://artanrecords.com'+creatorPath(handle.approved_username,contract,reserved)+' — not published.':'Your future shop address will use your label-approved username.';
  }
@@ -61,9 +58,6 @@ export async function bindCommerce({client,resolveUser}){
   const title=settings.elements.title.value.trim(),introduction=settings.elements.introduction.value.trim();if(!title||title.length>120||introduction.length>contract.limits.introduction)throw Error('Check the store name and introduction.');
   await checked(client.from('studio_store_drafts').update({title,introduction}).eq('id',store.id).select('id').single());
  });};
- const domainForm=root.querySelector('[data-commerce-domain]');domainForm.onsubmit=event=>{event.preventDefault();action(domainForm.querySelector('button'),async()=>{
-  const surface=domainForm.elements.surface.value;if(!contract.domainSurfaces.includes(surface))throw Error('Choose website or shop.');
-  await checked(client.from('studio_creator_domains').insert({creator_id:store.creator_id,surface,hostname:domainHostname(domainForm.elements.hostname.value)}).select('id').single());domainForm.reset();
- });};
+ if(location.hash==='#store-domains'){location.replace(config.domainsUrl);return;}
  try{await refresh();}catch{controls.hidden=true;prepare.hidden=true;status.textContent='Store preparation is not connected yet. Your existing shop has not changed.';}
 }

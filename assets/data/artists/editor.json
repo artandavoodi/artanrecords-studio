@@ -1,6 +1,7 @@
 {
  "version":1,
  "publicationEnabled":true,
+ "gallery":{"title":"Gallery layout","viewLabel":"View","views":[{"id":"tiles","label":"Tiles"},{"id":"compact","label":"Compact"},{"id":"natural","label":"Original proportions"}],"defaultView":"tiles","headerGrain":true,"grainLabel":"Show header grain","grainStrengthLabel":"Grain strength","grainStrength":{"min":0,"max":0.075,"step":0.005,"default":0.075}},
  "showcase":[{"id":"music","title":"Selected music","limit":6,"section":"selected","selector":"[data-artist-archive] [data-release-id]","key":"releaseId","heading":"h3"},{"id":"gallery","title":"Featured photography & art","limit":12,"section":"visual","selector":"[data-artist-portfolio=gallery] [data-portfolio-id]","key":"portfolioId","heading":"h3"}],
  "presentation":{"portrait":{"min":96,"max":320,"step":8,"default":168},"alignments":[{"id":"left","label":"Left"},{"id":"center","label":"Centre"},{"id":"right","label":"Right"}],"textSizes":[{"id":"small","label":"Small","value":"var(--site-type-caption-size)"},{"id":"standard","label":"Standard","value":"var(--site-type-body-size)"},{"id":"large","label":"Large","value":"var(--font-size-h3)"}]},
  "editIcon":"/registry/icons/public/assets/core/actions/edit/edit.svg",

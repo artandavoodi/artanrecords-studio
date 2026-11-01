@@ -40,6 +40,7 @@
   ],
   "footer": [],
   "pages": [
+    {"path":"/shares/","title":"Revenue Shares","description":"Manage private contributors, contribution roles, proposed revenue shares, invitations and agreement versions.","category":"Business","indexable":false,"sections":[{"id":"guidance","title":"Contributors, credits and proposed shares","paragraphs":["Credits and financial entitlements are separate. Review invitations, scope, Project Artist Pool percentages, immutable terms and audit history. Accepting a proposal is not a signed agreement or an active payment share."]}]},
     {"path":"/gallery/","title":"Gallery","description":"Manage private photographs, collections, captions and selected public images.","category":"Workspace","indexable":false,"sections":[]},
     {"path":"/projects/","title":"Projects","description":"Manage project descriptions, credits, images and publication choices.","category":"Workspace","indexable":false,"sections":[]},
     {"path":"/editor/","title":"Artist page editor","description":"Design your artist page, save private drafts and publish your chosen design on your approved page.","category":"Workspace","indexable":false,"sections":[]},

@@ -1,0 +1,13 @@
+{
+ "title":"Revenue Shares",
+ "description":"Manage contributors and proposed participation in your project's recording income.",
+ "notice":"A credit acknowledges work. A proposed share describes commercial terms. Neither creates the other. Acceptance records a response; a legally reviewed, executed agreement is required before any share becomes active.",
+ "basis":"Project Artist Pool: the artist's eligible recording receipts after the label share and deductions defined in the signed agreement. This does not include publishing, master ownership, company equity, store sales or subscriptions.",
+ "tabs":[{"id":"manage","label":"Your work","icon":"shares-work"},{"id":"invitations","label":"Your invitations","icon":"shares-invitation"},{"id":"history","label":"History","icon":"shares-history"}],
+ "scopes":[{"id":"project","label":"Project","icon":"shares-project"},{"id":"release","label":"Release","icon":"shares-release"},{"id":"tracks","label":"Selected tracks","icon":"shares-track"}],
+ "families":{"performance":"Performance","writing":"Writing","production":"Production","engineering":"Engineering","visual":"Visual","business":"Business","other":"Other"},
+ "statuses":{"draft":"Draft","ready":"Prepared · delivery pending","invited":"Invited","under_review":"Under review","change_requested":"Changes requested","awaiting_execution":"Accepted · agreement required","archived":"Archived","sent":"Sent","viewed":"Viewed","accepted":"Accepted","rejected":"Declined","counter_requested":"Changes requested","expired":"Expired","cancelled":"Cancelled"},
+ "responses":[{"id":"accepted","label":"Accept proposal","icon":"shares-accept"},{"id":"counter_requested","label":"Request changes","icon":"shares-amend"},{"id":"rejected","label":"Decline","icon":"shares-decline"}],
+ "events":{"workspace_created":"Workspace created","contribution_added":"Contribution added","share_proposed":"Share proposed","proposal_versioned":"New terms version saved","invitation_prepared":"Invitation prepared","invitation_sent":"Invitation sent","proposal_accepted":"Proposal accepted; agreement required","proposal_rejected":"Proposal declined","proposal_counter_requested":"Changes requested","proposal_archived":"Proposal archived","invitation_cancelled":"Invitation cancelled"},
+ "guidanceUrl":"https://docs.artanrecords.com/revenue-shares/"
+}

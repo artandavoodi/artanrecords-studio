@@ -1,5 +1,38 @@
 # Artanrecords Studio
 
+## Revenue Shares and Domains - 2026-11-01
+
+Business navigation and the `/shares/` page both use **Revenue Shares**.
+Studio owns its interface in `app/shares*`, values in `app/share-values.js` and
+copy in `content/revenue-shares.json`. The shared backend owns contributors,
+role-specific contributions, versioned proposals, invitation responses and audit
+records. Projects read titles from portfolio `details`, not a parallel title
+column. Track scope requires stable IDs from the selected release draft.
+
+Percentages are exact integer basis points of the Project Artist Pool. Credits
+remain release-owned and do not grant financial rights. Proposed terms link to
+immutable shared agreement versions; `/agreements/` lists those drafts separately
+from executed contracts. Accepting a proposal does not execute an agreement or
+activate a share. Participants see their own delivered terms without a paid plan.
+Invitation preparation does not claim delivery. Verified mail transport, legal
+execution, reconciled allocations, statements and payments remain gated.
+
+`Settings → Domains` separates Website and Store into keyboard-accessible tabs,
+with connection steps, independent private requests and pending cancellation.
+It does not create a shop for a website request or perform DNS/TLS provisioning.
+The backend enforces distinct hostnames and up to 100 requests per creator.
+`content/domains.json` owns presentation; `app/domain-values.js` owns hostname
+normalization; the existing creator-domain table remains the record owner.
+Legacy Store domain links redirect to Settings. Domain controls are not part of
+Artist profile. No account card, bank or tax data is collected by either feature.
+
+Canonical icon slots are registered in Control Center and pinned by the Studio
+icon manifest. Missing artwork stays a theme-aware dot with availability false;
+no unrelated vector substitutes for a contributor role or workflow action.
+Public explanation belongs to the website's Revenue Shares and Custom Domains
+pages; operational details belong to the corresponding Docs guides. Private
+Studio routes and account records remain outside the public sitemap.
+
 ## Subscription and presentation update - 2026-10-26
 
 Settings separates Subscription & billing from Artist payout setup. Subscription
@@ -7,9 +40,10 @@ status comes from the account-scoped server procedure, not editable Auth metadat
 only verified, active/trialing and unexpired access displays Pro. Checkout, card
 collection and recurring charges remain disabled pending approved commercial terms
 and provider integration. The supplied commerce briefs contain no Studio Pro
-price, billing currency, trial duration or paid feature specification.
+price in this historical checkpoint. Current terms are owned by the shared
+`assets/data/studio-plans.json`, not this historical note.
 
-Graphics supports at most five colours, mutually exclusive surface assignments
+Graphics supports a bounded custom palette, mutually exclusive surface assignments
 and the logo target. Public theme/colour application remains opt-in. Appearance
 reuses pinned Neuroartan breathing-circle and matte components; company/custom
 themes enable those controls, while unsupported cinematic video and shader
@@ -18,7 +52,7 @@ controls stay disabled. Reduced-motion preferences disable breathing animation.
 ## Creator Store foundation
 
 `/store/` provides private store preparation, product and collection drafts,
-profile/shop domain requests and a gated finance notice. Drafts belong to the
+a link to domain settings and a gated finance notice. Drafts belong to the
 verified account's stable creator/store IDs; table policies, composite foreign
 keys and restricted column grants enforce ownership on the shared backend.
 The canonical backend migration belongs to the existing artan-store repository,
@@ -64,7 +98,8 @@ Do not edit those distributions or replace their vectors locally.
 Studio's adapter owns its legal routes and storage policy: optional preference
 memory permits persistent browser storage; otherwise interface choices remain
 in tab-session storage. Consent records are necessary storage. Account preference
-sync and background-rendering engines remain disconnected. Commercial plan and
+sync and the supported background-rendering engines are connected through the
+verified shared appearance sources. Commercial plan and
 service explanations belong to the public website and Docs, not workspace pages.
 
 ## Next Platform Priorities

@@ -1,5 +1,6 @@
 import appearance from '../content/appearance.json' with {type:'json'};
-import {hasProAccess} from './subscriptions.js';
+import plans from '../assets/data/studio-plans.json' with {type:'json'};
+import {hasProAccess,hasStudioAccess} from './subscriptions.js';
 export function partnershipSummary(application){
  const tier=application?.status==='approved'&&['silver','gold','platinum'].includes(application.approved_tier)?application.approved_tier:null;
  return {tier,label:tier?tier[0].toUpperCase()+tier.slice(1):application?.status==='pending'?'Under review':application?.status==='rejected'?'Not approved':'No approved partnership',detail:tier?'Partnership approved.':application?.status==='pending'?'Awaiting review.':'Introduce your music to discuss a partnership.'};
@@ -11,8 +12,10 @@ export async function bindOverview({client,resolveUser}){
   if((await resolveUser(client))?.id!==user.id)return;
   if(application.error)throw Error('Your partnership could not be verified.');const summary=partnershipSummary(application.data);
   root.querySelector('[data-overview-tier]').textContent=summary.label;root.querySelector('[data-overview-partnership]').textContent=summary.detail;if(summary.tier)root.querySelector('.studio-overview-membership').dataset.partnershipTier=summary.tier;
-  root.querySelector('[data-overview-access]').textContent=access.error?'Access unavailable':hasProAccess(access.data)?'Studio Pro active':'Studio Pro not active';
-  root.querySelector('[data-overview-entitlement]').textContent=hasProAccess(access.data)?'Included access is verified.':'Profile and draft tools are available.';
+  for(const icon of root.querySelectorAll('[data-partnership-icon]'))icon.hidden=icon.dataset.partnershipIcon!==summary.tier;
+  const included=plans.items.find(item=>item.plan===plans.partnershipInclusion[summary.tier])?.name;
+  root.querySelector('[data-overview-access]').textContent=access.error?'Access could not be verified':hasStudioAccess(access.data)?(hasProAccess(access.data)?'Studio Pro active':'Studio active'):included?included+' included':'Studio access';
+  root.querySelector('[data-overview-entitlement]').textContent=hasStudioAccess(access.data)?(access.data.entitlement_source==='PARTNERSHIP_INCLUDED'?'Included through your active partnership.':'Your software access is active.'):included?'Included with your partnership; agreement activation is awaiting verification.':'Profile and draft tools are available.';
  }catch(error){root.querySelector('[data-overview-status]').textContent=error.message||'Account overview could not be loaded.';}
 }
 export function bindPartnershipThemes(){
