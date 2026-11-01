@@ -8,6 +8,7 @@
     "choiceKey": "artanrecords-studio-preferences",
     "themeKey": "artanrecords-studio-theme",
     "railKey": "artanrecords-studio-rail",
+    "presetKey": "artanrecords-studio-appearance-preset",
     "validDays": 180
   },
   "providers": {

@@ -56,7 +56,7 @@ bindSigningPreview();
 const chrome=bindChrome();
 document.querySelectorAll('.studio-account input:not([type=checkbox]):not([type=file]):not([type=range]):not([type=color]):not([type=hidden]),.studio-account textarea,.studio-account select:not(.ui-dropdown)').forEach(field=>field.classList.add('ui-field'));
 document.querySelectorAll('.studio-account button:not(.ui-password-field__toggle,.studio-photo-action,.global-close-button)').forEach(button=>button.classList.add('ui-button'));
-document.querySelectorAll('[data-signout]').forEach(button=>{button.classList.add('studio-signout');const icon=document.createElement('img');icon.className='studio-icon';icon.src='/app/icons/signout.svg';icon.alt='';button.prepend(icon);});
+document.querySelectorAll('[data-signout]').forEach(button=>{button.classList.add('studio-signout');const icon=document.createElement('span');icon.className='studio-icon studio-signout-icon';icon.setAttribute('aria-hidden','true');button.prepend(icon);});
 const context={client,config,resolveUser,profileValues,validPhoto};
 const notificationsReady=bindNotifications(context);
 document.querySelectorAll('[data-reset-password]').forEach(button=>button.addEventListener('click',async()=>{

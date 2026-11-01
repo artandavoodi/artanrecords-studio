@@ -107,8 +107,8 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 .studio-biography-field .ui-character-counter { position:absolute; inset-inline-end:var(--spacing-sm); inset-block-end:var(--spacing-sm); }
 .studio-account a { text-decoration:none; font-weight:inherit; }
 .studio-account .ui-password-field__toggle { padding:0; min-block-size:var(--password-field-toggle-size); background:transparent; }
-.studio-account .studio-signout { background:var(--layout-home-featured-functions-card-spectrum-orange); color:var(--color-black); }
-.studio-account .studio-signout img { filter:brightness(0); }
+:is(.studio-account,.studio-settings) .studio-signout { background:transparent; color:var(--color-primary7); }
+.studio-signout-icon { background:currentColor; mask:url('/app/icons/signout.svg') center / contain no-repeat; -webkit-mask:url('/app/icons/signout.svg') center / contain no-repeat; }
 .studio-account button:disabled { opacity:var(--state-opacity-low); cursor:not-allowed; }
 .studio-account button:not(.studio-photo-action):hover:not(:disabled),.studio-account button:not(.studio-photo-action):focus-visible { opacity:var(--hover-opacity-strong); outline:none; }
 .studio-auth-tabs { display:grid; gap:var(--spacing-md); }
@@ -188,8 +188,7 @@ html[data-search-open] :is(.studio-header-tools,.site-menu-toggle) { opacity:var
 .studio-profile-tabs [role=tab] { justify-content:center; }
 :is(#profile-details,#profile-catalogue,#profile-publication) { scroll-margin-block-start:var(--site-header-height); }
 .studio-identity { margin-block-start:var(--spacing-xl); }
-html[data-theme-effective=dark] :is(.studio-icon:not([src$='/google.svg']),.ui-password-field__toggle-icon,.privacy-preferences img,.search-arrival-icon) { filter:brightness(0) invert(1); }
-html[data-theme-effective=dark] .studio-signout .studio-icon { filter:brightness(0); }
+html[data-theme-effective=dark] :is(img.studio-icon:not([src$='/google.svg']),.ui-password-field__toggle-icon,.privacy-preferences img,.search-arrival-icon) { filter:brightness(0) invert(1); }
 [hidden] { display:none !important; }
 @media(max-width:860px){#account-dialog { padding:var(--spacing-lg); }}
 @media(prefers-reduced-motion:no-preference){[data-studio-reveal]{opacity:0;transform:translateY(var(--spacing-md));transition:opacity var(--duration-slow) var(--ease-standard),transform var(--duration-slow) var(--ease-standard);}[data-studio-visible]{opacity:1;transform:none;}}

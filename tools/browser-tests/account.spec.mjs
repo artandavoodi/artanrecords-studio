@@ -23,6 +23,19 @@ test('first-visit consent persists an explicit choice and cannot be dismissed as
  await page.reload();await expect(page.locator('#account-dialog')).toBeVisible();await expect(consent).toBeHidden();
  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('neuroartan.cookieConsent')).preferences['experience-preferences'])).toBe(true);
 });
+test('named themes survive sign-out and keep authentication fields and destructive icons consistent',async({page})=>{
+ await mockBackend(page);await signInFixture(page);
+ for(const label of ['Silver','Gold','Platinum']){
+  await page.goto('/settings/#appearance');await page.getByRole('button',{name:label,exact:true}).click();
+  await page.goto('/profile/');const fill=await page.locator('[data-profile-form] [name=display_name]').evaluate(el=>getComputedStyle(el).backgroundColor);
+  await page.goto('/settings/#security');const signout=page.locator('[data-settings-panel=security] [data-signout]');
+  await expect(signout).toHaveCSS('color','rgb(255, 85, 85)');await expect(signout.locator('.studio-signout-icon')).toHaveCSS('background-color','rgb(255, 85, 85)');await expect(signout.locator('.studio-signout-icon')).toHaveCSS('filter','none');await signout.click();
+  await expect(page).toHaveURL(/\/account\/$/);await expect(page.locator('#account-dialog')).toBeVisible();await expect(page.locator('html')).toHaveAttribute('data-partnership-theme',label.toLowerCase());
+  await expect(page.locator('[data-auth-form] [name=email]')).toHaveCSS('background-color',fill);await expect(page.locator('[data-auth-form] [name=password]')).toHaveCSS('background-color',fill);
+  await page.locator('[data-auth-action=signup]').click();await expect(page.locator('[data-auth-form] [name=password]')).toHaveCSS('background-color',fill);
+  await page.locator('[data-auth-action=signin]').click();await signInFixture(page);
+ }
+});
 test('Platinum restores button-matched fields and uniform hairlines from stale saved tokens',async({page})=>{
  await mockBackend(page);await signInFixture(page);
  await page.route('**/rest/v1/studio_user_preferences*',route=>route.fulfill({json:{appearance:{partnershipTheme:'platinum',theme:{theme:'custom',effective:'dark',tokens:{accent:'#917c6f',accentHover:'#917c6f',background:'#100c08',surface:'#917c6f',border:'#917c6f',text:'#ffffff'}},toggles:{}}}}));

@@ -1,10 +1,13 @@
+export function readConsentChoice(storage,now=Date.now()){
+ try{const consent=JSON.parse(storage.getItem('neuroartan.cookieConsent'));if(!['accepted','rejected','customized'].includes(consent?.state))return null;if(consent.expires!==undefined&&(!Number.isFinite(consent.expires)||consent.expires<=now))return null;return consent.preferences?.['experience-preferences']===true?'allow':'skip';}catch{return null;}
+}
 export function readChoice(storage,config,now=Date.now()){
-  try{const consent=JSON.parse(storage.getItem('neuroartan.cookieConsent'));if(consent&&consent.state!=='pending')return consent.preferences?.['experience-preferences']?'allow':'skip';}catch{}
+  try{if(storage.getItem('neuroartan.cookieConsent')!==null)return readConsentChoice(storage,now);}catch{}
   try{const saved=JSON.parse(storage.getItem(config.choiceKey));return ['allow','skip'].includes(saved?.choice)&&Number.isFinite(saved.expires)&&saved.expires>now?saved.choice:null;}catch{return null;}
 }
 export function installPreferenceStorage(){
   const runtime=window.__NEURO_MAIN_RUNTIME__||={};
-  const allowed=()=>{try{return JSON.parse(localStorage.getItem('neuroartan.cookieConsent'))?.preferences?.['experience-preferences']===true;}catch{return false;}};
+  const allowed=()=>readConsentChoice(localStorage)==='allow';
   runtime.preferenceStorage={getItem(key){try{return (allowed()?localStorage:sessionStorage).getItem(key);}catch{return null;}},setItem(key,value){try{sessionStorage.setItem(key,value);if(allowed())localStorage.setItem(key,value);}catch{}},removeItem(key){try{localStorage.removeItem(key);sessionStorage.removeItem(key);}catch{}}};
   return runtime.preferenceStorage;
 }

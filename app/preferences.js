@@ -1,5 +1,5 @@
 import config from '../content/account.json';
-import {installPreferenceStorage} from './appearance.js';
+import {installPreferenceStorage,readConsentChoice} from './appearance.js';
 import {initializePreferences} from '../assets/js/core/preferences.js';
 export async function bindPreferences(){
   const storage=installPreferenceStorage();
@@ -15,7 +15,7 @@ export async function bindPreferences(){
     for(const key of keys){try{const value=sessionStorage.getItem(key);if(allowed&&value!==null)localStorage.setItem(key,value);else if(!allowed)localStorage.removeItem(key);}catch{}}
     storage.setItem('neuroartan-theme-state',JSON.stringify(window.NeuroartanTheme.getCurrentThemeState()));
   });
-  const choice=()=>{try{const record=JSON.parse(localStorage.getItem('neuroartan.cookieConsent'));if(!['accepted','rejected','customized'].includes(record?.state))return null;if(record.expires&&record.expires<Date.now())return null;return record.preferences?.['experience-preferences']?'allow':'skip';}catch{return null;}};
+  const choice=()=>readConsentChoice(localStorage);
   controller=await initializePreferences({legal,noticeUrl:'/cookies/',state:{choice,choose(value){
     const allowed=value==='allow',record={state:allowed?'accepted':'rejected',preferences:{essential:true,'experience-preferences':allowed,'analytics-performance':false,'analytics-usage':false,'experience-continuity':false},updatedAt:new Date().toISOString(),expires:Date.now()+config.preferences.validDays*86400000};
     try{localStorage.setItem('neuroartan.cookieConsent',JSON.stringify(record));}catch{}

@@ -2,6 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {configured,resolveUser,profileValues,privatePhone,validPhoto,requestGoogleSignIn,readAccountCallback} from '../app/account.js';
+import {readConsentChoice} from '../app/appearance.js';
+test('expired and invalid consent cannot authorize persistent appearance storage',()=>{
+ const record={state:'accepted',expires:100,preferences:{'experience-preferences':true}};
+ const storage={getItem:()=>JSON.stringify(record)};assert.equal(readConsentChoice(storage,99),'allow');assert.equal(readConsentChoice(storage,100),null);record.expires='forever';assert.equal(readConsentChoice(storage,1),null);record.expires=100;record.state='pending';assert.equal(readConsentChoice(storage,1),null);
+});
 test('short biography accepts 250 characters and rejects overflow without truncation',()=>{
  const form=new FormData();form.set('biography','A'.repeat(250));assert.equal(profileValues(form).biography.length,250);
  form.set('biography','A'.repeat(251));assert.throws(()=>profileValues(form),/shorten/);

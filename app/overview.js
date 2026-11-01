@@ -1,4 +1,5 @@
 import appearance from '../content/appearance.json' with {type:'json'};
+import account from '../content/account.json' with {type:'json'};
 import plans from '../assets/data/studio-plans.json' with {type:'json'};
 import {hasProAccess,hasStudioAccess} from './subscriptions.js';
 export function partnershipSummary(application){
@@ -24,7 +25,16 @@ export function bindPartnershipThemes(){
  const base=getComputedStyle(root).getPropertyValue('--color-primary1').trim();
  if(inline)root.style.setProperty('--color-primary1',inline);
  document.documentElement.style.setProperty('--studio-brand-primary1',base);
- const clear=()=>{delete document.documentElement.dataset.partnershipTheme;document.querySelectorAll('[data-partnership-theme]').forEach(button=>button.setAttribute('aria-pressed','false'));};
+ const storage=window.__NEURO_MAIN_RUNTIME__?.preferenceStorage;
+ const state=window.NeuroartanTheme.getCurrentThemeState();
+ // Recover pre-metadata named themes only when their full non-border palette matches.
+ const selected=appearance.presets.find(item=>item.id===storage?.getItem(account.preferences.presetKey))||(state.theme==='custom'?appearance.presets.find(item=>Object.entries(resolveAppearanceTokens(item.tokens,key=>getComputedStyle(root).getPropertyValue(key).trim())).filter(([key])=>key!=='border').every(([key,value])=>state.tokens[key]?.toLowerCase()===value.toLowerCase())):null);
+ if(selected&&window.NeuroartanTheme.getCurrentThemeState().theme==='custom'){
+  root.dataset.partnershipTheme=selected.id;
+  storage?.setItem(account.preferences.presetKey,selected.id);
+  window.NeuroartanTheme.applyThemeState({...window.NeuroartanTheme.getCurrentThemeState(),effective:selected.effective,tokens:resolveAppearanceTokens(selected.tokens,key=>getComputedStyle(root).getPropertyValue(key).trim())});
+ }
+ const clear=()=>{delete document.documentElement.dataset.partnershipTheme;storage?.removeItem(account.preferences.presetKey);document.querySelectorAll('[data-partnership-theme]').forEach(button=>button.setAttribute('aria-pressed','false'));};
  document.addEventListener('input',event=>{if(event.target.matches?.('[data-theme-token]'))clear();});
  document.querySelector('[data-home-platform-theme-palette-select]')?.addEventListener('change',clear);
  document.querySelectorAll('[data-theme-option]').forEach(button=>button.addEventListener('click',clear));
@@ -33,6 +43,7 @@ export function bindPartnershipThemes(){
   const preset=appearance.presets.find(theme=>theme.id===button.dataset.partnershipTheme),theme=window.NeuroartanTheme;if(!preset||!theme)return;
   const tokens=resolveAppearanceTokens(preset.tokens,key=>getComputedStyle(document.documentElement).getPropertyValue(key).trim());
   document.documentElement.dataset.partnershipTheme=preset.id;
+  storage?.setItem(account.preferences.presetKey,preset.id);
   const state=theme.getCurrentThemeState();theme.applyThemeState({...state,theme:'custom',effective:preset.effective,tokens});
   for(const option of document.querySelectorAll('[data-partnership-theme]'))option.setAttribute('aria-pressed',String(option===button));
  };
