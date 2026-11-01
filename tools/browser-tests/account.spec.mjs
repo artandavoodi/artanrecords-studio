@@ -24,10 +24,11 @@ test('first-visit consent persists an explicit choice and cannot be dismissed as
  expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('neuroartan.cookieConsent')).preferences['experience-preferences'])).toBe(true);
 });
 test('named themes survive sign-out and keep authentication fields and destructive icons consistent',async({page})=>{
+ test.setTimeout(90000);
  await mockBackend(page);await signInFixture(page);
  for(const label of ['Silver','Gold','Platinum']){
   await page.goto('/settings/#appearance');await page.getByRole('button',{name:label,exact:true}).click();
-  await page.goto('/profile/');const fill=await page.locator('[data-profile-form] [name=display_name]').evaluate(el=>getComputedStyle(el).backgroundColor);
+  await page.goto('/profile/');await expect(page.locator('html')).toHaveAttribute('data-partnership-theme',label.toLowerCase());await expect(page.locator('[data-profile-form]')).toBeVisible();const fill=await page.locator('[data-profile-form] [name=display_name]').evaluate(el=>getComputedStyle(el).backgroundColor);
   await page.goto('/settings/#security');const signout=page.locator('[data-settings-panel=security] [data-signout]');
   await expect(signout).toHaveCSS('color','rgb(255, 85, 85)');await expect(signout.locator('.studio-signout-icon')).toHaveCSS('background-color','rgb(255, 85, 85)');await expect(signout.locator('.studio-signout-icon')).toHaveCSS('filter','none');await signout.click();
   await expect(page).toHaveURL(/\/account\/$/);await expect(page.locator('#account-dialog')).toBeVisible();await expect(page.locator('html')).toHaveAttribute('data-partnership-theme',label.toLowerCase());

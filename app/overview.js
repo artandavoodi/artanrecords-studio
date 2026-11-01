@@ -29,10 +29,10 @@ export function bindPartnershipThemes(){
  const state=window.NeuroartanTheme.getCurrentThemeState();
  // Recover pre-metadata named themes only when their full non-border palette matches.
  const selected=appearance.presets.find(item=>item.id===storage?.getItem(account.preferences.presetKey))||(state.theme==='custom'?appearance.presets.find(item=>Object.entries(resolveAppearanceTokens(item.tokens,key=>getComputedStyle(root).getPropertyValue(key).trim())).filter(([key])=>key!=='border').every(([key,value])=>state.tokens[key]?.toLowerCase()===value.toLowerCase())):null);
- if(selected&&window.NeuroartanTheme.getCurrentThemeState().theme==='custom'){
+ if(selected){
   root.dataset.partnershipTheme=selected.id;
   storage?.setItem(account.preferences.presetKey,selected.id);
-  window.NeuroartanTheme.applyThemeState({...window.NeuroartanTheme.getCurrentThemeState(),effective:selected.effective,tokens:resolveAppearanceTokens(selected.tokens,key=>getComputedStyle(root).getPropertyValue(key).trim())});
+  window.NeuroartanTheme.applyThemeState({...window.NeuroartanTheme.getCurrentThemeState(),theme:'custom',effective:selected.effective,tokens:resolveAppearanceTokens(selected.tokens,key=>getComputedStyle(root).getPropertyValue(key).trim())});
  }
  const clear=()=>{delete document.documentElement.dataset.partnershipTheme;storage?.removeItem(account.preferences.presetKey);document.querySelectorAll('[data-partnership-theme]').forEach(button=>button.setAttribute('aria-pressed','false'));};
  document.addEventListener('input',event=>{if(event.target.matches?.('[data-theme-token]'))clear();});
