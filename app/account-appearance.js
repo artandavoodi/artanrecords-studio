@@ -1,4 +1,6 @@
 import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
+import presets from '../content/appearance.json' with {type:'json'};
+import {resolveAppearanceTokens} from './overview.js';
 const effects=['breathing-circle','cinematic-background','hero-shader','matte-atmosphere'];
 const tokens=['accent','accentHover','background','text','surface','border'];
 export function appearanceValues(value){
@@ -26,8 +28,12 @@ export async function bindAccountAppearance({client,resolveUser}){
  if(result.error||changed||(await resolveUser(client).catch(()=>null))?.id!==owner.id)return;
  const value=appearanceValues(result.data?.appearance);if(!value)return;applying=true;
  try{
-  window.NeuroartanTheme.applyThemeState(value.theme);
+  // Named themes resolve from their canonical preset, not a stale mixed palette.
+  const preset=presets.presets.find(item=>item.id===value.partnershipTheme);
+  const theme=preset?{...value.theme,theme:'custom',effective:preset.effective,tokens:resolveAppearanceTokens(preset.tokens,key=>key==='--studio-brand-primary1'?document.documentElement.style.getPropertyValue(key)||getComputedStyle(document.documentElement).getPropertyValue('--color-primary1').trim():getComputedStyle(document.documentElement).getPropertyValue(key).trim())}:value.theme;
+  window.NeuroartanTheme.applyThemeState(theme);
   if(value.partnershipTheme)document.documentElement.dataset.partnershipTheme=value.partnershipTheme;
+  for(const button of document.querySelectorAll('[data-partnership-theme]'))button.setAttribute('aria-pressed',String(button.dataset.partnershipTheme===value.partnershipTheme));
   const storage=window.__NEURO_MAIN_RUNTIME__?.preferenceStorage,states=Object.fromEntries(Object.entries(value.toggles).map(([key,checked])=>['homepage-theme:'+key,checked]));
   storage?.setItem('neuroartan.toggle.state',JSON.stringify(states));
   window.NeuroartanToggle.syncHomepageThemeToggleAttributesFromStorage();

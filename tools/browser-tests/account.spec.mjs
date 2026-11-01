@@ -5,6 +5,40 @@ const id='92000000-0000-0000-0000-000000000001';
 const user={id,aud:'authenticated',role:'authenticated',email:'artist@example.test',email_confirmed_at:'2026-10-20T00:00:00Z',created_at:'2026-10-20T00:00:00Z',app_metadata:{provider:'email'},user_metadata:{full_name:'Test artist'}};
 const access=[{alg:'HS256',typ:'JWT'},{sub:id,role:'authenticated',aud:'authenticated',exp:Math.floor(Date.now()/1000)+3600},'test-signature'].map(value=>Buffer.from(typeof value==='string'?value:JSON.stringify(value)).toString('base64url')).join('.');
 const session={access_token:access,refresh_token:'test-refresh-not-a-real-credential',token_type:'bearer',expires_in:3600,user};
+test('signed-out workspace routes show signup without mounting tools or requesting private records',async({page})=>{
+ const requests=await mockBackend(page);
+ for(const path of ['/settings/','/editor/','/shares/','/gallery/','/']){
+  await page.goto(path);await expect(page).toHaveURL(/\/account\/\?mode=signup$/);
+  await expect(page.locator('#account-title')).toHaveText('Create account');
+  await expect(page.locator('[data-auth-form]')).toBeVisible();
+  await expect(page.locator('[data-platform-layout],[data-settings-tab],[data-artist-editor]')).toHaveCount(0);
+  await expect(page.locator('[data-menu-toggle]')).toBeHidden();
+ }
+ expect(requests.some(request=>request.path.startsWith('/rest/v1/'))).toBe(false);
+});
+test('first-visit consent persists an explicit choice and cannot be dismissed as consent',async({page})=>{
+ await page.goto('/account/');const consent=page.locator('.privacy-preferences');await expect(consent).toBeVisible();
+ await page.keyboard.press('Escape');await expect(consent).toBeVisible();
+ await consent.getByRole('button',{name:'Allow',exact:true}).click();await expect(consent).toBeHidden();
+ await page.reload();await expect(page.locator('#account-dialog')).toBeVisible();await expect(consent).toBeHidden();
+ expect(await page.evaluate(()=>JSON.parse(localStorage.getItem('neuroartan.cookieConsent')).preferences['experience-preferences'])).toBe(true);
+});
+test('Platinum restores button-matched fields and uniform hairlines from stale saved tokens',async({page})=>{
+ await mockBackend(page);await signInFixture(page);
+ await page.route('**/rest/v1/studio_user_preferences*',route=>route.fulfill({json:{appearance:{partnershipTheme:'platinum',theme:{theme:'custom',effective:'dark',tokens:{accent:'#917c6f',accentHover:'#917c6f',background:'#100c08',surface:'#917c6f',border:'#917c6f',text:'#ffffff'}},toggles:{}}}}));
+ await page.goto('/settings/#addresses');await expect(page.locator('html')).toHaveAttribute('data-partnership-theme','platinum');
+ await expect(page.locator('html')).toHaveCSS('--control-border','#252525');
+ await page.locator('.studio-billing summary').click();
+ const fields=page.locator('.studio-billing .ui-field');await expect(fields.first()).toBeVisible();
+ const buttonFill=await page.locator('.studio-billing .ui-button').first().evaluate(el=>getComputedStyle(el).backgroundColor);
+ for(const field of await fields.all()){await expect(field).toHaveCSS('border-top-color','rgb(37, 37, 37)');await expect(field).toHaveCSS('background-color',buttonFill);}
+ const lines=page.locator('.studio-header-frame,.studio-footer,.studio-partnership-themes');
+ for(const line of await lines.all()){
+  const border=await line.evaluate(el=>{const css=getComputedStyle(el);return ['Top','Right','Bottom','Left'].filter(side=>css['border'+side+'Style']!=='none'&&parseFloat(css['border'+side+'Width'])>0).map(side=>({width:css['border'+side+'Width'],color:css['border'+side+'Color']}));});
+  const expectedWidth=await page.evaluate(()=>{const probe=document.createElement('div');probe.style.borderTop='var(--border-width-hairline) solid';document.body.append(probe);const width=getComputedStyle(probe).borderTopWidth;probe.remove();return width;});
+  for(const edge of border){expect(edge.width).toBe(expectedWidth);expect(edge.color).toBe('rgb(37, 37, 37)');}
+ }
+});
 test('overview shows approved tier separately from active software access',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.route('**/rest/v1/studio_artist_applications*',route=>route.fulfill({json:{status:'approved',approved_tier:'gold',requested_tier:'gold'}}));
@@ -53,7 +87,7 @@ test('Spotify PKCE sign-in is isolated from Studio login and verifies the listen
  await page.getByRole('button',{name:'Disconnect',exact:true}).click();await expect(page.locator('[data-service=spotify-account]')).toHaveAttribute('data-connected','false');await expect(page.locator('[data-connect-music=apple]')).toHaveCount(0);
 });
 test('internal signing preview requires initials and remains a non-binding local record',async({page})=>{
- await mockBackend(page);await page.goto('/agreements/');
+ await mockBackend(page);await signInFixture(page);await page.goto('/agreements/');
  await page.getByRole('button',{name:'Preview internal signing',exact:true}).click();
  const dialog=page.locator('[data-signing-preview]');await expect(dialog).toBeVisible();
  await expect(dialog.getByRole('button',{name:'Download preview record'})).toBeDisabled();
@@ -127,6 +161,9 @@ async function openAccount(page){
   await expect(dialog).toBeVisible();
   return dialog;
 }
+async function signInFixture(page){
+ const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+}
 test('subscription billing is separate from payouts and only verified access displays Pro',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
@@ -179,7 +216,7 @@ test('gallery collections and video edits preserve owner metadata',async({page})
  await page.getByRole('button',{name:'Photographs & videos',exact:true}).click();await page.locator('[data-portfolio-list]').getByRole('button',{name:'Edit',exact:true}).click();const edit=page.getByRole('dialog',{name:'Edit gallery item',exact:true});await expect(edit.locator('[name=media_type]')).toHaveValue('video');await expect(edit.locator('[name=video_url]')).toBeVisible();await expect(edit.locator('[name=video_url]')).toHaveValue('https://www.youtube.com/watch?v=abcdefghijk');await edit.locator('[data-portfolio-collection]').selectOption('Performances');await edit.getByRole('button',{name:'Save draft',exact:true}).click();await expect(edit).toBeHidden();expect(saved.value).toMatchObject({media_type:'video',video_url:'https://www.youtube.com/watch?v=abcdefghijk',collection:'Performances'});
 });
 test('appearance reuses all canonical visual layers and disables controls in plain themes',async({page})=>{
- await mockBackend(page);await page.goto('/settings/#appearance');
+ await mockBackend(page);await signInFixture(page);await page.goto('/settings/#appearance');
  await page.locator('[data-theme-option=custom]').click();
  const breathing=page.locator('[data-toggle-scope=homepage-theme][data-toggle-key=breathing-circle]');
  await expect(breathing).toBeEnabled();await breathing.click();
@@ -250,6 +287,7 @@ test('artist pages save private drafts separately from published snapshots',asyn
  await pages.getByRole('button',{name:'My Hub · Published',exact:true}).click();await pages.getByRole('button',{name:'Hide page',exact:true}).click();await expect.poll(()=>record?.published).toBeNull();
 });
 test('editor search keeps its field stable and links directly to Store tools',async({page})=>{
+ await mockBackend(page);await signInFixture(page);
  await page.goto('/search/?scope=editor');
  const search=page.locator('[data-studio-search-page]'),input=search.getByRole('searchbox');
  await expect(input).toBeEnabled();
@@ -448,7 +486,7 @@ test('Store backend unavailability does not simulate a shop or expose an unusabl
  await page.goto('/store/');await expect(page.locator('[data-commerce-status]')).toHaveText('Store preparation is not connected yet. Your existing shop has not changed.');await expect(page.locator('[data-commerce-controls]')).toBeHidden();await expect(page.locator('[data-commerce-prepare]')).toBeHidden();
 });
 test('Studio reuses magnetic navigation for drag collapse and reopening',async({page})=>{
- await page.emulateMedia({reducedMotion:'reduce'});await mockBackend(page);await page.goto('/profile/');
+ await page.emulateMedia({reducedMotion:'reduce'});await mockBackend(page);await signInFixture(page);await page.goto('/profile/');
  const handle=page.getByRole('separator',{name:'Resize navigation',exact:true}),rail=page.locator('.studio-platform-rail');
  if(!test.info().project.name.endsWith('desktop')){await expect(handle).toBeHidden();return;}
  await expect(handle).toBeVisible();expect((await rail.boundingBox()).x).toBe(0);const maximum=await rail.evaluate(el=>el.getBoundingClientRect().width),iconLeft=await rail.locator('.studio-platform-group a img').first().evaluate(el=>el.getBoundingClientRect().left);
@@ -650,6 +688,7 @@ test('artist notifications retain decisions and mark only the selected item read
 });
 test('search keeps branded close controls and focuses typing immediately',async({page})=>{
   await mockBackend(page);
+  await signInFixture(page);
   await page.goto('/');
   await page.locator('[data-studio-search-open]').first().click();
   const dialog=page.locator('#store-search-dialog');
@@ -679,8 +718,8 @@ test('signup and recovery keep distinct fields, required consent and usable clos
   await dialog.locator('[data-auth-submit]').click();
   await expect(dialog.locator('[data-account-status]')).toContainText('If an account matches');
   expect(requests.find(request=>request.path.endsWith('/recover')).query).toContain('flow%3Drecovery');
-  await dialog.locator('#account-close').click();
-  await expect(dialog).toBeHidden();
+  await expect(dialog.locator('#account-close')).toBeHidden();
+  await expect(dialog).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
 });
 test('payout applications submit inside Studio, persist under review and never invoke Stripe',async({page})=>{
@@ -693,6 +732,7 @@ test('payout applications submit inside Studio, persist under review and never i
 });
 test('Bank and payout settings never simulate money or enable withdrawals',async({page})=>{
   await mockBackend(page);
+  await signInFixture(page);
   await page.goto('/payouts/');
   await expect(page.getByRole('heading',{name:'Bank',exact:true})).toBeVisible();
   await page.getByRole('tab',{name:'Withdrawals',exact:true}).click();
@@ -702,7 +742,7 @@ test('Bank and payout settings never simulate money or enable withdrawals',async
   await expect(page.getByRole('tab',{name:'Withdrawals',exact:true})).toHaveAttribute('aria-selected','true');
   await page.getByRole('link',{name:'Payment & payout settings',exact:true}).click();
   await expect(page.getByRole('tab',{name:'Artist payout setup',exact:true})).toHaveAttribute('aria-selected','true');
-  await expect(page.getByRole('tabpanel',{name:'Artist payout setup',exact:true})).toContainText('Sign in to manage your payout application.');
+  await expect(page.getByRole('tabpanel',{name:'Artist payout setup',exact:true}).locator('[data-payout-application-form]')).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)).toBe(false);
 });
 test('sign-in opens a private profile and sign-out does not revoke other applications',async({page})=>{

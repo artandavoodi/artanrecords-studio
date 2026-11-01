@@ -22,7 +22,7 @@
 .studio-overview > header p { margin:0; color:var(--cv-text-secondary); }
 .studio-overview > p { max-inline-size:var(--cv-reading-width); font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 .studio-overview .studio-platform-features { grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--spacing-lg); }
-.studio-overview .surface-card { display:grid; grid-template-columns:auto minmax(0,1fr); align-content:start; align-items:center; gap:var(--spacing-md); border-block-end:var(--border-width-hairline) solid var(--cv-border); padding-block:var(--spacing-lg); }
+.studio-overview .surface-card { display:grid; grid-template-columns:auto minmax(0,1fr); align-content:start; align-items:center; gap:var(--spacing-md); border-block-start:0; border-block-end:var(--border-width-hairline) solid var(--cv-border); padding-block:var(--spacing-lg); }
 .studio-overview .surface-card p { grid-column:2; margin:0; color:var(--cv-text-secondary); }
 .studio-overview .surface-card a { color:inherit; text-decoration:none; }
 @media(max-width:640px){.studio-overview .studio-platform-features { grid-template-columns:minmax(0,1fr); }}
@@ -35,6 +35,8 @@
 .studio-partnership-themes { display:grid; gap:var(--spacing-md); padding-block:0 var(--spacing-lg); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
 .studio-settings .studio-partnership-themes .ui-button { background:transparent; box-shadow:none; padding-inline:0; }
 .studio-partnership-themes [aria-pressed=false] { opacity:var(--state-opacity-muted); }
+/* Platinum fields and buttons share one surface; every separator uses one hairline. */
+html[data-partnership-theme=platinum] { --control-surface:var(--control-bg-hover); --control-border-unified:var(--cv-border); --border-width-hairline:0.5px; }
 @media(max-width:640px){.studio-overview-membership { grid-template-columns:minmax(0,1fr); }}
 .studio-platform { position:relative; display:grid; grid-template-columns:var(--studio-rail-width,var(--layout-home-platform-rail-width)) minmax(0,1fr); gap:var(--spacing-xl); align-items:stretch; }
 .studio-platform-content { min-inline-size:0; }

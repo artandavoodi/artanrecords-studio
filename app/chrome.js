@@ -5,7 +5,7 @@ export function bindChrome(){
   const account=document.getElementById('account-dialog'),search=document.getElementById('store-search-dialog');
   const menu=document.querySelector('[data-menu-toggle]'),searchClose=search.querySelector('[data-search-close]');
   let arrival,user=null;
-  const openAccount=(force=false)=>{if(user&&!force){location.assign('/profile/');return;}if(search.open)search.close();if(document.documentElement.hasAttribute('data-menu-open'))menu.click();openDialog(account);account.querySelector('[data-recovery-form]:not([hidden]) input,[data-auth-form]:not([hidden]) input[type=email]')?.focus({preventScroll:true});};
+  const openAccount=(force=false)=>{if(user&&!force){location.assign('/profile/');return;}if(search.open)search.close();if(document.documentElement.hasAttribute('data-menu-open'))menu.click();if(!account.open)openDialog(account);account.querySelector('[data-recovery-form]:not([hidden]) input,[data-auth-form]:not([hidden]) input[type=email]')?.focus({preventScroll:true});};
   document.querySelectorAll('[data-studio-account-open]').forEach(button=>button.addEventListener('click',()=>openAccount()));
   account.querySelector('#account-close').addEventListener('click',()=>account.close());
   const openSearch=opener=>{

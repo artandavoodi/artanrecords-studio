@@ -29,10 +29,9 @@
 @import url('./neuroartan/assets/css/core/03-primitives/dropdown.css');
 @import url('./neuroartan/assets/css/core/03-primitives/pickers.css');
 @import url('./neuroartan/assets/css/layers/website/home/platform-menu/settings/_shared/settings-category.css');
-@import url('./neuroartan/assets/css/layers/website/overlays/cookie/cookie-consent.css');
-@import url('./neuroartan/assets/css/layers/website/overlays/cookie/cookie-learning-overlay.css');
 @import url('./neuroartan/assets/css/layers/website/home/platform-menu/settings/appearance/index.css');
 body { isolation:isolate; }
+.studio-auth-page[open] { position:static; margin:var(--spacing-xl) auto; inline-size:min(var(--reading-width-sm),calc(100% - var(--spacing-xl))); background:transparent; border:0; box-shadow:none; }
 .studio-visual-layers { position:fixed; inset:0; z-index:-1; pointer-events:none; }
 .studio-pro-badge { font-size:var(--site-type-caption-size); padding:var(--spacing-xs) var(--spacing-sm); border-radius:var(--control-radius-pill); background:var(--control-bg-hover); color:var(--cv-text-primary); }
 .studio-portfolio,.studio-portfolio-list { display:grid; gap:var(--spacing-lg); }

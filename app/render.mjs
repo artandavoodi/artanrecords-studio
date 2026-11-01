@@ -1,6 +1,6 @@
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {cookieMarkup,visualLayersMarkup} from './platform-sources.mjs';
+import {visualLayersMarkup} from './platform-sources.mjs';
 import {renderPlatformNavigation,renderOverview,renderSettings} from './platform-render.mjs';
 import {renderIcon} from './icon-render.mjs';
 import {profileMarkup} from './profile-render.mjs';
@@ -17,7 +17,7 @@ export {renderMenu} from './platform-render.mjs';
 export {renderNavigation,renderFooter} from './shell-render.mjs';
 export {renderActions} from './dialog-render.mjs';
 import {renderDialogs as accountDialogs} from './dialog-render.mjs';
-export function renderDialogs(context){return visualLayersMarkup+accountDialogs(context)+`<div class="ui-loading-surface" role="status" aria-label="Loading Studio"><span class="ui-loader-circle" aria-hidden="true"></span></div><div id="cookie-consent-mount">${cookieMarkup}</div>`;}
+export function renderDialogs(context){return visualLayersMarkup+accountDialogs(context)+`<div class="ui-loading-surface" role="status" aria-label="Loading Studio"><span class="ui-loader-circle" aria-hidden="true"></span></div>`;}
 const settings=JSON.parse(await readFile(new URL('../content/account.json',import.meta.url),'utf8'));
 const programmes=JSON.parse(await readFile(new URL('../content/programmes.json',import.meta.url),'utf8'));
 const legal=JSON.parse(await readFile(new URL('../assets/data/studio-legal.json',import.meta.url),'utf8'));
@@ -47,5 +47,7 @@ export async function render(page,{config,e,search}){
   else if(page.path==='/agreements/')body=agreementsMarkup(e,icon);
   else body=`<p class="surface-status" role="status">${e(page.status||settings.unavailable)}</p><a href="/account/">Your Studio account</a>`;
   const content=`<section class="${page.path==='/settings/'?'studio-settings-surface':'site-section'} surface studio-surface">${page.path==='/settings/'?'<h1 class="sr-only">Settings</h1>':header}${body}</section>`;
-  return ['/privacy/','/terms/','/cookies/','/account/','/search/'].includes(page.path)?content:`<div class="studio-platform" data-platform-layout>${renderPlatformNavigation(page,e)}<div class="studio-platform-content">${content}</div></div>`;
+  if(['/privacy/','/terms/','/cookies/','/account/'].includes(page.path))return content;
+  const workspace=page.path==='/search/'?content:`<div class="studio-platform" data-platform-layout>${renderPlatformNavigation(page,e)}<div class="studio-platform-content">${content}</div></div>`;
+  return `<template data-studio-workspace>${workspace}</template>`;
 }

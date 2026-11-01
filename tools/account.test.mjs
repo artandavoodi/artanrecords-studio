@@ -158,14 +158,15 @@ test('platform storage uses session continuity without silently granting persist
 });
 test('cookie publication and platform controls use verified shared sources',async()=>{
   const {execFileSync}=await import('node:child_process');execFileSync(process.execPath,['tools/sync-platform.mjs']);
-  const html=await readFile('settings/index.html','utf8');assert.match(html,/data-cookie-consent="root"/);assert.match(html,/data-cookie-consent-row="essential"/);assert.match(html,/data-cookie-consent-toggle="analytics"/);assert.match(html,/ui-radio-list__indicator/);assert.match(html,/platform-menue-settings-appearance.svg/);
+  const html=await readFile('settings/index.html','utf8');assert.match(html,/<template data-studio-workspace>/);assert.doesNotMatch(html,/data-cookie-consent="root"/);assert.match(html,/platform-menue-settings-appearance.svg/);
+  const consent=await readFile('app/preferences.js','utf8');assert.match(consent,/initializePreferences/);assert.match(consent,/analytics-performance':false/);
   const notice=await readFile('cookies/index.html','utf8');assert.match(notice,/2026-10-19/);assert.match(notice,/session storage/);
   const royalties=await readFile('royalties/index.html','utf8');assert.doesNotMatch(royalties,/Read the financial context|Read the guidance|Accepted standard releases/);
 });
 test('Studio footer is copyright-only and public notices retain a single website owner',async()=>{
   const html=await readFile('index.html','utf8');const footer=html.match(/<footer class="studio-footer">([\s\S]*?)<\/footer>/)?.[1];assert.ok(footer);assert.doesNotMatch(footer,/<a\b|<button\b|Privacy|Submit|Contact/);assert.match(footer,/© 2026 Artanrecords/);
   const publication=JSON.parse(await readFile('assets/data/studio-legal.json','utf8'));const site=JSON.parse(await readFile('content/site.json','utf8'));
-  for(const notice of publication.notices){assert.equal(site.pages.find(page=>page.path===notice.legacyPath).sections.length,0);assert.ok(html.includes(publication.domain+notice.path));}
+  for(const notice of publication.notices){assert.equal(site.pages.find(page=>page.path===notice.legacyPath).sections.length,0);assert.ok(notice.path.startsWith('/studio-'));}
   const preferences=await readFile('app/preferences.js','utf8');assert.doesNotMatch(preferences,/information-links|append\(settings\)/);
 });
 test('overview distinguishes active private profiles from inactive artist operations',async()=>{

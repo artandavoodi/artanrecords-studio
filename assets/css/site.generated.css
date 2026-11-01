@@ -8085,7 +8085,7 @@ a[href^="mailto:"], .ui-email {
   line-height:var(--caption-1-line-height);
 }
 
-/* Same ecosystem dialog tokens; no border-based action or focus state. */
+/* Store-owned consent geometry and interaction presentation. */
 /* Generated from Neuroartan consent tokens and icon motion; edit the source, not this distribution. */
 :root{--dialog-consent-brand-symbol-wrap-size:2.4rem;
 --dialog-consent-brand-symbol-size:2.3rem;
@@ -8140,14 +8140,17 @@ a[href^="mailto:"], .ui-email {
 @media(max-width:1024px){.privacy-preferences__symbol img{inline-size:var(--dialog-consent-brand-symbol-size-mobile);block-size:var(--dialog-consent-brand-symbol-size-mobile);}}
 @media(prefers-reduced-motion:reduce){.privacy-preferences[open],.privacy-preferences__symbol img{animation:none;}}
 
-.privacy-preferences { inline-size:min(var(--reading-width-md),calc(100% - var(--spacing-xl))); max-block-size:calc(100svh - var(--spacing-xl)); overflow-y:auto; padding:var(--spacing-md); gap:var(--spacing-md); background:var(--glass-overlay-drawer-shell-bg); color:var(--cv-text-primary); border:0; border-radius:var(--dialog-radius-unified); scrollbar-width:none; }
-.privacy-preferences[open] { display:grid; text-align:center; }
+/* Store consent shell, shared without surface-specific geometry. */
+.privacy-preferences { inline-size:min(var(--layout-account-drawer-panel-width),calc(100% - var(--spacing-lg))); max-inline-size:calc(100% - var(--spacing-lg)); max-block-size:calc(100dvh - var(--spacing-xl)); overflow:auto; padding:var(--spacing-xl); background:var(--glass-overlay-drawer-shell-bg); color:var(--text-color); border:0; border-radius:var(--dialog-radius-unified); scrollbar-width:none; backdrop-filter:blur(var(--glass-overlay-shell-blur)) saturate(var(--glass-overlay-shell-saturate)); -webkit-backdrop-filter:blur(var(--glass-overlay-shell-blur)) saturate(var(--glass-overlay-shell-saturate)); }
+.privacy-preferences[open] { display:grid; gap:var(--spacing-md); text-align:center; }
 .privacy-preferences::backdrop { background:var(--glass-overlay-backdrop-bg); backdrop-filter:blur(var(--glass-overlay-backdrop-blur)) saturate(var(--glass-overlay-backdrop-saturate)); -webkit-backdrop-filter:blur(var(--glass-overlay-backdrop-blur)) saturate(var(--glass-overlay-backdrop-saturate)); }
-body:has(.privacy-preferences[open]) { overflow:hidden; }
-.privacy-preferences button { border:0; border-radius:var(--shape-control-radius); background:transparent; color:var(--cv-text-primary); cursor:pointer; }
+.privacy-preferences form { display:flex; flex-direction:row; margin:0; max-inline-size:none; }
+.privacy-preferences button { border:0; border-radius:var(--shape-control-radius); background:transparent; color:var(--text-color); cursor:pointer; }
 .privacy-preferences button:hover,.privacy-preferences button:focus-visible { background:var(--control-bg-hover); outline:none; }
 .privacy-preferences h2:focus { outline:none; }
 .privacy-preferences > a { justify-self:center; text-decoration:none; }
+body:has(.privacy-preferences[open]) { overflow:hidden; }
+
 .site-footer .information-links button { border:0; padding:0; background:transparent; cursor:pointer; }
 
 /* =========================================================
