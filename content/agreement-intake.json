@@ -1,6 +1,6 @@
 {
- "title":"Contract details",
- "notice":"When Artanrecords is ready to prepare an agreement, confirm your contracting details here. They are private to your account and authorized contract reviewers. Submitting this form does not sign an agreement or activate a partnership.",
+ "title":"Legal identity",
+ "notice":"Complete this form only when requested. Submitted legal identity is locked; contact the contract reviewer if it needs correction. Review and sign an offered document in Review & sign. These details are private to your account and authorized reviewers.",
  "states":{"awaiting_details":"Details requested","submitted":"Submitted for review","needs_changes":"Correction requested","approved":"Details reviewed for drafting","closed":"Request closed"},
  "fields":[
   {"name":"legal_name","label":"Your full legal name","required":true,"autocomplete":"name"},

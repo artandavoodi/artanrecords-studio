@@ -286,3 +286,14 @@ execution path separately. PDF copies contain the fixed document, recorded signa
 images, initials and activity. Images can be drawn or uploaded, cropped locally and
 reviewed before submission. A PDF copy is not a cryptographic PDF signature and
 does not claim Scrive-equivalent identity assurance or qualified signatures.
+
+The signing guide presents one fixed section at a time, advances after valid
+initials and then reveals drawn/uploaded signature capture. Navigation scrolls
+smoothly unless reduced motion is requested; full-document reading is also
+available. The artist signer name is read-only and comes from the reviewed
+contract-details version. Submitted legal identity stays locked during address
+corrections; an authorized identity change requires closing and reissuing the
+request. Date of birth is not collected by this intake.
+Studio separates **Review & sign** from **Legal identity** so the signing invitation
+is not confused with the once-requested identity form. Existing deep links remain
+unchanged.

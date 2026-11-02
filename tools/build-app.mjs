@@ -41,6 +41,6 @@ if(process.argv.includes('--sync-icons')){
   if(Object.keys(existing.files).length!==Object.keys(config.icons).length+1)throw Error('Synchronize the registered Studio icons before building.');
   for(const [name,hash] of Object.entries(existing.files))if(createHash('sha256').update(await readFile(`app/icons/${name}.svg`)).digest('hex')!==hash)throw Error('Registered icon drift: '+name);
 }
-await build({entryPoints:['app/main.js'],bundle:true,format:'esm',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/studio.js',minify:true,loader:{'.ttf':'binary'}});
+await build({entryPoints:['app/main.js'],bundle:true,format:'esm',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/studio.js',minify:true,loader:{'.ttf':'binary'},plugins:[{name:'pdf-worker-source',setup(build){build.onLoad({filter:/pdf\.worker\.mjs$/},async args=>({contents:await readFile(args.path,'utf8'),loader:'text'}));}}]});
 await build({entryPoints:['app/appearance-startup.js'],bundle:true,format:'iife',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/appearance.js',minify:true});
 await build({entryPoints:['app/studio.css'],bundle:true,target:['safari16','chrome110'],outfile:'app/dist/studio.css',minify:true,external:['/registry/*','/assets/*','/app/*']});

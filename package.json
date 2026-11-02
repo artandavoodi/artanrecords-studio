@@ -15,6 +15,7 @@
     "@supabase/supabase-js": "2.117.3",
     "esbuild": "0.25.12",
     "pdf-lib": "1.17.1",
+    "pdfjs-dist": "6.5.438",
     "tus-js-client": "4.3.1"
   },
   "devDependencies": {
