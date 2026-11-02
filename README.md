@@ -270,7 +270,7 @@ These are test records, not executed contracts or entitlement evidence.
    and explicitly confirm its non-binding purpose before recording it.
 5. In Control Center, review the artist record and record the label's test PNG
    against the same frozen document. Review and archive are separate actions.
-6. Download the archived JSON evidence record. Closing the rehearsal request
+6. Download the readable PDF copy. Closing the rehearsal request
    preserves its archive and permits a new test; it cannot activate a partnership.
 
 The hosted rehearsal completed these stages with fictional details and TEST ONLY
@@ -282,5 +282,7 @@ Real issuance remains disabled. Before enabling it, complete and review the lega
 parties and commercial terms; implement authenticated recipient delivery with
 revocation and expiry; finalize the human-readable signed document and its evidence
 package; establish retention and recovery procedures; and verify the complete real
-execution path separately. The rehearsal archive is JSON, not a signed PDF, and
+execution path separately. PDF copies contain the fixed document, recorded signature
+images, initials and activity. Images can be drawn or uploaded, cropped locally and
+reviewed before submission. A PDF copy is not a cryptographic PDF signature and
 does not claim Scrive-equivalent identity assurance or qualified signatures.

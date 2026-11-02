@@ -1,8 +1,19 @@
 .agreement-rehearsal { margin-block-start:var(--spacing-xl); padding-block-start:var(--spacing-xl); border-block-start:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); }
 .agreement-rehearsal-card { margin-block:var(--spacing-lg); }
 .agreement-rehearsal-card > summary { cursor:pointer; padding-block:var(--spacing-md); }
-.agreement-rehearsal-document { white-space:pre-wrap; overflow-wrap:anywhere; margin-block:var(--spacing-xl); }
+.agreement-rehearsal-document { white-space:pre-wrap; overflow-wrap:anywhere; margin-block:var(--spacing-xl); padding-block:var(--spacing-xl); border-block:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); line-height:1.7; max-inline-size:75ch; }
 .agreement-rehearsal-image { display:block; max-inline-size:100%; max-block-size:var(--spacing-4xl); object-fit:contain; object-position:left center; }
 .agreement-rehearsal code { overflow-wrap:anywhere; }
 .agreement-rehearsal form { margin-block:var(--spacing-xl); }
 .agreement-rehearsal form > button,.agreement-rehearsal > button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); }
+.agreement-rehearsal form { display:grid; gap:var(--spacing-lg); }
+.agreement-rehearsal form label:not(.studio-sharing) { display:grid; gap:var(--spacing-sm); }
+.agreement-rehearsal-card > summary::marker { color:var(--status-warning-color); }
+.agreement-rehearsal-card[data-state=archived] > summary::marker,.agreement-rehearsal-card[data-state=reviewed] > summary::marker { color:var(--status-success-color); }
+.agreement-next-step { margin-block:var(--spacing-md); }
+.agreement-reading-guide,.agreement-signature-modes { display:flex; flex-wrap:wrap; gap:var(--spacing-md); margin-block:var(--spacing-lg); }
+.agreement-signature-tools { min-inline-size:0; border:0; padding:0; display:grid; gap:var(--spacing-md); }
+.agreement-signature-tools canvas { inline-size:100%; max-inline-size:600px; aspect-ratio:10 / 3; background:var(--color-white,#fff); border:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); touch-action:none; }
+.agreement-signature-tools canvas[hidden] { display:none; }
+.agreement-signature-tools img { max-inline-size:100%; max-block-size:120px; object-fit:contain; background:var(--color-white,#fff); }
+.agreement-signature-modes label { display:flex; align-items:center; gap:var(--spacing-sm); }

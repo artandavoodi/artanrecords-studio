@@ -2,6 +2,8 @@
  "provider":"internal",
  "signingEnabled":false,
  "title":"Your agreements",
+ "documentHelp":"Open a document to read it, review its status and see what to do next.",
+ "tabs":[{"id":"contract-rehearsal","label":"Documents"},{"id":"contract-details","label":"Contract details"},{"id":"contract-collaboration","label":"Collaboration"},{"id":"contract-help","label":"Help"}],
  "empty":"No executed agreements are connected here. Proposed collaboration terms are listed separately below.",
  "notice":"Agreement drafting and staff review happen in Control Center. Drafts are not signed agreements and do not grant earnings, verification or a partnership.",
  "steps":[{"title":"Review","description":"Read the exact version shared with you and raise any questions before signing."},{"title":"Confirm","description":"An internal signing experience is being prepared. Production signing requires a fixed document version, authenticated signer, explicit consent and server-recorded evidence."},{"title":"Keep a copy","description":"A completed agreement and its evidence must be verified before it is listed as signed. The preview below does not create an agreement."}],

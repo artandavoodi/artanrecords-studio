@@ -4,7 +4,13 @@ import {agreementIntakeMarkup} from './agreement-intake-render.mjs';
 const terms=JSON.parse(await readFile(new URL('../assets/data/partnerships.json',import.meta.url),'utf8'));
 export function agreementsMarkup(e,icon){
  const reference=recordingReference(terms).map(section=>`<section><h3>${e(section.title)}</h3>${section.paragraphs.map(text=>`<p>${e(text)}</p>`).join('')}</section>`).join('');
- return agreementBody(e,icon)+agreementIntakeMarkup(e,icon)+`<section class="surface-section" data-signing-rehearsal></section><section class="surface-section studio-shares" data-agreement-drafts><h2>${icon('shares-agreement')}Proposed collaboration agreements</h2><p role="status" data-agreement-drafts-status>Sign in to see proposed terms shared with your account.</p><div data-agreement-drafts-list></div><a href="/shares/">${icon('shares')}Revenue Shares</a></section><section aria-label="Default recording partnership reference"><h2>Default terms and your agreement</h2><p>No signed financial terms are connected here. A partnership preference or approval is not a signed agreement. Actual shares must come from a verified agreement version and effective date, never from a tier name or public default.</p>${reference}</section>`;
+ const panels={
+  'contract-rehearsal':`<p>${e(config.documentHelp)}</p><section data-signing-rehearsal></section>`,
+  'contract-details':agreementIntakeMarkup(e,icon),
+  'contract-collaboration':`<section class="surface-section studio-shares" data-agreement-drafts><h2>${icon('shares-agreement')}Proposed collaboration agreements</h2><p role="status" data-agreement-drafts-status>Sign in to see proposed terms shared with your account.</p><div data-agreement-drafts-list></div><a href="/shares/">${icon('shares')}Revenue Shares</a></section>`,
+  'contract-help':agreementBody(e,icon)+`<details><summary>Default recording terms</summary>${reference}</details>`
+ };
+ return `<div class="studio-agreements"><nav class="studio-profile-tabs" role="tablist" aria-label="Agreements">${config.tabs.map((tab,index)=>`<button type="button" role="tab" id="tab-${tab.id}" aria-controls="panel-${tab.id}" aria-selected="${index===0}" tabindex="${index===0?0:-1}" data-settings-tab="${tab.id}">${e(tab.label)}</button>`).join('')}</nav>${config.tabs.map((tab,index)=>`<section id="panel-${tab.id}" role="tabpanel" aria-labelledby="tab-${tab.id}" data-settings-panel="${tab.id}"${index?' hidden':''}>${panels[tab.id]}</section>`).join('')}</div>`;
 }
 const config=JSON.parse(await readFile(new URL('../content/agreements.json',import.meta.url),'utf8'));
 if(config.signingEnabled)throw Error('Signing requires a verified provider integration');

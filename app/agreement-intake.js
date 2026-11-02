@@ -3,6 +3,7 @@ export async function bindAgreementIntake({client,resolveUser}){
  const root=document.querySelector('[data-agreement-intake]');if(!root||!client)return;
  const status=root.querySelector('[data-intake-status]'),list=root.querySelector('[data-intake-list]'),form=root.querySelector('form');
  const owner=await resolveUser(client).catch(()=>null);if(!owner)return;let request=null;
+ const identity=document.createElement('details'),summary=document.createElement('summary'),reference=document.createElement('p');summary.textContent='Your permanent account reference';reference.textContent=owner.id+' — this identifies your account, not a password. Changing your artist username does not change contract assignments.';identity.append(summary,reference);status.after(identity);
  const current=async()=>(await resolveUser(client))?.id===owner.id;
  const company=()=>{const enabled=form.elements.recipient_type.value==='company';for(const label of form.querySelectorAll('[data-intake-company]')){label.hidden=!enabled;label.querySelector('input').required=enabled;label.querySelector('input').disabled=!enabled;}};
  form.elements.recipient_type.addEventListener('change',company);

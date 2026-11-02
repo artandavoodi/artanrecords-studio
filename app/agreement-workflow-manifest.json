@@ -1,9 +1,13 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "4d34e73b1c9a6981ada763807d32b1ed5f5be72f",
+  "revision": "3202e8d3c311e1e077f8434675d0948e91146bab",
   "files": {
-    "app/shared/agreement-rehearsal.js": "e0b489b2161e3be13693a30c2e1955e84e7605665d7abdbb1900885471657ac2",
-    "app/shared/agreement-rehearsal.css": "566499966b649071b5c1b8c5501e3d61aa78ebc2b9398a843814d8cb2548bf97",
-    "content/agreement-rehearsal.json": "6932e0f8128f5ca40f1aec796dbdef0ffe67f5f318c206f7632604ca3fe2da10"
+    "app/shared/agreement-rehearsal.js": "8bb1b6e39260c62b3722b87bb48fe7caff0303902c918d8d84d1ec26bfa37d7b",
+    "app/shared/agreement-pdf.js": "8736a9ddc15e7ca3007f96734e2b55eaee368188e49c4463bd62ed91c19ce90b",
+    "app/shared/agreement-signature.js": "5f50dd93209869e9735a883cab0463f932713046a20e0d8b672e96be91abac01",
+    "app/shared/NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+    "app/shared/NotoSans-LICENSE.txt": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb",
+    "app/shared/agreement-rehearsal.css": "2b84a48b2719d293e0c13cc07ea0b5796a3ef95491a9e2cd2c3886ca6abf8707",
+    "content/agreement-rehearsal.json": "54e0b8f00ff5c1a9f0100906d5728678b163b1ad888b4aeee56535d5d3dadeb2"
   }
 }

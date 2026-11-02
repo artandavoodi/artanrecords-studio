@@ -12,7 +12,7 @@ export async function bindNotifications({client,resolveUser}){
    if((await resolveUser(client))?.id!==user.id)throw Error('Your session changed.');
    const result=await client.rpc('studio_read_notification',{notification:item.id});if(result.error)throw result.error;
    acknowledged.add(item.id);render();
-  },onOpen:item=>{popover.hidePopover();location.assign(item.kind==='agreement'?'/agreements/':item.kind==='release'?'/releases/#release-drafts':item.kind==='payout'?'/settings/#payments':'/profile/#profile-publication');}});
+  },onOpen:item=>{popover.hidePopover();const agreementTarget=['awaiting_details','needs_changes','submitted','approved'].includes(item.status)?'/agreements/#contract-details':'/agreements/';location.assign(item.kind==='agreement'?agreementTarget:item.kind==='release'?'/releases/#release-drafts':item.kind==='payout'?'/settings/#payments':'/profile/#profile-publication');}});
  }
  async function refresh(){
   if(busy||!button.isConnected)return;busy=true;

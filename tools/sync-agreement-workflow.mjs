@@ -4,6 +4,10 @@ import {createHash} from 'node:crypto';
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex'),manifestPath='app/agreement-workflow-manifest.json';
 const sources={
  'app/shared/agreement-rehearsal.js':'assets/js/layers/control-center/operations/shared/agreement-rehearsal.js',
+ 'app/shared/agreement-pdf.js':'assets/js/layers/control-center/operations/shared/agreement-pdf.js',
+ 'app/shared/agreement-signature.js':'assets/js/layers/control-center/operations/shared/agreement-signature.js',
+ 'app/shared/NotoSans-Regular.ttf':'assets/js/layers/control-center/operations/shared/NotoSans-Regular.ttf',
+ 'app/shared/NotoSans-LICENSE.txt':'assets/js/layers/control-center/operations/shared/NotoSans-LICENSE.txt',
  'app/shared/agreement-rehearsal.css':'assets/css/layers/control-center/shared/agreement-rehearsal.css',
  'content/agreement-rehearsal.json':'assets/data/control-center/agreement-rehearsal.json'
 };
