@@ -1,0 +1,8 @@
+.agreement-rehearsal { margin-block-start:var(--spacing-xl); padding-block-start:var(--spacing-xl); border-block-start:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); }
+.agreement-rehearsal-card { margin-block:var(--spacing-lg); }
+.agreement-rehearsal-card > summary { cursor:pointer; padding-block:var(--spacing-md); }
+.agreement-rehearsal-document { white-space:pre-wrap; overflow-wrap:anywhere; margin-block:var(--spacing-xl); }
+.agreement-rehearsal-image { display:block; max-inline-size:100%; max-block-size:var(--spacing-4xl); object-fit:contain; object-position:left center; }
+.agreement-rehearsal code { overflow-wrap:anywhere; }
+.agreement-rehearsal form { margin-block:var(--spacing-xl); }
+.agreement-rehearsal form > button,.agreement-rehearsal > button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); }

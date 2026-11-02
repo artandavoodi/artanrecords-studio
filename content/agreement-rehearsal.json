@@ -1,0 +1,16 @@
+{
+ "title":"Signing rehearsal",
+ "notice":"NON-BINDING TEST. Use fictional details and a test signature image. This workflow cannot execute a contract, activate a partnership, move money or send an email.",
+ "states":{"offered":"Test invitation ready","artist_signed":"Artist test signature received","label_signed":"Both test signatures received","reviewed":"Final test review complete","archived":"Rehearsal archived"},
+ "open":"Open test document",
+ "name":"Test signer name",
+ "upload":"Upload test signature (PNG, maximum 256 KB)",
+ "consent":"I reviewed this fixed version and understand this is a non-binding test, not a contract signature.",
+ "sign":"Record test signature",
+ "review":"Confirm final test review",
+ "archive":"Archive rehearsal",
+ "download":"Download rehearsal record",
+ "refresh":"Refresh rehearsals",
+ "empty":"No signing rehearsals have been offered to this account.",
+ "unavailable":"Signing rehearsals could not be loaded. No agreement state changed."
+}

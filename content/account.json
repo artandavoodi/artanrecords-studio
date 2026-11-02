@@ -235,6 +235,8 @@
     "billing": "core/commerce/billing/billing.svg",
     "card": "core/commerce/payments/card.svg",
     "contract": "core/legal/contracts/contract.svg",
+    "signature": "core/legal/contracts/signature.svg",
+    "download": "core/actions/download/download.svg",
     "settings": "core/system/settings/settings.svg",
     "appearance": "core/system/settings/theme.svg",
     "panel": "core/navigation/panel/panel-left-activated.svg",

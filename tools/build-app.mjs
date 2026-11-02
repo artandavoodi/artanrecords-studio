@@ -3,6 +3,7 @@ import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 const config=JSON.parse(await readFile('content/account.json','utf8'));
+execFileSync(process.execPath,['tools/sync-agreement-workflow.mjs'],{stdio:'inherit'});
 execFileSync(process.execPath,['tools/sync-platform.mjs'],{stdio:'inherit'});
 const existing=JSON.parse(await readFile('app/icon-manifest.json','utf8').catch(()=>'{"files":{}}'));
 const primitives=['buttons.css','password-field.css','close-button.css','close-button.js','search.js','dialogs.js','store-surfaces.css'];

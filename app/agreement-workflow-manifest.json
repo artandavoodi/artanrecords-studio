@@ -1,0 +1,9 @@
+{
+  "source": "artandavoodi/control-center",
+  "revision": "4d34e73b1c9a6981ada763807d32b1ed5f5be72f",
+  "files": {
+    "app/shared/agreement-rehearsal.js": "e0b489b2161e3be13693a30c2e1955e84e7605665d7abdbb1900885471657ac2",
+    "app/shared/agreement-rehearsal.css": "566499966b649071b5c1b8c5501e3d61aa78ebc2b9398a843814d8cb2548bf97",
+    "content/agreement-rehearsal.json": "6932e0f8128f5ca40f1aec796dbdef0ffe67f5f318c206f7632604ca3fe2da10"
+  }
+}
