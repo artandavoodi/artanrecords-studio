@@ -253,4 +253,34 @@ Private account email and contact phone are managed in Settings > Account securi
 
 Artist colours have explicit optional targets for icons, header fade and header ribbon, saved by the owner-only graphics RPC. Unshared colours do not enter the public projection. Existing unassigned palettes preserve their prior mapping.
 
-Agreements includes a local, non-binding signing preview with per-section initials and a downloadable preview record. It does not execute contracts, write signatures or grant entitlements. Real issuance remains blocked pending legal review, immutable server-side versions, identity checks, evidence retention and document finalization; qualified signatures may require an external qualified provider. Control Center's private agreement draft is a review aid, not an approved legal contract.
+## Agreements: verified non-binding rehearsal
+
+Control Center owns private agreement drafting and the shared rehearsal controls.
+Studio imports those controls from a committed revision with build-time checksum
+verification. The shared backend stores immutable terms, bounded PNG test-signature
+images, their server-computed hashes, per-section initials and ordered review events.
+These are test records, not executed contracts or entitlement evidence.
+
+1. In Control Center > Agreements, request rehearsal details for a verified artist.
+2. In Studio > Agreements, select the non-binding rehearsal request and submit
+   fictional contracting details; the real details request remains separate.
+3. In Control Center, review that exact details version, select a private draft
+   and offer a test invitation. This makes it available in Studio, not by email.
+4. In Studio, read the frozen document, initial every section, upload a test PNG
+   and explicitly confirm its non-binding purpose before recording it.
+5. In Control Center, review the artist record and record the label's test PNG
+   against the same frozen document. Review and archive are separate actions.
+6. Download the archived JSON evidence record. Closing the rehearsal request
+   preserves its archive and permits a new test; it cannot activate a partnership.
+
+The hosted rehearsal completed these stages with fictional details and TEST ONLY
+images on 2026-11-02. Browser fixtures separately cover cross-device interface
+behaviour; database isolation tests cover authorization and immutable records.
+Neither test substitutes for legal review or a real recipient's informed consent.
+
+Real issuance remains disabled. Before enabling it, complete and review the legal
+parties and commercial terms; implement authenticated recipient delivery with
+revocation and expiry; finalize the human-readable signed document and its evidence
+package; establish retention and recovery procedures; and verify the complete real
+execution path separately. The rehearsal archive is JSON, not a signed PDF, and
+does not claim Scrive-equivalent identity assurance or qualified signatures.
