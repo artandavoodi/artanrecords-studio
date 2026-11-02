@@ -178,6 +178,17 @@ async function openAccount(page){
 async function signInFixture(page){
  const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
 }
+test('requested contract details reuse confirmed account information without signing or tier activation',async({page})=>{
+ await mockBackend(page);let state='awaiting_details',details=null,submitted;
+ await page.route('**/rest/v1/studio_agreement_intake_requests*',route=>route.fulfill({json:[{id,status:state,current_version_id:details?id:null,artist_message:'Please confirm the legal contracting party.',created_at:'2026-11-02T10:00:00Z'}]}));
+ await page.route('**/rest/v1/studio_agreement_intake_versions*',route=>route.fulfill({json:{details,reply_email:user.email}}));
+ await page.route('**/rest/v1/studio_billing_addresses*',route=>route.fulfill({json:{line1:'1 Synthetic Street',line2:'',city:'Test City',postal_code:'10000',country:'HR'}}));
+ await page.route('**/rest/v1/rpc/studio_submit_agreement_details',route=>{submitted=route.request().postDataJSON();details=submitted.payload;state='submitted';return route.fulfill({json:id});});
+ await signInFixture(page);await page.goto('/agreements/#contract-details');const form=page.locator('[data-intake-form]');await expect(form).toBeVisible();await expect(form.locator('[name=reply_email]')).toHaveValue(user.email);await expect(form.locator('[name=reply_email]')).toHaveAttribute('readonly','');
+ await form.locator('[name=legal_name]').fill('Synthetic Legal Name');await form.locator('[name=artist_name]').fill('Test Artist');await form.getByRole('button',{name:'Use saved address',exact:true}).click();await expect(form.locator('[name=address_line1]')).toHaveValue('1 Synthetic Street');
+ await form.locator('[name=recipient_type]').selectOption('company');await expect(form.locator('[name=company_name]')).toBeVisible();await expect(form.locator('[name=company_name]')).toHaveAttribute('required','');await form.locator('[name=recipient_type]').selectOption('individual');await expect(form.locator('[name=company_name]')).toBeHidden();
+ await form.locator('[name=confirm_accuracy]').check();await form.getByRole('button',{name:'Submit contract details',exact:true}).click();await expect(page.locator('[data-intake-status]')).toHaveText('Submitted for review');await expect(form.locator('[name=legal_name]')).toBeDisabled();expect(submitted).toMatchObject({request:id,expected_version:null,confirm_accuracy:true,payload:{legal_name:'Synthetic Legal Name',recipient_type:'individual',country_code:'HR'}});expect(submitted.payload).not.toHaveProperty('reply_email');expect(submitted.payload).not.toHaveProperty('company_name');expect(submitted.payload).not.toHaveProperty('date_of_birth');
+});
 test('subscription billing is separate from payouts and only verified access displays Pro',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();

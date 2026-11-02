@@ -31,6 +31,7 @@ import {bindSubscriptionPayments} from './subscription-payments.js';
 import {bindAccountSecurity} from './account-security.js';
 import {bindSigningPreview} from './signing-preview.js';
 import {bindAgreementDrafts} from './agreement-drafts.js';
+import {bindAgreementIntake} from './agreement-intake.js';
 import {bindConnections} from './connections.js';
 import {bindOverview,bindPartnershipThemes} from './overview.js';
 async function initializeStudio(){
@@ -96,6 +97,7 @@ await bindCommerce(context);
 await bindDomains(context);
 await bindShares(context);
 await bindAgreementDrafts(context);
+await bindAgreementIntake(context);
 await bindBank(context);
 await bindSubscriptions(context);
 await bindSubscriptionPayments(context);

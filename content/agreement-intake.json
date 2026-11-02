@@ -1,0 +1,18 @@
+{
+ "title":"Contract details",
+ "notice":"When Artanrecords is ready to prepare an agreement, confirm your contracting details here. They are private to your account and authorized contract reviewers. Submitting this form does not sign an agreement or activate a partnership.",
+ "states":{"awaiting_details":"Details requested","submitted":"Submitted for review","needs_changes":"Correction requested","approved":"Details reviewed for drafting","closed":"Request closed"},
+ "fields":[
+  {"name":"legal_name","label":"Your full legal name","required":true,"autocomplete":"name"},
+  {"name":"artist_name","label":"Artist or project name","required":true},
+  {"name":"company_name","label":"Registered company name","company":true},
+  {"name":"registration_number","label":"Company registration number","company":true},
+  {"name":"signatory_name","label":"Authorized signer's full legal name","company":true},
+  {"name":"signatory_capacity","label":"Signer's role or authority","company":true},
+  {"name":"address_line1","label":"Contracting address","required":true,"autocomplete":"address-line1"},
+  {"name":"address_line2","label":"Apartment, suite or address line 2","autocomplete":"address-line2"},
+  {"name":"city","label":"City","required":true,"autocomplete":"address-level2"},
+  {"name":"postal_code","label":"Postal code","required":true,"autocomplete":"postal-code"},
+  {"name":"country_code","label":"Country code (two letters, for example HR)","required":true,"pattern":"[A-Z]{2}","max":2,"autocomplete":"country"}
+ ]
+}
