@@ -1,5 +1,5 @@
 import config from '../content/agreement-intake.json' with {type:'json'};
-export async function bindAgreementIntake({client,resolveUser}){
+export async function bindAgreementIntake({client,resolveUser,invitationOnly=false}){
  const root=document.querySelector('[data-agreement-intake]');if(!root||!client)return;
  const status=root.querySelector('[data-intake-status]'),list=root.querySelector('[data-intake-list]'),form=root.querySelector('form');
  const owner=await resolveUser(client).catch(()=>null);if(!owner)return;let request=null;
@@ -18,11 +18,11 @@ export async function bindAgreementIntake({client,resolveUser}){
    const editable=['awaiting_details','needs_changes'].includes(request.status);form.reset();form.elements.reply_email.value=owner.email||'';form.querySelector('[data-intake-message]').textContent=request.artist_message;
    if(request.current_version_id){const version=await client.from('studio_agreement_intake_versions').select('details,reply_email').eq('id',request.current_version_id).single();if(version.error)throw version.error;for(const [key,value] of Object.entries(version.data.details))if(form.elements[key])form.elements[key].value=value;form.elements.reply_email.value=version.data.reply_email;}
    else if(request.rehearsal)form.elements.artist_name.value='TEST ARTIST';
-   else{const profile=await client.from('studio_profiles').select('artist_name').eq('id',owner.id).maybeSingle();if(!profile.error)form.elements.artist_name.value=profile.data?.artist_name||'';}
+ else if(!invitationOnly){const profile=await client.from('studio_profiles').select('artist_name').eq('id',owner.id).maybeSingle();if(!profile.error)form.elements.artist_name.value=profile.data?.artist_name||'';}
    if(!await current())return;
    company();for(const control of form.elements){if(control.name==='reply_email')continue;if(control.closest('[data-intake-company]')&&form.elements.recipient_type.value!=='company')continue;control.disabled=!editable;}
    for(const name of ['recipient_type','legal_name','company_name','registration_number','signatory_name','signatory_capacity']){const field=form.elements[name];if(field.tagName==='SELECT')field.disabled=!editable||Boolean(request.current_version_id);else field.readOnly=Boolean(request.current_version_id);}
-   form.querySelector('[data-intake-address]').disabled=!editable||request.rehearsal===true;form.querySelector('[data-intake-confirm]').textContent=request.rehearsal?'I confirm this is fictional data for a non-binding rehearsal, not my legal identity.':'I confirm these details are accurate and ask Artanrecords to review them for my agreement.';
+   form.querySelector('[data-intake-address]').disabled=invitationOnly||!editable||request.rehearsal===true;form.querySelector('[data-intake-confirm]').textContent=request.rehearsal?'I confirm this is fictional data for a non-binding rehearsal, not my legal identity.':'I confirm these details are accurate and ask Artanrecords to review them for my agreement.';
    form.hidden=false;status.textContent=(request.rehearsal?'REHEARSAL · ':'')+(config.states[request.status]||'Request status unavailable');
   }catch{status.textContent='Contract details could not be loaded. No details were submitted.';}
  }

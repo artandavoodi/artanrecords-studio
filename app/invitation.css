@@ -1,0 +1,6 @@
+.contract-invitation { min-block-size:100svh; color:var(--cv-text-primary,var(--text-color)); background:var(--cv-page-bg,var(--bg-color)); }
+.contract-invitation > header,.contract-invitation > main { box-sizing:border-box; max-inline-size:80ch; margin-inline:auto; padding:var(--spacing-lg); }
+.contract-invitation > header { border-block-end:var(--border-width-hairline) solid var(--cv-border); }
+.contract-invitation .invitation-actions { display:flex; flex-wrap:wrap; gap:var(--spacing-md); margin-block:var(--spacing-lg); }
+.contract-invitation [data-invitation-auth] { max-inline-size:40ch; }
+.contract-invitation [hidden] { display:none; }

@@ -6,6 +6,7 @@
  "open":"Open document",
  "pdfView":"View as PDF",
  "close":"Close document",
+ "labelWaiting":"Waiting for the artist to sign. You can read the document and prepare your initials and signature now. Recording the label signature becomes available only after the artist signs.",
  "guide":{"navigation":"Guided document review","previous":"Previous section","next":"Initial and continue","full":"Read full document","guided":"Return to guided view","progress":"Signing progress","section":"Section {current} of {total}. Read this section, then enter your initials to continue.","final":"Final step. Check your signer details, draw or upload your signature, then confirm submission."},
  "name":"Signer name",
  "upload":"Upload signature image",

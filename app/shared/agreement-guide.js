@@ -22,12 +22,12 @@ export function signingGuide({body,form,version,labels}){
  const firstMissing=()=>inputs.findIndex((_,index)=>!valid(index));
  function render(scroll=false){
   if(step===panels.length){const missing=firstMissing();if(missing>=0)step=missing;}
-  panels.forEach((panel,index)=>{panel.hidden=false;panel.dataset.guideActive=String(step===index);});final.hidden=step!==panels.length;previous.disabled=step===0;next.hidden=step===panels.length;next.disabled=step<panels.length&&!valid(step);progress.value=step+1;
+  panels.forEach((panel,index)=>{panel.hidden=false;panel.dataset.guideActive=String(step===index);});final.hidden=false;previous.disabled=step===0;next.hidden=step===panels.length;next.disabled=step<panels.length&&!valid(step);progress.value=inputs.filter((_,index)=>valid(index)).length;
   message.textContent=step<panels.length?labels.section.replace('{current}',step+1).replace('{total}',panels.length):labels.final;
   if(scroll){const target=step<panels.length?panels[step]:final;target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});(step<panels.length?inputs[step]:form.elements.signer).focus({preventScroll:true});}
  }
  next.onclick=()=>{if(step<panels.length&&valid(step)){step++;render(true);}else inputs[step]?.reportValidity();};previous.onclick=()=>{if(step){step--;render(true);}};full.onclick=()=>reader.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
  inputs.forEach(input=>{input.addEventListener('input',()=>render());input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();next.click();}});});
- body.querySelector('[data-document-read]').onclick=()=>{step=0;render(true);};body.querySelector('[data-document-initials]').onclick=()=>{step=Math.max(0,firstMissing());render(true);};body.querySelector('[data-document-sign]').onclick=()=>{const missing=firstMissing();step=missing<0?panels.length:missing;render(true);};render();
- return {complete:()=>step===panels.length&&firstMissing()<0};
+ body.querySelector('[data-document-read]').onclick=()=>{step=0;render(true);};body.querySelector('[data-document-initials]').onclick=()=>{step=Math.max(0,firstMissing());render(true);};body.querySelector('[data-document-sign]').onclick=()=>{final.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});form.elements.signer.focus({preventScroll:true});};render();
+ return {complete:()=>firstMissing()<0};
 }

@@ -1,0 +1,16 @@
+{
+ "title":"Your agreement",
+ "introduction":"Verify the email address that received your invitation to provide requested details or review your agreement.",
+ "boundary":"Requesting a code creates or reuses a private signing identity, not a Studio workspace. It does not activate a partnership or subscription.",
+ "email":"Invited email address",
+ "send":"Send verification code",
+ "code":"Email verification code",
+ "verify":"Verify email",
+ "sent":"Check your email for your verification code.",
+ "unavailable":"This invitation is unavailable, expired, or not configured. Contact the sender for help.",
+ "failed":"Verification could not be completed. Check your code or request a new invitation.",
+ "details":"Requested legal details",
+ "agreement":"Read & sign",
+ "signout":"Close private session",
+ "refresh":"Check for updates"
+}

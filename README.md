@@ -287,8 +287,8 @@ images, initials and activity. Images can be drawn or uploaded, cropped locally 
 reviewed before submission. A PDF copy is not a cryptographic PDF signature and
 does not claim Scrive-equivalent identity assurance or qualified signatures.
 
-The signing guide presents one fixed section at a time, advances after valid
-initials and then reveals drawn/uploaded signature capture. Navigation scrolls
+The signing guide keeps the fixed document visible, advances after valid
+initials and keeps drawn/typed/uploaded signature preparation available. Navigation scrolls
 smoothly unless reduced motion is requested; full-document reading is also
 available. The artist signer name is read-only and comes from the reviewed
 contract-details version. Submitted legal identity stays locked during address
@@ -297,3 +297,24 @@ request. Date of birth is not collected by this intake.
 Studio separates **Review & sign** from **Legal identity** so the signing invitation
 is not confused with the once-requested identity form. Existing deep links remain
 unchanged.
+
+## Invitation-only signing
+
+`/invitation/` is a separately built entry point. It does not load the Studio
+application, sidebar, settings or workspace tools. Its Supabase session uses a
+separate necessary-session storage key. A verified invitation is required before
+the requested legal intake or shared focused signing reader is mounted.
+
+The new backend migration is local and disabled by default. Before live use, deploy
+and verify its restricted `contract_recipient` role, configure the custom access
+token hook, and verify code delivery through the existing email provider. Both
+new-user confirmation and passwordless email templates must display the OTP while
+preserving existing confirmation links. Do not enable invitations before testing
+that an invited token cannot call Studio APIs directly.
+
+Control Center creates invitations from reviewed public enquiries and prepares a
+recipient-bound draft through the existing iCloud sender. Creating or copying an
+invitation is not email delivery. The invitation token is hashed in the database,
+bound to the verified recipient and removable through revocation; it grants no
+subscription, partnership or Studio workspace. Real contract issuance and later
+Studio activation remain subject to the existing legal/execution safeguards.

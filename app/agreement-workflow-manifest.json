@@ -1,15 +1,15 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "efd7d891894df7b9755e9d1ecd72f4aa8330ea6e",
+  "revision": "3b64ce9051b0314e2e4b19274b6651318d79fd9f",
   "files": {
-    "app/shared/agreement-rehearsal.js": "b52ff088564c58e1396a9bbd7921b323ae7a89810b0877266a8b45c3533e0364",
+    "app/shared/agreement-rehearsal.js": "f63b00c68f5e5798ff433011d7756dae3f439d982f84f2f8e6672d9d3ca6f9f9",
     "app/shared/agreement-pdf.js": "8736a9ddc15e7ca3007f96734e2b55eaee368188e49c4463bd62ed91c19ce90b",
     "app/shared/agreement-pdf-view.js": "cd117daaf5c8aca1463c78fd69c0b5217efc3731bb908abba9138b3142cb0aa3",
-    "app/shared/agreement-signature.js": "61d9983b066f73e8ee4a7ebbe032080a6705b8485a8b3d497e2f722e65445e0a",
-    "app/shared/agreement-guide.js": "efe7e90e84a29586b19a7d2e6ec33145e8083ceebbecda17bdbea53b6e47536e",
+    "app/shared/agreement-signature.js": "9938eeb68a63e0a38e0bd16981c3b578aec3f07dd4423cc1fc902438f0e661c5",
+    "app/shared/agreement-guide.js": "5b90ef2a31a38f074b18d6e81963883ca2cbd7453e2b7aaf8af86d6956fa412f",
     "app/shared/NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
     "app/shared/NotoSans-LICENSE.txt": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb",
-    "app/shared/agreement-rehearsal.css": "541d1928ae986147f8b72fd1e689f02fb3e34ff09fb63d0251e6edcd4a839a2f",
-    "content/agreement-rehearsal.json": "10da8a807160c46b9357cc7dde49d77f1b10b07ba53dc46317641d1b70986c86"
+    "app/shared/agreement-rehearsal.css": "cf4f5a4f59495849df67b1658ed70832663c5f31545bbfce9edf6ee51c21d300",
+    "content/agreement-rehearsal.json": "ac3fb35719d2219db914a6f033a7551fb1225d7b1e16fb4bff61780c4f07bad7"
   }
 }

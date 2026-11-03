@@ -43,6 +43,8 @@ let admitted=null;
 if(!publicRoute){
  try{admitted=client&&await resolveUser(client);}catch{}
  if(!admitted){location.replace('/account/?mode=signup');return;}
+ const session=(await client.auth.getSession()).data.session;
+ try{const claims=JSON.parse(atob(session.access_token.split('.')[1].replaceAll('-','+').replaceAll('_','/')));if(claims.role==='contract_recipient'){location.replace('/invitation/');return;}}catch{location.replace('/account/');return;}
  const template=document.querySelector('template[data-studio-workspace]');
  document.querySelector('main').hidden=true;
  if(template)template.replaceWith(template.content);

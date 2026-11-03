@@ -2,6 +2,7 @@ import {build} from 'esbuild';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
+import {buildInvitation} from '../app/invitation-render.mjs';
 const config=JSON.parse(await readFile('content/account.json','utf8'));
 execFileSync(process.execPath,['tools/sync-agreement-workflow.mjs'],{stdio:'inherit'});
 execFileSync(process.execPath,['tools/sync-platform.mjs'],{stdio:'inherit'});
@@ -44,3 +45,6 @@ if(process.argv.includes('--sync-icons')){
 await build({entryPoints:['app/main.js'],bundle:true,format:'esm',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/studio.js',minify:true,loader:{'.ttf':'binary'},plugins:[{name:'pdf-worker-source',setup(build){build.onLoad({filter:/pdf\.worker\.mjs$/},async args=>({contents:await readFile(args.path,'utf8'),loader:'text'}));}}]});
 await build({entryPoints:['app/appearance-startup.js'],bundle:true,format:'iife',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/appearance.js',minify:true});
 await build({entryPoints:['app/studio.css'],bundle:true,target:['safari16','chrome110'],outfile:'app/dist/studio.css',minify:true,external:['/registry/*','/assets/*','/app/*']});
+await build({entryPoints:['app/invitation.js'],bundle:true,format:'esm',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/invitation.js',minify:true,loader:{'.ttf':'binary'},plugins:[{name:'pdf-worker-source',setup(build){build.onLoad({filter:/pdf\.worker\.mjs$/},async args=>({contents:await readFile(args.path,'utf8'),loader:'text'}));}}]});
+await build({entryPoints:['app/invitation.css'],bundle:true,target:['safari16','chrome110'],outfile:'app/dist/invitation.css',minify:true});
+await buildInvitation();
