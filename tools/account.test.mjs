@@ -163,8 +163,8 @@ test('platform storage uses session continuity without silently granting persist
 });
 test('cookie publication and platform controls use verified shared sources',async()=>{
   const {execFileSync}=await import('node:child_process');execFileSync(process.execPath,['tools/sync-platform.mjs']);
-  const html=await readFile('settings/index.html','utf8');assert.match(html,/<template data-studio-workspace>/);assert.doesNotMatch(html,/data-cookie-consent="root"/);assert.match(html,/platform-menue-settings-appearance.svg/);
-  const consent=await readFile('app/preferences.js','utf8');assert.match(consent,/initializePreferences/);assert.match(consent,/analytics-performance':false/);
+  const html=await readFile('settings/index.html','utf8');assert.match(html,/<template data-studio-workspace>/);assert.match(html,/data-cookie-consent="root"/);assert.match(html,/data-cookie-consent-toggle="experience"/);assert.match(html,/platform-menue-settings-appearance.svg/);
+  const consent=await readFile('app/preferences.js','utf8');assert.match(consent,/overlays\/cookie\/cookie-consent.js/);const settings=JSON.parse(await readFile('content/account.json','utf8'));assert.ok(settings.preferences.unavailableCategories.includes('analytics-performance'));
   const notice=await readFile('cookies/index.html','utf8');assert.match(notice,/2026-10-19/);assert.match(notice,/session storage/);
   const royalties=await readFile('royalties/index.html','utf8');assert.doesNotMatch(royalties,/Read the financial context|Read the guidance|Accepted standard releases/);
 });

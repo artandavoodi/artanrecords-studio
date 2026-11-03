@@ -580,6 +580,11 @@
     toggle.dataset.cookieConsentEnabled = value ? 'true' : 'false';
     toggle.setAttribute('aria-checked', value ? 'true' : 'false');
 
+    if (window.NeuroartanToggle?.syncToggleState) {
+      window.NeuroartanToggle.syncToggleState(toggle, value, { emit: false, persist: false });
+      return;
+    }
+
     if (window.NeuroartanButtons && typeof window.NeuroartanButtons.setToggleChecked === 'function') {
       window.NeuroartanButtons.setToggleChecked(toggle, value, { emit: false });
       return;
@@ -609,6 +614,11 @@
     const value = Boolean(enabled);
     toggle.dataset.cookieConsentEnabled = value ? 'true' : 'false';
     toggle.setAttribute('aria-checked', value ? 'true' : 'false');
+
+    if (window.NeuroartanToggle?.syncToggleState) {
+      window.NeuroartanToggle.syncToggleState(toggle, value, { emit: false, persist: false });
+      return;
+    }
 
     if (window.NeuroartanButtons && typeof window.NeuroartanButtons.setToggleChecked === 'function') {
       window.NeuroartanButtons.setToggleChecked(toggle, value, { emit: false });
@@ -647,7 +657,7 @@
 
     getSubcheckboxes().forEach((checkbox) => {
       if (checkbox.dataset.cookieConsentParent !== parentKey) return;
-      checkbox.checked = Boolean(enabled);
+      checkbox.checked = !checkbox.disabled && Boolean(enabled);
       const subkey = checkbox.dataset.cookieConsentSubcategory;
       if (subkey) setSubtoggleVisualState(subkey, checkbox.checked);
     });
@@ -921,6 +931,8 @@
   }
 
   function writeStoredConsent(payload) {
+    const days = Number(getOverlay()?.dataset.cookieConsentValidDays);
+    if (Number.isFinite(days) && days > 0) payload.expires = Date.now() + days * 86400000;
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
       document.dispatchEvent(new CustomEvent('cookie-consent:state-changed', { detail: payload }));
@@ -940,7 +952,7 @@
       if (!key || key === 'essential') return;
 
       if (stored && stored.preferences) {
-        checkbox.checked = Boolean(stored.preferences[key]);
+        checkbox.checked = !checkbox.disabled && Boolean(stored.preferences[key]);
         return;
       }
 
@@ -953,9 +965,9 @@
       if (!key || !parentKey) return;
 
       const storedValue = stored?.preferences?.[key];
-      checkbox.checked = typeof storedValue === 'boolean'
+      checkbox.checked = !checkbox.disabled && (typeof storedValue === 'boolean'
         ? storedValue
-        : Boolean(getCheckboxByKey(parentKey)?.checked);
+        : Boolean(getCheckboxByKey(parentKey)?.checked));
     });
 
     syncToggleStates();
@@ -995,6 +1007,7 @@
   ============================================================================= */
   function shouldAutoOpenBanner(stored) {
     if (!stored) return true;
+    if (Number.isFinite(stored.expires) && stored.expires <= Date.now()) return true;
     return String(stored.state || 'pending').trim() === 'pending';
   }
 
@@ -1071,17 +1084,10 @@
      15) CONSENT ACTIONS
   ============================================================================= */
   function acceptAll() {
+    [...getCheckboxes(), ...getSubcheckboxes()].forEach(checkbox => { checkbox.checked = !checkbox.disabled; });
     writeStoredConsent({
       state: 'accepted',
-      preferences: {
-        essential: true,
-        analytics: true,
-        experience: true,
-        'analytics-performance': true,
-        'analytics-usage': true,
-        'experience-preferences': true,
-        'experience-continuity': true
-      },
+      preferences: getSettingsPayload(),
       updatedAt: new Date().toISOString()
     });
 

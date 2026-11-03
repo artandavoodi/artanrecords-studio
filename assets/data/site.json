@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "preferences":{"title":"Cookies & preferences","description":"Browser storage remembers your privacy choice. Allow saves your appearance for future visits; Skip leaves optional preference storage off. Forms use necessary verification technologies when you open them.","allow":"Allow","skip":"Skip","settings":"Cookies & preferences","notice":"Legal information","storage":{"choiceKey":"artanrecords-preferences","themeKey":"artanrecords-theme","validDays":180,"version":1}},
+  "preferences":{"title":"Cookies & preferences","description":"Essential storage supports security and your privacy choice. Choose whether to remember appearance preferences. Submission forms use necessary verification when opened.","analyticsNotice":"Analytics are not connected. These optional controls remain off.","unavailableCategories":["analytics","analytics-performance","analytics-usage","experience-continuity"],"allow":"Allow","skip":"Skip","settings":"Cookies & preferences","notice":"Legal information","storage":{"choiceKey":"artanrecords-preferences","themeKey":"artanrecords-theme","validDays":180,"version":1}},
   "name": "Artanrecords",
   "brandIdentity": {
     "title":"Artanrecords, one word",

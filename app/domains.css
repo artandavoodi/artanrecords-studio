@@ -1,7 +1,7 @@
 /* Domain destinations use the same Settings spacing and theme tokens. */
 [data-domains] { display:grid; gap:var(--spacing-lg); }
 [data-domains] [data-domains-controls] { display:grid; gap:var(--spacing-xl); }
-[data-domains] [data-domain-panel] { display:grid; gap:var(--spacing-md); border-block-end:var(--border-width-hairline) solid var(--cv-border); padding-block-end:var(--spacing-lg); }
+[data-domains] [data-domain-panel] { display:grid; gap:var(--spacing-md); padding-block-end:var(--spacing-lg); }
 [data-domains] summary { display:flex; align-items:center; gap:var(--spacing-sm); cursor:pointer; }
 [data-domains] .studio-domain-process ol { display:grid; gap:var(--spacing-md); padding-inline-start:var(--spacing-lg); }
 [data-domains] :is(h2,h3,h4,p) { margin-block:0; }

@@ -39,7 +39,7 @@
 html[data-partnership-theme=platinum] { --control-surface:var(--control-bg-hover); --control-border-unified:var(--cv-border); --border-width-hairline:0.5px; }
 @media(max-width:640px){.studio-overview-membership { grid-template-columns:minmax(0,1fr); }}
 .studio-platform { position:relative; display:grid; grid-template-columns:var(--studio-rail-width,var(--layout-home-platform-rail-width)) minmax(0,1fr); gap:var(--spacing-xl); align-items:stretch; }
-.studio-platform-content { min-inline-size:0; }
+.studio-platform-content { min-inline-size:0; display:grid; grid-template-rows:minmax(0,1fr); }
 .studio-platform-rail { min-inline-size:0; border-inline-end:var(--border-width-hairline) solid var(--cv-border); }
 .studio-platform-rail-scroll { position:sticky; inset-block-start:var(--site-header-height); padding-block:var(--spacing-lg); max-block-size:calc(100dvh - var(--site-header-height)); overflow-y:auto; box-sizing:border-box; padding-inline:var(--spacing-lg); }
 .studio-platform-rail-scroll > button { justify-content:center; inline-size:var(--control-height-md); }
@@ -66,7 +66,7 @@ html[data-studio-rail=closed] .studio-platform-group a { inline-size:var(--contr
 .studio-platform-connection { color:var(--text-secondary-color); }
 .studio-platform-connection a { display:inline-flex; gap:var(--spacing-sm); align-items:center; color:var(--text-primary-color); text-decoration:none; }
 .studio-settings { display:grid; grid-template-columns:var(--layout-home-platform-rail-width) minmax(0,1fr); gap:var(--spacing-xl); align-items:stretch; min-block-size:100%; }
-.studio-settings-surface { min-block-size:100%; box-sizing:border-box; gap:0; }
+.studio-settings-surface { min-block-size:100%; box-sizing:border-box; display:grid; grid-template-rows:minmax(0,1fr); gap:0; }
 .studio-settings-surface > header { gap:var(--spacing-xs); }
 .studio-settings-surface > header h1 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
 .studio-settings-surface > header p { margin:0; color:var(--text-secondary-color); font-size:var(--site-type-caption-size); }

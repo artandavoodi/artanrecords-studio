@@ -1,0 +1,162 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) TOGGLE ROOT
+   03) TOGGLE TRACK
+   04) TOGGLE THUMB
+   05) TOGGLE STATES
+   06) TOGGLE DISABLED STATE
+   07) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/toggle.css */
+
+/* =============================================================================
+   02) TOGGLE ROOT
+============================================================================= */
+[data-na-toggle],
+.na-toggle,
+.ui-toggle{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--toggle-width);
+  min-width: var(--toggle-width);
+  height: var(--toggle-height);
+  min-height: var(--toggle-height);
+  padding:var(--spacing-none);
+  border: var(--spacing-none);
+  background: transparent;
+  color:var(--text-color);
+  -webkit-tap-highlight-color: transparent;
+}
+
+[data-na-toggle]:focus,
+[data-na-toggle]:focus-visible,
+.na-toggle:focus,
+.na-toggle:focus-visible,
+.ui-toggle:focus,
+.ui-toggle:focus-visible{
+  outline: none;
+}
+
+/* =============================================================================
+   03) TOGGLE TRACK
+============================================================================= */
+[data-na-toggle-track],
+.na-toggle__track,
+.ui-toggle__track{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  padding: var(--toggle-padding);
+  border:var(--toggle-track-border-width) solid var(--toggle-track-border-color);
+  border-radius: var(--toggle-radius);
+  background: var(--toggle-track-bg-off);
+  overflow: hidden;
+  box-shadow:inset var(--spacing-none) var(--spacing-none) var(--spacing-none) var(--border-width-hairline) color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+  transition:var(--interaction-transition-control);
+}
+
+/* =============================================================================
+   04) TOGGLE THUMB
+============================================================================= */
+[data-na-toggle-thumb],
+.na-toggle__thumb,
+.ui-toggle__thumb{
+  position: absolute;
+  top: 50%;
+  left: var(--toggle-padding);
+  display: block;
+  width: var(--toggle-thumb-size);
+  height: var(--toggle-thumb-size);
+  border-radius: var(--radius-circle);
+  background: var(--toggle-thumb-bg);
+  box-shadow: var(--toggle-thumb-shadow);
+  transform: translate(var(--spacing-none), -50%);
+  transition:var(--interaction-transition-control);
+}
+
+/* =============================================================================
+   05) TOGGLE STATES
+============================================================================= */
+[data-na-toggle]:hover [data-na-toggle-track],
+.na-toggle:hover .na-toggle__track,
+.ui-toggle:hover .ui-toggle__track{
+  box-shadow:inset var(--spacing-none) var(--spacing-none) var(--spacing-none) var(--border-width-hairline) color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+}
+
+[data-na-toggle]:focus-visible [data-na-toggle-track],
+.na-toggle:focus-visible .na-toggle__track,
+.ui-toggle:focus-visible .ui-toggle__track{
+  box-shadow:inset var(--spacing-none) var(--spacing-none) var(--spacing-none) var(--border-width-hairline) color-mix(in srgb, var(--text-primary-color) 7%, transparent);
+}
+
+[data-na-toggle][aria-checked="true"] [data-na-toggle-track],
+.na-toggle[aria-checked="true"] .na-toggle__track,
+.ui-toggle[aria-checked="true"] .ui-toggle__track,
+[data-na-toggle][data-toggle-checked="true"] [data-na-toggle-track],
+.na-toggle[data-toggle-checked="true"] .na-toggle__track,
+.ui-toggle[data-toggle-checked="true"] .ui-toggle__track,
+[data-na-toggle][data-toggle-state="on"] [data-na-toggle-track],
+.na-toggle[data-toggle-state="on"] .na-toggle__track,
+.ui-toggle[data-toggle-state="on"] .ui-toggle__track{
+  background: var(--toggle-track-bg-on);
+  border-color: var(--toggle-track-bg-on);
+  box-shadow:none;
+}
+
+[data-na-toggle][aria-checked="true"] [data-na-toggle-thumb],
+.na-toggle[aria-checked="true"] .na-toggle__thumb,
+.ui-toggle[aria-checked="true"] .ui-toggle__thumb,
+[data-na-toggle][data-toggle-checked="true"] [data-na-toggle-thumb],
+.na-toggle[data-toggle-checked="true"] .na-toggle__thumb,
+.ui-toggle[data-toggle-checked="true"] .ui-toggle__thumb,
+[data-na-toggle][data-toggle-state="on"] [data-na-toggle-thumb],
+.na-toggle[data-toggle-state="on"] .na-toggle__thumb,
+.ui-toggle[data-toggle-state="on"] .ui-toggle__thumb{
+  transform: translate(var(--toggle-thumb-translate-on), -50%);
+  box-shadow:var(--toggle-thumb-shadow-active);
+}
+
+[data-na-toggle]:active [data-na-toggle-thumb],
+.na-toggle:active .na-toggle__thumb,
+.ui-toggle:active .ui-toggle__thumb{
+  width:var(--toggle-thumb-size);
+  height:var(--toggle-thumb-size);
+  min-width:var(--toggle-thumb-size);
+  min-height:var(--toggle-thumb-size);
+  aspect-ratio:1 / 1;
+}
+
+/* =============================================================================
+   06) TOGGLE DISABLED STATE
+============================================================================= */
+[data-na-toggle][disabled],
+[data-na-toggle][aria-disabled="true"],
+.na-toggle[disabled],
+.na-toggle[aria-disabled="true"],
+.ui-toggle[disabled],
+.ui-toggle[aria-disabled="true"]{
+  opacity:var(--toggle-disabled-opacity);
+}
+
+/* =============================================================================
+   07) END OF FILE
+============================================================================= */
+@media (prefers-reduced-motion:reduce){
+  [data-na-toggle-track],
+  .na-toggle__track,
+  .ui-toggle__track,
+  [data-na-toggle-thumb],
+  .na-toggle__thumb,
+  .ui-toggle__thumb{
+    transition:none;
+  }
+}

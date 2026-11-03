@@ -1,1 +1,47 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" data-artwork-status="pending"><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   fill="none"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="copyright.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="10.145389"
+     inkscape:cx="8.9695916"
+     inkscape:cy="17.643482"
+     inkscape:window-width="1472"
+     inkscape:window-height="923"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
+  <circle
+     cx="12"
+     cy="12"
+     r="8.9488192"
+     fill="currentColor"
+     id="circle1"
+     style="fill:none;stroke:#000000;stroke-width:0.999999" />
+  <path
+     id="circle1-1"
+     style="stroke:#000000;stroke-linecap:round"
+     d="M 15.655241,15.655241 C 14.719783,16.590698 13.42746,17.169291 12,17.169291 9.1450793,17.169291 6.8307088,14.854921 6.8307085,12 6.8307085,9.1450791 9.1450791,6.8307082 12,6.8307085 c 1.42746,1e-7 2.719783,0.5785928 3.655241,1.5140506"
+     sodipodi:nodetypes="csssc" />
+</svg>

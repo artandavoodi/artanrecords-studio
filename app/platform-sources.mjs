@@ -1,6 +1,7 @@
 import {readFile} from 'node:fs/promises';
 const root=new URL('./neuroartan/',import.meta.url);
 const publication=JSON.parse(await readFile(new URL('../assets/data/studio-legal.json',import.meta.url),'utf8'));
+const account=JSON.parse(await readFile(new URL('../content/account.json',import.meta.url),'utf8'));
 export const legalUrl=path=>publication.domain+publication.notices.find(notice=>notice.legacyPath===path).path;
 const shell=JSON.parse(await readFile(new URL('assets/data/platform/home-platform-shell.json',root),'utf8'));
 export function settingsIcon(id){
@@ -12,7 +13,7 @@ export async function platformFragment(path){
   return (await readFile(new URL(path,root),'utf8')).replaceAll('src="/registry/','src="/app/neuroartan/registry/');
 }
 export const cookieMarkup=(await platformFragment('assets/fragments/layers/website/cookie/cookie-consent.html'))
-  .replace('data-cookie-consent="root"','data-cookie-consent="root" data-cookie-consent-asset-base="/app/neuroartan/assets/fragments/layers/website/cookie"')
+  .replace('data-cookie-consent="root"',`data-cookie-consent="root" data-cookie-consent-autoprompt="false" data-cookie-consent-valid-days="${account.preferences.validDays}" data-cookie-consent-asset-base="/app/neuroartan/assets/fragments/layers/website/cookie"`)
   .replaceAll('Neuroartan','Artanrecords Studio')
   .replaceAll('/pages/legal/terms/index.html',legalUrl('/terms/'))
   .replaceAll('/pages/legal/privacy/index.html',legalUrl('/privacy/'))
@@ -20,6 +21,8 @@ export const cookieMarkup=(await platformFragment('assets/fragments/layers/websi
   .replace(/<button[^>]*data-cookie-consent-language="true"[\s\S]*?<\/button>/,'')
   .replace(/<p\s+class="cookie-consent-language-status"[\s\S]*?<\/p>/,'')
   .replace(/<p class="cookie-consent-copy"[^>]*>[\s\S]*?<\/p>/,'<p class="cookie-consent-copy">Essential storage supports security, sign-in and your consent choice. Choose whether to remember optional appearance and navigation preferences. Analytics are not connected.</p>')
+  .replace(/<(button|input)\b[^>]*data-cookie-consent-(?:toggle|subtoggle|category|subcategory)="([^"]+)"[^>]*>/g,(tag,element,key)=>account.preferences.unavailableCategories.includes(key)?tag.replace(/\schecked\b|aria-checked="true"/g,'').replace(/>$/,' disabled aria-disabled="true">'):tag)
+  .replace('Artanrecords Studio\'s performance.','the service. Analytics are not connected and remain off.')
   .replace(/[\t ]+$/gm,'');
 export const appearanceMarkup=(await platformFragment('assets/fragments/layers/website/home/platform-menu/settings/appearance/index.html'))
   .replaceAll('home-platform-theme__mode-option"','ui-radio-list__item"')

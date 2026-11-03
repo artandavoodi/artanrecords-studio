@@ -9,7 +9,8 @@
     "themeKey": "artanrecords-studio-theme",
     "railKey": "artanrecords-studio-rail",
     "presetKey": "artanrecords-studio-appearance-preset",
-    "validDays": 180
+    "validDays": 180,
+    "unavailableCategories": ["analytics", "analytics-performance", "analytics-usage", "experience-continuity"]
   },
   "providers": {
     "google": true,

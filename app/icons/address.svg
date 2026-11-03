@@ -1,1 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" data-artwork-status="pending"><title>Location - vector pending</title><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="location.svg"
+   xml:space="preserve"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1" /><sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="12.965362"
+     inkscape:cx="26.300848"
+     inkscape:cy="6.0160296"
+     inkscape:window-width="1472"
+     inkscape:window-height="923"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" /><title
+     id="title1">Location - vector pending</title><g
+     id="g1"
+     transform="translate(-24.100205,2.811083)"><path
+       id="path1"
+       style="font-variation-settings:'wght' 400;fill:none;stroke:#000000;stroke-width:0.999997;stroke-linecap:round;stroke-miterlimit:10;paint-order:fill markers stroke"
+       d="m 43.159261,6.9421291 c 0,1.8507157 -0.790113,4.2751529 -2.06755,6.2369119 -1.277439,1.961757 -3.042203,4.958697 -4.991507,4.958697 -1.949305,0 -3.714068,-2.99694 -4.991507,-4.958697 -1.277436,-1.961759 -2.067549,-4.3861969 -2.067549,-6.2369119 0,-0.9253577 0.197528,-1.8069135 0.554737,-2.6087336 0.357206,-0.8018202 0.874094,-1.5239046 1.512812,-2.1303194 0.638719,-0.6064146 1.399271,-1.0971597 2.243804,-1.436301 0.844534,-0.33914133 1.773051,-0.52667899 2.747703,-0.52667902 0.974652,-2e-8 1.90317,0.18753761 2.747704,0.52667891 0.844533,0.33914131 1.605083,0.82988631 2.243803,1.43630101 0.638719,0.6064148 1.155606,1.3284991 1.512813,2.1303193 0.357208,0.8018202 0.554737,1.6833761 0.554737,2.6087338 z"
+       sodipodi:nodetypes="sssssssssssss" /><ellipse
+       style="font-variation-settings:'wght' 400;fill:none;stroke:#000000;stroke-width:0.999997;stroke-linecap:round;stroke-miterlimit:10;paint-order:fill markers stroke"
+       id="path1-2"
+       cx="36.100204"
+       cy="6.9412808"
+       rx="2.4447327"
+       ry="2.4558234" /></g></svg>
