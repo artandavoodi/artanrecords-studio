@@ -1,0 +1,11 @@
+{
+ "title":"Account and agreement requests",
+ "actions":{"studio_deletion":"Request account deletion","contract_termination":"Request contract termination","onboarding_reset":"Restart artist onboarding"},
+ "close":"Close request","history":"Your requests",
+ "notice":"Submit a request for private review. Your data, access and contracts do not change when you submit it.",
+ "kinds":{"studio_deletion":"Studio data deletion","contract_termination":"Contract termination","onboarding_reset":"Restart artist onboarding"},
+ "scopes":{"studio_deletion":"Request removal of eligible Studio data. Shared sign-in, Store purchases, financial records and legal evidence require separate handling.","contract_termination":"Request a review of your agreement's termination terms. Submitting or approving this request does not end the agreement.","onboarding_reset":"Request a recoverable restart of artist onboarding. Existing recordings, uploads, signed documents and audit history are not deleted automatically."},
+ "reason":"Reason for your request","confirm":"I understand this is a review request, not immediate deletion or termination.","submit":"Submit request","withdraw":"Withdraw request","refresh":"Refresh requests",
+ "statuses":{"submitted":"Submitted","under_review":"Under review","approved":"Approved for handling — action pending","declined":"Declined","withdrawn":"Withdrawn"},
+ "empty":"No requests submitted.","error":"The request could not be saved. Check your connection and whether an open request already exists.","unavailable":"Account requests could not be loaded. No data has been changed."
+}

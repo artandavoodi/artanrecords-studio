@@ -32,6 +32,36 @@ test('Privacy uses category switches and the Settings divider spans its surface'
  await consent.getByRole('button',{name:'Expand experience cookie details',exact:true}).click();const preference=consent.getByRole('switch',{name:'Toggle preference memory cookies',exact:true});await expect(preference).toBeVisible();if(await preference.getAttribute('aria-checked')==='false')await preference.click();await consent.getByRole('button',{name:'Save preferences',exact:true}).click();await expect(consent).toHaveAttribute('aria-hidden','true');
  await page.getByRole('button',{name:'Cookies & preferences',exact:true}).click();await consent.getByRole('button',{name:'Expand experience cookie details',exact:true}).click();await expect(preference).toHaveAttribute('aria-checked','true');
 });
+test('withdrawn Studio access never mounts artist tools or loads private drafts',async({page})=>{
+ const requests=await mockBackend(page);await signInFixture(page);
+ await page.route('**/rpc/studio_workspace_access',route=>route.fulfill({json:false}));
+ requests.length=0;
+ await page.goto('/gallery/');
+ await expect(page.getByRole('heading',{name:'Studio access withdrawn',exact:true})).toBeVisible();
+ await expect(page.locator('[data-artist-portfolio]')).toHaveCount(0);
+ await expect(page.locator('.studio-platform')).toHaveCount(0);
+ expect(requests.some(request=>/studio_profiles|studio_artist_portfolio|studio_release_drafts/.test(request.path))).toBe(false);
+});
+test('Account requests use the global tokenized close control',async({page})=>{
+ await mockBackend(page);
+ await page.route('**/rest/v1/studio_account_change_requests*',route=>route.fulfill({json:[]}));
+ await signInFixture(page);await page.goto('/settings/#security');
+ await page.getByRole('button',{name:'Request account deletion',exact:true}).click();
+ const dialog=page.getByRole('dialog',{name:'Request account deletion',exact:true}),close=dialog.getByRole('button',{name:'Close request',exact:true});
+ await expect(close.locator('.global-close-button__line')).toHaveCount(2);
+ await expect(close.locator('img')).toHaveCount(0);
+ await expect(close).toHaveCSS('background-color','rgba(0, 0, 0, 0)');
+ const size=await close.evaluate(el=>{const probe=document.createElement('div');probe.style.width=getComputedStyle(el).getPropertyValue('--global-close-button-size');document.body.append(probe);const token=probe.getBoundingClientRect().width;probe.remove();return {width:el.getBoundingClientRect().width,token};});
+ expect(size.width).toBeCloseTo(size.token,0);
+ await close.click();await expect(dialog).toBeHidden();
+ await expect(page.getByRole('button',{name:'Request account deletion',exact:true})).toBeFocused();
+});
+test('Account security submits a deletion request without erasing or signing anything',async({page})=>{
+ const requests=await mockBackend(page);let rows=[],submitted;
+ await page.route('**/rest/v1/studio_account_change_requests*',route=>route.fulfill({json:rows}));
+ await page.route('**/rpc/studio_request_account_change',route=>{submitted=route.request().postDataJSON();rows=[{id:'request-reference',kind:submitted.request_kind,status:'submitted',review_note:'',created_at:'2026-11-03T12:00:00Z'}];return route.fulfill({json:'request-reference'});});
+ await signInFixture(page);await page.goto('/settings/#security');const root=page.locator('[data-account-requests]'),form=root.locator('form');await expect(root).toBeHidden();await page.getByRole('button',{name:'Request account deletion',exact:true}).click();await expect(root).toBeVisible();const bounds=await root.boundingBox();expect(bounds.width).toBe(page.viewportSize().width);expect(bounds.height).toBe(page.viewportSize().height);await expect(form).toBeVisible();await form.getByLabel('Reason for your request',{exact:true}).fill('Please review my Studio data deletion request.');await form.getByRole('checkbox').check();await form.getByRole('button',{name:'Submit request',exact:true}).click();await expect(root.getByText('request-reference',{exact:true})).toBeVisible();expect(submitted).toMatchObject({request_kind:'studio_deletion',confirmed:true});await root.getByRole('button',{name:'Close request',exact:true}).click();await expect(root).toBeHidden();await page.reload();await page.getByRole('button',{name:'Request account deletion',exact:true}).click();await expect(root.getByText('request-reference',{exact:true})).toBeVisible();await page.keyboard.press('Escape');await expect(root).toBeHidden();expect(requests.some(request=>request.method==='DELETE')).toBe(false);
+});
 test('named themes survive sign-out and keep authentication fields and destructive icons consistent',async({page})=>{
  test.setTimeout(90000);
  await mockBackend(page);await signInFixture(page);
@@ -158,6 +188,7 @@ async function mockBackend(page,{releaseCover}={}){
     else if(url.pathname.endsWith('/rpc/studio_apply_partnership')){application={requested_tier:request.postDataJSON().tier,approved_tier:null,status:'pending',decision_note:''};body=null;}
     else if(url.pathname.endsWith('/rpc/studio_set_artist_media_visibility'))body=null;
     else if(url.pathname.endsWith('/rpc/studio_save_artist_graphics_v2'))body=null;
+    else if(url.pathname.endsWith('/rpc/studio_workspace_access'))body=true;
     else if(url.pathname.endsWith('/rpc/studio_subscription_status'))body={plan:'studio',status:'none',entitled:false};
     else if(url.pathname.endsWith('/studio_artist_content'))body=artistContent?[{content:artistContent}]:[];
     else if(url.pathname.endsWith('/rpc/studio_save_artist_content')){artistContent=request.postDataJSON().value;body=null;}

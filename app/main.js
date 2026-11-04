@@ -29,12 +29,14 @@ import {bindEditorSearch} from './editor-search.js';
 import {bindPortfolio} from './portfolio.js';
 import {bindSubscriptionPayments} from './subscription-payments.js';
 import {bindAccountSecurity} from './account-security.js';
+import {bindAccountRequests} from './account-requests.js';
 import {bindSigningPreview} from './signing-preview.js';
 import {bindAgreementDrafts} from './agreement-drafts.js';
 import {bindAgreementIntake} from './agreement-intake.js';
 import {bindSigningRehearsals} from './agreement-rehearsal.js';
 import {bindConnections} from './connections.js';
 import {bindOverview,bindPartnershipThemes} from './overview.js';
+import {admitWorkspace} from './workspace-access.js';
 async function initializeStudio(){
 let client=null;
 try{if(configured(config))client=createClient(config.supabase.url,config.supabase.publishableKey,{auth:{storageKey:'artanrecords-studio-auth',storage:sessionStorage,flowType:'pkce',detectSessionInUrl:false}});}catch{console.error('[studio] Backend configuration rejected');}
@@ -45,6 +47,7 @@ if(!publicRoute){
  if(!admitted){location.replace('/account/?mode=signup');return;}
  const session=(await client.auth.getSession()).data.session;
  try{const claims=JSON.parse(atob(session.access_token.split('.')[1].replaceAll('-','+').replaceAll('_','/')));if(claims.role==='contract_recipient'){location.replace('/invitation/');return;}}catch{location.replace('/account/');return;}
+ if(!await admitWorkspace(client))return;
  const template=document.querySelector('template[data-studio-workspace]');
  document.querySelector('main').hidden=true;
  if(template)template.replaceWith(template.content);
@@ -85,6 +88,7 @@ if(location.pathname==='/account/'){
 }
 await bindBilling(context);
 await bindAccountSecurity(context);
+await bindAccountRequests(context);
 await bindArtistMetadata(context);
 await bindArtistIdentity(context);
 await bindArtistApplication(context);
