@@ -7602,7 +7602,8 @@ html[data-theme-effective="dark"] .label-wordmark--light { display: none; }
   :root { --label-artist-name-size: var(--font-size-section-title-tablet); }
 }
 main[data-fragment="artists"] { inline-size: 100%; }
-.artist-directory-heading { inline-size: var(--cv-page-width); margin-inline: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--spacing-lg); }
+.artist-directory-heading,.artist-directory-copy { inline-size:var(--cv-page-width); margin-inline:auto; }
+.artist-directory-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--spacing-lg); }
 .artist-directory-intro { padding-block: var(--cv-page-padding-block); }
 html:has(main[data-fragment="artists"]) body { position: relative; isolation: isolate; }
 .artist-directory-grain { position: absolute; inset-block-start: 0; inset-inline: 0; inline-size: 100%; z-index: -1; pointer-events: none; opacity: var(--artist-grain-opacity, 0); }
