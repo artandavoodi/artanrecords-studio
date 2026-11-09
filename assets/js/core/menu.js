@@ -58,7 +58,7 @@ export function bindMenu({ openLabel, closeLabel, selectors = {}, persistentHead
     toggle.setAttribute('aria-label', value ? closeLabel : openLabel);
     document.documentElement.toggleAttribute('data-menu-open', value);
     document.body.toggleAttribute('data-menu-locked', value);
-    background.forEach(element => { element.inert = value; });
+    background.forEach(element => { element.inert = value || (element.tagName === 'MAIN' && document.documentElement.hasAttribute('data-page-loading')); });
     menuControls.forEach(element => { element.hidden = false; element.inert = !value; });
     if (persistentHeader) updateHeader();
   };
