@@ -7270,7 +7270,11 @@ html[data-menu-open] [data-menu-theme] {
 @media(max-width:600px){.artist-portfolio-grid { grid-template-columns:minmax(0,1fr); }}
 
 /* Public gallery viewer: reference photo-page spacing and contain composition. */
-.artist-gallery-trigger { display:block; padding:0; border:0; background:transparent; cursor:pointer; }
+.artist-gallery-trigger { display:block; overflow:hidden; padding:0; border:0; background:transparent; cursor:pointer; }
+.artist-gallery-trigger img { transform-origin:center; transition:transform var(--nav-institutional-motion-panel-slow) var(--ease-standard); }
+@media(hover:hover) and (pointer:fine){.artist-gallery-trigger:hover img { transform:scale(var(--effect-scale-subtle)); }}
+.artist-gallery-trigger:focus-visible img { transform:scale(var(--effect-scale-subtle)); }
+@media(prefers-reduced-motion:reduce){.artist-gallery-trigger img { transition:none; }.artist-gallery-trigger:hover img,.artist-gallery-trigger:focus-visible img { transform:none; }}
 .artist-gallery { box-sizing:border-box; inline-size:100%; max-inline-size:none; block-size:100svh; max-block-size:none; margin:0; border:0; padding:var(--cv-page-padding-block) max(var(--spacing-lg),calc((100% - var(--cv-page-width)) / 2)); background:var(--cv-page-bg); color:var(--cv-text-primary); }
 .artist-gallery[open] { display:grid; grid-template-rows:auto minmax(0,1fr) auto auto; gap:var(--spacing-md); }
 .artist-gallery > header { display:flex; justify-content:flex-end; }
