@@ -33,7 +33,7 @@ async function openInvitation(){
 }
 emailForm.onsubmit=async event=>{
  event.preventDefault();email=emailForm.elements.email.value.trim();emailForm.inert=true;status.textContent='';
- try{const allowed=await client.rpc('contract_invitation_check',{token:token(),email});if(allowed.error||allowed.data!==true)throw Error();const sent=await client.auth.signInWithOtp({email,options:{shouldCreateUser:true}});if(sent.error)throw sent.error;codeForm.hidden=false;codeForm.elements.code.focus();status.textContent=labels.sent;}catch{status.textContent=labels.unavailable;}finally{emailForm.inert=false;}
+ try{const allowed=await client.rpc('contract_invitation_check',{token:token(),email});if(allowed.error||allowed.data!==true)throw Error();const sent=await client.auth.signInWithOtp({email,options:{shouldCreateUser:true,emailRedirectTo:location.origin+'/invitation/'}});if(sent.error)throw sent.error;codeForm.hidden=false;codeForm.elements.code.focus();status.textContent=labels.sent;}catch{status.textContent=labels.unavailable;}finally{emailForm.inert=false;}
 };
 codeForm.onsubmit=async event=>{
  event.preventDefault();codeForm.inert=true;

@@ -8,7 +8,11 @@ async function backend(page){
  await page.route('https://hahtbepdrjkjluhespbs.supabase.co/**',async route=>{
   const path=new URL(route.request().url()).pathname;requests.push(path);let body;
   if(path.endsWith('/rpc/contract_invitation_check'))body=true;
-  else if(path.endsWith('/auth/v1/otp'))body={};
+  else if(path.endsWith('/auth/v1/otp')){
+   const redirect=new URL(route.request().url()).searchParams.get('redirect_to');
+   expect(redirect).toBe(new URL('/invitation/',page.url()).href);
+   expect(redirect).not.toContain(token);body={};
+  }
   else if(path.endsWith('/auth/v1/verify'))body=session;
   else if(path.endsWith('/auth/v1/user'))body=user;
   else if(path.endsWith('/rpc/contract_claim_invitation'))body=invitationId;
