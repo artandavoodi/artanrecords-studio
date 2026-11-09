@@ -4,3 +4,5 @@
 .contract-invitation .invitation-actions { display:flex; flex-wrap:wrap; gap:var(--spacing-md); margin-block:var(--spacing-lg); }
 .contract-invitation [data-invitation-auth] { max-inline-size:40ch; }
 .contract-invitation [hidden] { display:none; }
+.contract-invitation .invitation-code { font-variant-numeric:tabular-nums; letter-spacing:0.35em; text-align:center; font-size:var(--site-type-heading-size); }
+.contract-invitation [data-code-heading] { margin-block:0 var(--spacing-md); }
