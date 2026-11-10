@@ -1,9 +1,10 @@
 import config from '../content/agreement-intake.json' with {type:'json'};
+import icons from './icon-manifest.json' with {type:'json'};
 export async function bindAgreementIntake({client,resolveUser,invitationOnly=false}){
  const root=document.querySelector('[data-agreement-intake]');if(!root||!client)return;
  const status=root.querySelector('[data-intake-status]'),list=root.querySelector('[data-intake-list]'),form=root.querySelector('form');
  const owner=await resolveUser(client).catch(()=>null);if(!owner)return;let request=null;
- const identity=document.createElement('details'),summary=document.createElement('summary'),reference=document.createElement('p');summary.textContent='Your permanent account reference';reference.textContent=owner.id+' — this identifies your account, not a password. Changing your artist username does not change contract assignments.';identity.append(summary,reference);status.after(identity);
+ const identity=document.createElement('details'),summary=document.createElement('summary'),reference=document.createElement('p'),arrow=document.createElement('img');identity.className='studio-contract-reference';summary.textContent='Your permanent account reference';arrow.className='studio-icon';arrow.src='/app/icons/chevron-down.svg?v='+icons.files['chevron-down'];arrow.alt='';summary.append(arrow);reference.textContent=owner.id+' — this identifies your account, not a password. Changing your artist username does not change contract assignments.';identity.append(summary,reference);status.after(identity);
  const current=async()=>(await resolveUser(client))?.id===owner.id;
  const company=()=>{const enabled=form.elements.recipient_type.value==='company';for(const label of form.querySelectorAll('[data-intake-company]')){label.hidden=!enabled;label.querySelector('input').required=enabled;label.querySelector('input').disabled=!enabled;}};
  form.elements.recipient_type.addEventListener('change',company);

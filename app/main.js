@@ -115,6 +115,7 @@ await bindPortfolio(context);
 await window.NeuroartanPageLoading?.images(document.body);
 }catch(error){console.error('[studio] Workspace initialization failed',error);}finally{
  window.NeuroartanPageLoading?.finish();
+ document.dispatchEvent(new Event('studio:ready'));
  if(location.pathname==='/account/'){
   chrome.account.hidden=false;
   const focus=()=>chrome.account.querySelector('[data-recovery-form]:not([hidden]) input,[data-auth-form]:not([hidden]) input[type=email]')?.focus({preventScroll:true});

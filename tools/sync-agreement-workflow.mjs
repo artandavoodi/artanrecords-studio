@@ -3,6 +3,7 @@ import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex'),manifestPath='app/agreement-workflow-manifest.json';
 const sources={
+ 'assets/brand/email-wordmark.png':'assets/brand/email-wordmark.png',
  'app/shared/agreement-rehearsal.js':'assets/js/layers/control-center/operations/shared/agreement-rehearsal.js',
  'app/shared/agreement-pdf.js':'assets/js/layers/control-center/operations/shared/agreement-pdf.js',
  'app/shared/agreement-pdf-view.js':'assets/js/layers/control-center/operations/shared/agreement-pdf-view.js',

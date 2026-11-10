@@ -1,6 +1,12 @@
 .agreement-rehearsal { margin-block-start:var(--spacing-xl); padding-block-start:var(--spacing-xl); border-block-start:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); }
 .agreement-rehearsal-card { margin-block:var(--spacing-lg); }
-.agreement-rehearsal-card > summary { cursor:pointer; padding-block:var(--spacing-md); }
+.agreement-rehearsal-card > .ui-button { display:inline-flex; align-items:center; gap:var(--spacing-sm); }
+.agreement-rehearsal-card > summary,.agreement-activity > summary { display:flex; align-items:center; gap:var(--spacing-md); cursor:pointer; padding-block:var(--spacing-md); list-style:none; }
+.agreement-rehearsal-card > summary::-webkit-details-marker,.agreement-activity > summary::-webkit-details-marker { display:none; }
+.agreement-status-dot { flex:none; inline-size:var(--spacing-sm); block-size:var(--spacing-sm); border-radius:50%; background:var(--status-warning-color); }
+.agreement-rehearsal-card:is([data-state=archived],[data-state=reviewed]) .agreement-status-dot { background:var(--status-success-color); }
+.agreement-disclosure-icon { flex:none; margin-inline-start:auto; inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); background:currentColor; mask:url('/registry/icons/public/assets/core/navigation/chevron/chevron-down.svg') center/contain no-repeat; }
+details[open] > summary > .agreement-disclosure-icon { transform:rotate(180deg); }
 .agreement-rehearsal-document { white-space:pre-wrap; overflow-wrap:anywhere; margin-block:var(--spacing-xl); padding-block:var(--spacing-xl); border-block:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); line-height:1.7; max-inline-size:75ch; }
 .agreement-rehearsal-image { display:block; max-inline-size:100%; max-block-size:var(--spacing-4xl); object-fit:contain; object-position:left center; }
 .agreement-rehearsal code { overflow-wrap:anywhere; }
@@ -8,17 +14,31 @@
 .agreement-rehearsal form > button,.agreement-rehearsal > button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); }
 .agreement-rehearsal form:not([hidden]) { display:grid; gap:var(--spacing-lg); }
 .agreement-rehearsal form label:not(.studio-sharing):not(.agreement-signature-choice):not([hidden]) { display:grid; gap:var(--spacing-sm); }
-.agreement-rehearsal-card > summary::marker { color:var(--status-warning-color); }
-.agreement-rehearsal-card[data-state=archived] > summary::marker,.agreement-rehearsal-card[data-state=reviewed] > summary::marker { color:var(--status-success-color); }
 .agreement-next-step { margin-block:var(--spacing-md); }
 .agreement-reading-guide,.agreement-signature-modes { display:flex; flex-wrap:wrap; gap:var(--spacing-md); margin-block:var(--spacing-lg); }
 .agreement-signature-tools { min-inline-size:0; border:0; padding:0; display:grid; gap:var(--spacing-md); }
 .agreement-signature-tools canvas { inline-size:100%; max-inline-size:600px; aspect-ratio:10 / 3; background:var(--color-white,#fff); border:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); touch-action:none; }
 .agreement-signature-tools canvas[hidden] { display:none; }
 .agreement-signature-tools img { max-inline-size:100%; max-block-size:120px; object-fit:contain; background:var(--color-white,#fff); }
-.agreement-signature-modes label { display:flex; align-items:center; gap:var(--spacing-sm); }
-.agreement-rehearsal .agreement-signature-choice { display:flex; align-items:center; gap:var(--spacing-sm); }
-.agreement-rehearsal .agreement-signature-tools input:is([type=radio],[type=checkbox]) { flex:none; inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); min-block-size:0; padding:0; }
+.agreement-signature-tools label.agreement-signature-choice { display:flex; flex-direction:row; align-items:center; gap:var(--spacing-sm); margin:0; }
+.agreement-signature-tools input:is([type=radio],[type=checkbox]) { flex:none; inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); min-block-size:0; padding:0; margin:0; accent-color:var(--control-center-text,var(--cv-text-primary)); }
+.agreement-signature-modes { margin-block:0; }
+.agreement-signature-modes > label { justify-content:flex-start; min-block-size:var(--control-height-md); cursor:pointer; }
+.agreement-signature-modes { column-gap:var(--spacing-xl); }
+.agreement-signature-selection { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-lg); }
+.agreement-signature-selection > img:not([hidden]) { display:block; inline-size:auto; max-inline-size:100%; max-block-size:96px; object-fit:contain; background:var(--color-white,#fff); padding:var(--spacing-sm); border:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); }
+.agreement-initials-entry { max-inline-size:12rem; }
+.agreement-section-initials { margin-block-start:var(--spacing-md); color:var(--control-center-text,var(--cv-text-primary)); }
+.agreement-signature-tools > label:not(.agreement-signature-choice):not([hidden]) { display:grid; gap:var(--spacing-sm); }
+.agreement-signature-tools > p { margin:0; line-height:1.6; }
+.agreement-signature-tools > [role=status]:empty { display:none; }
+.agreement-signature-tools input[type=file] { inline-size:100%; min-inline-size:0; font:inherit; color:inherit; }
+.agreement-signature-tools input[type=file]::file-selector-button { font:inherit; color:inherit; background:var(--control-bg-hover); border:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); border-radius:var(--account-field-radius,var(--panel-radius-unified)); padding:var(--spacing-sm) var(--spacing-md); margin-inline-end:var(--spacing-md); cursor:pointer; }
+[data-signature-step]:not([hidden]) { display:grid; gap:var(--spacing-lg); padding-block:var(--spacing-lg); }
+[data-signature-step] > label:not(.studio-sharing) { display:grid; gap:var(--spacing-sm); }
+[data-signature-step] > .studio-sharing { display:flex; align-items:flex-start; gap:var(--spacing-sm); }
+[data-signature-step] > .studio-sharing input { flex:none; inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); margin:0; }
+[data-signature-step] > button { justify-self:start; }
 .agreement-guided-document { white-space:normal; }
 .agreement-guided-document > p,.agreement-guided-document [data-guide-section] > p { white-space:pre-wrap; }
 .agreement-guided-document [data-guide-section],[data-signature-step] { scroll-margin-block-start:var(--site-header-height,var(--spacing-4xl)); animation:agreement-section-enter var(--interaction-motion-medium) var(--interaction-ease-standard); }
@@ -37,6 +57,14 @@
 .agreement-focus [data-envelope-content] { max-inline-size:80ch; margin-inline:auto; padding:var(--spacing-lg); }
 .agreement-focus [data-guide-active=true] { border-inline-start:var(--border-width-hairline) solid var(--status-success-color); padding-inline-start:var(--spacing-md); }
 .agreement-signature-dialog { box-sizing:border-box; inline-size:calc(100% - var(--spacing-xl)); max-inline-size:680px; max-block-size:90dvh; overflow:auto; padding:var(--spacing-lg); color:var(--control-center-text,var(--cv-text)); background:var(--control-center-surface,var(--cv-page-bg)); border:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); }
+.agreement-signature-dialog > header { display:flex; align-items:center; justify-content:space-between; gap:var(--spacing-lg); margin-block-end:var(--spacing-lg); }
+.agreement-signature-dialog > header h2 { font-size:inherit; margin:0; }
+.agreement-signature-dialog > footer { display:flex; justify-content:flex-end; gap:var(--spacing-md); margin-block-start:var(--spacing-lg); padding-block-start:var(--spacing-lg); border-block-start:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); }
+.agreement-focus [data-envelope-content] { box-sizing:border-box; inline-size:100%; min-inline-size:0; }
+.agreement-focus [data-guide-section] { padding-block:var(--spacing-lg); }
+.agreement-focus [data-guide-section] > h4 { margin-block:0 var(--spacing-md); }
+.agreement-focus [data-guide-section] > label { max-inline-size:12rem; }
+.agreement-focus [data-envelope-content] > h3 { margin-block:var(--spacing-lg) var(--spacing-md); }
 .agreement-rehearsal input[readonly] { opacity:var(--disabled-opacity); }
 @keyframes agreement-section-enter { from { opacity:0; transform:translateY(var(--spacing-sm)); } to { opacity:1; transform:translateY(0); } }
 @media(prefers-reduced-motion:reduce){.agreement-guided-document [data-guide-section],[data-signature-step]{animation:none;}}

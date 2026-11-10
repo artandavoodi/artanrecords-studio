@@ -1,15 +1,16 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "3b64ce9051b0314e2e4b19274b6651318d79fd9f",
+  "revision": "1b492d71398495d7ade745661b056c421aaa01fc",
   "files": {
-    "app/shared/agreement-rehearsal.js": "f63b00c68f5e5798ff433011d7756dae3f439d982f84f2f8e6672d9d3ca6f9f9",
-    "app/shared/agreement-pdf.js": "8736a9ddc15e7ca3007f96734e2b55eaee368188e49c4463bd62ed91c19ce90b",
+    "assets/brand/email-wordmark.png": "44ff8c2aedeed1dd1f370b32ada70ba6ebcc71c1c4d636a109738004d3df8c93",
+    "app/shared/agreement-rehearsal.js": "73f18c8226c091c03e64b7dd73d7c3060377356e5f31f7c56e3a2bd0010007ad",
+    "app/shared/agreement-pdf.js": "c4c52bb53831869db70d3fb8563dcdfe6a6b705bc8bbc12fd85b3c0cf854b613",
     "app/shared/agreement-pdf-view.js": "cd117daaf5c8aca1463c78fd69c0b5217efc3731bb908abba9138b3142cb0aa3",
-    "app/shared/agreement-signature.js": "9938eeb68a63e0a38e0bd16981c3b578aec3f07dd4423cc1fc902438f0e661c5",
-    "app/shared/agreement-guide.js": "5b90ef2a31a38f074b18d6e81963883ca2cbd7453e2b7aaf8af86d6956fa412f",
+    "app/shared/agreement-signature.js": "77f20d06e7bfb92b3e0684b0555cebd7c301919199f48bd1a7fa40d9f08af743",
+    "app/shared/agreement-guide.js": "3aef6ce552db6510aec8caaff4d7781819987dc373ae6021dc39f7fcd21385f8",
     "app/shared/NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
     "app/shared/NotoSans-LICENSE.txt": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb",
-    "app/shared/agreement-rehearsal.css": "cf4f5a4f59495849df67b1658ed70832663c5f31545bbfce9edf6ee51c21d300",
-    "content/agreement-rehearsal.json": "ac3fb35719d2219db914a6f033a7551fb1225d7b1e16fb4bff61780c4f07bad7"
+    "app/shared/agreement-rehearsal.css": "966bb3330b86f060e54aadaa34151a182f095d244ea7a673f8ac4c588709bb02",
+    "content/agreement-rehearsal.json": "10739001f50716224194328c80aad6989cd771cb81e2434a5b78dd59f55a9616"
   }
 }

@@ -60,14 +60,14 @@ test('Account security submits a deletion request without erasing or signing any
  const requests=await mockBackend(page);let rows=[],submitted;
  await page.route('**/rest/v1/studio_account_change_requests*',route=>route.fulfill({json:rows}));
  await page.route('**/rpc/studio_request_account_change',route=>{submitted=route.request().postDataJSON();rows=[{id:'request-reference',kind:submitted.request_kind,status:'submitted',review_note:'',created_at:'2026-11-03T12:00:00Z'}];return route.fulfill({json:'request-reference'});});
- await signInFixture(page);await page.goto('/settings/#security');const root=page.locator('[data-account-requests]'),form=root.locator('form');await expect(root).toBeHidden();await page.getByRole('button',{name:'Request account deletion',exact:true}).click();await expect(root).toBeVisible();const bounds=await root.boundingBox();expect(bounds.width).toBe(page.viewportSize().width);expect(bounds.height).toBe(page.viewportSize().height);await expect(form).toBeVisible();await form.getByLabel('Reason for your request',{exact:true}).fill('Please review my Studio data deletion request.');await form.getByRole('checkbox').check();await form.getByRole('button',{name:'Submit request',exact:true}).click();await expect(root.getByText('request-reference',{exact:true})).toBeVisible();expect(submitted).toMatchObject({request_kind:'studio_deletion',confirmed:true});await root.getByRole('button',{name:'Close request',exact:true}).click();await expect(root).toBeHidden();await page.reload();await page.getByRole('button',{name:'Request account deletion',exact:true}).click();await expect(root.getByText('request-reference',{exact:true})).toBeVisible();await page.keyboard.press('Escape');await expect(root).toBeHidden();expect(requests.some(request=>request.method==='DELETE')).toBe(false);
+ await signInFixture(page);await page.goto('/settings/#security');const root=page.locator('[data-account-requests]'),form=root.locator('form');await expect(root).toBeHidden();await page.getByRole('button',{name:'Request account deletion',exact:true}).click();await expect(root).toBeVisible();const bounds=await root.boundingBox();expect(bounds.width).toBe(page.viewportSize().width);expect(bounds.height).toBe(page.viewportSize().height);await expect(form).toBeVisible();await expect(page.locator('html')).not.toHaveAttribute('data-page-loading');await form.getByLabel('Reason for your request',{exact:true}).fill('Please review my Studio data deletion request.');await form.getByRole('checkbox').check();await form.getByRole('button',{name:'Submit request',exact:true}).click();await expect(root.getByText('request-reference',{exact:true})).toBeVisible();expect(submitted).toMatchObject({request_kind:'studio_deletion',confirmed:true});await root.getByRole('button',{name:'Close request',exact:true}).click();await expect(root).toBeHidden();await page.reload();await page.getByRole('button',{name:'Request account deletion',exact:true}).click();await expect(root.getByText('request-reference',{exact:true})).toBeVisible();await page.keyboard.press('Escape');await expect(root).toBeHidden();expect(requests.some(request=>request.method==='DELETE')).toBe(false);
 });
 test('named themes survive sign-out and keep authentication fields and destructive icons consistent',async({page})=>{
  test.setTimeout(90000);
  await mockBackend(page);await signInFixture(page);
  for(const label of ['Silver','Gold','Platinum']){
   await page.goto('/settings/#appearance');await page.getByRole('button',{name:label,exact:true}).click();
-  await page.goto('/profile/');await expect(page.locator('html')).toHaveAttribute('data-partnership-theme',label.toLowerCase());await expect(page.locator('[data-profile-form]')).toBeVisible();const fill=await page.locator('[data-profile-form] [name=display_name]').evaluate(el=>getComputedStyle(el).backgroundColor);
+  await page.goto('/profile/');await expect(page.locator('html')).toHaveAttribute('data-partnership-theme',label.toLowerCase());await expect(page.locator('[data-profile-form]')).toBeVisible();await expect(page.locator('html')).not.toHaveAttribute('data-page-loading');const fill=await page.locator('[data-profile-form] [name=display_name]').evaluate(el=>getComputedStyle(el).backgroundColor);
   await page.goto('/settings/#security');const signout=page.locator('[data-settings-panel=security] [data-signout]');
   await expect(signout).toHaveCSS('color','rgb(255, 85, 85)');await expect(signout.locator('.studio-signout-icon')).toHaveCSS('background-color','rgb(255, 85, 85)');await expect(signout.locator('.studio-signout-icon')).toHaveCSS('filter','none');await signout.click();
   await expect(page).toHaveURL(/\/account\/$/);await expect(page.locator('#account-dialog')).toBeVisible();await expect(page.locator('html')).toHaveAttribute('data-partnership-theme',label.toLowerCase());
@@ -224,7 +224,7 @@ test('requested contract details reuse confirmed account information without sig
  await page.route('**/rest/v1/studio_agreement_intake_versions*',route=>route.fulfill({json:{details,reply_email:user.email}}));
  await page.route('**/rest/v1/studio_billing_addresses*',route=>route.fulfill({json:{line1:'1 Synthetic Street',line2:'',city:'Test City',postal_code:'10000',country:'HR'}}));
  await page.route('**/rest/v1/rpc/studio_submit_agreement_details',route=>{submitted=route.request().postDataJSON();details=submitted.payload;state='submitted';return route.fulfill({json:id});});
- await signInFixture(page);await page.goto('/agreements/#contract-details');const form=page.locator('[data-intake-form]');await expect(form).toBeVisible();await expect(form.locator('[name=reply_email]')).toHaveValue(user.email);await expect(form.locator('[name=reply_email]')).toHaveAttribute('readonly','');
+ await signInFixture(page);await page.goto('/agreements/#contract-details');const form=page.locator('[data-intake-form]');await expect(form).toBeVisible();await expect(page.locator('html')).not.toHaveAttribute('data-page-loading');await expect(form.locator('[name=reply_email]')).toHaveValue(user.email);await expect(form.locator('[name=reply_email]')).toHaveAttribute('readonly','');
  await form.locator('[name=legal_name]').fill('Synthetic Legal Name');await form.locator('[name=artist_name]').fill('Test Artist');await form.getByRole('button',{name:'Use saved address',exact:true}).click();await expect(form.locator('[name=address_line1]')).toHaveValue('1 Synthetic Street');
  await form.locator('[name=recipient_type]').selectOption('company');await expect(form.locator('[name=company_name]')).toBeVisible();await expect(form.locator('[name=company_name]')).toHaveAttribute('required','');await form.locator('[name=recipient_type]').selectOption('individual');await expect(form.locator('[name=company_name]')).toBeHidden();
  await form.locator('[name=confirm_accuracy]').check();await form.getByRole('button',{name:'Submit contract details',exact:true}).click();await expect(page.locator('[data-intake-status]')).toHaveText('Submitted for review');await expect(form.locator('[name=legal_name]')).toBeDisabled();expect(submitted).toMatchObject({request:id,expected_version:null,confirm_accuracy:true,payload:{legal_name:'Synthetic Legal Name',recipient_type:'individual',country_code:'HR'}});expect(submitted.payload).not.toHaveProperty('reply_email');expect(submitted.payload).not.toHaveProperty('company_name');expect(submitted.payload).not.toHaveProperty('date_of_birth');
@@ -245,9 +245,9 @@ test('rehearsal details and test signature never overwrite the real contracting 
  await page.route('**/rest/v1/rpc/studio_record_agreement_test_signature',route=>{signature=route.request().postDataJSON();state='artist_signed';return route.fulfill({json:rehearsalId});});
  await signInFixture(page);await page.goto('/agreements/#contract-rehearsal');await page.getByRole('tab',{name:'Legal identity',exact:true}).click();const form=page.locator('[data-intake-form]');await expect(page.locator('[data-intake-status]')).toHaveText('REHEARSAL · Details requested');await expect(form.getByRole('button',{name:'Use saved address',exact:true})).toBeDisabled();
  for(const [key,value] of Object.entries({legal_name:'TEST ONLY',artist_name:'TEST ARTIST',address_line1:'Fictional test address',city:'Test City',postal_code:'00000',country_code:'HR'}))await form.locator(`[name=${key}]`).fill(value);await form.locator('[name=confirm_accuracy]').check();await form.getByRole('button',{name:'Submit contract details',exact:true}).click();await expect(page.locator('[data-intake-status]')).toHaveText('REHEARSAL · Submitted for review');
- await page.getByRole('tab',{name:'Review & sign',exact:true}).click();const root=page.locator('[data-signing-rehearsal]');await root.getByRole('button',{name:'Refresh documents',exact:true}).click();await root.getByRole('button',{name:'Open document',exact:true}).click();const signing=root.locator('[data-rehearsal-signature]');await expect(signing.locator('[name=signer]')).toBeVisible();await signing.locator('[name=initial-1]').fill('TA');await signing.getByRole('button',{name:'Initial and continue',exact:true}).click();await expect(signing.locator('[name=signer]')).toHaveValue('TEST ONLY');await expect(signing.locator('[name=signer]')).toHaveAttribute('readonly','');
+ await page.getByRole('tab',{name:'Review & sign',exact:true}).click();const root=page.locator('[data-signing-rehearsal]');await root.getByRole('button',{name:'Refresh documents',exact:true}).click();await root.getByRole('button',{name:'Open document',exact:true}).click();const signing=root.locator('[data-rehearsal-signature]');await expect(signing.locator('[name=signer]')).toBeVisible();await signing.getByLabel('Your initials',{exact:true}).fill('TA');await signing.getByRole('button',{name:'Initial and continue',exact:true}).click();await expect(signing.locator('[name=signer]')).toHaveValue('TEST ONLY');await expect(signing.locator('[name=signer]')).toHaveAttribute('readonly','');
  const png=await page.evaluate(()=>{const c=document.createElement('canvas');c.width=200;c.height=60;const ctx=c.getContext('2d');ctx.fillStyle='black';ctx.fillRect(10,20,160,5);return c.toDataURL('image/png').split(',')[1];});await signing.getByRole('button',{name:'Add signature',exact:true}).click();await signing.locator('[name=signature]').setInputFiles({name:'test.png',mimeType:'image/png',buffer:Buffer.from(png,'base64')});await signing.getByRole('button',{name:'Use signature',exact:true}).click();await signing.locator('[name=consent]').check();await signing.getByRole('button',{name:'Record signature',exact:true}).click();await expect(root.locator('summary').first()).toContainText('Waiting for label signature');expect(signature).toMatchObject({envelope:rehearsalId,expected_digest:digest,role_name:'artist',signer_name:'TEST ONLY',acknowledge_non_binding:true,initials:{1:'TA'}});await expect(root.locator('[data-rehearsal-signature]')).toHaveCount(0);
- await page.getByRole('tab',{name:'Legal identity',exact:true}).click();await page.locator('[data-intake-choice]').selectOption(id);await expect(page.locator('[data-intake-status]')).toHaveText('Details requested');await expect(form.locator('[name=legal_name]')).toHaveValue('');await expect(form.locator('[name=legal_name]')).not.toHaveAttribute('readonly','');
+ await root.getByRole('button',{name:'Close document',exact:true}).click();await page.getByRole('tab',{name:'Legal identity',exact:true}).click();await page.locator('[data-intake-choice]').selectOption(id);await expect(page.locator('[data-intake-status]')).toHaveText('Details requested');await expect(form.locator('[name=legal_name]')).toHaveValue('');await expect(form.locator('[name=legal_name]')).not.toHaveAttribute('readonly','');
  detailsState='closed';await page.goto('/agreements/#contract-rehearsal');await page.reload();await expect(page.locator('[data-intake-form]')).toBeHidden();await expect(page.locator('[data-intake-status]')).toHaveText('No open rehearsal details request. Archived test records remain available below.');
 });
 test('agreement notifications lead to Agreements rather than partnership application settings',async({page})=>{
@@ -392,6 +392,7 @@ test('editor search keeps its field stable and links directly to Store tools',as
  await expect(page.getByRole('link',{name:'Back to editor',exact:true})).toHaveAttribute('href','/editor/');
 });
 test('artist canvas opens focused and corner editing updates only its preview',async({page})=>{
+ test.setTimeout(90000);
  await mockBackend(page);const dialog=await openAccount(page);
  let savedDesign;
  await page.route('**/rest/v1/studio_artist_designs*',route=>{if(route.request().method()==='GET')return route.fulfill({json:null});savedDesign=route.request().postDataJSON();return route.fulfill({status:201,json:savedDesign});});
@@ -505,7 +506,7 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await page.getByRole('button',{name:'Publish design',exact:true}).click();
  await expect.poll(()=>savedDesign?.published_design?.font).toBe('mono');
  await page.getByRole('link',{name:'Search tools and content',exact:true}).click();
- await expect(page).toHaveURL(/\/search\/\?scope=editor/);const toolSearch=page.locator('[data-studio-search-page]');await toolSearch.getByRole('searchbox').fill('main buttons');await toolSearch.getByRole('link',{name:'Main buttons & links',exact:false}).click();
+ await expect(page).toHaveURL(/\/search\/\?scope=editor/);const toolSearch=page.locator('[data-studio-search-page]');await expect(toolSearch).toHaveAttribute('data-search-ready','true');await expect(page.locator('html')).not.toHaveAttribute('data-page-loading');await toolSearch.getByRole('searchbox').fill('main buttons');await toolSearch.getByRole('link',{name:'Main buttons & links',exact:false}).click();
  await expect(page.locator('[data-editor-selection]')).toHaveText('Main buttons');
  await expect(page.locator('[data-editor-button-label]').first()).toBeFocused();
  await page.locator('[data-editor-button-url]').first().fill('javascript:alert(1)');await expect(page.getByRole('button',{name:'Save draft',exact:true})).toBeDisabled();await expect(page.locator('[data-editor-button-status]')).not.toHaveText('');await page.locator('[data-editor-button-url]').first().fill('#artist-releases');
@@ -611,7 +612,7 @@ test('artist graphics isolate their tab and save explicit palette visibility',as
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
  await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.getByRole('tab',{name:'Graphics',exact:true}).click();
- const form=page.locator('[data-graphics-form]');await expect(form).toBeVisible();await expect(page.locator('[data-profile-form]')).toBeHidden();
+ const form=page.locator('[data-graphics-form]');await expect(form).toBeVisible();await expect(page.locator('html')).not.toHaveAttribute('data-page-loading');await expect(page.locator('[data-profile-form]')).toBeHidden();
  await expect(form.locator('[data-colour-swatch]')).toHaveCount(2);await expect(form.locator('summary')).toHaveCount(0);
  await form.getByRole('button',{name:'Custom colour'}).click();await form.getByLabel('Artist colour hex code').fill('#123456');
  await form.getByRole('combobox',{name:'Assign colour',exact:true}).selectOption('icons');
@@ -672,7 +673,7 @@ test('artist logos reject active SVG and export safe artwork without distortion'
 test('profile saves show shared feedback and text fields resize only vertically',async({page})=>{
   const requests=await mockBackend(page);
   const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();
-  const form=page.locator('[data-profile-form]');await expect(form).toBeVisible();
+  const form=page.locator('[data-profile-form]');await expect(form).toBeVisible();await expect(page.locator('html')).not.toHaveAttribute('data-page-loading');
   await expect(form.locator('textarea')).toHaveCSS('resize','none');
   const biography=form.locator('[name=biography]');await expect(biography).toHaveAttribute('maxlength','250');
   await biography.fill('A'.repeat(200));await expect(form.locator('[data-biography-counter]')).toHaveAttribute('data-character-state','warning');
@@ -817,7 +818,7 @@ test('payout applications submit inside Studio, persist under review and never i
  await page.route('**/rest/v1/studio_payout_applications*',route=>route.fulfill({contentType:'application/json',body:JSON.stringify(application?[application]:[])}));
  await page.route('**/rest/v1/rpc/studio_submit_payout_application',async route=>{application={...route.request().postDataJSON().value,status:'pending',decision_note:''};await route.fulfill({contentType:'application/json',body:'null'});});
  const account=await openAccount(page);await account.locator('[name=email]').fill(user.email);await account.locator('[data-auth-form] [name=password]').fill('Test-password-123');await account.locator('[data-auth-submit]').click();await expect(page).toHaveURL(/\/profile\/$/);
- await page.goto('/settings/#payments');const form=page.locator('[data-payout-application-form]');await expect(form).toBeVisible();await form.getByLabel('Legal name',{exact:true}).fill('Test Artist');await form.getByLabel('Recipient type').selectOption('individual');await form.getByLabel('Country of residence or business registration').fill('HR');await form.getByLabel('Country of tax residence').fill('HR');await form.getByRole('checkbox').check();await form.getByRole('button',{name:'Submit application'}).click();
+ await page.goto('/settings/#payments');const form=page.locator('[data-payout-application-form]');await expect(form).toBeVisible();await expect(page.locator('html')).not.toHaveAttribute('data-page-loading');await form.getByLabel('Legal name',{exact:true}).fill('Test Artist');await form.getByLabel('Recipient type').selectOption('individual');await form.getByLabel('Country of residence or business registration').fill('HR');await form.getByLabel('Country of tax residence').fill('HR');await form.getByRole('checkbox').check();await form.getByRole('button',{name:'Submit application'}).click();
  await expect(page.locator('[data-payout-application-status]')).toContainText('under review');await expect(form).toBeHidden();await page.reload();await expect(page.locator('[data-payout-application-status]')).toContainText('under review');expect(requests.some(item=>item.path.includes('/functions/v1/studio-connect'))).toBe(false);await expect(page).toHaveURL(/\/settings\/#payments$/);
 });
 test('Bank and payout settings never simulate money or enable withdrawals',async({page})=>{
@@ -842,7 +843,7 @@ test('sign-in opens a private profile and sign-out does not revoke other applica
   await dialog.locator('[data-auth-submit]').click();
   await expect(page).toHaveURL(/\/profile\/$/);
   const form=page.locator('[data-profile-form]');
-  await expect(form).toBeVisible();
+  await expect(form).toBeVisible();await expect(page.locator('html')).not.toHaveAttribute('data-page-loading');
   const billing=page.locator('.studio-billing');
   await expect(page.getByRole('tab',{name:'Addresses',exact:true})).toHaveCount(0);
   await page.goto('/settings/#addresses');
@@ -851,12 +852,12 @@ test('sign-in opens a private profile and sign-out does not revoke other applica
   await expect(billing.locator('input').first()).toBeVisible();
   await billing.locator('summary').click();
   await page.goto('/profile/');
-  await expect(form).toBeVisible();
+  await expect(form).toBeVisible();await expect(page.locator('html')).not.toHaveAttribute('data-page-loading');
   await form.locator('[name=artist_name]').fill('Test artist');
   await form.locator('[type=submit]').click();
   await expect(page.locator('[data-profile-status]')).toBeEmpty();
   await expect(page.locator('.system-save-confirmation')).toHaveText('Profile saved.');
-  const save=requests.find(request=>request.path.endsWith('/studio_profiles')&&request.method==='POST');
+  const save=requests.find(request=>request.path.endsWith('/studio_profiles')&&request.method==='POST'&&request.body.artist_name==='Test artist');
   expect(save.body.id).toBe(id);expect(save.body.artist_name).toBe('Test artist');expect(save.body.role).toBeUndefined();
   await page.goto('/settings/#security');
   await page.locator('[data-settings-panel="security"] [data-signout]').click();

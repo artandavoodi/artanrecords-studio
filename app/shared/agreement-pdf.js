@@ -3,12 +3,14 @@ import fontkit from '@pdf-lib/fontkit';
 import fontBytes from './NotoSans-Regular.ttf';
 
 // A readable evidence copy, not a certificate-based PDF signature or legal seal.
-export async function agreementPdf({envelope,version,signatures,events}){
+export async function agreementPdf({envelope,version,signatures,events,logoBytes}){
  const pdf=await PDFDocument.create();pdf.registerFontkit(fontkit);
+ if(!logoBytes){const response=await fetch('/assets/brand/email-wordmark.png',{credentials:'omit'});if(!response.ok)throw Error('The document logo could not be loaded. No incomplete PDF was downloaded.');logoBytes=new Uint8Array(await response.arrayBuffer());}
+ const logo=await pdf.embedPng(logoBytes),logoWidth=160,logoHeight=logo.height*logoWidth/logo.width;
  const font=await pdf.embedFont(fontBytes,{subset:true}),supported=new Set(font.getCharacterSet());
  const date=new Date(envelope.created_at);pdf.setTitle(version.terms.title);pdf.setAuthor('Artanrecords');pdf.setCreationDate(date);pdf.setModificationDate(new Date(envelope.updated_at||envelope.created_at));
  const pages=[],width=595.28,height=841.89,margin=48,lineHeight=16,ink=rgb(.12,.14,.17);let page,y;
- function next(){page=pdf.addPage([width,height]);pages.push(page);y=height-margin;page.drawText('Artanrecords',{x:margin,y,font,size:15,color:ink});y-=28;}
+ function next(){page=pdf.addPage([width,height]);pages.push(page);y=height-margin;page.drawImage(logo,{x:margin,y:y-logoHeight,width:logoWidth,height:logoHeight});y-=logoHeight+20;}
  function text(value,size=10){
   const input=String(value??'').replaceAll('\t','    ');
   for(const char of input)if(char!=='\n'&&!supported.has(char.codePointAt(0)))throw Error('This document contains characters the PDF font cannot display. No incomplete PDF was downloaded.');

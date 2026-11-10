@@ -3,6 +3,11 @@ import config from '../content/account.json';
 import labels from '../content/contract-invitation.json';
 import {bindAgreementIntake} from './agreement-intake.js';
 import {bindSigningRehearsals} from './agreement-rehearsal.js';
+import './neuroartan/assets/js/core/02-systems/page-loading.js';
+import iconManifest from './icon-manifest.json';
+
+const loading=document.createElement('div');loading.className='ui-loading-surface';loading.setAttribute('role','status');loading.setAttribute('aria-label',labels.loading);loading.innerHTML='<span class="ui-loader-circle" aria-hidden="true"></span>';document.body.append(loading);
+for(const [selector,name] of [['[data-invitation-refresh]','refresh'],['[data-invitation-signout]','signout']]){const button=document.querySelector(selector),image=document.createElement('img');button.setAttribute('aria-label',button.textContent);button.dataset.label=button.textContent;button.dataset.tooltipPosition='top';image.className='studio-icon';image.src='/app/icons/'+name+'.svg?v='+iconManifest.files[name];image.alt='';button.replaceChildren(image);}
 
 const status=document.querySelector('[data-invitation-status]'),auth=document.querySelector('[data-invitation-auth]'),privateView=document.querySelector('[data-invitation-private]'),emailForm=document.querySelector('[data-invitation-email]'),codeForm=document.querySelector('[data-invitation-code]');
 const client=createClient(config.supabase.url,config.supabase.publishableKey,{auth:{storageKey:'artanrecords-contract-auth',storage:sessionStorage,flowType:'pkce',detectSessionInUrl:false}});
@@ -15,6 +20,8 @@ function showCodeStep(){
  codeForm.elements.code.focus();
 }
 const parameters=new URLSearchParams(location.hash.slice(1));
+const emailLink=parameters.has('token_hash')?{hash:parameters.get('token_hash'),type:parameters.get('type')}:null;
+if(emailLink){sessionStorage.removeItem('artanrecords-contract-invitation');history.replaceState(null,'',location.pathname);}
 if(parameters.has('token')){const token=parameters.get('token');if(/^[a-f0-9]{64}$/.test(token)){if(token!==sessionStorage.getItem('artanrecords-contract-invitation'))sessionStorage.removeItem('artanrecords-contract-email');sessionStorage.setItem('artanrecords-contract-invitation',token);}history.replaceState(null,'',location.pathname);}
 const token=()=>sessionStorage.getItem('artanrecords-contract-invitation');
 const resolveUser=async()=>{const result=await client.auth.getUser();if(result.error)throw result.error;return result.data.user;};
@@ -31,12 +38,13 @@ const scopedClient={
  }
 };
 async function openInvitation(){
- privateView.hidden=true;const claimed=await client.rpc('contract_claim_invitation',{token:token()});if(claimed.error||!claimed.data)throw Error();invitation=claimed.data;
+ privateView.hidden=true;const claimed=await (token()?client.rpc('contract_claim_invitation',{token:token()}):client.rpc('contract_resume_invitation'));if(claimed.error||!claimed.data)throw Error();invitation=claimed.data;
  const result=await client.rpc('contract_invitation_context',{invitation});if(result.error||!result.data)throw Error();context=result.data;
  const mount=document.querySelector('[data-invitation-content]');mount.replaceChildren(document.querySelector('[data-invitation-template]').content.cloneNode(true));
+ if(context.status!=='approved'){const help=document.createElement('p');help.textContent=labels.signatureHelp;mount.querySelector('[data-invitation-panel=agreement]').prepend(help);}
  const intake=mount.querySelector('[data-agreement-intake]');intake.querySelector('p').textContent='Provide only the legal details requested for this agreement. Submitted identity details are locked for review.';intake.querySelector('[data-intake-address]').hidden=true;
  await bindAgreementIntake({client:scopedClient,resolveUser,invitationOnly:true});await bindSigningRehearsals({client:scopedClient,resolveUser});
- auth.hidden=true;privateView.hidden=false;status.textContent='';
+ auth.hidden=true;privateView.hidden=false;document.querySelector('[data-invitation-introduction]').hidden=true;document.querySelector('[data-invitation-toolbar]').hidden=false;status.textContent='';
 }
 emailForm.onsubmit=async event=>{
  event.preventDefault();if(sending)return;
@@ -56,9 +64,16 @@ codeForm.onsubmit=async event=>{
 document.querySelector('[data-invitation-refresh]').onclick=async()=>{if(!window.confirm('Check for updates? Unsubmitted changes on this page will be cleared.'))return;try{await openInvitation();}catch{privateView.hidden=true;status.textContent=labels.unavailable;}};
 document.querySelector('[data-invitation-signout]').onclick=async()=>{await client.auth.signOut({scope:'local'});sessionStorage.removeItem('artanrecords-contract-invitation');sessionStorage.removeItem('artanrecords-contract-email');location.replace('/invitation/');};
 for(const button of document.querySelectorAll('[data-invitation-tab]'))button.onclick=()=>{for(const tab of document.querySelectorAll('[data-invitation-tab]'))tab.setAttribute('aria-selected',String(tab===button));for(const panel of document.querySelectorAll('[data-invitation-panel]'))panel.hidden=panel.dataset.invitationPanel!==button.dataset.invitationTab;};
-if(!token()){emailForm.hidden=true;status.textContent=labels.missing;}
-else{
+async function initialize(){
+ if(emailLink){
+  if(!/^[a-zA-Z0-9_-]{32,256}$/.test(emailLink.hash||'')||!['email','signup'].includes(emailLink.type)){emailForm.hidden=true;status.textContent=labels.failed;return;}
+  const verified=await client.auth.verifyOtp({token_hash:emailLink.hash,type:emailLink.type});emailLink.hash=null;
+  if(verified.error){emailForm.hidden=true;status.textContent=labels.linkFailed;return;}
+ }
+ const session=await client.auth.getSession();
+ if(session.data.session){try{await openInvitation();}catch{emailForm.hidden=true;codeForm.hidden=true;status.textContent=labels.resumeFailed;}return;}
+ if(!token()){emailForm.hidden=true;status.textContent=labels.missing;return;}
  email=sessionStorage.getItem('artanrecords-contract-email')||'';emailForm.elements.email.value=email;
  if(email){showCodeStep();status.textContent=labels.sent;}
- client.auth.getSession().then(async result=>{if(result.data.session)try{await openInvitation();}catch{status.textContent=labels.accessFailed;}}).catch(()=>{status.textContent=labels.connectionFailed;});
 }
+initialize().catch(()=>{status.textContent=labels.connectionFailed;}).finally(()=>{document.querySelector('main').hidden=false;window.NeuroartanPageLoading?.finish();loading.remove();});

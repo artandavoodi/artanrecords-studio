@@ -1,8 +1,16 @@
+@import url('./neuroartan/assets/css/core/03-primitives/overlays.css');
 .contract-invitation { min-block-size:100svh; color:var(--cv-text-primary,var(--text-color)); background:var(--cv-page-bg,var(--bg-color)); }
 .contract-invitation > header,.contract-invitation > main { box-sizing:border-box; max-inline-size:80ch; margin-inline:auto; padding:var(--spacing-lg); }
-.contract-invitation > header { border-block-end:var(--border-width-hairline) solid var(--cv-border); }
+.contract-invitation > header { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--spacing-md); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
+.contract-invitation > header > a { grid-column:1 / -1; }
+.contract-invitation > header h1 { margin:0; }
+.contract-invitation .invitation-header-actions { display:flex; flex-wrap:wrap; gap:var(--spacing-md); }
+.contract-invitation .invitation-header-actions button { display:inline-flex; align-items:center; justify-content:center; inline-size:var(--control-height-md); block-size:var(--control-height-md); border:0; background:none; color:inherit; font:inherit; padding:var(--spacing-sm); cursor:pointer; }
+.contract-invitation .invitation-header-actions button:focus-visible { outline:var(--border-width-hairline) solid currentColor; outline-offset:var(--spacing-xs); }
+@media(max-width:600px){.contract-invitation > header { grid-template-columns:minmax(0,1fr); }.contract-invitation .invitation-header-actions { justify-self:start; }}
 .contract-invitation .invitation-actions { display:flex; flex-wrap:wrap; gap:var(--spacing-md); margin-block:var(--spacing-lg); }
 .contract-invitation [data-invitation-auth] { max-inline-size:40ch; }
 .contract-invitation [hidden] { display:none; }
 .contract-invitation .invitation-code { font-variant-numeric:tabular-nums; letter-spacing:0.35em; text-align:center; font-size:var(--site-type-heading-size); }
 .contract-invitation [data-code-heading] { margin-block:0 var(--spacing-md); }
+.contract-invitation .invitation-actions > button { display:inline-flex; align-items:center; justify-content:center; padding:var(--spacing-sm); }

@@ -8,26 +8,26 @@ export function agreementSections(body,titles){
 export function signingGuide({body,form,version,labels}){
  const document=body.ownerDocument,reader=body.querySelector('.agreement-rehearsal-document'),parsed=agreementSections(version.terms.body,version.terms.section_titles),inputs=parsed.sections.map((_,index)=>form.elements['initial-'+(index+1)]),panels=[];
  const controls=document.createElement('nav');controls.className='agreement-guide-controls';controls.setAttribute('aria-label',labels.navigation);
- const previous=document.createElement('button'),next=document.createElement('button'),full=document.createElement('button'),progress=document.createElement('progress'),message=document.createElement('p');
- for(const button of [previous,next,full]){button.type='button';button.className='ui-button';}previous.textContent=labels.previous;next.textContent=labels.next;full.textContent=labels.full;progress.max=parsed.sections.length+1;progress.setAttribute('aria-label',labels.progress);message.setAttribute('role','status');const header=document.createElement('div');header.className='agreement-guide-header';header.append(progress,message,full);controls.append(previous,next);
+ const previous=document.createElement('button'),next=document.createElement('button'),full=document.createElement('button'),message=document.createElement('p'),initialsLabel=document.createElement('label'),initials=document.createElement('input');
+ for(const button of [previous,next,full]){button.type='button';button.className='ui-button';}previous.textContent=labels.previous;next.textContent=labels.next;full.textContent=labels.full;message.setAttribute('role','status');initialsLabel.className='agreement-initials-entry';initialsLabel.textContent=labels.initials;initials.name='review_initials';initials.className='ui-field';initials.maxLength=8;initials.pattern='[A-Za-z]{1,8}';initials.autocomplete='off';initialsLabel.append(initials);const help=document.createElement('p');help.textContent=labels.initialsHelp;const header=document.createElement('div');header.className='agreement-guide-header';header.append(message,initialsLabel,help,full);controls.append(previous,next);
  const final=document.createElement('section');final.dataset.signatureStep='';
  for(const node of [...form.children])if(!inputs.some(input=>input.closest('label')===node))final.append(node);
  reader.replaceChildren();reader.classList.add('agreement-guided-document');
  if(parsed.introduction.trim()){const introduction=document.createElement('p');introduction.textContent=parsed.introduction;reader.append(introduction);}
  for(const [index,section] of parsed.sections.entries()){
-  const panel=document.createElement('section'),heading=document.createElement('h4'),text=document.createElement('p');panel.dataset.guideSection=String(index+1);panel.tabIndex=-1;heading.textContent=section.title;text.textContent=section.text;panel.append(heading,text,inputs[index].closest('label'));reader.append(panel);panels.push(panel);
+  const panel=document.createElement('section'),heading=document.createElement('h4'),text=document.createElement('p'),stamp=document.createElement('p');panel.dataset.guideSection=String(index+1);panel.tabIndex=-1;heading.textContent=section.title;text.textContent=section.text;stamp.className='agreement-section-initials';const originalLabel=inputs[index].closest('label');originalLabel.remove();inputs[index].type='hidden';inputs[index].required=false;panel.append(heading,text,stamp,inputs[index]);reader.append(panel);panels.push(panel);
  }
  form.replaceChildren(header,reader,final,controls);let step=0;
- const valid=index=>inputs[index].checkValidity()&&inputs[index].value.trim().length>0;
+ const valid=index=>/^[A-Za-z]{1,8}$/.test(inputs[index].value.trim());
  const firstMissing=()=>inputs.findIndex((_,index)=>!valid(index));
  function render(scroll=false){
   if(step===panels.length){const missing=firstMissing();if(missing>=0)step=missing;}
-  panels.forEach((panel,index)=>{panel.hidden=false;panel.dataset.guideActive=String(step===index);});final.hidden=false;previous.disabled=step===0;next.hidden=step===panels.length;next.disabled=step<panels.length&&!valid(step);progress.value=inputs.filter((_,index)=>valid(index)).length;
+  panels.forEach((panel,index)=>{panel.hidden=false;panel.dataset.guideActive=String(step===index);const stamp=panel.querySelector('.agreement-section-initials');stamp.hidden=!valid(index);stamp.textContent=valid(index)?labels.initialed.replace('{initials}',inputs[index].value):'';});final.hidden=false;previous.disabled=step===0;next.hidden=step===panels.length;next.disabled=step<panels.length&&!/^[A-Za-z]{1,8}$/.test(initials.value.trim());
   message.textContent=step<panels.length?labels.section.replace('{current}',step+1).replace('{total}',panels.length):labels.final;
-  if(scroll){const target=step<panels.length?panels[step]:final;target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});(step<panels.length?inputs[step]:form.elements.signer).focus({preventScroll:true});}
+  if(scroll){const target=step<panels.length?panels[step]:final;target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});(step<panels.length?target:form.elements.signer).focus({preventScroll:true});}
  }
- next.onclick=()=>{if(step<panels.length&&valid(step)){step++;render(true);}else inputs[step]?.reportValidity();};previous.onclick=()=>{if(step){step--;render(true);}};full.onclick=()=>reader.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
- inputs.forEach(input=>{input.addEventListener('input',()=>render());input.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();next.click();}});});
+ next.onclick=()=>{if(step<panels.length&&/^[A-Za-z]{1,8}$/.test(initials.value.trim())){inputs[step].value=initials.value.trim();step++;render(true);}else initials.reportValidity();};previous.onclick=()=>{if(step){step--;render(true);}};full.onclick=()=>reader.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+ initials.addEventListener('input',()=>render());initials.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();next.click();}});
  body.querySelector('[data-document-read]').onclick=()=>{step=0;render(true);};body.querySelector('[data-document-initials]').onclick=()=>{step=Math.max(0,firstMissing());render(true);};body.querySelector('[data-document-sign]').onclick=()=>{final.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});form.elements.signer.focus({preventScroll:true});};render();
  return {complete:()=>firstMissing()<0};
 }

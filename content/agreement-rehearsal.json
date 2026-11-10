@@ -1,5 +1,6 @@
 {
  "title":"Documents",
+ "viewerTitle":"Agreement",
  "notice":"Non-binding documents. These records do not execute a contract or activate a partnership.",
  "states":{"offered":"Ready for artist signature","artist_signed":"Waiting for label signature","label_signed":"Ready for final review","reviewed":"Ready to archive","archived":"Archived"},
  "nextSteps":{"offered":"Artist action: open this document, read every section and record your signature.","artist_signed":"Waiting for the label to review and add its signature.","label_signed":"Label action: review this fixed document and both signature records.","reviewed":"Label action: archive the reviewed record.","archived":"No signature is required. This non-binding record is complete."},
@@ -7,7 +8,9 @@
  "pdfView":"View as PDF",
  "close":"Close document",
  "labelWaiting":"Waiting for the artist to sign. You can read the document and prepare your initials and signature now. Recording the label signature becomes available only after the artist signs.",
- "guide":{"navigation":"Guided document review","previous":"Previous section","next":"Initial and continue","full":"Read full document","guided":"Return to guided view","progress":"Signing progress","section":"Section {current} of {total}. Read this section, then enter your initials to continue.","final":"Final step. Check your signer details, draw or upload your signature, then confirm submission."},
+ "guide":{"navigation":"Guided document review","previous":"Previous section","next":"Initial and continue","full":"Read full document","guided":"Return to guided view","progress":"Signing progress","initials":"Your initials","initialsHelp":"Enter your initials once. After reading each section, choose Initial and continue to apply them to that section.","initialed":"Initialed · {initials}","section":"Section {current} of {total}","final":"Review complete. Check your signature, select the confirmation and record your signature."},
+ "recorded":"Signature recorded. Your signed document is open below.",
+ "reviewRequired":"Read and initial every section before recording your signature.",
  "name":"Signer name",
  "upload":"Upload signature image",
  "consent":"I reviewed this fixed version and understand this is a non-binding test, not a contract signature.",

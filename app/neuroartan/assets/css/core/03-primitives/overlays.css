@@ -1,0 +1,131 @@
+/* =============================================================================
+   00) FILE INDEX
+   01) MODULE IDENTITY
+   02) SHARED OVERLAY BACKDROP
+   03) SHARED OVERLAY SURFACE
+   04) SHARED OVERLAY MOTION STATES
+   05) SHARED OVERLAY OPEN STATE HELPERS
+   06) HOVER TOOLTIP OVERLAY
+   07) END OF FILE
+============================================================================= */
+
+/* =============================================================================
+   01) MODULE IDENTITY
+============================================================================= */
+/* /website/docs/assets/css/core/03-primitives/overlays.css */
+
+/* =============================================================================
+   02) SHARED OVERLAY BACKDROP
+============================================================================= */
+.ui-overlay-backdrop{
+  background:var(--overlay-backdrop);
+  opacity:var(--overlay-opacity-closed);
+  pointer-events:none;
+  backdrop-filter:blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter:blur(var(--glass-blur-sm));
+  transition:
+    opacity var(--overlay-motion-duration) var(--overlay-motion-ease),
+    background-color var(--overlay-motion-duration) var(--overlay-motion-ease),
+    backdrop-filter var(--overlay-motion-duration) var(--overlay-motion-ease);
+}
+
+/* =============================================================================
+   03) SHARED OVERLAY SURFACE
+============================================================================= */
+.ui-overlay-surface{
+  background:var(--panel-surface-unified);
+  border:var(--border-width-hairline) solid var(--panel-border-unified);
+  border-radius:var(--overlay-radius-unified);
+  box-shadow:var(--panel-shadow-unified);
+  opacity:var(--overlay-opacity-closed);
+  transform:var(--overlay-transform-closed);
+  pointer-events:none;
+  backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  -webkit-backdrop-filter:blur(var(--panel-blur-unified)) saturate(var(--panel-saturate-unified));
+  transition:
+    opacity var(--overlay-motion-duration) var(--overlay-motion-ease),
+    transform var(--overlay-motion-duration) var(--overlay-motion-ease),
+    background-color var(--overlay-motion-duration) var(--overlay-motion-ease),
+    border-color var(--overlay-motion-duration) var(--overlay-motion-ease),
+    box-shadow var(--overlay-motion-duration) var(--overlay-motion-ease);
+}
+
+/* =============================================================================
+   04) SHARED OVERLAY MOTION STATES
+============================================================================= */
+.ui-overlay-surface.is-open,
+.ui-overlay-surface[aria-hidden="false"],
+.ui-overlay-visible.ui-overlay-surface{
+  opacity:var(--overlay-opacity-open);
+  transform:var(--overlay-transform-open);
+  pointer-events:auto;
+}
+
+.ui-overlay-backdrop.is-open,
+.ui-overlay-backdrop[aria-hidden="false"],
+.ui-overlay-visible.ui-overlay-backdrop{
+  opacity:var(--overlay-opacity-open);
+  pointer-events:auto;
+}
+
+/* =============================================================================
+   05) SHARED OVERLAY OPEN STATE HELPERS
+============================================================================= */
+.ui-overlay-hidden{
+  opacity:var(--overlay-opacity-closed);
+  pointer-events:none;
+}
+
+.ui-overlay-visible{
+  opacity:var(--overlay-opacity-open);
+  pointer-events:auto;
+}
+
+/* =============================================================================
+   06) HOVER TOOLTIP OVERLAY
+============================================================================= */
+.ui-hover-tooltip{
+  position:relative;
+}
+
+.ui-hover-tooltip::after{
+  content:attr(data-label);
+  position:absolute;
+  left:var(--hover-tooltip-left,calc(100% + var(--spacing-xs)));
+  top:var(--hover-tooltip-top,50%);
+  bottom:var(--hover-tooltip-bottom,auto);
+  transform:var(--hover-tooltip-hidden-transform,translateY(-50%) translateX(-8px));
+  background-color:var(--hover-overlay-bg);
+  color:var(--hover-overlay-text);
+  padding:4px var(--spacing-xs);
+  border-radius:var(--control-radius-composer);
+  font-size:11px;
+  font-weight:var(--caption-weight);
+  line-height:1;
+  white-space:nowrap;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  box-shadow:0 2px 8px var(--hover-overlay-shadow);
+  z-index:10;
+}
+
+.ui-hover-tooltip:hover::after,
+.ui-hover-tooltip:focus-visible::after{
+  opacity:1;
+  visibility:visible;
+  transform:var(--hover-tooltip-visible-transform,translateY(-50%) translateX(0));
+}
+
+.ui-hover-tooltip[data-tooltip-position="top"]{
+  --hover-tooltip-left:50%;
+  --hover-tooltip-top:auto;
+  --hover-tooltip-bottom:calc(100% + var(--spacing-xs));
+  --hover-tooltip-hidden-transform:translate(-50%,var(--spacing-xs));
+  --hover-tooltip-visible-transform:translate(-50%,0);
+}
+
+/* =============================================================================
+   07) END OF FILE
+============================================================================= */

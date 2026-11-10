@@ -106,7 +106,7 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 body:has(.studio-account-request-dialog[open]) { overflow:hidden; }
 .studio-account [data-media-visibility] { min-inline-size:0; margin:0; padding:0; border:0; display:grid; gap:var(--spacing-md); }
 .studio-account label { display:grid; gap:var(--account-content-gap-xs); }
-.studio-account :is(input:not([type=checkbox]):not([type=file]),textarea,select) { inline-size:100%; box-sizing:border-box; }
+.studio-account :where(input:not([type=checkbox]):not([type=radio]):not([type=file]),textarea,select) { inline-size:100%; box-sizing:border-box; }
 .studio-account textarea.ui-field { padding-block:var(--spacing-md); }
 .studio-account textarea { resize:vertical; max-inline-size:100%; }
 .studio-biography-field { position:relative; display:block; }
@@ -155,6 +155,9 @@ html[data-search-open] :is(.studio-header-tools,.site-menu-toggle) { opacity:var
 .studio-account label:has(> select)::after { content:''; position:absolute; pointer-events:none; inset-inline-end:var(--spacing-md); inset-block-end:calc((var(--control-height-md) - var(--icon-size-sm)) / 2); inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); background:var(--cv-text-primary); mask:url('/registry/icons/public/assets/core/navigation/chevron/chevron-down.svg') center/contain no-repeat; }
 .studio-metadata details > summary { display:flex; align-items:center; justify-content:space-between; gap:var(--spacing-md); padding-block:var(--spacing-lg); cursor:pointer; list-style:none; }
 .studio-metadata summary::-webkit-details-marker { display:none; }
+.studio-contract-reference > summary { display:flex; align-items:center; justify-content:space-between; gap:var(--spacing-md); list-style:none; cursor:pointer; padding-block:var(--spacing-md); }
+.studio-contract-reference > summary::-webkit-details-marker { display:none; }
+.studio-contract-reference[open] > summary .studio-icon { transform:rotate(180deg); }
 .studio-metadata details > summary .studio-chevron { transform:rotate(90deg); }
 .studio-metadata details[open] > summary .studio-chevron { transform:rotate(-90deg); }
 .studio-metadata-fields,.studio-metadata [data-tracks],.studio-contributor { display:grid; gap:var(--spacing-md); }
