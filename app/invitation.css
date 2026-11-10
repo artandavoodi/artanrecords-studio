@@ -4,6 +4,19 @@
 .contract-invitation > header { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--spacing-md); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
 .contract-invitation > header > a { grid-column:1 / -1; }
 .contract-invitation > header h1 { margin:0; }
+.contract-invitation [data-agreement-intake] > h2 { font-size:var(--font-size-h3); }
+.contract-invitation .invitation-brand { display:block; }
+.contract-invitation > main { padding-block:var(--spacing-xl); }
+.contract-invitation [data-invitation-private] { display:grid; gap:var(--spacing-xl); }
+.contract-invitation .studio-profile-tabs { margin:0; }
+.contract-invitation [role=tab]:disabled { opacity:var(--state-opacity-disabled); cursor:var(--disabled-cursor); }
+.contract-invitation [data-agreement-intake] { display:grid; gap:var(--spacing-lg); }
+.contract-invitation [data-agreement-intake] > :is(h2,p) { margin:0; }
+.contract-invitation [data-intake-form] { display:grid; gap:var(--spacing-lg); }
+.contract-invitation [data-intake-form] > p { margin:0; font-size:var(--site-type-caption-size); }
+.contract-invitation [data-intake-form] .studio-sharing { display:flex; align-items:flex-start; gap:var(--spacing-sm); }
+.contract-invitation [data-intake-form] .studio-sharing input { flex:none; margin:0; }
+.contract-invitation [data-intake-form] > button { justify-self:start; }
 .contract-invitation .invitation-header-actions { display:flex; flex-wrap:wrap; gap:var(--spacing-md); }
 .contract-invitation .invitation-header-actions button { display:inline-flex; align-items:center; justify-content:center; inline-size:var(--control-height-md); block-size:var(--control-height-md); border:0; background:none; color:inherit; font:inherit; padding:var(--spacing-sm); cursor:pointer; }
 .contract-invitation .invitation-header-actions button:focus-visible { outline:var(--border-width-hairline) solid currentColor; outline-offset:var(--spacing-xs); }
@@ -14,3 +27,5 @@
 .contract-invitation .invitation-code { font-variant-numeric:tabular-nums; letter-spacing:0.35em; text-align:center; font-size:var(--site-type-heading-size); }
 .contract-invitation [data-code-heading] { margin-block:0 var(--spacing-md); }
 .contract-invitation .invitation-actions > button { display:inline-flex; align-items:center; justify-content:center; padding:var(--spacing-sm); }
+.contract-invitation [data-invitation-help] > header { display:flex; align-items:center; justify-content:space-between; gap:var(--spacing-lg); }
+.contract-invitation [data-invitation-help] p { margin-block:var(--spacing-lg); }

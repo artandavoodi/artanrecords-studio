@@ -5,6 +5,9 @@
  "fields":[
   {"name":"legal_name","label":"Your full legal name","required":true,"autocomplete":"name"},
   {"name":"artist_name","label":"Artist or project name","required":true},
+  {"name":"username","label":"Username","required":true,"autocomplete":"username","max":32},
+  {"name":"phone","label":"Phone number","required":true,"autocomplete":"tel","max":40},
+  {"name":"date_of_birth","label":"Date of birth","required":true,"autocomplete":"bday"},
   {"name":"company_name","label":"Registered company name","company":true},
   {"name":"registration_number","label":"Company registration number","company":true},
   {"name":"signatory_name","label":"Authorized signer's full legal name","company":true},
@@ -13,6 +16,6 @@
   {"name":"address_line2","label":"Apartment, suite or address line 2","autocomplete":"address-line2"},
   {"name":"city","label":"City","required":true,"autocomplete":"address-level2"},
   {"name":"postal_code","label":"Postal code","required":true,"autocomplete":"postal-code"},
-  {"name":"country_code","label":"Country code (two letters, for example HR)","required":true,"pattern":"[A-Z]{2}","max":2,"autocomplete":"country"}
+  {"name":"country_code","label":"Country or region","required":true,"pattern":"[A-Z]{2}","max":2,"autocomplete":"country"}
  ]
 }

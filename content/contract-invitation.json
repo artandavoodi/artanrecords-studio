@@ -1,5 +1,8 @@
 {
  "title":"Your agreement",
+ "help":"Agreement help",
+ "helpClose":"Close help",
+ "helpNext":"Provide your requested details first. When a document is offered, this page will open it for review and signing. Studio access requires separate approval.",
  "loading":"Loading agreement",
  "introduction":"Enter your invited email address to receive a one-time code. Enter that code here to open your requested legal details or agreement.",
  "boundary":"Requesting a code creates or reuses a private signing identity, not a Studio workspace. It does not activate a partnership or subscription.",
@@ -23,7 +26,8 @@
  "open":"Open agreement",
  "linkFailed":"This email link has expired or has already been used. Open your original private invitation email to request a new code.",
  "resumeFailed":"Your email is verified. Open the original private invitation link to choose the agreement you want to review; no Studio access has been granted.",
- "details":"Requested legal details",
+ "details":"Legal details",
+ "detailsNotice":"Enter your contracting details. After submission, they are locked for review.",
  "agreement":"Read & sign",
  "signatureHelp":"Signature upload appears here after Artanrecords reviews your legal details and offers an agreement. Open the offered document, follow the section guide, then choose Draw, Type or Upload at the signature step. There is no document to sign yet.",
  "signout":"Sign out",
