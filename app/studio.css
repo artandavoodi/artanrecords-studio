@@ -96,8 +96,8 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 .studio-icon { display:block; inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); object-fit:contain; flex:none; }
 .studio-hero-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-lg); }
 .studio-hero-actions > :is(a,button),.studio-account .ui-button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); min-block-size:var(--control-height-md); padding:var(--spacing-sm) var(--spacing-lg); border:0; border-radius:var(--account-field-radius); background:var(--control-bg-hover); color:var(--cv-text-primary); text-decoration:none; cursor:pointer; }
-.studio-hero-actions .studio-primary { background:var(--label-primary-action-background); color:var(--label-primary-action-text); }
-.studio-hero-actions .studio-primary img { filter:brightness(0) invert(1); }
+.studio-hero-actions .studio-primary,.studio-account .studio-primary { background:var(--label-primary-action-background); color:var(--label-primary-action-text); }
+.studio-hero-actions .studio-primary img,.studio-account .studio-primary img { filter:brightness(0) invert(1); }
 .studio-account { display:grid; gap:var(--spacing-lg); inline-size:100%; max-inline-size:var(--reading-width-md); }
 .studio-account form { display:grid; gap:var(--spacing-md); }
 .studio-account-request-dialog { position:fixed; inset:0; box-sizing:border-box; inline-size:100%; max-inline-size:none; block-size:100dvh; max-block-size:none; margin:0; padding:var(--spacing-lg); border:0; border-radius:0; background:var(--cv-page-bg); color:var(--cv-text-primary); overflow:auto; }
@@ -106,8 +106,13 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 body:has(.studio-account-request-dialog[open]) { overflow:hidden; }
 .studio-account [data-media-visibility] { min-inline-size:0; margin:0; padding:0; border:0; display:grid; gap:var(--spacing-md); }
 .studio-account label { display:grid; gap:var(--account-content-gap-xs); }
-.ui-identity-date-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:var(--spacing-sm); min-inline-size:0; }
+.ui-identity-date-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--spacing-sm); min-inline-size:0; }
 .ui-identity-date-grid > select { min-inline-size:0; }
+.ui-identity-date-grid .ui-inline-dropdown,.ui-identity-phone-grid .ui-inline-dropdown { min-inline-size:0; inline-size:100%; }
+.ui-identity-date-grid .ui-inline-dropdown .studio-icon,.ui-identity-phone-grid .ui-inline-dropdown .studio-icon { inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); }
+.ui-identity-phone-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:var(--spacing-sm); min-inline-size:0; }
+.ui-identity-phone-grid > :is(input,select) { min-inline-size:0; }
+.studio-account label.studio-sharing > span { flex:1; min-inline-size:0; }
 .ui-field-label { display:block; }
 .ui-required-mark { color:var(--status-danger-color); }
 .studio-intake-request-meta { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:var(--spacing-sm) var(--spacing-lg); }
@@ -131,8 +136,8 @@ body:has(.studio-account-request-dialog[open]) { overflow:hidden; }
 .studio-account-identity { font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); line-height:var(--line-height-body); }
 #account-dialog > h2 { padding-inline-end:var(--global-close-button-size); margin-block-end:var(--spacing-lg); }
 .studio-account .studio-provider { inline-size:100%; }
-.studio-account label:has(> input[type=checkbox]) { display:flex; align-items:baseline; gap:var(--spacing-sm); }
-.studio-account input[type=checkbox] { inline-size:auto; flex:none; margin:0; }
+.studio-account label:has(> input[type=checkbox]) { display:flex; align-items:center; gap:var(--spacing-sm); }
+.studio-account input[type=checkbox] { inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); min-block-size:0; padding:0; flex:none; margin:0; }
 html[data-search-open] :is(.studio-header-tools,.site-menu-toggle) { opacity:var(--cv-opacity-none); visibility:hidden; transform:scale(0); }
 .site-menu-toggle { transition:opacity var(--site-theme-arrive-duration) var(--ease-standard),transform var(--site-theme-arrive-duration) var(--ease-standard),visibility var(--site-theme-arrive-duration); }
 #store-search-dialog .store-search { padding-block-start:var(--spacing-2xl); }

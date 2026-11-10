@@ -1,9 +1,19 @@
 import isoCountries from 'i18n-iso-countries';
 import english from 'i18n-iso-countries/langs/en.json' with {type:'json'};
-import {parsePhoneNumberFromString} from 'libphonenumber-js';
+import {parsePhoneNumberFromString,getCountries,getCountryCallingCode} from 'libphonenumber-js';
 
 isoCountries.registerLocale(english);
 export const countries=Object.entries(isoCountries.getNames('en',{select:'official'})).map(([code,name])=>({code,name,flag:String.fromCodePoint(...[...code].map(letter=>127397+letter.charCodeAt(0)))})).sort((a,b)=>a.name.localeCompare(b.name,'en'));
+const callingRegions=new Set(getCountries());
+export const phoneCountries=countries.filter(country=>callingRegions.has(country.code)).map(country=>({...country,callingCode:'+'+getCountryCallingCode(country.code)}));
+export function bindPhoneFields(form){
+ const field=form.elements.phone,region=form.elements.phone_country;
+ if(!field||!region)return {sync(){}};
+ const detect=()=>{if(field.value.trim().startsWith('+')){const number=parsePhoneNumberFromString(field.value);if(number?.country)region.value=number.country;}};
+ field.addEventListener('input',detect);
+ form.elements.country_code?.addEventListener('change',()=>{if(!region.value&&callingRegions.has(form.elements.country_code.value))region.value=form.elements.country_code.value;});
+ return {sync(){region.value='';detect();region.disabled=field.disabled||field.readOnly;region.required=field.required;}};
+}
 export function normalizedPhone(value,country){
  if(!value.trim())return '';
  const number=parsePhoneNumberFromString(value,country);
