@@ -1,6 +1,9 @@
 {
  "title":"Legal identity",
  "receiptTitle":"Details received",
+ "continueLabel":"Continue to Studio",
+ "waitingTitle":"Agreements",
+ "waitingMessage":"Your details are under review. Your agreement will appear here when it is ready, and we will notify you by email. Other Studio sections remain locked until signing and final approval are complete.",
  "receiptMessage":"Thank you. Your details have been submitted for review. We will email you when your agreement is ready or if we need a correction. Studio access follows agreement completion and final approval; no password is issued at this stage.",
  "submitting":"Submitting details…",
  "invalid":"Check the highlighted field before submitting your details.",
