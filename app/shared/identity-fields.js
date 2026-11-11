@@ -6,6 +6,7 @@ isoCountries.registerLocale(english);
 export const countries=Object.entries(isoCountries.getNames('en',{select:'official'})).map(([code,name])=>({code,name,flag:String.fromCodePoint(...[...code].map(letter=>127397+letter.charCodeAt(0)))})).sort((a,b)=>a.name.localeCompare(b.name,'en'));
 const callingRegions=new Set(getCountries());
 export const phoneCountries=countries.filter(country=>callingRegions.has(country.code)).map(country=>({...country,callingCode:'+'+getCountryCallingCode(country.code)}));
+export const phoneCountryLabel=country=>`${country.callingCode} ${country.flag}`;
 export function bindPhoneFields(form){
  const field=form.elements.phone,region=form.elements.phone_country;
  if(!field||!region)return {sync(){}};
