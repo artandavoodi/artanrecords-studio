@@ -9,6 +9,10 @@
 details[open] > summary > .agreement-disclosure-icon { transform:rotate(180deg); }
 .agreement-rehearsal-document { white-space:pre-wrap; overflow-wrap:anywhere; margin-block:var(--spacing-xl); padding-block:var(--spacing-xl); border-block:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); line-height:1.7; max-inline-size:75ch; }
 .agreement-rehearsal-image { display:block; max-inline-size:100%; max-block-size:var(--spacing-4xl); object-fit:contain; object-position:left center; }
+.agreement-signature-library { display:grid; gap:var(--spacing-lg); inline-size:100%; min-inline-size:0; }
+.agreement-signature-library :is(h3,p) { margin:0; }
+.agreement-signature-library label { display:grid; gap:var(--spacing-sm); }
+.agreement-signature-library img { background:var(--color-white); }
 .agreement-rehearsal code { overflow-wrap:anywhere; }
 .agreement-rehearsal form { margin-block:var(--spacing-xl); }
 .agreement-rehearsal form > button,.agreement-rehearsal > button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); }

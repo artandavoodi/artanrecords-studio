@@ -23,6 +23,7 @@ async function backend(page){
   else if(path.endsWith('/rpc/contract_submit_details')){details=route.request().postDataJSON().payload;body=requestId;}
   else if(path.endsWith('/studio_agreement_intake_versions'))body={details,reply_email:user.email};
   else if(path.endsWith('/studio_agreement_envelopes'))body=[];
+  else if(path.endsWith('/signature_library_list'))body=[];
   else throw Error('Invitation made an unexpected request: '+path);
   await route.fulfill({json:body});
  });return requests;

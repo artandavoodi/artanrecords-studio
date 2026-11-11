@@ -1,4 +1,5 @@
-export function signatureInput(form){
+import {bindSignatureLibrary} from './signature-library.js';
+export function signatureInput(form,{client,libraryLabels}={}){
  const file=form.elements.signature,label=file.closest('label'),tools=document.createElement('fieldset');tools.className='agreement-signature-tools';
  tools.setAttribute('aria-label','Signature method');
  tools.innerHTML='<div class="agreement-signature-modes"><label><input type="radio" name="signature_method" value="upload" checked><span>Upload</span></label><label><input type="radio" name="signature_method" value="draw"><span>Draw</span></label><label><input type="radio" name="signature_method" value="type"><span>Type</span></label></div><label data-signature-typed hidden>Type your signature<input class="ui-field" name="signature_text" maxlength="160" autocomplete="off"></label><canvas width="1200" height="360" aria-label="Draw your signature" tabindex="0" hidden></canvas><button class="ui-button" type="button" data-signature-clear hidden>Clear drawing</button><label><input type="checkbox" name="signature_cleanup"><span>Remove light background</span></label><p>PNG, JPEG or WebP, up to 10 MB. Review the cropped image before recording. Cleanup happens on this device.</p><img alt="Signature preview" hidden><p role="status" data-signature-message></p>';
@@ -29,5 +30,7 @@ export function signatureInput(form){
    let encoded=cropped.toDataURL('image/png');if(encoded.length>349000)throw Error('The cropped image is too detailed. Upload a smaller, clearer signature.');prepared=encoded.split(',')[1];preview.src=encoded;preview.hidden=false;message.textContent='Review your signature preview before recording.';
   }catch(error){message.textContent=error.message;}
  }
- return async()=>{if(dialog.open||!accepted)throw Error('Choose Use signature to confirm the preview before recording.');return accepted;};
+ const readSignature=async()=>{if(dialog.open||!accepted)throw Error('Choose Use signature to confirm the preview before recording.');return accepted;};
+ if(client&&libraryLabels)bindSignatureLibrary({root:selection,client,labels:libraryLabels,readSignature,applySignature:png=>{accepted=png;selectedPreview.src='data:image/png;base64,'+png;selectedPreview.hidden=false;open.textContent='Edit signature';}});
+ return readSignature;
 }

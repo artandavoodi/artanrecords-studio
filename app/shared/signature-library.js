@@ -1,0 +1,18 @@
+export function bindSignatureLibrary({root,client,readSignature,applySignature,labels}){
+ const panel=document.createElement('section');panel.className='agreement-signature-library';panel.setAttribute('aria-label',labels.title);
+ const heading=document.createElement('h3'),notice=document.createElement('p'),pickerLabel=document.createElement('label'),picker=document.createElement('select'),preview=document.createElement('img'),nameLabel=document.createElement('label'),name=document.createElement('input'),actions=document.createElement('div'),status=document.createElement('p');
+ heading.textContent=labels.title;notice.textContent=labels.notice;pickerLabel.textContent=labels.choose;picker.className='ui-field';pickerLabel.append(picker);preview.alt=labels.preview;preview.className='agreement-rehearsal-image';preview.hidden=true;nameLabel.textContent=labels.name;name.className='ui-field';name.maxLength=80;name.autocomplete='off';nameLabel.append(name);actions.className='agreement-signature-selection';status.setAttribute('role','status');panel.append(heading,notice,pickerLabel,preview,nameLabel,actions,status);root.append(panel);
+ let rows=[],busy=false;
+ const selected=()=>rows.find(row=>row.id===picker.value);
+ const buttons={};for(const key of ['save','use','default','archive']){const button=document.createElement('button');button.type='button';button.className='ui-button';button.textContent=labels[key];actions.append(button);buttons[key]=button;}
+ function draw(){picker.replaceChildren();const prompt=document.createElement('option');prompt.value='';prompt.textContent=labels.choose;picker.append(prompt);for(const row of rows){const option=document.createElement('option');option.value=row.id;option.textContent=row.title+(row.is_default?' · '+labels.defaultTag:'');picker.append(option);}picker.value=rows.find(row=>row.is_default)?.id||'';previewSelection();}
+ function previewSelection(){const row=selected();preview.hidden=!row;if(row)preview.src='data:image/png;base64,'+row.image_base64;else preview.removeAttribute('src');for(const key of ['use','default','archive'])buttons[key].disabled=busy||!row;}
+ async function load(){const result=await client.rpc('signature_library_list');if(result.error)throw Error(labels.unavailable);rows=result.data||[];draw();}
+ async function run(action){if(busy)return;busy=true;for(const button of Object.values(buttons))button.disabled=true;picker.disabled=name.disabled=true;status.textContent='';try{await action();}catch(error){status.textContent=error.message||labels.failed;}finally{busy=false;picker.disabled=name.disabled=false;buttons.save.disabled=false;previewSelection();}}
+ picker.onchange=previewSelection;
+ buttons.save.onclick=()=>run(async()=>{if(!name.value.trim())throw Error(labels.nameRequired);const png=await readSignature(),result=await client.rpc('signature_library_save',{asset_title:name.value.trim(),png_base64:png});if(result.error)throw Error(labels.failed);name.value='';await load();status.textContent=labels.saved;});
+ buttons.use.onclick=()=>{const row=selected();if(row){applySignature(row.image_base64);status.textContent=labels.prepared;}};
+ buttons.default.onclick=()=>run(async()=>{const result=await client.rpc('signature_library_default',{asset:picker.value});if(result.error)throw Error(labels.failed);await load();status.textContent=labels.defaultSaved;});
+ buttons.archive.onclick=()=>run(async()=>{const result=await client.rpc('signature_library_archive',{asset:picker.value});if(result.error)throw Error(labels.failed);await load();status.textContent=labels.archived;});
+ run(load);
+}
