@@ -118,6 +118,9 @@ body:has(.studio-account-request-dialog[open]) { overflow:hidden; }
 .ui-identity-phone-grid > :is(input,select) { min-inline-size:0; }
 .studio-account label.studio-sharing > span { flex:1; min-inline-size:0; }
 .ui-field-label { display:block; }
+.studio-intake-receipt:not([hidden]) { display:grid; gap:var(--spacing-lg); }
+.studio-intake-receipt :is(h2,p) { margin:0; }
+[data-intake-status]:has(.ui-loader-circle) { display:flex; align-items:center; gap:var(--spacing-md); }
 .ui-required-mark { color:var(--status-danger-color); }
 .studio-intake-request-meta { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:var(--spacing-sm) var(--spacing-lg); }
 .studio-intake-request-meta time { font-size:var(--site-type-caption-size); font-weight:600; color:var(--cv-text-secondary); }

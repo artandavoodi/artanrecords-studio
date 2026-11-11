@@ -1,5 +1,9 @@
 {
  "title":"Legal identity",
+ "receiptTitle":"Details received",
+ "receiptMessage":"Thank you. Your details have been submitted for review. We will email you when your agreement is ready or if we need a correction. Studio access follows agreement completion and final approval; no password is issued at this stage.",
+ "submitting":"Submitting details…",
+ "invalid":"Check the highlighted field before submitting your details.",
  "notice":"Complete this form only when requested. Submitted legal identity is locked; contact the contract reviewer if it needs correction. Review and sign an offered document in Review & sign. These details are private to your account and authorized reviewers.",
  "states":{"awaiting_details":"Details requested","submitted":"Submitted for review","needs_changes":"Correction requested","approved":"Details reviewed for drafting","closed":"Request closed"},
  "fields":[
