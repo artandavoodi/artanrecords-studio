@@ -108,8 +108,12 @@ body:has(.studio-account-request-dialog[open]) { overflow:hidden; }
 .studio-account label { display:grid; gap:var(--account-content-gap-xs); }
 .ui-identity-date-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--spacing-sm); min-inline-size:0; }
 .ui-identity-date-grid > select { min-inline-size:0; }
-.ui-identity-date-grid .ui-inline-dropdown,.ui-identity-phone-grid .ui-inline-dropdown { min-inline-size:0; inline-size:100%; }
-.ui-identity-date-grid .ui-inline-dropdown .studio-icon,.ui-identity-phone-grid .ui-inline-dropdown .studio-icon { inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); }
+.ui-identity-date-grid > select,.ui-identity-phone-grid > select { -webkit-appearance:auto; appearance:auto; }
+.studio-username-status { display:flex; align-items:center; gap:var(--spacing-sm); margin:0; font-size:var(--site-type-caption-size); font-weight:var(--font-weight-semibold); }
+.studio-username-status:empty { display:none; }
+.studio-username-status::before { content:""; flex:none; inline-size:var(--spacing-sm); block-size:var(--spacing-sm); border-radius:50%; background:var(--status-warning-color); }
+.studio-username-status[data-state=available]::before { background:var(--status-success-color); }
+.studio-username-status:is([data-state=taken],[data-state=reserved],[data-state=invalid])::before { background:var(--status-error-color); }
 .ui-identity-phone-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:var(--spacing-sm); min-inline-size:0; }
 .ui-identity-phone-grid > :is(input,select) { min-inline-size:0; }
 .studio-account label.studio-sharing > span { flex:1; min-inline-size:0; }
