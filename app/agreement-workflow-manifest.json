@@ -1,10 +1,10 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "0f62d1918f99fdb28a02028753205c89da28dd1d",
+  "revision": "7fa270a4a47b056f7d7ae79e09ba625acc01e7ee",
   "files": {
     "app/shared/signature-library.js": "8d9a99b651f3087822c9c5e757aca93270f92f1b3b7adfdc7289583f4ed1aa91",
     "assets/brand/email-wordmark.png": "44ff8c2aedeed1dd1f370b32ada70ba6ebcc71c1c4d636a109738004d3df8c93",
-    "app/shared/agreement-rehearsal.js": "73582d98e7fd6e7ddf3f4b094d69b17f4db8017cd75ee074ec101fa60d66fb94",
+    "app/shared/agreement-rehearsal.js": "e1fb77e4c2013ba91eca3e57486dd1e7e9b36817f8ce89ca5971b602fe71140b",
     "app/shared/agreement-pdf.js": "c4c52bb53831869db70d3fb8563dcdfe6a6b705bc8bbc12fd85b3c0cf854b613",
     "app/shared/agreement-pdf-view.js": "cd117daaf5c8aca1463c78fd69c0b5217efc3731bb908abba9138b3142cb0aa3",
     "app/shared/agreement-signature.js": "2946b467ec44b79980c28f262293a29e1d233c2edca8ac6e0c4f6c216514da64",
