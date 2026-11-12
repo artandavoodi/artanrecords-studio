@@ -5,5 +5,5 @@ export async function bindSigningRehearsals({client,resolveUser}){
  const root=document.querySelector('[data-signing-rehearsal]');if(!root||!client)return;
  const user=await resolveUser(client).catch(()=>null);if(!user)return;
  const icon=name=>`<img class="studio-icon" src="/app/icons/${name}.svg?v=${manifest.files[name]}" alt="">`;
- await mountSigningRehearsals({root,client,role:'artist',accountId:user.id,labels,icons:{open:icon('document-open'),refresh:icon('refresh'),sign:icon('signature'),review:icon('check'),archive:icon('shares-archive'),download:icon('download')}});
+ await mountSigningRehearsals({root,client,role:'artist',accountId:user.id,labels,icons:{add:icon('plus'),edit:icon('edit'),save:icon('editor-save'),use:icon('signature'),default:icon('signature-default'),remove:icon('signature-remove'),open:icon('document-open'),refresh:icon('refresh'),sign:icon('signature'),review:icon('check'),archive:icon('shares-archive'),download:icon('download')}});
 }

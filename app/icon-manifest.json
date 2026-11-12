@@ -1,8 +1,10 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "1b492d71398495d7ade745661b056c421aaa01fc",
+  "revision": "b47edd81b3e32b4c58d34ac2fe5df9e97b23e975",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
+    "signature-default": "d525fd4e61d73bcc19b4ee7b747473edc24b2abd5d67a07c4c6907550684d4cf",
+    "signature-remove": "19939f6f11e3c970c3e8a89740c7b8099e6a5cfe4719aad565f270dedb40ec13",
     "shares": "56ad9d01d471a73c358e0751ec597a7c755c673b27d38f2fa8fe92a4bf3aad0a",
     "shares-role-primary_artist": "204cfbc835ff2c79fbb9c0b4544c4e46696b61214e1a724aed55697a2ab79ac6",
     "shares-role-featured_artist": "25ed2f6adfd35ec2a53852a9e209103401b739a9954ec673e4e647654281d722",
@@ -163,6 +165,8 @@
   },
   "available": {
     "placeholder": true,
+    "signature-default": true,
+    "signature-remove": true,
     "shares": true,
     "shares-role-primary_artist": false,
     "shares-role-featured_artist": false,

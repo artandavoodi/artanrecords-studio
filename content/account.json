@@ -134,6 +134,8 @@
   "placeholderIcon": "core/commerce/shopping/collection-placeholder.svg",
   "effectiveDate": "2026-10-19",
   "icons": {
+    "signature-default": "core/actions/favorite/favorite.svg",
+    "signature-remove": "core/actions/delete/delete.svg",
     "shares": "core/commerce/finance/revenue-shares.svg",
     "shares-role-primary_artist": "core/commerce/revenue-shares/shares-role-primary_artist.svg",
     "shares-role-featured_artist": "core/commerce/revenue-shares/shares-role-featured_artist.svg",
