@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/website",
-  "revision": "aa47a5c4714a8a8092de9821079c8e1edd4c7658",
+  "revision": "7479f07bc6c34f2288a365b8b4f5b732949664e3",
   "files": {
     "assets/css/core/03-primitives/overlays.css": "fc2efcda155b31860a6573e16ccd8413f688a1dfe5f8bcc80326b34d0fe31505",
     "assets/css/layers/website/layout/home.css": "2ee1172bb8d6b1b1d43e7a66caa1fdda1c6bec3068377b02844d34700eed62b7",
@@ -22,7 +22,7 @@
     "assets/css/core/03-primitives/reorder-list.css": "a97dae419469dd634568c79d99933c2d5ae16d14510a426e175934a60621f795",
     "registry/icons/public/assets/core/actions/drag/drag.svg": "b6c19fb392e78d9ba3872426eb14f21974e47c47336a532eab5e9f9b4de11d85",
     "assets/css/core/03-primitives/character-counter.css": "22dc1e1c01c396e38f969c5a199d35e4c3694fc047add297608a7390445dbcfa",
-    "assets/css/core/04-systems/notifications.css": "57985e09f5fc774f4d5678b92192dcedbf24efc3feac5a7824ab10bf5f309780",
+    "assets/css/core/04-systems/notifications.css": "7b637949e0cf48f67340ee15b9e2c8cb1de0086a3cb67d735ba39a6a51d1f1aa",
     "assets/js/core/02-systems/notification-feed.js": "8aa604e9ff3e4041265a818ee4ef083737c6dfced611c7aa4ebdb87effc1a7dc",
     "assets/css/core/03-primitives/profile-media-action.css": "396097481d6d5440ebf9b78a61c1a4e4a3ce8226f57fb93761493eb1a4cf1b33",
     "assets/js/core/02-systems/toast.js": "51a4f785b1120ff62833238855abea855911801b20c5cc40cae68cf9c41b205f",

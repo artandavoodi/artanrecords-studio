@@ -8,8 +8,11 @@
   --notification-read-size:var(--icon-size-sm);
   --notification-row-gap:var(--spacing-md);
   --notification-row-padding:var(--spacing-lg);
+  --notification-badge-inline-anchor:50%;
+  --notification-badge-block-anchor:0;
+  --notification-badge-offset:translate(-50%,-50%);
 }
-.system-notification-badge { position:absolute; inset-block-start:0; inset-inline-end:0; display:grid; place-items:center; min-inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); padding-inline:var(--spacing-xs); border-radius:var(--radius-circle); font-size:var(--text-caption-size); line-height:1; background:var(--color-primary7); color:var(--color-white); }
+.system-notification-badge { position:absolute; inset-block-start:var(--notification-badge-block-anchor); left:var(--notification-badge-inline-anchor); right:auto; transform:var(--notification-badge-offset); display:grid; place-items:center; min-inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); padding-inline:var(--spacing-xs); border-radius:var(--radius-circle); font-size:var(--text-caption-size); line-height:1; background:var(--color-primary7); color:var(--color-white); }
 .system-notification-tabs { display:flex; align-items:center; gap:var(--spacing-lg); padding-block:var(--spacing-md); }
 .system-notification-tabs button { border:0; padding:0; background:transparent; color:inherit; font:inherit; cursor:pointer; opacity:var(--state-opacity-muted); }
 .system-notification-tabs button[aria-pressed=true] { opacity:var(--overlay-opacity-open); }

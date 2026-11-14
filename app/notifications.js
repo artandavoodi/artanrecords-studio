@@ -1,8 +1,9 @@
 import {renderNotificationFeed} from './neuroartan/assets/js/core/02-systems/notification-feed.js';
+import './shared/close-button.js';
 export async function bindNotifications({client,resolveUser}){
  const button=document.querySelector('[data-studio-notifications]'),popover=document.getElementById('studio-notifications');if(!button||!client)return;
  let user;try{user=await resolveUser(client);}catch{return;}if(!user)return;button.disabled=false;
- const heading=document.createElement('h2'),feed=document.createElement('div');heading.textContent='Notifications';popover.replaceChildren(heading,feed);
+ const heading=document.createElement('h2'),feed=document.createElement('div'),toolbar=document.createElement('header'),close=document.createElement('button');heading.textContent='Notifications';toolbar.className='studio-notification-header';close.type='button';close.className='global-close-button';close.setAttribute('aria-label','Close notifications');toolbar.append(heading,close);popover.replaceChildren(toolbar,feed);window.NeuroartanCloseButtons.initCloseButtonPrimitive(toolbar);close.onclick=()=>{popover.hidePopover();button.focus();};
  const count=button.querySelector('[data-studio-notification-count]');count.classList.add('system-notification-badge');
  let busy=false,history=false,records=[];const acknowledged=new Set();
  function render(){
