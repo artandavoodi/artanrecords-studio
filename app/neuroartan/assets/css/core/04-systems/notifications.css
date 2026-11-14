@@ -8,8 +8,8 @@
   --notification-read-size:var(--icon-size-sm);
   --notification-row-gap:var(--spacing-md);
   --notification-row-padding:var(--spacing-lg);
-  --notification-badge-inline-anchor:50%;
-  --notification-badge-block-anchor:0;
+  --notification-badge-inline-anchor:calc(50% + var(--layout-home-platform-nav-icon-size) / 2);
+  --notification-badge-block-anchor:calc(50% - var(--layout-home-platform-nav-icon-size) / 2);
   --notification-badge-offset:translate(-50%,-50%);
 }
 .system-notification-badge { position:absolute; inset-block-start:var(--notification-badge-block-anchor); left:var(--notification-badge-inline-anchor); right:auto; transform:var(--notification-badge-offset); display:grid; place-items:center; min-inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); padding-inline:var(--spacing-xs); border-radius:var(--radius-circle); font-size:var(--text-caption-size); line-height:1; background:var(--color-primary7); color:var(--color-white); }
