@@ -236,6 +236,7 @@ test('submitted legal identity stays locked while an authorized address correcti
 });
 test('rehearsal details and test signature never overwrite the real contracting request',async({page})=>{
  await mockBackend(page);const rehearsalId='92000000-0000-0000-0000-000000000002',digest='b'.repeat(64);let state='offered',detailsState='awaiting_details',details=null,signature;
+ await page.route('**/rest/v1/rpc/signature_library_list',route=>route.fulfill({json:[]}));
  await page.route('**/rest/v1/studio_agreement_intake_requests*',route=>route.fulfill({json:[{id:rehearsalId,status:detailsState,rehearsal:true,current_version_id:details?rehearsalId:null,artist_message:'TEST DATA ONLY',created_at:'2026-11-02T10:00:00Z'},{id,status:'awaiting_details',rehearsal:false,current_version_id:null,artist_message:'Real request',created_at:'2026-11-02T09:00:00Z'}]}));
  await page.route('**/rest/v1/studio_agreement_intake_versions*',route=>route.fulfill({json:{details,reply_email:user.email}}));
  await page.route('**/rest/v1/rpc/studio_submit_agreement_details',route=>{const args=route.request().postDataJSON();expect(args.request).toBe(rehearsalId);details=args.payload;detailsState='submitted';return route.fulfill({json:rehearsalId});});
