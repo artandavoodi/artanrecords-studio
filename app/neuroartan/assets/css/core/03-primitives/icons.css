@@ -86,6 +86,10 @@ html[data-theme-effective="dark"]{
   box-shadow:none;
 }
 
+.ui-icon-button[data-hover-surface="none"]:hover{
+  background:transparent;
+}
+
 /* =============================================================================
    05) ICON SIZE UTILITIES
 ============================================================================= */
