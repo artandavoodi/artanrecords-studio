@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/website",
-  "revision": "3ce3c7eb252f6099aec16b0312c14f64d2b2c50c",
+  "revision": "e87b7a05678b2d266776ea8ee836e6d65a47ac7d",
   "files": {
     "assets/css/core/03-primitives/overlays.css": "fc2efcda155b31860a6573e16ccd8413f688a1dfe5f8bcc80326b34d0fe31505",
     "assets/css/layers/website/layout/home.css": "2ee1172bb8d6b1b1d43e7a66caa1fdda1c6bec3068377b02844d34700eed62b7",
@@ -31,7 +31,7 @@
     "assets/js/layers/website/ui/profile-media-editor.js": "6fa1dbe0eaeb30a2cfa8522dc89433fd5af46c02a820be6f587d6b278b33567e",
     "assets/css/layers/website/ui/profile-media-editor.css": "aa0c478e67baecf9267ce96983a86ce159d14ac00a888d99e1e46aa37124440f",
     "assets/css/core/01-tokens/editor.tokens.css": "4010f6f7c1be2b835cb409c68138dbe944fa655f873feafc8f3a9f0f135ce40c",
-    "assets/css/core/03-primitives/icons.css": "5ea48ab8630ccd84ab145ba62503fd647d2771d766b4259279e166af8a518aef",
+    "assets/css/core/03-primitives/icons.css": "bf5f641e04854c30c36b0a2ba6f5a41454662201e63414fc3e6e360e8d8c42a3",
     "assets/css/core/03-primitives/slider.css": "666bf34ca6cfab68a5a326a2ae4c5c831e8e442725fed7eca1a369459f6f1ded",
     "assets/fragments/layers/website/profile/private/media/profile-media-editor.html": "bf479db7d0a7c3244ad4be51d1918b8494f2929855f6044d468a50f515d7a8ed",
     "assets/data/account/username/username-policy.json": "ce4117e44370290fbcd1b8c663c68313db4efb44db925603aafd12af19d609aa",

@@ -76,7 +76,7 @@ html[data-theme-effective="dark"]{
    04) ICON BUTTON STATE STABILITY
 ============================================================================= */
 .ui-icon-button:hover{
-  background:var(--control-surface-hover);
+  background:transparent;
   color:var(--control-text-hover-unified);
   transform:none;
 }
@@ -84,10 +84,6 @@ html[data-theme-effective="dark"]{
 .ui-icon-button:focus-visible{
   outline:none;
   box-shadow:none;
-}
-
-.ui-icon-button[data-hover-surface="none"]:hover{
-  background:transparent;
 }
 
 /* =============================================================================
