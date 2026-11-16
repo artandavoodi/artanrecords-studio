@@ -4,7 +4,8 @@ import fontBytes from './NotoSans-Regular.ttf';
 
 // A readable evidence copy, not a certificate-based PDF signature or legal seal.
 export async function agreementPdf({envelope,version,signatures,events,logoBytes}){
- const real=envelope.rehearsal===false;
+ const draft=version.terms?.kind==='agreement_draft_v1',real=!draft&&envelope.rehearsal===false;
+ if(draft&&signatures.length)throw Error('A draft export cannot include signing evidence.');
  if(real&&version.terms?.kind!=='artist_partnership_execution_v1')throw Error('Unrecognized real document version. No PDF was downloaded.');
  const fullySigned=real&&signatures.some(row=>row.signer_role==='artist')&&signatures.some(row=>row.signer_role==='label');
  const pdf=await PDFDocument.create();pdf.registerFontkit(fontkit);
@@ -26,7 +27,8 @@ export async function agreementPdf({envelope,version,signatures,events,logoBytes
   }
  }
  function draw(line,size){if(y<margin+35)next();page.drawText(line,{x:margin,y,font,size,color:ink});y-=lineHeight;}
- next();text(version.terms.title,16);y-=8;text(real?(fullySigned?'SIGNED DOCUMENT RECORD':'ISSUED DOCUMENT - SIGNATURES PENDING'):'NON-BINDING RECORD - NOT AN EXECUTED CONTRACT',10);text('Status: '+envelope.status.replaceAll('_',' '));text('Document version: '+version.version_number);y-=12;text(version.terms.body);
+ next();text(version.terms.title,16);y-=8;text(draft?'DRAFT - NOT ISSUED OR SIGNED':real?(fullySigned?'SIGNED DOCUMENT RECORD':'ISSUED DOCUMENT - SIGNATURES PENDING'):'NON-BINDING RECORD - NOT AN EXECUTED CONTRACT',10);text('Status: '+envelope.status.replaceAll('_',' '));if(!draft)text('Document version: '+version.version_number);y-=12;text(version.terms.body);
+ if(draft){pages.forEach((sheet,index)=>sheet.drawText('DRAFT  |  '+(index+1)+' / '+pages.length,{x:margin,y:25,font,size:8,color:ink}));return pdf.save();}
  next();text('Signature records',15);text(real?'Recorded signing evidence for this exact document version.':'Images record the non-binding workflow only.');
  for(const signature of signatures){
   if(signature.document_sha256!==version.terms_digest)throw Error('A signature does not match this document. No PDF was downloaded.');

@@ -1,11 +1,11 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "0c2222e50543681f0ed182eff93ab11f2c0c8103",
+  "revision": "f0bd8d189deec7833d46e4002a38c6224fe4a81f",
   "files": {
     "app/shared/signature-library.js": "78b660225ec8e06dc0562611af1edb62beb3cb9bf3e969327e2a95cdf05f2b59",
     "assets/brand/email-wordmark.png": "44ff8c2aedeed1dd1f370b32ada70ba6ebcc71c1c4d636a109738004d3df8c93",
     "app/shared/agreement-rehearsal.js": "97c13f4a039c3df97a00541075c81851e2dea6d3287a92c68316a450931e20a0",
-    "app/shared/agreement-pdf.js": "cde33562bb18b609e54292c9cf6ddc2f6f83274e8532f7cffacf9417f340e36d",
+    "app/shared/agreement-pdf.js": "473ddc30b4dabe9e2bf4697b9abcf3036939ac43b1b9a07e8386c7cfaf1424e1",
     "app/shared/agreement-pdf-view.js": "cd117daaf5c8aca1463c78fd69c0b5217efc3731bb908abba9138b3142cb0aa3",
     "app/shared/agreement-signature.js": "6e8291b767dd3cf78cf4c8b8dc9a9d7cf9ecaa23c9b3371f87cef0c1f5ca9311",
     "app/shared/agreement-guide.js": "3aef6ce552db6510aec8caaff4d7781819987dc373ae6021dc39f7fcd21385f8",
