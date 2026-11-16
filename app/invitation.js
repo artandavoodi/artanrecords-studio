@@ -35,6 +35,7 @@ const scopedClient={
   if(['signature_library_list','signature_library_save','signature_library_default','signature_library_archive'].includes(name))return client.rpc(name,args);
   if(name==='studio_username_check')return client.rpc('contract_username_check',{invitation,candidate:args.candidate});if(name==='studio_submit_agreement_details')return client.rpc('contract_submit_details',{invitation,expected_version:args.expected_version,payload:args.payload,confirm_accuracy:args.confirm_accuracy});
   if(name==='studio_record_agreement_test_signature')return client.rpc('contract_record_signature',{invitation,envelope:args.envelope,expected_digest:args.expected_digest,signer_name:args.signer_name,png_base64:args.png_base64,acknowledge_non_binding:args.acknowledge_non_binding,initials:args.initials});
+  if(name==='studio_record_agreement_signature')return client.rpc('contract_record_agreement_signature',{envelope:args.envelope,expected_digest:args.expected_digest,signer_name:args.signer_name,png_base64:args.png_base64,consent:args.consent,initials:args.initials});
   throw Error('This operation is not part of the invitation.');
  }
 };
