@@ -1,4 +1,4 @@
-.agreement-rehearsal { margin-block-start:var(--spacing-xl); padding-block-start:var(--spacing-xl); border-block-start:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); }
+.agreement-rehearsal:not([role=tabpanel]):not([data-embedded]) { margin-block-start:var(--spacing-xl); padding-block-start:var(--spacing-xl); border-block-start:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); }
 .agreement-rehearsal-card { margin-block:var(--spacing-lg); }
 .agreement-rehearsal-card > .ui-button { display:inline-flex; align-items:center; gap:var(--spacing-sm); }
 .agreement-rehearsal-card > summary,.agreement-activity > summary { display:flex; align-items:center; gap:var(--spacing-md); cursor:pointer; padding-block:var(--spacing-md); list-style:none; }
