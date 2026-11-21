@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "b47edd81b3e32b4c58d34ac2fe5df9e97b23e975",
+  "revision": "72a65fe0d8b3e02cc618837a8bd4098f78ac99d1",
   "files": {
     "placeholder": "66770a0371775d520805ebe4951c4937c4df7ddfa635b1f5e2fa4fbfc05eb92b",
     "signature-default": "d525fd4e61d73bcc19b4ee7b747473edc24b2abd5d67a07c4c6907550684d4cf",
@@ -110,6 +110,7 @@
     "signature": "2fcdb69d4add385b52dd7a2c5426e177b9db97c6240a7d049a2c07f40137c894",
     "document-open": "a036f509a4871cb2c837f0160ef25262acc6f45c1b6fa8cc9c53b80b652ea65c",
     "download": "4c4504dfa8bb47b16dc7d8e733a65610f25cb14dbf12187716ca838ff67a8b69",
+    "guide-scroll": "815bceeb8c49424c83ba9474756220e8f86d70b8f72d2e9ae6a2931a6ce7cdf1",
     "settings": "734f57b40adbbf70f35e4a08bf531798ff10c1af2003d2a8ae3888bfc84bbb6d",
     "appearance": "27cfc3c404b443b55f762bdfc6d2ce52fb76955733332843c8e3ac265cf4956d",
     "panel": "515a7c387653b552985d723cd5aadb0117c506691c8f5f1904259d6bebd7b77f",
@@ -272,6 +273,7 @@
     "signature": true,
     "document-open": true,
     "download": true,
+    "guide-scroll": true,
     "settings": true,
     "appearance": true,
     "panel": true,

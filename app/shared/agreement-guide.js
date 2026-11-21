@@ -5,12 +5,14 @@ export function agreementSections(body,titles){
  return {introduction:text.slice(0,starts[0]),sections:titles.map((title,index)=>({title,text:text.slice(starts[index]+title.length,starts[index+1]??text.length).trimStart()}))};
 }
 
-export function signingGuide({body,form,version,labels}){
+export function signingGuide({body,form,version,labels,arrow=''}){
  const document=body.ownerDocument,reader=body.querySelector('.agreement-rehearsal-document'),parsed=agreementSections(version.terms.body,version.terms.section_titles),inputs=parsed.sections.map((_,index)=>form.elements['initial-'+(index+1)]),panels=[];
  const controls=document.createElement('nav');controls.className='agreement-guide-controls';controls.setAttribute('aria-label',labels.navigation);
  const previous=document.createElement('button'),next=document.createElement('button'),full=document.createElement('button'),message=document.createElement('p'),initialsLabel=document.createElement('label'),initials=document.createElement('input');
  next.dataset.guideNext='';
- for(const button of [previous,next,full]){button.type='button';button.className='ui-button';}previous.textContent=labels.previous;next.textContent=labels.next;full.textContent=labels.full;message.setAttribute('role','status');initialsLabel.className='agreement-initials-entry';initialsLabel.textContent=labels.initials;initials.name='review_initials';initials.className='ui-field';initials.maxLength=8;initials.pattern='[A-Za-z]{1,8}';initials.autocomplete='off';initialsLabel.append(initials);const help=document.createElement('p');help.textContent=labels.initialsHelp;const header=document.createElement('div');header.className='agreement-guide-header';header.append(message,initialsLabel,help,full);controls.append(previous,next);
+ for(const button of [previous,next,full]){button.type='button';button.className='ui-button';}previous.textContent=labels.previous;next.textContent=labels.next;message.setAttribute('role','status');initialsLabel.className='agreement-initials-entry';initialsLabel.textContent=labels.initials;initials.name='review_initials';initials.className='ui-field';initials.maxLength=8;initials.pattern='[A-Za-z]{1,8}';initials.autocomplete='off';initialsLabel.append(initials);
+ full.className='agreement-guide-follow ui-icon-button';full.setAttribute('aria-label',labels.follow||labels.navigation);const graphic=document.createElement('span');graphic.className='agreement-guide-arrow';graphic.setAttribute('aria-hidden','true');graphic.innerHTML=arrow;const image=graphic.querySelector('img');graphic.hidden=!image;if(image){graphic.style.maskImage='url("'+image.src+'")';graphic.style.webkitMaskImage=graphic.style.maskImage;graphic.replaceChildren();}full.append(graphic);
+ const header=document.createElement('div');header.className='agreement-guide-header';header.append(message,full);controls.append(initialsLabel,previous,next);
  const final=document.createElement('section');final.dataset.signatureStep='';
  for(const node of [...form.children])if(!inputs.some(input=>input.closest('label')===node))final.append(node);
  reader.replaceChildren();reader.classList.add('agreement-guided-document');
@@ -18,19 +20,23 @@ export function signingGuide({body,form,version,labels}){
  for(const [index,section] of parsed.sections.entries()){
   const panel=document.createElement('section'),heading=document.createElement('h4'),text=document.createElement('p'),stamp=document.createElement('p');panel.dataset.guideSection=String(index+1);panel.tabIndex=-1;heading.textContent=section.title;text.textContent=section.text;stamp.className='agreement-section-initials';const originalLabel=inputs[index].closest('label');originalLabel.remove();inputs[index].type='hidden';inputs[index].required=false;panel.append(heading,text,stamp,inputs[index]);reader.append(panel);panels.push(panel);
  }
- form.replaceChildren(header,reader,final,controls);let step=0,stage='read';
- const navigation=[...body.querySelectorAll('.agreement-reading-guide > button')];
+ form.replaceChildren(header,reader,final,controls);let step=0;
+ const scrollRoot=body.closest('dialog')||document.scrollingElement;
  const valid=index=>/^[A-Za-z]{1,8}$/.test(inputs[index].value.trim());
  const firstMissing=()=>inputs.findIndex((_,index)=>!valid(index));
  function render(scroll=false){
-  navigation.forEach((button,index)=>{if(['read','initials','signature'][index]===stage)button.setAttribute('aria-current','step');else button.removeAttribute('aria-current');});
   if(step===panels.length){const missing=firstMissing();if(missing>=0)step=missing;}
   panels.forEach((panel,index)=>{panel.hidden=false;panel.dataset.guideActive=String(step===index);const stamp=panel.querySelector('.agreement-section-initials');stamp.hidden=!valid(index);stamp.textContent=valid(index)?labels.initialed.replace('{initials}',inputs[index].value):'';});final.hidden=false;previous.disabled=step===0;next.hidden=step===panels.length;next.disabled=step<panels.length&&!/^[A-Za-z]{1,8}$/.test(initials.value.trim());
   message.textContent=step<panels.length?labels.section.replace('{current}',step+1).replace('{total}',panels.length):labels.final;
+  const destination=firstMissing()<0?final:panels[firstMissing()];full.dataset.direction=destination.getBoundingClientRect().top<header.getBoundingClientRect().bottom?'up':'down';
   if(scroll){const target=step<panels.length?panels[step]:final;target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});(step<panels.length?target:form.elements.signer).focus({preventScroll:true});}
  }
- next.onclick=()=>{if(step<panels.length&&/^[A-Za-z]{1,8}$/.test(initials.value.trim())){inputs[step].value=initials.value.trim();step++;stage=step===panels.length?'signature':'initials';render(true);}else initials.reportValidity();};previous.onclick=()=>{if(step){step--;stage=step===0?'read':'initials';render(true);}};full.onclick=()=>reader.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+ next.onclick=()=>{if(step<panels.length&&/^[A-Za-z]{1,8}$/.test(initials.value.trim())){inputs[step].value=initials.value.trim();step++;render(true);}else initials.reportValidity();};previous.onclick=()=>{if(step){step--;render(true);}};
+ const focusPending=()=>{step=firstMissing()<0?panels.length:firstMissing();render(true);};full.onclick=focusPending;
  initials.addEventListener('input',()=>render());initials.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();next.click();}});
- body.querySelector('[data-document-read]').onclick=()=>{step=0;stage='read';render(true);};body.querySelector('[data-document-initials]').onclick=()=>{step=Math.max(0,firstMissing());stage='initials';render(true);};body.querySelector('[data-document-sign]').onclick=()=>{stage='signature';render();final.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});form.elements.signer.focus({preventScroll:true});};render();
- return {complete:()=>firstMissing()<0};
+ let frame=0;const syncScroll=()=>{if(!form.isConnected){scrollRoot?.removeEventListener('scroll',syncScroll);return;}if(frame)return;frame=requestAnimationFrame(()=>{frame=0;const line=header.getBoundingClientRect().bottom+parseFloat(getComputedStyle(header).paddingBlockEnd||0);let visible=0;for(const [index,panel]of panels.entries())if(Math.round(panel.getBoundingClientRect().top)<=Math.round(line))visible=index;step=firstMissing()<0&&final.getBoundingClientRect().top<=line?panels.length:visible;render();});};
+ scrollRoot?.addEventListener('scroll',syncScroll,{passive:true});
+ const size=()=>{const viewerHeader=body.closest('dialog')?.querySelector(':scope > header');form.style.setProperty('--agreement-viewer-header-height',(viewerHeader?.getBoundingClientRect().height||0)+'px');form.style.setProperty('--agreement-guide-header-height',header.getBoundingClientRect().height+'px');};
+ const observer=new ResizeObserver(()=>{if(!form.isConnected){observer.disconnect();scrollRoot?.removeEventListener('scroll',syncScroll);return;}size();});observer.observe(header);const viewerHeader=body.closest('dialog')?.querySelector(':scope > header');if(viewerHeader)observer.observe(viewerHeader);size();render();
+ return {complete:()=>firstMissing()<0,focusPending};
 }
