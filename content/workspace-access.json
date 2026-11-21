@@ -3,6 +3,10 @@
  "notice":"Your artist workspace is no longer active. Your shared sign-in and retained records have not been deleted. Contact Artanrecords before starting a new artist application.",
  "unavailableTitle":"Studio is unavailable",
  "unavailableNotice":"We could not verify workspace access. Please try again later.",
+ "identity":"Signed-in account",
+ "reference":"Account reference",
+ "switchAccount":"Use another account",
+ "switchError":"Sign-out was not completed. Please try again.",
  "home":"Artanrecords website",
  "homeUrl":"https://artanrecords.com/"
 }

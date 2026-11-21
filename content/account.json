@@ -1,4 +1,6 @@
 {
+  "accessSources": {"FOUNDER_SPONSORED":"Founder-sponsored access","PARTNERSHIP_INCLUDED":"Included through partnership","DIRECT_SUBSCRIPTION":"Active subscription"},
+  "founderAccessNotice":"Software access is sponsored by the founder. This is not a partnership or paid subscription.",
   "supabase": {
     "url": "https://hahtbepdrjkjluhespbs.supabase.co",
     "publishableKey": "sb_publishable_1o9cpj-PrPKPt5cmOWSVyQ_pzdLR4Im",

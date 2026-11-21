@@ -16,7 +16,7 @@ export async function bindOverview({client,resolveUser}){
   for(const icon of root.querySelectorAll('[data-partnership-icon]'))icon.hidden=icon.dataset.partnershipIcon!==summary.tier;
   const included=plans.items.find(item=>item.plan===plans.partnershipInclusion[summary.tier])?.name;
   root.querySelector('[data-overview-access]').textContent=access.error?'Access could not be verified':hasStudioAccess(access.data)?(hasProAccess(access.data)?'Studio Pro active':'Studio active'):included?included+' included':'Studio access';
-  root.querySelector('[data-overview-entitlement]').textContent=hasStudioAccess(access.data)?(access.data.entitlement_source==='PARTNERSHIP_INCLUDED'?'Included through your active partnership.':'Your software access is active.'):included?'Included with your partnership; agreement activation is awaiting verification.':'Profile and draft tools are available.';
+  root.querySelector('[data-overview-entitlement]').textContent=hasStudioAccess(access.data)?(access.data.entitlement_source==='FOUNDER_SPONSORED'?account.founderAccessNotice:access.data.entitlement_source==='PARTNERSHIP_INCLUDED'?'Included through your active partnership.':'Your software access is active.'):included?'Included with your partnership; agreement activation is awaiting verification.':'Profile and draft tools are available.';
  }catch(error){root.querySelector('[data-overview-status]').textContent=error.message||'Account overview could not be loaded.';}
 }
 export function bindPartnershipThemes(){

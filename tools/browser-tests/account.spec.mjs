@@ -38,6 +38,7 @@ test('withdrawn Studio access never mounts artist tools or loads private drafts'
  requests.length=0;
  await page.goto('/gallery/');
  await expect(page.getByRole('heading',{name:'Studio access withdrawn',exact:true})).toBeVisible();
+ await expect(page.locator('[data-workspace-account]')).toContainText(id);await expect(page.getByRole('button',{name:'Use another account',exact:true})).toBeVisible();
  await expect(page.locator('[data-artist-portfolio]')).toHaveCount(0);
  await expect(page.locator('.studio-platform')).toHaveCount(0);
  expect(requests.some(request=>/studio_profiles|studio_artist_portfolio|studio_release_drafts/.test(request.path))).toBe(false);
@@ -91,6 +92,11 @@ test('Platinum restores button-matched fields and uniform hairlines from stale s
   const expectedWidth=await page.evaluate(()=>{const probe=document.createElement('div');probe.style.borderTop='var(--border-width-hairline) solid';document.body.append(probe);const width=getComputedStyle(probe).borderTopWidth;probe.remove();return width;});
   for(const edge of border){expect(edge.width).toBe(expectedWidth);expect(edge.color).toBe('rgb(37, 37, 37)');}
  }
+});
+test('founder-sponsored artist access is not shown as a partnership or paid subscription',async({page})=>{
+ await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
+ await page.route('**/rest/v1/studio_artist_applications*',route=>route.fulfill({json:{status:'pending',requested_tier:'silver'}}));await page.route('**/rpc/studio_subscription_status',route=>route.fulfill({json:{plan:'studio-pro',status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z',entitlement_source:'FOUNDER_SPONSORED'}}));
+ await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText('Under review');await expect(page.locator('[data-overview-access]')).toHaveText('Studio Pro active');await expect(page.locator('[data-overview-entitlement]')).toHaveText('Software access is sponsored by the founder. This is not a partnership or paid subscription.');await page.goto('/settings/#subscription');await expect(page.locator('[data-subscription-status]')).toHaveText('Studio Pro · Founder-sponsored access');
 });
 test('overview shows approved tier separately from active software access',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
