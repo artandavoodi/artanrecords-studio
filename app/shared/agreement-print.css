@@ -1,0 +1,7 @@
+@page { size:A4; margin:18mm; }
+body { margin:0; color:#20252b; background:#fff; font:11pt/1.6 Georgia,serif; }
+img { width:160pt; height:auto; }
+h1 { font-size:18pt; line-height:1.3; }
+article { white-space:pre-wrap; overflow-wrap:anywhere; }
+body.agreement-pdf-print { margin:0; overflow:hidden; }
+.agreement-pdf-print > iframe { position:fixed; inset:0; width:100%; height:100%; border:0; }

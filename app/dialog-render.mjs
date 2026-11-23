@@ -5,7 +5,7 @@ const settings=JSON.parse(await readFile(new URL('../content/account.json',impor
 const icon=name=>renderIcon(name,value=>String(value),'studio-icon account-action-icon');
 
 export function renderActions(){
-  return `<button class="studio-header-control" type="button" data-studio-search-open aria-label="Search Studio">${icon('search')}</button><button class="studio-header-control" type="button" data-studio-notifications aria-label="Notifications" popovertarget="studio-notifications" disabled>${icon('notifications')}<span data-studio-notification-count hidden></span></button><div id="studio-notifications" class="studio-notifications" popover="auto" role="dialog" aria-label="Notifications"></div>`;
+  return `<button class="studio-header-control" type="button" data-studio-search-open aria-label="Search Studio">${icon('search')}</button><button class="studio-header-control" type="button" data-studio-notifications aria-label="Notifications" aria-haspopup="dialog" aria-controls="studio-notifications" disabled>${icon('notifications')}<span data-studio-notification-count hidden></span></button>`;
 }
 
 export function searchContent(){
@@ -13,7 +13,7 @@ export function searchContent(){
 }
 
 export function renderDialogs({e}){
-  return `<dialog id="account-dialog" aria-labelledby="account-title">
+  return `<dialog id="studio-notifications" class="studio-notifications" aria-label="Notifications"></dialog><dialog id="account-dialog" aria-labelledby="account-title">
     <button id="account-close" class="global-close-button" type="button" aria-label="Close account">${icon('close')}</button>
     <h2 id="account-title">Sign in</h2>
     <section class="studio-account" data-account-view>

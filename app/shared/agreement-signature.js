@@ -1,5 +1,5 @@
 import {bindSignatureLibrary} from './signature-library.js';
-export function signatureInput(form,{client,libraryLabels,icons={}}={}){
+export function signatureInput(form,{client,libraryLabels,icons={},selectionOnly=false}={}){
  const file=form.elements.signature,label=file.closest('label'),tools=document.createElement('fieldset');tools.className='agreement-signature-tools';
  tools.setAttribute('aria-label','Signature method');
  tools.innerHTML='<div class="agreement-signature-modes"><label><input type="radio" name="signature_method" value="upload" checked><span>Upload</span></label><label><input type="radio" name="signature_method" value="draw"><span>Draw</span></label><label><input type="radio" name="signature_method" value="type"><span>Type</span></label></div><label data-signature-typed hidden>Type your signature<input class="ui-field" name="signature_text" maxlength="160" autocomplete="off"></label><canvas width="1200" height="360" aria-label="Draw your signature" tabindex="0" hidden></canvas><button class="ui-button" type="button" data-signature-clear hidden>Clear drawing</button><label><input type="checkbox" name="signature_cleanup"><span>Remove light background</span></label><p>PNG, JPEG or WebP, up to 10 MB. Review the cropped image before recording. Cleanup happens on this device.</p><img alt="Signature preview" hidden><p role="status" data-signature-message></p>';
@@ -31,6 +31,8 @@ export function signatureInput(form,{client,libraryLabels,icons={}}={}){
   }catch(error){message.textContent=error.message;}
  }
  const readSignature=async()=>{if(dialog.open||!accepted)throw Error('Choose Use signature to confirm the preview before recording.');return accepted;};
- const library=client&&libraryLabels?bindSignatureLibrary({root:selection,client,labels:libraryLabels,icons,readSignature,applySignature:png=>{accepted=png;selectedPreview.src='data:image/png;base64,'+png;selectedPreview.hidden=false;open.innerHTML=(icons.edit||'')+'Edit signature';}}):null;
+ const library=client&&libraryLabels?bindSignatureLibrary({root:selection,client,labels:libraryLabels,icons,readSignature,selectionOnly,applySignature:png=>{accepted=png;selectedPreview.hidden=!png;if(png)selectedPreview.src='data:image/png;base64,'+png;else selectedPreview.removeAttribute('src');open.hidden=selectionOnly&&Boolean(png);open.innerHTML=(png?icons.edit:icons.add)||'';open.append(document.createTextNode(png?'Edit signature':'Add signature'));form.dispatchEvent(new Event('signaturechange'));}}):null;
+ readSignature.prepared=()=>accepted;
+ dialog.addEventListener('close',()=>{if(selectionOnly&&accepted)open.hidden=true;form.dispatchEvent(new Event('signaturechange'));});
  return readSignature;
 }

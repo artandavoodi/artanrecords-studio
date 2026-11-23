@@ -2,8 +2,10 @@ import {build} from 'esbuild';
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
+import {fileURLToPath} from 'node:url';
 import {buildInvitation} from '../app/invitation-render.mjs';
 const config=JSON.parse(await readFile('content/account.json','utf8'));
+const agreementPrint={name:'agreement-print-source',setup(build){build.onResolve({filter:/^\.\.\/\.\.\/\.\.\/\.\.\/\.\.\/css\/layers\/control-center\/shared\/agreement-print\.css$/},()=>({path:fileURLToPath(new URL('../app/shared/agreement-print.css',import.meta.url))}));build.onLoad({filter:/agreement-print\.css$/},async args=>({contents:await readFile(args.path,'utf8'),loader:'text'}));}};
 execFileSync(process.execPath,['tools/sync-agreement-workflow.mjs'],{stdio:'inherit'});
 execFileSync(process.execPath,['tools/sync-platform.mjs'],{stdio:'inherit'});
 const existing=JSON.parse(await readFile('app/icon-manifest.json','utf8').catch(()=>'{"files":{}}'));
@@ -42,9 +44,9 @@ if(process.argv.includes('--sync-icons')){
   if(Object.keys(existing.files).length!==Object.keys(config.icons).length+1)throw Error('Synchronize the registered Studio icons before building.');
   for(const [name,hash] of Object.entries(existing.files))if(createHash('sha256').update(await readFile(`app/icons/${name}.svg`)).digest('hex')!==hash)throw Error('Registered icon drift: '+name);
 }
-await build({entryPoints:['app/main.js'],bundle:true,format:'esm',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/studio.js',minify:true,loader:{'.ttf':'binary'},plugins:[{name:'pdf-worker-source',setup(build){build.onLoad({filter:/pdf\.worker\.mjs$/},async args=>({contents:await readFile(args.path,'utf8'),loader:'text'}));}}]});
+await build({entryPoints:['app/main.js'],bundle:true,format:'esm',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/studio.js',minify:true,loader:{'.ttf':'binary'},plugins:[agreementPrint,{name:'pdf-worker-source',setup(build){build.onLoad({filter:/pdf\.worker\.mjs$/},async args=>({contents:await readFile(args.path,'utf8'),loader:'text'}));}}]});
 await build({entryPoints:['app/appearance-startup.js'],bundle:true,format:'iife',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/appearance.js',minify:true});
 await build({entryPoints:['app/studio.css'],bundle:true,target:['safari16','chrome110'],outfile:'app/dist/studio.css',minify:true,external:['/registry/*','/assets/*','/app/*']});
-await build({entryPoints:['app/invitation.js'],bundle:true,format:'esm',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/invitation.js',minify:true,loader:{'.ttf':'binary'},plugins:[{name:'pdf-worker-source',setup(build){build.onLoad({filter:/pdf\.worker\.mjs$/},async args=>({contents:await readFile(args.path,'utf8'),loader:'text'}));}}]});
+await build({entryPoints:['app/invitation.js'],bundle:true,format:'esm',platform:'browser',target:['safari16','chrome110'],outfile:'app/dist/invitation.js',minify:true,loader:{'.ttf':'binary'},plugins:[agreementPrint,{name:'pdf-worker-source',setup(build){build.onLoad({filter:/pdf\.worker\.mjs$/},async args=>({contents:await readFile(args.path,'utf8'),loader:'text'}));}}]});
 await build({entryPoints:['app/invitation.css'],bundle:true,target:['safari16','chrome110'],outfile:'app/dist/invitation.css',minify:true});
 await buildInvitation();

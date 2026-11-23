@@ -8,6 +8,7 @@ const sources={
  'app/shared/agreement-rehearsal.js':'assets/js/layers/control-center/operations/shared/agreement-rehearsal.js',
  'app/shared/agreement-pdf.js':'assets/js/layers/control-center/operations/shared/agreement-pdf.js',
  'app/shared/agreement-pdf-view.js':'assets/js/layers/control-center/operations/shared/agreement-pdf-view.js',
+ 'app/shared/agreement-print.css':'assets/css/layers/control-center/shared/agreement-print.css',
  'app/shared/agreement-signature.js':'assets/js/layers/control-center/operations/shared/agreement-signature.js',
  'app/shared/agreement-guide.js':'assets/js/layers/control-center/operations/shared/agreement-guide.js',
  'app/shared/NotoSans-Regular.ttf':'assets/js/layers/control-center/operations/shared/NotoSans-Regular.ttf',
