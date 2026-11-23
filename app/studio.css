@@ -144,7 +144,7 @@ body:has(.studio-account-request-dialog[open]) { overflow:hidden; }
 .studio-account-identity { font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); line-height:var(--line-height-body); }
 #account-dialog > h2 { padding-inline-end:var(--global-close-button-size); margin-block-end:var(--spacing-lg); }
 .studio-account .studio-provider { inline-size:100%; }
-.studio-account label:has(> input[type=checkbox]) { display:flex; align-items:center; gap:var(--spacing-sm); }
+.studio-account label:has(> input[type=checkbox]) { display:flex; align-items:flex-start; gap:var(--spacing-sm); }
 .studio-account input[type=checkbox] { inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); min-block-size:0; padding:0; flex:none; margin:0; }
 html[data-search-open] :is(.studio-header-tools,.site-menu-toggle) { opacity:var(--cv-opacity-none); visibility:hidden; transform:scale(0); }
 .site-menu-toggle { transition:opacity var(--site-theme-arrive-duration) var(--ease-standard),transform var(--site-theme-arrive-duration) var(--ease-standard),visibility var(--site-theme-arrive-duration); }
