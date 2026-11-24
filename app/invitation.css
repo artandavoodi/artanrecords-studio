@@ -1,12 +1,14 @@
 @import url('./neuroartan/assets/css/core/03-primitives/overlays.css');
-.contract-invitation { min-block-size:100svh; color:var(--cv-text-primary,var(--text-color)); background:var(--cv-page-bg,var(--bg-color)); }
-.contract-invitation > header,.contract-invitation > main { box-sizing:border-box; max-inline-size:80ch; margin-inline:auto; padding:var(--spacing-lg); }
+.contract-invitation { min-block-size:100svh; display:flex; flex-direction:column; color:var(--cv-text-primary,var(--text-color)); background:var(--cv-page-bg,var(--bg-color)); }
+.contract-invitation > header,.contract-invitation > main,.contract-invitation > footer { box-sizing:border-box; inline-size:100%; max-inline-size:80ch; margin-inline:auto; padding:var(--spacing-lg); }
 .contract-invitation > header { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--spacing-md); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
-.contract-invitation > header > a { grid-column:1 / -1; }
-.contract-invitation > header h1 { margin:0; }
-.contract-invitation > header h1,.contract-invitation [data-agreement-intake] > h2 { font-size:var(--font-size-h3); }
-.contract-invitation .invitation-brand { display:block; }
-.contract-invitation > main { padding-block:var(--spacing-xl); }
+.contract-invitation [data-invitation-title] { margin:0 0 var(--spacing-xl); }
+.contract-invitation [data-invitation-title],.contract-invitation [data-agreement-intake] > h2 { font-size:var(--font-size-h3); }
+.contract-invitation .invitation-brand { display:block; min-inline-size:0; }
+.contract-invitation > main { flex:1; padding-block:var(--spacing-xl); }
+.contract-invitation > footer { border-block-start:var(--border-width-hairline) solid var(--cv-border); padding-block:var(--spacing-lg); }
+.contract-invitation > footer p { margin:0; font-size:var(--site-type-caption-size); }
+.contract-invitation [data-invitation-status]:empty { display:none; }
 .contract-invitation [data-invitation-private] { display:grid; gap:var(--spacing-xl); }
 .contract-invitation .studio-profile-tabs { margin:0; }
 .contract-invitation [role=tab]:disabled { opacity:var(--state-opacity-disabled); cursor:var(--disabled-cursor); }
@@ -18,7 +20,7 @@
 .contract-invitation .invitation-header-actions { display:flex; flex-wrap:wrap; gap:var(--spacing-md); }
 .contract-invitation .invitation-header-actions button { display:inline-flex; align-items:center; justify-content:center; inline-size:var(--control-height-md); block-size:var(--control-height-md); border:0; background:none; color:inherit; font:inherit; padding:var(--spacing-sm); cursor:pointer; }
 .contract-invitation .invitation-header-actions button:focus-visible { outline:var(--border-width-hairline) solid currentColor; outline-offset:var(--spacing-xs); }
-@media(max-width:600px){.contract-invitation > header { grid-template-columns:minmax(0,1fr); }.contract-invitation .invitation-header-actions { justify-self:start; }}
+@media(max-width:600px){.contract-invitation .invitation-header-actions { flex-wrap:nowrap; gap:var(--spacing-sm); }}
 .contract-invitation .invitation-actions { display:flex; flex-wrap:wrap; gap:var(--spacing-md); margin-block:var(--spacing-lg); }
 .contract-invitation [data-invitation-auth] { max-inline-size:40ch; }
 .contract-invitation [hidden] { display:none; }
