@@ -9,7 +9,8 @@ test('signature editor reserves one stable layout across methods and successive 
  const geometry=()=>dialog.evaluate(el=>({top:el.getBoundingClientRect().top,height:el.getBoundingClientRect().height,scroll:el.scrollTop,preview:el.querySelector('.agreement-signature-preview').getBoundingClientRect().height,footer:el.querySelector('footer').getBoundingClientRect().top}));
  const initial=await geometry();
  for(const mode of ['Type','Draw','Upload','Draw']){await page.getByRole('radio',{name:mode,exact:true}).check();const box=await geometry();expect(box.height).toBeCloseTo(initial.height,1);expect(box.top).toBeCloseTo(initial.top,1);expect(box.preview).toBeCloseTo(initial.preview,1);}
- const canvas=dialog.getByLabel('Draw your signature',{exact:true}),box=await canvas.boundingBox();
+ const canvas=dialog.getByLabel('Draw your signature',{exact:true}),box=await canvas.boundingBox(),clearBox=await dialog.getByRole('button',{name:'Clear drawing',exact:true}).boundingBox();
+ expect(box.x).toBeCloseTo(clearBox.x,1);expect(box.width).toBeCloseTo(clearBox.width,1);
  for(let stroke=0;stroke<3;stroke++){
   await canvas.scrollIntoViewIfNeeded();const before=await geometry(),rect=await canvas.boundingBox();await page.mouse.move(rect.x+20,rect.y+20+stroke*8);await page.mouse.down();
   expect((await geometry()).height).toBeCloseTo(before.height,1);await page.mouse.move(rect.x+80,rect.y+40+stroke*8,{steps:4});await page.mouse.up();await expect(dialog.getByAltText('Signature preview')).toBeVisible();

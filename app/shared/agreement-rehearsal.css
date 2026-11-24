@@ -20,7 +20,8 @@
 .agreement-signature-modes { display:flex; flex-wrap:wrap; gap:var(--spacing-md); margin-block:var(--spacing-lg); }
 .agreement-signature-tools { min-inline-size:0; border:0; padding:0; display:grid; gap:var(--spacing-md); }
 .agreement-signature-entry { display:grid; align-content:start; gap:var(--spacing-md); block-size:calc(var(--control-height-md) * 5); min-inline-size:0; }
-.agreement-signature-tools canvas { inline-size:min(100%,calc(var(--control-height-md) * 10)); block-size:auto; aspect-ratio:10 / 3; background:var(--color-white,#fff); border:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); touch-action:none; }
+.agreement-signature-tools canvas { inline-size:100%; box-sizing:border-box; block-size:calc(var(--control-height-md) * 3); background:var(--color-white,#fff); border:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); touch-action:none; }
+.agreement-signature-entry > button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); }
 .agreement-signature-tools canvas[hidden] { display:none; }
 .agreement-signature-preview { display:grid; grid-template-rows:auto minmax(0,1fr); gap:var(--spacing-sm); block-size:calc(var(--control-height-md) * 2); min-inline-size:0; margin:0; }
 .agreement-signature-preview figcaption { font-size:var(--text-caption-size,var(--site-type-caption-size)); }
@@ -36,7 +37,7 @@
 .agreement-initials-entry { max-inline-size:12rem; }
 .agreement-section-initials { margin-block-start:var(--spacing-md); color:var(--control-center-text,var(--cv-text-primary)); }
 .agreement-signature-tools > label:not(.agreement-signature-choice):not([hidden]) { display:grid; gap:var(--spacing-sm); }
-.agreement-signature-tools > p { margin:0; line-height:1.6; }
+.agreement-signature-tools > p { margin:0; line-height:1.6; font-size:var(--text-caption-size,var(--site-type-caption-size)); }
 .agreement-signature-tools > [role=status] { min-block-size:var(--control-height-sm); }
 .agreement-signature-tools input[type=file] { inline-size:100%; min-inline-size:0; font:inherit; color:inherit; }
 .agreement-signature-tools input[type=file]::file-selector-button { font:inherit; color:inherit; background:var(--control-bg-hover); border:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); border-radius:var(--account-field-radius,var(--panel-radius-unified)); padding:var(--spacing-sm) var(--spacing-md); margin-inline-end:var(--spacing-md); cursor:pointer; }
