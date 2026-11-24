@@ -1,18 +1,18 @@
 {
   "source": "artandavoodi/control-center",
-  "revision": "30f9bbab946bb4884367e966d168027c80c3ffcf",
+  "revision": "469cb838b7b80f57e58ea18a278ff21d521851e8",
   "files": {
     "app/shared/signature-library.js": "965f7a1b7a874c483252fed932dcec604eccedc70dd520b508e6bb38ed483739",
     "assets/brand/email-wordmark.png": "44ff8c2aedeed1dd1f370b32ada70ba6ebcc71c1c4d636a109738004d3df8c93",
-    "app/shared/agreement-rehearsal.js": "8f643269fefda39d4aca415b58a86365fa8e6d915812408e06d1f1fd1d3763f9",
+    "app/shared/agreement-rehearsal.js": "2cfe1852c3f5cc08df589d42084dcaa94749c72e7fda07ebe4eff2f41cfeafc5",
     "app/shared/agreement-pdf.js": "93aea896c0933c11d2ae8f51e2969d9393b9c7023c82821247ee2ce4fd9cd080",
     "app/shared/agreement-pdf-view.js": "9986755abb850c6b0428b6501b414af8d055a9885bceec65639972e82967ddef",
     "app/shared/agreement-print.css": "0856c0015014080ba1bd491a013fcaafee1cc9785c53a2e7280a125e05baa4ac",
-    "app/shared/agreement-signature.js": "8b545d8faffb8fb4e1c8186db746e232f08fd65fa5fd98546674caf272449396",
+    "app/shared/agreement-signature.js": "fe52fac476d422d24d0c42ae3554c98bc382709d2952d46b23905b029701fc42",
     "app/shared/agreement-guide.js": "df5a7655b06358519ca2fe954be9c64926691503cc3632bc2b75299831192461",
     "app/shared/NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
     "app/shared/NotoSans-LICENSE.txt": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb",
-    "app/shared/agreement-rehearsal.css": "224ec96be9f11efc177e6f8f9c33178cfcf4930e99f04ffb20e68c4e1cb7a3df",
-    "content/agreement-rehearsal.json": "3fe51e1b249c17eedaf16d2d1dffaab977650df7f62649e45314ca667fb272ab"
+    "app/shared/agreement-rehearsal.css": "1dcdb75be45ebbd1fb83c6c51dfa258429749497b8779acfb1a7bea56e491c40",
+    "content/agreement-rehearsal.json": "976df50828eb6679f73575bc250ea49be56a3a025cc807ede5df661f9d98d243"
   }
 }

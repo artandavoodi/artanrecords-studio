@@ -9,6 +9,7 @@
  "verificationHistory":"Verification history",
  "activity":"Activity",
  "sentToSigning":"Sent to signing",
+ "verificationSentToSigning":"Verification copy sent to signing",
  "openSigningRecord":"Open signing record",
  "existingUnavailable":"The existing signing record could not be checked. Refresh before trying again; nothing new has been sent.",
  "noIssuedAgreements":"No real agreement has been issued for this artist.",
