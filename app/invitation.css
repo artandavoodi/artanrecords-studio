@@ -29,7 +29,13 @@
 .contract-invitation [data-invitation-boundary] { font-size:var(--site-type-caption-size); }
 .contract-invitation [data-invitation-auth] form { margin-block:var(--spacing-lg) 0; }
 .contract-invitation [hidden] { display:none; }
-.contract-invitation .invitation-code { font-variant-numeric:tabular-nums; letter-spacing:0.35em; text-align:center; font-size:var(--site-type-heading-size); }
+.ui-verification-code { min-inline-size:0; margin:0; padding:0; border:0; }
+.ui-verification-code legend { margin-block-end:var(--spacing-md); }
+.ui-verification-code__digits { display:grid; grid-template-columns:repeat(var(--verification-code-length),minmax(0,1fr)); gap:var(--spacing-sm); }
+.ui-verification-code__digits > input { box-sizing:border-box; inline-size:100%; min-inline-size:0; padding-inline:0; text-align:center; font-variant-numeric:tabular-nums; font-size:var(--site-type-heading-size); }
+.contract-invitation [data-code-destination] { margin:0; text-align:center; }
+.contract-invitation [data-code-destination] strong { display:block; margin-block-start:var(--spacing-xs); font-size:var(--site-type-caption-size); font-weight:var(--font-weight-medium); overflow-wrap:anywhere; }
+.contract-invitation [data-invitation-code] > button[type=submit] { background:var(--status-success-color); color:var(--color-white); border:0; }
 .contract-invitation [data-code-heading] { margin-block:0 var(--spacing-md); }
 .contract-invitation .invitation-actions > button { display:inline-flex; align-items:center; justify-content:center; padding:var(--spacing-sm); }
 .contract-invitation [data-invitation-help] > header { display:flex; align-items:center; justify-content:space-between; gap:var(--spacing-lg); }
