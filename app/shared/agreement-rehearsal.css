@@ -51,7 +51,8 @@
 .agreement-guided-document > p,.agreement-guided-document [data-guide-section] > p { white-space:pre-wrap; }
 .agreement-guided-document [data-guide-section],[data-signature-step] { scroll-margin-block-start:calc(var(--agreement-viewer-header-height,0px) + var(--agreement-guide-header-height,0px) + var(--spacing-md)); animation:agreement-section-enter var(--interaction-motion-medium) var(--interaction-ease-standard); }
 .agreement-guide-controls { position:sticky; inset-block-end:0; display:flex; flex-wrap:wrap; align-items:end; justify-content:space-between; gap:var(--spacing-md); padding-block:var(--spacing-md); background:var(--control-center-surface,var(--cv-page-bg)); border-block-start:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); }
-.agreement-guide-controls > .ui-button:is([data-guide-next],[data-guide-sign]),.agreement-focus [data-send-to-artist] { background:var(--status-success-color); color:var(--color-white); border:0; }
+.agreement-guide-controls > .ui-button:is([data-guide-next],[data-guide-sign]),.agreement-focus [data-send-to-artist],.agreement-signature-dialog > footer > .ui-button[data-signature-use] { background:var(--status-success-color); color:var(--color-white); border:0; }
+.agreement-guide-controls > .ui-button[data-guide-sign] :is(img,svg),.agreement-signature-dialog > footer > .ui-button[data-signature-use] :is(img,svg) { filter:brightness(0) invert(1); }
 .agreement-guide-controls > button { min-inline-size:0; white-space:normal; text-align:center; }
 .agreement-guide-header { position:sticky; inset-block-start:var(--agreement-viewer-header-height,0px); z-index:1; display:flex; align-items:center; justify-content:space-between; gap:var(--spacing-md); padding-block:var(--spacing-md); background:var(--control-center-surface,var(--cv-page-bg)); border-block-end:var(--border-width-hairline) solid var(--control-center-border,var(--cv-border)); }
 .agreement-guide-header > p { margin:0; }
