@@ -14,7 +14,7 @@ const status=document.querySelector('[data-invitation-status]'),auth=document.qu
 const client=createClient(config.supabase.url,config.supabase.publishableKey,{auth:{storageKey:'artanrecords-contract-auth',storage:sessionStorage,flowType:'pkce',detectSessionInUrl:false}});
 let email='',invitation=null,context=null,emailVerified=false,nextSendAt=0,sending=false;
 const resend=document.querySelector('[data-code-resend]');const help=document.querySelector('[data-invitation-help]'),helpButton=document.querySelector('[data-invitation-help-open]');helpButton.onclick=()=>help.showModal();document.querySelector('[data-invitation-help-close]').onclick=()=>help.close();help.addEventListener('close',()=>helpButton.focus());
-const verificationCode=bindVerificationCode(codeForm.elements.code,{length:labels.codeLength,label:labels.code,digitLabel:labels.codeDigit});
+const verificationCode=bindVerificationCode(codeForm.elements.code,{length:labels.codeLength,label:labels.code,digitLabel:labels.codeDigit,onComplete:()=>{if(!codeForm.hidden&&!codeForm.inert&&!emailVerified)codeForm.requestSubmit();}});
 codeForm.querySelector('button[type=submit]').classList.add('studio-primary');
 function showCodeStep(){
  verificationCode.clear();
@@ -50,7 +50,7 @@ async function openInvitation(){
  const agreementTab=document.querySelector('[data-invitation-tab=agreement]');agreementTab.disabled=true;
  const intake=mount.querySelector('[data-agreement-intake]');intake.querySelector('p').textContent=labels.detailsNotice;intake.querySelector('[data-intake-address]').hidden=true;
  await bindAgreementIntake({client:scopedClient,resolveUser,invitationOnly:true});await bindSigningRehearsals({client:scopedClient,resolveUser});agreementTab.disabled=!mount.querySelector('.agreement-rehearsal-card');const signingReady=!agreementTab.disabled;document.querySelector('[data-invitation-title]').textContent=signingReady?labels.agreementTitle:['submitted','approved'].includes(context.status)?labels.agreementsTitle:labels.title;document.title=document.querySelector('[data-invitation-title]').textContent+' · Artanrecords';privateView.querySelector('[role=tablist]').hidden=true;const reference=mount.querySelector('.studio-contract-reference');help.querySelector('.studio-contract-reference')?.remove();if(reference)help.append(reference);for(const tab of privateView.querySelectorAll('[data-invitation-tab]')){tab.hidden=signingReady?tab.dataset.invitationTab==='details':tab.dataset.invitationTab==='agreement';tab.setAttribute('aria-selected',String(signingReady?tab.dataset.invitationTab==='agreement':tab.dataset.invitationTab==='details'));}for(const panel of mount.querySelectorAll('[data-invitation-panel]'))panel.hidden=signingReady?panel.dataset.invitationPanel==='details':panel.dataset.invitationPanel==='agreement';
- auth.hidden=true;privateView.hidden=false;document.querySelector('[data-invitation-boundary]').hidden=true;document.querySelector('[data-invitation-introduction]').hidden=true;document.querySelector('[data-invitation-toolbar]').hidden=false;status.textContent='';
+ auth.hidden=true;privateView.hidden=false;document.querySelector('[data-invitation-introduction]').hidden=true;document.querySelector('[data-invitation-toolbar]').hidden=false;status.textContent='';
 }
 emailForm.onsubmit=async event=>{
  event.preventDefault();if(sending)return;
@@ -60,11 +60,11 @@ emailForm.onsubmit=async event=>{
 };
 resend.onclick=()=>emailForm.requestSubmit();
 codeForm.onsubmit=async event=>{
- event.preventDefault();if(codeForm.inert)return;if(!emailVerified&&!verificationCode.complete()){status.textContent=labels.codeIncomplete;verificationCode.focus();return;}codeForm.inert=true;
+ event.preventDefault();if(codeForm.inert)return;if(!emailVerified&&!verificationCode.complete()){status.textContent=labels.codeIncomplete;verificationCode.focus();return;}codeForm.inert=true;codeForm.setAttribute('aria-busy','true');status.textContent=labels.verifying;
  try{
   if(!emailVerified){const verified=await client.auth.verifyOtp({email,token:codeForm.elements.code.value.trim(),type:'email'});if(verified.error){status.textContent=verified.error.code==='otp_expired'?labels.expired:labels.failed;return;}emailVerified=true;emailForm.hidden=true;resend.hidden=true;verificationCode.disable();codeForm.querySelector('button').textContent=labels.open;}
   try{await openInvitation();}catch{privateView.hidden=true;status.textContent=labels.accessFailed;}
- }catch{status.textContent=labels.connectionFailed;}finally{codeForm.inert=false;verificationCode.clear();}
+ }catch{status.textContent=labels.connectionFailed;}finally{codeForm.inert=false;codeForm.removeAttribute('aria-busy');verificationCode.clear();}
 };
 document.querySelector('[data-invitation-refresh]').onclick=async()=>{if(!window.confirm('Check for updates? Unsubmitted changes on this page will be cleared.'))return;try{await openInvitation();}catch{privateView.hidden=true;status.textContent=labels.unavailable;}};
 document.querySelector('[data-invitation-signout]').onclick=async()=>{await client.auth.signOut({scope:'local'});sessionStorage.removeItem('artanrecords-contract-invitation');sessionStorage.removeItem('artanrecords-contract-email');location.replace('/invitation/');};

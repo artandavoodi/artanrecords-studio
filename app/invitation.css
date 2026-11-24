@@ -26,7 +26,6 @@
 .contract-invitation > main:not([hidden]):has(> [data-invitation-auth]:not([hidden])) { display:flex; flex-direction:column; justify-content:center; }
 .contract-invitation > main:not([hidden]):has(> [data-invitation-auth]:not([hidden])) > :is(h1,p) { inline-size:100%; max-inline-size:40ch; margin-inline:auto; text-align:center; }
 .contract-invitation > main:not([hidden]):has(> [data-invitation-auth]:not([hidden])) > p { margin-block:0 var(--spacing-md); }
-.contract-invitation [data-invitation-boundary] { font-size:var(--site-type-caption-size); }
 .contract-invitation [data-invitation-auth] form { margin-block:var(--spacing-lg) 0; }
 .contract-invitation [hidden] { display:none; }
 .ui-verification-code { min-inline-size:0; margin:0; padding:0; border:0; }

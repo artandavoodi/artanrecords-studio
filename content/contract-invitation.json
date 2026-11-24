@@ -18,6 +18,7 @@
  "destination":"Code sent to {email}",
  "resend":"Send new code",
  "verify":"Verify email",
+ "verifying":"Verifying email…",
  "sent":"Enter the code from your email.",
  "unavailable":"This invitation is unavailable, expired, or not configured. Contact the sender for help.",
  "failed":"This code could not be verified. Enter the newest code sent to the invited email address, or choose Send new code.",
