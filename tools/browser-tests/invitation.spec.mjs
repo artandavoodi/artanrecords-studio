@@ -40,6 +40,12 @@ test('invitation shell separates brand actions, page title and copyright without
 test('invitation without a private link never mounts Studio or queries private records',async({page})=>{
  const requests=await backend(page);await page.goto('/invitation/');await expect(page.locator('[data-invitation-email]')).toBeHidden();await expect(page.locator('[data-invitation-status]')).toContainText('Open the private invitation link');await expect(page.locator('[data-invitation-private]')).toBeHidden();await expect(page.locator('[data-platform-layout],#studio-workspace-navigation,[data-settings-tab]')).toHaveCount(0);expect(requests).toEqual([]);
 });
+test('email verification centres its form and copyright with a flush brand rail',async({page})=>{
+ await backend(page);await page.goto('/invitation/#token='+token);await expect(page.locator('[data-invitation-email]')).toBeVisible();
+ await expect(page.locator('[data-invitation-introduction]')).toHaveText('Enter your invited email. We’ll send a one-time code.');
+ const layout=await page.evaluate(()=>{const header=document.querySelector('body > header').getBoundingClientRect(),brand=document.querySelector('.invitation-brand').getBoundingClientRect(),form=document.querySelector('[data-invitation-email]').getBoundingClientRect(),main=document.querySelector('body > main').getBoundingClientRect(),input=document.querySelector('[data-invitation-email] input').getBoundingClientRect(),button=document.querySelector('[data-invitation-email] button').getBoundingClientRect();return {brand:Math.abs(brand.left-header.left),form:Math.abs((form.left+form.right)/2-innerWidth/2),vertical:form.top>=main.top&&form.bottom<=main.bottom,input:Math.abs(input.width-button.width),copyright:getComputedStyle(document.querySelector('body > footer p')).textAlign,overflow:document.documentElement.scrollWidth>innerWidth};});
+ expect(layout.brand).toBeLessThan(1);expect(layout.form).toBeLessThan(1);expect(layout.input).toBeLessThan(1);expect(layout.vertical).toBe(true);expect(layout.copyright).toBe('center');expect(layout.overflow).toBe(false);
+});
 test('verified refresh shows the shared loader instead of flashing the email form',async({page})=>{
  await backend(page);await page.addInitScript(value=>sessionStorage.setItem('artanrecords-contract-auth',JSON.stringify(value)),session);
  let release;const gate=new Promise(resolve=>{release=resolve;});await page.route('**/rpc/contract_resume_invitation',async route=>{await gate;await route.fulfill({json:invitationId});});
