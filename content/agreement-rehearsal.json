@@ -2,6 +2,7 @@
  "signatureLibrary":{"title":"My signatures","notice":"Saved privately. Preparing a signature does not sign a document; confirm each document separately.","choose":"Saved signature","preview":"Saved signature image","name":"Signature name","nameRequired":"Enter a name for this signature.","save":"Save prepared signature","use":"Use selected signature","default":"Make default","archive":"Remove from library","defaultTag":"Default","unavailable":"Your signature library is unavailable. You can still prepare a signature for this document.","failed":"The signature library could not be updated. Nothing was signed.","saved":"Signature saved privately.","prepared":"Signature prepared. Review and confirm this document before signing.","defaultSaved":"Default signature updated. Nothing was signed.","archived":"Removed from the library. Existing signed records are unchanged."},
  "title":"Documents",
  "viewerTitle":"Agreement",
+ "signedConfirmation":{"title":"Agreement signed","message":"Your signed agreement has been sent to Artanrecords for final review. Studio access is not active yet.","view":"View signed agreement","close":"Close","signed":"Signed","pending":"Awaiting final review","receipt":"View confirmation"},
  "verificationNotice":"Non-binding copy. Signing does not create a contract, partnership or Studio access.",
  "activities":{"offered":"Document made available","artist_signed":"Artist signed","label_signed":"Label signed","reviewed":"Review completed","archived":"Document archived"},
  "guideArrow":"core/interface/navigation/scroll-down.svg",
