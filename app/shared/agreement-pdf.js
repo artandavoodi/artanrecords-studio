@@ -4,6 +4,21 @@ import fontBytes from './NotoSans-Regular.ttf';
 
 // A readable evidence copy, not a certificate-based PDF signature or legal seal.
 export const agreementTitle=version=>String(version.terms.title).replace(version.terms.verification_source_intake?/^Signing verification · /:/^$/, '');
+// Populate reserved signing positions for display without changing the issued version.
+export function agreementSigningVersion(version,signatures=[]){
+ if(version.terms?.kind!=='artist_partnership_execution_v1')return version;
+ for(const row of signatures)if(row.document_sha256!==version.terms_digest)throw Error('Signature evidence does not match this document version.');
+ const originalTitles=version.terms.section_titles||[],titles=originalTitles.map(title=>title.replace(/ - not yet signed$/,''));
+ let body=version.terms.body;
+ originalTitles.forEach((title,index)=>{if(title!==titles[index])body=body.replace(title,titles[index]);});
+ body=body.replace(/FOR THE (LABEL|ARTIST)[\s\S]*?(?=FOR THE (?:LABEL|ARTIST)|FINAL CONTROL CENTER REVIEW|$)/g,block=>{
+  const role=block.startsWith('FOR THE LABEL')?'label':'artist',signature=signatures.find(row=>row.signer_role===role);
+  if(!signature)return block;
+  return block.replace(/^Signature: \[reserved for the authenticated (?:label|artist) signer\]$/m,()=> 'Signature: recorded for '+signature.display_name)
+   .replace(/^Server-recorded signature date: \[not signed\]$/m,()=> 'Server-recorded signature date: '+signature.recorded_at);
+ });
+ return {...version,terms:{...version.terms,body,section_titles:titles}};
+}
 export async function agreementPdf({envelope,version,signatures,events,logoBytes,preparedSignature}){
  const draft=version.terms?.kind==='agreement_draft_v1',details=version.terms?.kind==='artist_details_record_v1',real=!draft&&!details&&envelope.rehearsal===false;
  if(details&&signatures.length)throw Error('An artist details export cannot contain contract signatures.');
@@ -29,7 +44,7 @@ export async function agreementPdf({envelope,version,signatures,events,logoBytes
   }
  }
  function draw(line,size){if(y<margin+35)next();page.drawText(line,{x:margin,y,font,size,color:ink});y-=lineHeight;}
- next();text(agreementTitle(version),16);y-=8;text(details?version.terms.notice:draft?'DRAFT - NOT ISSUED OR SIGNED':real?(fullySigned?'SIGNED DOCUMENT RECORD':'ISSUED DOCUMENT - SIGNATURES PENDING'):'Non-binding record - not an executed contract',10);text('Status: '+envelope.status.replaceAll('_',' '));if(!draft)text('Document version: '+version.version_number);y-=12;text(version.terms.body);
+ next();text(agreementTitle(version),16);y-=8;text(details?version.terms.notice:draft?'DRAFT - NOT ISSUED OR SIGNED':real?(fullySigned?'SIGNED DOCUMENT RECORD':'ISSUED DOCUMENT - SIGNATURES PENDING'):'Non-binding record - not an executed contract',10);text('Status: '+envelope.status.replaceAll('_',' '));if(!draft)text('Document version: '+version.version_number);y-=12;text(agreementSigningVersion(version,signatures).terms.body);
  if(details){pages.forEach((sheet,index)=>sheet.drawText('PRIVATE DETAILS  |  '+(index+1)+' / '+pages.length,{x:margin,y:25,font,size:8,color:ink}));return pdf.save();}
  if(draft){pages.forEach((sheet,index)=>sheet.drawText('DRAFT  |  '+(index+1)+' / '+pages.length,{x:margin,y:25,font,size:8,color:ink}));return pdf.save();}
  next();text('Signature records',15);text(real?'Recorded signing evidence for this exact document version.':'Images record the non-binding workflow only.');
