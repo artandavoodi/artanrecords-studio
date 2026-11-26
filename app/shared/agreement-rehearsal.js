@@ -63,7 +63,7 @@ export async function mountSigningRehearsals({root,client,role,accountId,workspa
      if(artistSigned&&envelope.status==='artist_signed'){
       const receipt=document.createElement('section'),receiptTitle=document.createElement('h3'),receiptMessage=document.createElement('p'),actions=document.createElement('div'),done=document.createElement('button'),reopen=document.createElement('button');
       receipt.className='agreement-signing-confirmation';receipt.hidden=true;receiptTitle.textContent=labels.signedConfirmation.title;receiptTitle.tabIndex=-1;receiptMessage.textContent=labels.signedConfirmation.message;
-      for(const button of [done,reopen]){button.type='button';button.className='ui-button';}done.innerHTML=(icons.close||'')+escape(labels.signedConfirmation.close);reopen.textContent=labels.signedConfirmation.receipt;
+      for(const button of [done,reopen]){button.type='button';button.className='ui-button';}done.innerHTML=(icons.close||'')+escape(labels.signedConfirmation.close);reopen.className='ui-icon-button ui-hover-tooltip';reopen.innerHTML=icons.confirmation||'';reopen.setAttribute('aria-label',labels.signedConfirmation.receipt);reopen.dataset.label=labels.signedConfirmation.receipt;reopen.dataset.tooltipPosition='top';
       // The receipt replaces reader content; it is not a second stacked dialog.
       const restore=()=>{delete body.dataset.confirmationOpen;receipt.hidden=true;};
       showReceipt=()=>{body.dataset.confirmationOpen='true';receipt.hidden=false;receiptTitle.focus();focus.scrollTop=0;};
