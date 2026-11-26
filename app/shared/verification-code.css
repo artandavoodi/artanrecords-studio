@@ -1,0 +1,4 @@
+.ui-verification-code { min-inline-size:0; margin:0; padding:0; border:0; }
+.ui-verification-code legend { margin-block-end:var(--spacing-md); }
+.ui-verification-code__digits { display:grid; grid-template-columns:repeat(var(--verification-code-length),minmax(0,1fr)); gap:var(--spacing-sm); }
+.ui-verification-code__digits > input { box-sizing:border-box; inline-size:100%; min-inline-size:0; padding-inline:0; text-align:center; font-variant-numeric:tabular-nums; font-size:var(--site-type-heading-size); }

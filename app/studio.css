@@ -1,5 +1,6 @@
 /* Pinned Store owners. Do not edit generated distributions in app/shared. */
 @import url('./shared/agreement-rehearsal.css');
+@import url('./shared/verification-code.css');
 @import url('./neuroartan/assets/css/layers/website/overlays/cookie/cookie-consent.css');
 @import url('./neuroartan/assets/css/layers/website/overlays/cookie/cookie-learning-overlay.css');
 @import url('./neuroartan/assets/css/core/03-primitives/reorder-list.css');
