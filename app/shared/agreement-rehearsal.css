@@ -6,14 +6,11 @@
 .agreement-status-dot { flex:none; inline-size:var(--spacing-sm); block-size:var(--spacing-sm); border-radius:50%; background:var(--status-warning-color); }
 .agreement-rehearsal-card:is([data-state=archived],[data-state=reviewed]) .agreement-status-dot { background:var(--status-success-color); }
 .agreement-rehearsal-card[data-artist-signed=true] .agreement-status-dot { background:var(--status-success-color); }
-.agreement-rehearsal-card[data-artist-signed=true] > .ui-button { background:var(--status-success-color); color:var(--color-white); border:0; }
-.agreement-rehearsal-card[data-artist-signed=true] > .ui-button :is(img,svg) { filter:brightness(0) invert(1); }
+.agreement-rehearsal-card[data-artist-signed=true] > .ui-button,.agreement-signing-confirmation .ui-button { display:inline-flex; align-items:center; gap:var(--spacing-sm); min-block-size:var(--control-height-md); padding:var(--spacing-sm) 0; background:none; color:inherit; border:0; }
 .agreement-signing-confirmation { min-block-size:60dvh; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:var(--spacing-lg); }
 .agreement-signing-confirmation[hidden],.agreement-focus [data-envelope-content][data-confirmation-open=true] > :not(.agreement-signing-confirmation) { display:none; }
 .agreement-signing-confirmation :is(h3,p) { margin:0; }
 .agreement-signing-confirmation > div { display:flex; flex-wrap:wrap; gap:var(--spacing-md); }
-.agreement-signing-confirmation .ui-button { display:inline-flex; align-items:center; gap:var(--spacing-sm); }
-.agreement-signing-confirmation .ui-button[data-confirmation-view] { background:var(--status-success-color); color:var(--color-white); border:0; }
 .agreement-rehearsal-document { white-space:pre-wrap; overflow-wrap:anywhere; margin-block:var(--spacing-xl); padding-block:var(--spacing-xl); line-height:1.7; max-inline-size:75ch; }
 .agreement-rehearsal-image { display:block; max-inline-size:100%; max-block-size:var(--spacing-4xl); object-fit:contain; object-position:left center; }
 .agreement-signature-library { display:grid; gap:var(--spacing-lg); inline-size:100%; min-inline-size:0; }
