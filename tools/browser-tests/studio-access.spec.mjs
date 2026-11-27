@@ -14,7 +14,8 @@ for(const failure of ['expired-code','wrong-account','revoked-access'])test('Stu
   throw Error('Unexpected failed setup operation: '+path);
  });
  await page.goto('/account/?flow=studio-access#'+new URLSearchParams({email,username,envelope}));await page.getByRole('textbox',{name:'Digit 1 of 8',exact:true}).fill('12345678');await expect(page.locator('[data-account-status]')).toContainText(failure==='expired-code'?'This code has expired.':'This code could not be verified.');await expect(page.locator('[data-studio-access-password]')).toBeHidden();expect(updates).toBe(0);expect(await page.evaluate(()=>sessionStorage.getItem('artanrecords-studio-access-setup'))).not.toContain('12345678');
- await page.getByRole('button',{name:'Send new code',exact:true}).click();await expect(page.locator('[data-account-status]')).toContainText(failure==='revoked-access'?'Wait one minute, then retry.':'New code requested.');expect(requests).toBe(failure==='revoked-access'?0:1);await expect(page.getByRole('button',{name:'Send new code',exact:true})).toBeDisabled();expect(updates).toBe(0);
+ await page.getByRole('button',{name:/^Send new code/}).click();await expect(page.locator('[data-account-status]')).toContainText(failure==='revoked-access'?'Wait one minute, then retry.':'New code requested.');expect(requests).toBe(failure==='revoked-access'?0:1);await expect(page.getByRole('button',{name:/^Send new code/})).toBeDisabled();expect(updates).toBe(0);
+ await page.reload();await expect(page.getByRole('button',{name:/^Send new code in \d+s$/})).toBeDisabled();expect(requests).toBe(failure==='revoked-access'?0:1);
 });
 test('Studio setup consumes a one-time code, requires matching passwords and completes only the approved handoff',async({page})=>{
  const id='92000000-0000-0000-0000-000000000001',envelope='92000000-0000-0000-0000-000000000099',email='artist@example.test',username='fixture.artist';
