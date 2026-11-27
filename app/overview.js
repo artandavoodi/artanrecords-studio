@@ -2,16 +2,20 @@ import appearance from '../content/appearance.json' with {type:'json'};
 import account from '../content/account.json' with {type:'json'};
 import plans from '../assets/data/studio-plans.json' with {type:'json'};
 import {hasProAccess,hasStudioAccess} from './subscriptions.js';
-export function partnershipSummary(application){
+export function partnershipSummary(application,evidence=[],now=Date.now()){
+ const tiers=['silver','gold','platinum'];
+ const active=evidence.filter(item=>tiers.includes(item.partnership_tier)&&!item.revoked_at&&[item.verified_at,item.signed_at,item.starts_at].every(value=>value&&Date.parse(value)<=now)&&Date.parse(item.ends_at)>now).sort((a,b)=>tiers.indexOf(b.partnership_tier)-tiers.indexOf(a.partnership_tier))[0];
+ if(active)return {tier:active.partnership_tier,label:active.partnership_tier[0].toUpperCase()+active.partnership_tier.slice(1),detail:'Partnership active.'};
  const tier=application?.status==='approved'&&['silver','gold','platinum'].includes(application.approved_tier)?application.approved_tier:null;
  return {tier,label:tier?tier[0].toUpperCase()+tier.slice(1):application?.status==='pending'?'Under review':application?.status==='rejected'?'Not approved':'No approved partnership',detail:tier?'Partnership approved.':application?.status==='pending'?'Awaiting review.':'Introduce your music to discuss a partnership.'};
 }
 export async function bindOverview({client,resolveUser}){
  const root=document.querySelector('[data-studio-overview]');if(!root||!client)return;
  try{const user=await resolveUser(client);if(!user)return;
-  const [application,access]=await Promise.all([client.from('studio_artist_applications').select('status,approved_tier,requested_tier').eq('account_id',user.id).maybeSingle(),client.rpc('studio_subscription_status')]);
+  const now=new Date().toISOString();
+  const [application,access,evidence]=await Promise.all([client.from('studio_artist_applications').select('status,approved_tier,requested_tier').eq('account_id',user.id).maybeSingle(),client.rpc('studio_subscription_status'),client.from('studio_included_access').select('partnership_tier,verified_at,signed_at,starts_at,ends_at,revoked_at').eq('account_id',user.id).is('revoked_at',null).lte('verified_at',now).lte('signed_at',now).lte('starts_at',now).gt('ends_at',now)]);
   if((await resolveUser(client))?.id!==user.id)return;
-  if(application.error)throw Error('Your partnership could not be verified.');const summary=partnershipSummary(application.data);
+  if(evidence.error||application.error)throw Error('Your partnership could not be verified.');const summary=partnershipSummary(application.data,evidence.data);
   root.querySelector('[data-overview-tier]').textContent=summary.label;root.querySelector('[data-overview-partnership]').textContent=summary.detail;if(summary.tier)root.querySelector('.studio-overview-membership').dataset.partnershipTier=summary.tier;
   for(const icon of root.querySelectorAll('[data-partnership-icon]'))icon.hidden=icon.dataset.partnershipIcon!==summary.tier;
   const included=plans.items.find(item=>item.plan===plans.partnershipInclusion[summary.tier])?.name;

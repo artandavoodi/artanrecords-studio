@@ -42,6 +42,15 @@ test('Pro access requires current provider-owned entitlement, never a plan label
  assert.equal(hasProAccess({plan:'studio-pro',status:'past_due',entitled:true,period_ends_at:'2099-01-01T00:00:00Z'}),false);
  assert.equal(hasProAccess({plan:'studio-pro',status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z'}),true);
 });
+test('active signed partnerships are authoritative even without an application',()=>{
+ const now=Date.parse('2026-11-27T12:00:00Z'),evidence={verified_at:'2026-11-26T00:00:00Z',signed_at:'2026-11-25T00:00:00Z',starts_at:'2026-11-26T00:00:00Z',ends_at:'2027-11-23T00:00:00Z',revoked_at:null};
+ for(const [tier,plan] of [['silver','studio'],['gold','studio-pro'],['platinum','studio-pro']]){
+  assert.equal(partnershipSummary(null,[{...evidence,partnership_tier:tier}],now).tier,tier);
+  assert.equal(hasProAccess({plan,status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z',entitlement_source:'PARTNERSHIP_INCLUDED'}),tier!=='silver');
+ }
+ for(const invalid of [{revoked_at:'2026-11-27T00:00:00Z'},{ends_at:'2026-11-26T00:00:00Z'},{starts_at:'2026-11-28T00:00:00Z'},{verified_at:null},{signed_at:null}])assert.equal(partnershipSummary(null,[{...evidence,partnership_tier:'silver',...invalid}],now).tier,null);
+ assert.equal(partnershipSummary({status:'approved',approved_tier:'platinum'},[{...evidence,partnership_tier:'silver'}],now).tier,'silver');
+});
 const e=value=>String(value).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;');
 test('Bank records approval without enabling money or inventing policy',async()=>{
   const config=JSON.parse(await readFile('content/bank.json','utf8'));

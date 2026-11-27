@@ -108,6 +108,13 @@ test('overview shows approved tier separately from active software access',async
  await page.route('**/rest/v1/studio_artist_applications*',route=>route.fulfill({json:{status:'approved',approved_tier:'gold',requested_tier:'gold'}}));
  await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText('Gold');await expect(page.locator('[data-overview-access]')).toHaveText('Studio Pro included');await expect(page.locator('[data-overview-entitlement]')).toContainText('awaiting verification');await expect(page.locator('[data-partnership-icon=gold]')).toBeVisible();await expect(page.locator('[data-studio-overview]')).not.toContainText('Plans and partnerships');await expect(page.locator('[data-studio-overview]')).not.toContainText('/month');expect(await page.locator('body').evaluate(el=>el.scrollWidth<=innerWidth)).toBe(true);
 });
+for(const [tier,plan,label] of [['silver','studio','Studio'],['gold','studio-pro','Studio Pro'],['platinum','studio-pro','Studio Pro']])test('active '+tier+' agreement determines overview without a legacy application',async({page})=>{
+ await mockBackend(page);await signInFixture(page);
+ await page.route('**/rest/v1/studio_artist_applications*',route=>route.fulfill({json:null}));
+ await page.route('**/rest/v1/studio_included_access*',route=>route.fulfill({json:[{partnership_tier:tier,signed_at:'2026-01-01T00:00:00Z',verified_at:'2026-01-02T00:00:00Z',starts_at:'2026-01-02T00:00:00Z',ends_at:'2099-01-01T00:00:00Z',revoked_at:null}]}));
+ await page.route('**/rpc/studio_subscription_status',route=>route.fulfill({json:{plan,status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z',entitlement_source:'PARTNERSHIP_INCLUDED'}}));
+ await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText(tier[0].toUpperCase()+tier.slice(1));await expect(page.locator('[data-overview-partnership]')).toHaveText('Partnership active.');await expect(page.locator('[data-overview-access]')).toHaveText(label+' active');await expect(page.locator('[data-overview-entitlement]')).toHaveText('Included through your active partnership.');await expect(page.locator('[data-partnership-icon='+tier+']')).toBeVisible();
+});
 test('connectors color verified catalogue services without activating reporting and themes sync privately',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.route('**/functions/v1/artist-discovery',route=>route.fulfill({json:{artists:[],unavailable:[]}}));let saved;
@@ -194,6 +201,7 @@ async function mockBackend(page,{releaseCover}={}){
     else if(url.pathname.endsWith('/rpc/studio_set_concert_status')){const data=request.postDataJSON();concerts.get(data.concert).status=data.new_status;body=null;}
     else if(url.pathname.endsWith('/studio_artist_handles'))body=handle?[handle]:[];
     else if(url.pathname.endsWith('/studio_artist_applications'))body=application?[application]:[];
+    else if(url.pathname.endsWith('/studio_included_access'))body=[];
     else if(url.pathname.endsWith('/rpc/studio_username_check'))body='available';
     else if(url.pathname.endsWith('/rpc/studio_request_username')){handle={requested_username:request.postDataJSON().candidate,approved_username:null,status:'pending',notice:'Your username is awaiting label review.'};body=null;}
     else if(url.pathname.endsWith('/rpc/studio_apply_partnership')){application={requested_tier:request.postDataJSON().tier,approved_tier:null,status:'pending',decision_note:''};body=null;}
