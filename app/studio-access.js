@@ -11,7 +11,7 @@ export async function bindStudioAccessSetup({view,client,resolveUser}){
  const codeForm=document.createElement('form'),passwordForm=document.createElement('form');codeForm.className=passwordForm.className='studio-account';codeForm.dataset.studioAccessCode='';passwordForm.dataset.studioAccessPassword='';passwordForm.hidden=true;
  codeForm.innerHTML='<label>Username<input class="ui-field" name="username" readonly autocomplete="username"></label><label>One-time code<input class="ui-field" name="code" inputmode="numeric" autocomplete="one-time-code" required></label><button type="submit" class="ui-button ui-button--primary">Continue</button>';
  codeForm.elements.username.value=setup.username;
- passwordForm.innerHTML='<p>This sets your shared Artan Store and Studio account password.</p><button type="submit" class="ui-button ui-button--primary">Set password and enter Studio</button>';
+ passwordForm.innerHTML='<button type="submit" class="ui-button ui-button--primary">Set password and enter Studio</button>';
  const passwordSetup=mountPasswordSetup(passwordForm);
  const resend=document.createElement('button');resend.type='button';resend.className='ui-button';resend.textContent='Send new code';resend.hidden=setup.codeFailed!==true;codeForm.append(resend);
  status.before(codeForm,passwordForm);const button=codeForm.querySelector('[type=submit]');let busy=false,timer,nextSendAt=0;
