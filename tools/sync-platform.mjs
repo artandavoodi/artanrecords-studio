@@ -3,7 +3,15 @@ import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {dirname} from 'node:path';
 const source='../website';
+const passwordFiles=[
+ 'assets/js/core/02-systems/password-field.js',
+ 'assets/js/layers/website/system/account/identity/account-password-policy.js',
+ 'assets/data/accounts/account-password-policy.json',
+ 'assets/fragments/layers/website/account/account-profile-setup-drawer.html',
+ 'assets/css/layers/website/overlays/account/account-profile-setup-drawer.css'
+];
 const files=[
+  ...passwordFiles,
   'assets/css/core/03-primitives/overlays.css',
   'assets/css/layers/website/layout/home.css',
   'assets/css/layers/website/ui/effects/wallpaper-engine.css',
@@ -56,6 +64,17 @@ const files=[
   'assets/fragments/layers/website/home/platform-menu/settings/appearance/index.html'
 ];
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
+// Distribute the canonical password feedback without importing drawer layout ownership.
+export function passwordFeedbackStyles(source){
+ const group=source.match(/\.account-profile-setup-drawer-field-group\{[^}]*\}/)?.[0];
+ const metaStart=source.indexOf('.account-profile-setup-drawer-field-meta{'),metaEnd=source.indexOf('.account-profile-setup-drawer-username-suggestions{',metaStart);
+ const meterStart=source.indexOf('.account-profile-setup-drawer-password-status{'),meterEnd=source.indexOf('/* =============================================================================',meterStart);
+ const root=source.match(/:root\{([\s\S]*?)\n\}/)?.[1];
+ if(!group||metaStart<0||metaEnd<0||meterStart<0||meterEnd<0||!root)throw Error('Canonical password feedback boundaries changed');
+ const body=[group,source.slice(metaStart,metaEnd),source.slice(meterStart,meterEnd)].join('\n'),declarations=new Map([...root.matchAll(/(--[\w-]+)\s*:[^;]+;/g)].map(match=>[match[1],match[0]])),needed=new Set();
+ const collect=text=>{for(const [,name]of text.matchAll(/var\((--[\w-]+)/g))if(declarations.has(name)&&!needed.has(name)){needed.add(name);collect(declarations.get(name));}};collect(body);
+ return '/* Generated from pinned Neuroartan password feedback ownership. */\n:root{\n'+[...declarations].filter(([name])=>needed.has(name)).map(([,value])=>value).join('\n')+'\n}\n'+body;
+}
 // Reuse the canonical background rules without importing homepage layout ownership.
 export function backgroundStyles(source){
   const root=source.match(/:root\{([\s\S]*?)\n\}/)?.[1];
@@ -66,19 +85,21 @@ export function backgroundStyles(source){
   if(tokens.length!==6)throw Error('Canonical wallpaper token count changed');
   return '/* Generated from pinned Neuroartan home.css background ownership. */\n:root{\n'+tokens.join('\n')+'\n}\n'+source.slice(start,end);
 }
-if(process.argv.includes('--sync')){
+if(process.argv.includes('--sync')||process.argv.includes('--sync-passwords')){
   const revision=execFileSync('git',['-C',source,'rev-parse','HEAD'],{encoding:'utf8'}).trim();
-  const manifest={source:'artandavoodi/website',revision,files:{}};
-  for(let index=0;index<files.length;index++){
-    const path=files[index];
+  const partial=process.argv.includes('--sync-passwords'),manifest=partial?JSON.parse(await readFile('app/platform-manifest.json','utf8')):{source:'artandavoodi/website',revision,files:{}},selected=partial?[...passwordFiles]:files;
+  for(let index=0;index<selected.length;index++){
+    const path=selected[index];
     const bytes=execFileSync('git',['-C',source,'show',`${revision}:docs/${path}`]);
-    for(const match of bytes.toString().matchAll(/(?:src|href)="\/(registry\/icons\/public\/assets\/[^"?#]+)"/g))if(!files.includes(match[1]))files.push(match[1]);
+    for(const match of bytes.toString().matchAll(/(?:src|href)="\/(registry\/icons\/public\/assets\/[^"?#]+)"/g))if(!selected.includes(match[1]))selected.push(match[1]);
     await mkdir(dirname(`app/neuroartan/${path}`),{recursive:true});
     await writeFile(`app/neuroartan/${path}`,bytes);manifest.files[path]=hash(bytes);
   }
-  const path='assets/css/layers/website/home/background/home-shell.generated.css';
+  if(!partial){const path='assets/css/layers/website/home/background/home-shell.generated.css';
   const bytes=backgroundStyles(await readFile('app/neuroartan/assets/css/layers/website/layout/home.css','utf8'));
-  await writeFile('app/neuroartan/'+path,bytes);manifest.files[path]=hash(bytes);
+  await writeFile('app/neuroartan/'+path,bytes);manifest.files[path]=hash(bytes);}
+  const passwordPath='assets/css/core/03-primitives/password-feedback.generated.css',passwordBytes=passwordFeedbackStyles(await readFile('app/neuroartan/'+passwordFiles.at(-1),'utf8'));
+  await mkdir(dirname('app/neuroartan/'+passwordPath),{recursive:true});await writeFile('app/neuroartan/'+passwordPath,passwordBytes);manifest.files[passwordPath]=hash(passwordBytes);manifest.passwordSourceRevision=revision;
   await writeFile('app/platform-manifest.json',JSON.stringify(manifest,null,2)+'\n');
 }else{
   const manifest=JSON.parse(await readFile('app/platform-manifest.json','utf8'));

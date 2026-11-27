@@ -77,6 +77,11 @@ test('named themes survive sign-out and keep authentication fields and destructi
   await page.locator('[data-auth-action=signin]').click();await signInFixture(page);
  }
 });
+for(const tier of ['silver','gold','platinum'])test('activated '+tier+' agreement restores its default theme from account preferences',async({page})=>{
+ await mockBackend(page);await signInFixture(page);
+ await page.route('**/rest/v1/studio_user_preferences*',route=>route.fulfill({json:{appearance:{partnershipTheme:tier,theme:{theme:'custom',tokens:{}},toggles:{}}}}));
+ await page.goto('/profile/');await expect(page.locator('html')).toHaveAttribute('data-partnership-theme',tier);await expect(page.locator('html')).toHaveAttribute('data-theme-effective',tier==='silver'?'light':'dark');
+});
 test('Platinum restores button-matched fields and uniform hairlines from stale saved tokens',async({page})=>{
  await mockBackend(page);await signInFixture(page);
  await page.route('**/rest/v1/studio_user_preferences*',route=>route.fulfill({json:{appearance:{partnershipTheme:'platinum',theme:{theme:'custom',effective:'dark',tokens:{accent:'#917c6f',accentHover:'#917c6f',background:'#100c08',surface:'#917c6f',border:'#917c6f',text:'#ffffff'}},toggles:{}}}}));

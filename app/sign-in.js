@@ -1,6 +1,7 @@
 import publication from '../assets/data/studio-legal.json';
 import {requestGoogleSignIn,readAccountCallback} from './account.js';
 import {bindStudioAccessSetup} from './studio-access.js';
+import './neuroartan/assets/js/core/02-systems/password-field.js';
 const noticeUrl=path=>publication.domain+publication.notices.find(notice=>notice.legacyPath===path).path;
 export async function bindAccount({client,config,resolveUser}){
   const view=document.querySelector('[data-account-view]');if(!view)return;
@@ -16,15 +17,7 @@ export async function bindAccount({client,config,resolveUser}){
     catch{status.textContent='Google sign-in could not be opened. Try again.';google.disabled=false;}
   });
   if(google.disabled)google.title='Google sign-in will be available when Studio account services are connected.';
-  view.querySelectorAll('input[type=password]').forEach(input=>{
-    const label=input.closest('label'),wrapper=document.createElement('div');wrapper.className='ui-password-field';input.before(wrapper);wrapper.append(input);input.classList.add('ui-password-field__input');
-    const button=document.createElement('button');button.type='button';button.className='ui-password-field__toggle';button.setAttribute('aria-label','Show password');button.setAttribute('aria-pressed','false');
-    const icon=document.createElement('img');icon.className='ui-password-field__toggle-icon';icon.src='/app/icons/visibility-on.svg';icon.alt='';button.append(icon);wrapper.append(button);
-    // Keep the button outside the implicit label so the input's accessible name stays "Password".
-    input.id=input.closest('[data-recovery-form]')?'studio-new-password':'studio-password';label.htmlFor=input.id;label.after(wrapper);
-    const update=()=>{wrapper.dataset.passwordHasValue=String(Boolean(input.value));};input.addEventListener('input',update);update();
-    button.addEventListener('click',()=>{const showing=input.type==='password';input.type=showing?'text':'password';button.setAttribute('aria-label',showing?'Hide password':'Show password');button.setAttribute('aria-pressed',String(showing));icon.src=showing?'/app/icons/visibility-off.svg':'/app/icons/visibility-on.svg';});
-  });
+  view.querySelectorAll('input[data-password-visibility-input],input[type=password]').forEach(input=>{const label=input.closest('label');input.id=input.closest('[data-recovery-form]')?'studio-new-password':'studio-password';label.htmlFor=input.id;});
   let action='signin',busy=false;
   view.addEventListener('click',event=>{const target=event.target.closest('[data-auth-action]');if(target&&!busy)form.elements.password.minLength=target.dataset.authAction==='signup'?12:1;});
   const actions=view.querySelector('.studio-auth-tabs');form.after(actions);actions.querySelector('[data-auth-action=signin]').hidden=true;

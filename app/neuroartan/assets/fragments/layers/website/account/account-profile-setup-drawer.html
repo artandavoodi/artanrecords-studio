@@ -1,0 +1,294 @@
+<!-- =============================================================================
+00) FILE INDEX
+01) INNER VIEW ROOT
+02) PROFILE SETUP STATE
+03) CONTENT STAGE
+04) SEGMENT TITLE
+05) PROFILE SETUP FORM
+06) CANONICAL HIDDEN CONTEXT FIELDS
+07) IDENTITY FIELDS
+08) CONDITIONAL CREDENTIAL FIELDS
+09) ELIGIBILITY FIELDS
+10) OPTIONAL FIELDS
+11) PRIMARY ACTIONS
+12) SECONDARY ACTIONS
+13) BACK CONTROL
+14) END OF VIEW
+============================================================================= -->
+
+<!-- =============================================================================
+01) INNER VIEW ROOT
+============================================================================= -->
+<section
+  id="account-profile-setup-drawer"
+  class="account-profile-setup-drawer account-drawer-inner-view"
+  aria-label="Profile setup"
+  data-account-profile-setup-drawer="true"
+  data-account-view="profile-setup"
+  hidden
+>
+  <!-- ==========================================================================
+  02) PROFILE SETUP STATE
+  ========================================================================== -->
+  <section class="account-profile-setup-drawer-state" data-account-profile-setup-state="entry">
+
+    <!-- ========================================================================
+    03) CONTENT STAGE
+    ======================================================================== -->
+    <div class="account-profile-setup-drawer-content-stage account-drawer-content-stage">
+
+      <!-- ======================================================================
+      04) SEGMENT TITLE
+      ====================================================================== -->
+      <div class="account-drawer-segment-header">
+        <h2 class="account-drawer-segment-title" data-i18n-key="account_segment_title_profile_setup">Profile setup</h2>
+      </div>
+
+      <!-- ======================================================================
+      05) PROFILE SETUP FORM
+      ====================================================================== -->
+      <form id="account-profile-setup-drawer-form" class="account-profile-setup-drawer-form" data-account-profile-setup-form="true" novalidate>
+        <div class="account-profile-setup-drawer-center-stage">
+          <!-- ==================================================================
+          06) CANONICAL HIDDEN CONTEXT FIELDS
+          ================================================================== -->
+          <input
+            id="account-profile-setup-email"
+            name="email"
+            type="hidden"
+            data-account-profile-setup-field="email"
+          >
+          <input
+            id="account-profile-setup-method"
+            name="method"
+            type="hidden"
+            data-account-profile-setup-field="method"
+          >
+          <input
+            id="account-profile-setup-auth-provider"
+            name="auth_provider"
+            type="hidden"
+            data-account-profile-setup-field="auth-provider"
+          >
+
+          <!-- ==================================================================
+          07) IDENTITY FIELDS
+          ================================================================== -->
+          <div class="account-profile-setup-drawer-field-group">
+            <input
+              id="account-profile-setup-username"
+              name="username"
+              type="text"
+              class="account-profile-setup-drawer-input"
+              autocomplete="username"
+              inputmode="text"
+              spellcheck="false"
+              autocapitalize="none"
+              data-account-profile-setup-field="username"
+              data-i18n-placeholder-key="account_profile_setup_username_placeholder"
+              placeholder="Username"
+              required
+            >
+            <div class="account-profile-setup-drawer-field-meta" data-account-profile-setup-username-meta="true">
+              <p class="account-profile-setup-drawer-field-note" data-i18n-key="account_profile_setup_username_note">Your public profile will use this handle.</p>
+              <p class="account-profile-setup-drawer-field-status" data-account-profile-setup-username-status="idle" aria-live="polite"></p>
+              <div class="account-profile-setup-drawer-username-suggestions" data-account-profile-setup-username-suggestions hidden>
+                <p class="account-profile-setup-drawer-field-note">Available suggestions</p>
+                <div class="account-profile-setup-drawer-username-suggestion-list" data-account-profile-setup-username-suggestion-list></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="account-profile-setup-drawer-field-group">
+            <input
+              id="account-profile-setup-first-name"
+              name="first_name"
+              type="text"
+              class="account-profile-setup-drawer-input"
+              autocomplete="given-name"
+              inputmode="text"
+              data-account-profile-setup-field="first-name"
+              data-i18n-placeholder-key="account_profile_setup_first_name_placeholder"
+              placeholder="First name"
+              required
+            >
+          </div>
+
+          <div class="account-profile-setup-drawer-field-group">
+            <input
+              id="account-profile-setup-last-name"
+              name="last_name"
+              type="text"
+              class="account-profile-setup-drawer-input"
+              autocomplete="family-name"
+              inputmode="text"
+              data-account-profile-setup-field="last-name"
+              data-i18n-placeholder-key="account_profile_setup_last_name_placeholder"
+              placeholder="Last name"
+              required
+            >
+          </div>
+
+          <div class="account-profile-setup-drawer-field-group">
+            <input
+              id="account-profile-setup-display-name"
+              name="display_name"
+              type="text"
+              class="account-profile-setup-drawer-input"
+              autocomplete="nickname"
+              inputmode="text"
+              data-account-profile-setup-field="display-name"
+              data-i18n-placeholder-key="account_profile_setup_display_name_placeholder"
+              placeholder="Display name"
+              required
+            >
+            <div class="account-profile-setup-drawer-field-meta">
+              <p class="account-profile-setup-drawer-field-note" data-i18n-key="account_profile_setup_display_name_note">This is the name people will see on your profile.</p>
+            </div>
+          </div>
+
+          <!-- ==================================================================
+          08) CONDITIONAL CREDENTIAL FIELDS
+          ================================================================== -->
+          <div class="account-profile-setup-drawer-credential-group" data-account-profile-setup-credentials="true" hidden>
+            <div class="account-profile-setup-drawer-field-group">
+              <input
+                id="account-profile-setup-password"
+                name="password"
+                type="password"
+                class="account-profile-setup-drawer-input"
+                autocomplete="new-password"
+                data-account-profile-setup-field="password"
+                data-i18n-placeholder-key="account_profile_setup_password_placeholder"
+                placeholder="Password"
+              >
+              <div class="account-profile-setup-drawer-field-meta">
+                <p class="account-profile-setup-drawer-field-note" data-account-profile-setup-password-hint="true">
+                  Use at least 8 characters with uppercase and lowercase letters, a number, and a special character.
+                </p>
+                <div class="account-profile-setup-drawer-password-status" data-account-profile-setup-password-status-shell="idle">
+                  <div class="account-profile-setup-drawer-password-meter" aria-hidden="true">
+                    <span class="account-profile-setup-drawer-password-meter-segment" data-account-profile-setup-password-meter-segment="true"></span>
+                    <span class="account-profile-setup-drawer-password-meter-segment" data-account-profile-setup-password-meter-segment="true"></span>
+                    <span class="account-profile-setup-drawer-password-meter-segment" data-account-profile-setup-password-meter-segment="true"></span>
+                    <span class="account-profile-setup-drawer-password-meter-segment" data-account-profile-setup-password-meter-segment="true"></span>
+                  </div>
+                  <p class="account-profile-setup-drawer-field-status" data-account-profile-setup-password-status="true" aria-live="polite"></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="account-profile-setup-drawer-field-group">
+              <input
+                id="account-profile-setup-password-confirm"
+                name="password_confirm"
+                type="password"
+                class="account-profile-setup-drawer-input"
+                autocomplete="new-password"
+                data-account-profile-setup-field="password-confirm"
+                data-i18n-placeholder-key="account_profile_setup_password_confirm_placeholder"
+                placeholder="Reenter password"
+              >
+            </div>
+          </div>
+
+          <!-- ==================================================================
+          09) ELIGIBILITY FIELDS
+          ================================================================== -->
+          <div class="account-profile-setup-drawer-field-group">
+            <input
+              id="account-profile-setup-date-of-birth"
+              name="date_of_birth"
+              type="hidden"
+              autocomplete="bday"
+              data-account-profile-setup-field="date-of-birth"
+              required
+            >
+            <div class="account-profile-setup-drawer-date-grid" data-account-profile-setup-date-grid="true">
+              <select
+                id="account-profile-setup-date-of-birth-month"
+                class="account-profile-setup-drawer-select account-profile-setup-drawer-select--date"
+                data-account-profile-setup-date-control="month"
+                aria-label="Birth month"
+                required
+              >
+                <option value="">Month</option>
+              </select>
+
+              <select
+                id="account-profile-setup-date-of-birth-day"
+                class="account-profile-setup-drawer-select account-profile-setup-drawer-select--date"
+                data-account-profile-setup-date-control="day"
+                aria-label="Birth day"
+                required
+              >
+                <option value="">Day</option>
+              </select>
+
+              <select
+                id="account-profile-setup-date-of-birth-year"
+                class="account-profile-setup-drawer-select account-profile-setup-drawer-select--date"
+                data-account-profile-setup-date-control="year"
+                aria-label="Birth year"
+                required
+              >
+                <option value="">Year</option>
+              </select>
+            </div>
+            <div class="account-profile-setup-drawer-field-meta">
+              <p class="account-profile-setup-drawer-field-note" data-i18n-key="account_profile_setup_dob_note">Used for eligibility and kept private by default.</p>
+            </div>
+          </div>
+
+          <!-- ==================================================================
+          10) GENDER
+          ================================================================== -->
+          <div class="account-profile-setup-drawer-field-group">
+            <select
+              id="account-profile-setup-gender"
+              name="gender"
+              class="account-profile-setup-drawer-select"
+              data-account-profile-setup-field="gender"
+              required
+            >
+              <option value="" selected disabled hidden data-i18n-key="account_profile_setup_gender_placeholder">Gender</option>
+              <option value="woman" data-i18n-key="account_profile_setup_gender_woman">Woman</option>
+              <option value="man" data-i18n-key="account_profile_setup_gender_man">Man</option>
+            </select>
+          </div>
+
+        </div>
+      </form>
+
+      <!-- ======================================================================
+      11) PRIMARY ACTIONS
+      ====================================================================== -->
+      <div class="account-profile-setup-drawer-actions">
+        <button type="submit" form="account-profile-setup-drawer-form" class="account-profile-setup-drawer-action account-profile-setup-drawer-action--primary" data-account-profile-setup-submit="true">
+          <span class="account-profile-setup-drawer-action-label" data-i18n-key="account_profile_setup_submit">Complete profile</span>
+        </button>
+        <p class="account-profile-setup-drawer-submit-status" data-account-profile-setup-submit-status="idle" aria-live="polite"></p>
+      </div>
+
+      <!-- ======================================================================
+      12) SECONDARY ACTIONS
+      ====================================================================== -->
+      <div class="account-profile-setup-drawer-secondary-actions">
+        <button type="button" class="account-profile-setup-drawer-text-action" data-account-profile-setup-skip="true" hidden aria-hidden="true">
+          <span data-i18n-key="account_profile_setup_skip">Skip and set up later</span>
+        </button>
+
+        <!-- ====================================================================
+        13) BACK CONTROL
+        ==================================================================== -->
+        <button type="button" class="account-profile-setup-drawer-back-control" data-account-route="entry" data-account-profile-setup-back="true" aria-label="Back">
+          <img src="/registry/icons/public/assets/core/navigation/direction/back.svg" alt="" class="account-profile-setup-drawer-back-icon ui-icon-theme-aware" aria-hidden="true">
+        </button>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- =============================================================================
+14) END OF VIEW
+============================================================================= -->

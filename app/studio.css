@@ -16,6 +16,7 @@
 @import url('./neuroartan/assets/css/core/03-primitives/profile-media-action.css');
 @import url('./shared/buttons.css');
 @import url('./shared/password-field.css');
+@import url('./neuroartan/assets/css/core/03-primitives/password-feedback.generated.css');
 @import url('./shared/close-button.css');
 @import url('./shared/store-surfaces.css');
 @import url('./platform.css');
