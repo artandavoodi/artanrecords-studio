@@ -97,7 +97,8 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 .studio-header-control:hover,.studio-header-control:focus-visible { opacity:var(--hover-opacity-strong); outline:none; }
 .studio-icon { display:block; inline-size:var(--icon-size-sm); block-size:var(--icon-size-sm); object-fit:contain; flex:none; }
 .studio-hero-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-lg); }
-.studio-hero-actions > :is(a,button),.studio-account .ui-button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); min-block-size:var(--control-height-md); padding:var(--spacing-sm) var(--spacing-lg); border:0; border-radius:var(--account-field-radius); background:var(--control-bg-hover); color:var(--cv-text-primary); text-decoration:none; cursor:pointer; }
+.studio-hero-actions > :is(a,button),.studio-account .ui-button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); min-block-size:var(--control-height-md); padding:var(--spacing-sm) var(--spacing-lg); border:0; border-radius:var(--account-field-radius); text-decoration:none; cursor:pointer; }
+.studio-hero-actions > :is(a,button):where(:not(.ui-button--primary)),.studio-account .ui-button:where(:not(.ui-button--primary)) { background:var(--control-bg-hover); color:var(--cv-text-primary); }
 .studio-hero-actions .studio-primary,.studio-account .studio-primary { background:var(--label-primary-action-background); color:var(--label-primary-action-text); }
 .studio-hero-actions .studio-primary img,.studio-account .studio-primary img { filter:brightness(0) invert(1); }
 .studio-account { display:grid; gap:var(--spacing-lg); inline-size:100%; max-inline-size:var(--reading-width-md); }
