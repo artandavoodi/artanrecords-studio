@@ -7,14 +7,14 @@ export async function bindArtistIdentity({client,config,resolveUser}){
  const root=document.querySelector('[data-artist-identity]');if(!root||!client||!config.workspace.artistPages)return;
  let user;try{user=await resolveUser(client);}catch{return;}if(!user)return;
  const form=root.querySelector('form'),input=form.elements.username,status=root.querySelector('#username-status'),notice=root.querySelector('[data-handle-notice]'),publish=root.querySelector('[data-publish-profile]'),hide=root.querySelector('[data-unpublish-profile]'),link=root.querySelector('[data-public-page]');
- let approved=null,epoch=0,timer;
+ let approved=null,pending=false,epoch=0,timer;
  root.hidden=false;publish.disabled=true;hide.disabled=true;
  const refresh=async()=>{
   const response=await client.from('studio_artist_handles').select('requested_username,approved_username,status,notice').eq('account_id',user.id).maybeSingle();
   if(response.error)throw Error('Artist addresses could not be loaded. Please refresh.');
   approved=response.data?.approved_username||null;notice.textContent=(approved?'Username approved. ':'')+(response.data?.notice||'Choose a username for label review.');notice.dataset.approved=String(Boolean(approved));
   if(response.data)input.value=response.data.requested_username;
-  input.readOnly=Boolean(approved);form.querySelector('button').disabled=Boolean(approved);publish.disabled=!approved;
+  pending=response.data?.status==='pending';input.readOnly=pending;form.querySelector('button').disabled=pending;publish.disabled=!approved;
   if(approved){link.href='https://artanrecords.com/'+encodeURIComponent(approved)+'/';const page=await client.from('studio_artist_pages').select('username').eq('username',approved).maybeSingle();if(page.error)throw Error('The public page status could not be checked.');link.hidden=!page.data;hide.disabled=!page.data;}
  };
  try{await refresh();}catch(error){notice.textContent=error.message;form.querySelector('button').disabled=true;return;}
@@ -24,13 +24,13 @@ export async function bindArtistIdentity({client,config,resolveUser}){
  });
  form.addEventListener('submit',async event=>{
   event.preventDefault();const button=form.querySelector('button');button.disabled=true;++epoch;clearTimeout(timer);
-  try{const current=await resolveUser(client);if(current?.id!==user.id)throw Error('Your session changed. Sign in again.');const result=await validateAccountUsernamePolicy(input.value,{policy,registry});if(!mayCheck(result))throw Error(result.message);input.value=normalizeAccountUsernameInput(input.value);const response=await client.rpc('studio_request_username',{candidate:input.value});if(response.error)throw Error('This username could not be requested. It may be reserved or already in use.');await refresh();status.textContent='Request sent. Your approval result will appear here.';}catch(error){status.textContent=error.message;}finally{button.disabled=Boolean(approved);}
+  try{const current=await resolveUser(client);if(current?.id!==user.id)throw Error('Your session changed. Sign in again.');const result=await validateAccountUsernamePolicy(input.value,{policy,registry});if(!mayCheck(result))throw Error(result.message);input.value=normalizeAccountUsernameInput(input.value);if(input.value===approved)throw Error('Choose a different username to request a change.');const response=await client.rpc('studio_request_username',{candidate:input.value});if(response.error)throw Error('Your request could not be sent. A request may already be pending, or the name may be unavailable.');await refresh();status.textContent=approved?'Change requested. Your current address stays active until approval.':'Request sent. Your approval result will appear here.';}catch(error){status.textContent=error.message;}finally{button.disabled=pending;}
  });
  for(const [button,rpc] of [[publish,'studio_publish_artist_page'],[hide,'studio_unpublish_artist_page']])button.addEventListener('click',async()=>{
   button.disabled=true;
   try{const current=await resolveUser(client);if(current?.id!==user.id)throw Error('Your session changed.');const response=await client.rpc(rpc);if(response.error)throw Error(rpc==='studio_publish_artist_page'?'Save your profile, select your public artist name and obtain username approval before publishing.':'Your artist page could not be hidden. Try again.');await refresh();status.textContent=rpc==='studio_publish_artist_page'?'Your selected fields are now public.':'Your artist page is hidden. Your username remains reserved.';}catch(error){status.textContent=error.message;}finally{button.disabled=button===publish?!approved:link.hidden;}
  });
- window.addEventListener('focus',()=>{if(!approved&&!form.contains(document.activeElement))refresh().catch(error=>notice.textContent=error.message);});
+ window.addEventListener('focus',()=>{if(!form.contains(document.activeElement))refresh().catch(error=>notice.textContent=error.message);});
 }
 export async function bindArtistApplication({client,resolveUser}){
  const root=document.querySelector('[data-partnership-application]');if(!root||!client)return;

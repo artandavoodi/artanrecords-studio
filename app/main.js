@@ -83,33 +83,18 @@ await bindProfile(context);
 bindPartnershipThemes();
 await bindAccountAppearance(context);
 document.querySelector('main').hidden=false;
-await bindConnections(context);
-await bindOverview(context);
+await Promise.all([bindConnections(context),bindOverview(context)]);
 if(client)try{chrome.setUser(await resolveUser(client));}catch{console.error('[studio] Account verification unavailable');}
 if(location.pathname==='/account/')mountAccountPage();
-await bindBilling(context);
-await bindAccountSecurity(context);
-await bindAccountRequests(context);
-await bindArtistMetadata(context);
-await bindArtistIdentity(context);
-await bindArtistApplication(context);
-await notificationsReady;
-await bindReleaseMetadata(context);
-await bindPublishedReleases(context);
-await bindConcerts(context);
-await bindWorkspace(context);
-await bindArtistContent(context);
-await bindArtistNavigation(context);
-await bindArtistPages(context);
-await bindCommerce(context);
-await bindDomains(context);
-await bindShares(context);
-await bindAgreementDrafts(context);
-await bindAgreementIntake(context);
-await bindSigningRehearsals(context);
-await bindBank(context);
-await bindSubscriptions(context);
-await bindSubscriptionPayments(context);
+await Promise.all([
+ bindBilling(context),bindAccountSecurity(context),bindAccountRequests(context),
+ bindArtistMetadata(context),bindArtistIdentity(context),bindArtistApplication(context),
+ bindReleaseMetadata(context),bindPublishedReleases(context),bindConcerts(context),
+ bindWorkspace(context),bindArtistContent(context),bindArtistNavigation(context),bindArtistPages(context),
+ bindCommerce(context),bindDomains(context),bindShares(context),bindAgreementDrafts(context),
+ bindAgreementIntake(context),bindSigningRehearsals(context),bindBank(context),
+ bindSubscriptions(context),bindSubscriptionPayments(context),notificationsReady
+]);
 await bindArtistEditor(context);
 await bindEditorSearch(context);
 await bindPortfolio(context);

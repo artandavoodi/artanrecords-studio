@@ -31,7 +31,7 @@ test('overview separates requested and approved partnerships from paid access',(
  assert.equal(partnershipSummary({status:'pending',requested_tier:'platinum',approved_tier:'platinum'}).tier,null);
  assert.equal(partnershipSummary({status:'approved',approved_tier:'gold'}).tier,'gold');
  assert.equal(partnershipSummary({status:'approved',approved_tier:'gold'}).detail,'Partnership approved.');
- const html=overviewMarkup(value=>String(value),()=>'<span></span>');assert.match(html,/Your Studio/);assert.match(html,/data-overview-tier/);assert.doesNotMatch(html,/Plans and partnerships|Compare plan|\/month|\/year/);
+ const html=overviewMarkup(value=>String(value),()=>'<span></span>');assert.match(html,/data-overview-tier/);assert.doesNotMatch(html,/Your Studio|data-overview-partnership|data-overview-entitlement|Plans and partnerships|Compare plan|\/month|\/year/);
  assert.deepEqual(catalogueConnections({artists:[],unavailable:['spotify']}),{apple:true,spotify:false});assert.throws(()=>catalogueConnections({}));
 });
 test('Pro access requires current provider-owned entitlement, never a plan label alone',()=>{

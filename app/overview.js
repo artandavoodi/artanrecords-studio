@@ -16,11 +16,10 @@ export async function bindOverview({client,resolveUser}){
   const [application,access,evidence]=await Promise.all([client.from('studio_artist_applications').select('status,approved_tier,requested_tier').eq('account_id',user.id).maybeSingle(),client.rpc('studio_subscription_status'),client.from('studio_included_access').select('partnership_tier,verified_at,signed_at,starts_at,ends_at,revoked_at').eq('account_id',user.id).is('revoked_at',null).lte('verified_at',now).lte('signed_at',now).lte('starts_at',now).gt('ends_at',now)]);
   if((await resolveUser(client))?.id!==user.id)return;
   if(evidence.error||application.error)throw Error('Your partnership could not be verified.');const summary=partnershipSummary(application.data,evidence.data);
-  root.querySelector('[data-overview-tier]').textContent=summary.label;root.querySelector('[data-overview-partnership]').textContent=summary.detail;if(summary.tier)root.querySelector('.studio-overview-membership').dataset.partnershipTier=summary.tier;
+  root.querySelector('[data-overview-tier]').textContent=summary.label;if(summary.tier)root.querySelector('.studio-overview-membership').dataset.partnershipTier=summary.tier;
   for(const icon of root.querySelectorAll('[data-partnership-icon]'))icon.hidden=icon.dataset.partnershipIcon!==summary.tier;
   const included=plans.items.find(item=>item.plan===plans.partnershipInclusion[summary.tier])?.name;
   root.querySelector('[data-overview-access]').textContent=access.error?'Access could not be verified':hasStudioAccess(access.data)?(hasProAccess(access.data)?'Studio Pro active':'Studio active'):included?included+' included':'Studio access';
-  root.querySelector('[data-overview-entitlement]').textContent=hasStudioAccess(access.data)?(access.data.entitlement_source==='FOUNDER_SPONSORED'?account.founderAccessNotice:access.data.entitlement_source==='PARTNERSHIP_INCLUDED'?'Included through your active partnership.':'Your software access is active.'):included?'Included with your partnership; agreement activation is awaiting verification.':'Profile and draft tools are available.';
  }catch(error){root.querySelector('[data-overview-status]').textContent=error.message||'Account overview could not be loaded.';}
 }
 export function bindPartnershipThemes(){

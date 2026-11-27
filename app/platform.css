@@ -9,17 +9,12 @@
 .studio-connection-icon { display:inline-block; flex:none; inline-size:var(--layout-home-platform-nav-icon-size); block-size:var(--layout-home-platform-nav-icon-size); background:currentColor; mask-size:contain; mask-position:center; mask-repeat:no-repeat; -webkit-mask-size:contain; -webkit-mask-position:center; -webkit-mask-repeat:no-repeat; }
 .studio-overview { display:grid; gap:var(--spacing-xl); }
 .studio-overview-membership { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--spacing-lg); }
-.studio-overview-membership { border-block:var(--border-width-hairline) solid var(--cv-border); padding-block:var(--spacing-lg); }
 .studio-overview-membership > div { display:flex; flex-direction:column; align-items:flex-start; padding:var(--spacing-lg); border-radius:var(--panel-radius-unified); background:var(--cv-surface); min-inline-size:0; }
 .studio-overview-membership strong { display:block; font-size:var(--font-size-md); font-weight:var(--font-weight-medium); margin-block:var(--spacing-md); }
 .studio-overview-tier { display:flex; align-items:center; gap:var(--spacing-sm); }
 .studio-overview-tier [hidden] { display:none; }
-.studio-overview-membership p { margin-block:0; color:var(--cv-text-secondary); line-height:var(--line-height-body); }
 .studio-overview-membership > div > span { display:flex; align-items:center; gap:var(--spacing-sm); font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 .studio-overview :is(h2,h3) { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); line-height:var(--line-height-heading-tight); }
-.studio-platform-content:has([data-studio-overview]) > header h1 { font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
-.studio-overview > header { display:grid; gap:var(--spacing-md); }
-.studio-overview > header p { margin:0; color:var(--cv-text-secondary); }
 .studio-overview > p { max-inline-size:var(--cv-reading-width); font-size:var(--site-type-caption-size); color:var(--cv-text-secondary); }
 .studio-overview .studio-platform-features { grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--spacing-lg); }
 .studio-overview .surface-card { display:grid; grid-template-columns:auto minmax(0,1fr); align-content:start; align-items:center; gap:var(--spacing-md); border-block-start:0; border-block-end:var(--border-width-hairline) solid var(--cv-border); padding-block:var(--spacing-lg); }

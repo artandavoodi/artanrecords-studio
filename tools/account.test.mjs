@@ -34,6 +34,11 @@ test('approved shared identity is explicit and cannot point at Neuroartan',()=>{
   assert.equal(configured({supabase:{url:'https://hahtbepdrjkjluhespbs.supabase.co',publishableKey:'sb_publishable_public',identityMode:'shared-store'}}),true);
   assert.throws(()=>configured({supabase:{url:'https://dwlgvujubkpycrvhngku.supabase.co',publishableKey:'sb_publishable_public',identityMode:'shared-store'}}));
 });
+test('simultaneous account checks share only the in-flight verification, never a stale identity',async()=>{
+ let checks=0,release;const ready=new Promise(resolve=>release=resolve),client={auth:{getSession:async()=>({data:{session:{}}}),getUser:async()=>{checks++;await ready;return {data:{user:{id:'first'}}};}}};
+ const first=resolveUser(client),second=resolveUser(client);release();assert.equal((await first).id,'first');assert.equal((await second).id,'first');assert.equal(checks,1);
+ client.auth.getUser=async()=>({data:{user:{id:'changed'}}});assert.equal((await resolveUser(client)).id,'changed');
+});
 test('a failed verification never resolves as a guest',async()=>{
   assert.equal(await resolveUser({auth:{getSession:async()=>({data:{session:null}})}}),null);
   await assert.rejects(resolveUser({auth:{getSession:async()=>({data:{session:{}}}),getUser:async()=>({error:true})}}));
@@ -177,7 +182,7 @@ test('Studio footer is copyright-only and public notices retain a single website
 test('overview distinguishes active private profiles from inactive artist operations',async()=>{
   const platform=JSON.parse(await readFile('content/platform.json','utf8'));
   const cards=platform.overview.actions.map(item=>item.detail).join(' ');
-  assert.match(cards,/private drafts/);assert.match(cards,/for review/);assert.match(cards,/non-binding signing preview/);
+  assert.match(cards,/label review/);assert.match(cards,/Review and sign your agreements/);
   assert.doesNotMatch(cards,/Plans and partnerships|\/month|\/year/);
   const account=JSON.parse(await readFile('content/account.json','utf8'));
   assert.equal(account.workspace.submissions,false);assert.equal(account.workspace.contracts,false);assert.equal(account.payments.enabled,false);

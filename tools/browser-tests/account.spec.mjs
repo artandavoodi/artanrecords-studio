@@ -101,19 +101,19 @@ test('Platinum restores button-matched fields and uniform hairlines from stale s
 test('founder-sponsored artist access is not shown as a partnership or paid subscription',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.route('**/rest/v1/studio_artist_applications*',route=>route.fulfill({json:{status:'pending',requested_tier:'silver'}}));await page.route('**/rpc/studio_subscription_status',route=>route.fulfill({json:{plan:'studio-pro',status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z',entitlement_source:'FOUNDER_SPONSORED'}}));
- await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText('Under review');await expect(page.locator('[data-overview-access]')).toHaveText('Studio Pro active');await expect(page.locator('[data-overview-entitlement]')).toHaveText('Software access is sponsored by the founder. This is not a partnership or paid subscription.');await page.goto('/settings/#subscription');await expect(page.locator('[data-subscription-status]')).toHaveText('Studio Pro · Founder-sponsored access');
+ await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText('Under review');await expect(page.locator('[data-overview-access]')).toHaveText('Studio Pro active');await expect(page.locator('[data-overview-entitlement]')).toHaveCount(0);await page.goto('/settings/#subscription');await expect(page.locator('[data-subscription-status]')).toHaveText('Studio Pro · Founder-sponsored access');
 });
 test('overview shows approved tier separately from active software access',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.route('**/rest/v1/studio_artist_applications*',route=>route.fulfill({json:{status:'approved',approved_tier:'gold',requested_tier:'gold'}}));
- await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText('Gold');await expect(page.locator('[data-overview-access]')).toHaveText('Studio Pro included');await expect(page.locator('[data-overview-entitlement]')).toContainText('awaiting verification');await expect(page.locator('[data-partnership-icon=gold]')).toBeVisible();await expect(page.locator('[data-studio-overview]')).not.toContainText('Plans and partnerships');await expect(page.locator('[data-studio-overview]')).not.toContainText('/month');expect(await page.locator('body').evaluate(el=>el.scrollWidth<=innerWidth)).toBe(true);
+ await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText('Gold');await expect(page.locator('[data-overview-access]')).toHaveText('Studio Pro included');await expect(page.locator('[data-overview-entitlement]')).toHaveCount(0);await expect(page.locator('[data-partnership-icon=gold]')).toBeVisible();await expect(page.locator('[data-studio-overview]')).not.toContainText('Plans and partnerships');await expect(page.locator('[data-studio-overview]')).not.toContainText('/month');expect(await page.locator('body').evaluate(el=>el.scrollWidth<=innerWidth)).toBe(true);
 });
 for(const [tier,plan,label] of [['silver','studio','Studio'],['gold','studio-pro','Studio Pro'],['platinum','studio-pro','Studio Pro']])test('active '+tier+' agreement determines overview without a legacy application',async({page})=>{
  await mockBackend(page);await signInFixture(page);
  await page.route('**/rest/v1/studio_artist_applications*',route=>route.fulfill({json:null}));
  await page.route('**/rest/v1/studio_included_access*',route=>route.fulfill({json:[{partnership_tier:tier,signed_at:'2026-01-01T00:00:00Z',verified_at:'2026-01-02T00:00:00Z',starts_at:'2026-01-02T00:00:00Z',ends_at:'2099-01-01T00:00:00Z',revoked_at:null}]}));
  await page.route('**/rpc/studio_subscription_status',route=>route.fulfill({json:{plan,status:'active',entitled:true,period_ends_at:'2099-01-01T00:00:00Z',entitlement_source:'PARTNERSHIP_INCLUDED'}}));
- await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText(tier[0].toUpperCase()+tier.slice(1));await expect(page.locator('[data-overview-partnership]')).toHaveText('Partnership active.');await expect(page.locator('[data-overview-access]')).toHaveText(label+' active');await expect(page.locator('[data-overview-entitlement]')).toHaveText('Included through your active partnership.');await expect(page.locator('[data-partnership-icon='+tier+']')).toBeVisible();
+ await page.goto('/');await expect(page.locator('[data-overview-tier]')).toHaveText(tier[0].toUpperCase()+tier.slice(1));await expect(page.locator('[data-overview-partnership]')).toHaveCount(0);await expect(page.locator('[data-overview-access]')).toHaveText(label+' active');await expect(page.locator('[data-overview-entitlement]')).toHaveCount(0);await expect(page.locator('[data-partnership-icon='+tier+']')).toBeVisible();await expect(page.locator('.studio-page-header p')).toHaveCount(0);
 });
 test('connectors color verified catalogue services without activating reporting and themes sync privately',async({page})=>{
  await mockBackend(page);const dialog=await openAccount(page);await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();await expect(page.locator('[data-profile-form]')).toBeVisible();
@@ -366,10 +366,24 @@ test('page editor uses only the signed-in artist handle and isolated preview con
  await dialog.locator('[name=email]').fill(user.email);await dialog.locator('[data-auth-form] [name=password]').fill('Test-password-123');await dialog.locator('[data-auth-submit]').click();
  await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.route('**/rest/v1/studio_artist_handles*',route=>route.fulfill({json:{approved_username:'testartist95'}}));
+ await page.route('**/rest/v1/studio_artist_pages*',route=>route.fulfill({json:{username:'testartist95'}}));
  await page.goto('/editor/');
  await expect(page.locator('[data-editor-frame]')).toHaveAttribute('src','http://127.0.0.1:8912/testartist95/?editor-preview=1');
  await expect(page.locator('[data-editor-font-select]')).toBeDisabled();
  await expect(page.locator('[data-editor-status]')).toContainText('Opening your public page preview.');
+});
+test('unpublished editor shows setup instead of a broken public page',async({page})=>{
+ await mockBackend(page);await signInFixture(page);
+ await page.route('**/rest/v1/studio_artist_handles*',route=>route.fulfill({json:{approved_username:'testartist95'}}));
+ await page.route('**/rest/v1/studio_artist_pages*',route=>route.fulfill({json:null}));
+ await page.goto('/editor/');await expect(page.locator('[data-editor-frame]')).toBeHidden();await expect(page.getByRole('link',{name:'Set up artist page',exact:true})).toHaveAttribute('href','/profile/#profile-publication');await expect(page.locator('[data-editor-empty]')).toContainText('not published');
+});
+test('approved username can request a reviewed replacement without changing the current address',async({page})=>{
+ await mockBackend(page);await signInFixture(page);let pending=false;
+ await page.route('**/rest/v1/studio_artist_handles*',route=>route.fulfill({json:{approved_username:'testartist95',requested_username:pending?'newmusician95':'testartist95',status:pending?'pending':'approved',notice:pending?'Awaiting review.':'Approved.'}}));
+ await page.route('**/rest/v1/studio_artist_pages*',route=>route.fulfill({json:{username:'testartist95'}}));
+ await page.route('**/rpc/studio_request_username',route=>{expect(route.request().postDataJSON()).toEqual({candidate:'newmusician95'});pending=true;return route.fulfill({json:null});});
+ await page.goto('/profile/#profile-publication');const form=page.locator('[data-username-form]');await expect(form.getByRole('textbox')).toBeEditable();await form.getByRole('textbox').fill('newmusician95');await form.getByRole('button',{name:'Request username',exact:true}).click();await expect(page.locator('#username-status')).toContainText('current address stays active');await expect(page.locator('[data-public-page]')).toHaveAttribute('href','https://artanrecords.com/testartist95/');await expect(form.getByRole('textbox')).not.toBeEditable();
 });
 test('artist website navigation saves privately before explicit sharing',async({page})=>{
  await mockBackend(page);let saved;
@@ -422,6 +436,7 @@ test('artist canvas opens focused and corner editing updates only its preview',a
  await expect(page.locator('[data-profile-form]')).toBeVisible();
  await page.route('**/rest/v1/studio_artist_handles*',route=>route.fulfill({json:{approved_username:'testartist95'}}));
  const config=JSON.parse(await readFile(new URL('../../assets/data/artists/editor.json',import.meta.url),'utf8'));
+ await page.route('**/rest/v1/studio_artist_pages*',route=>route.fulfill({json:{username:'testartist95'}}));
  const module=await readFile(new URL('../../assets/js/layers/site/artist-editor-preview.js',import.meta.url),'utf8');
  const designModule=await readFile(new URL('../../assets/js/layers/site/artist-design.js',import.meta.url),'utf8');
  const showcaseModule=await readFile(new URL('../../assets/js/layers/site/artist-showcase.js',import.meta.url),'utf8');

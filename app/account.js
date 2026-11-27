@@ -10,7 +10,13 @@ export function configured(config){
   if(config.supabase.publishableKey.split('.').length===3){let role;try{role=JSON.parse(atob(config.supabase.publishableKey.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).role;}catch{throw Error('Invalid public project key.');}if(role!=='anon')throw Error('Only a public anonymous project key may be distributed.');}
   return true;
 }
+const pendingUsers=new WeakMap();
 export async function resolveUser(client){
+ if(pendingUsers.has(client))return pendingUsers.get(client);
+ const pending=verifyUser(client);pendingUsers.set(client,pending);
+ try{return await pending;}finally{if(pendingUsers.get(client)===pending)pendingUsers.delete(client);}
+}
+async function verifyUser(client){
   const session=await client.auth.getSession();if(session.error)throw Error('Could not read your session. Please retry.');
   if(!session.data.session)return null;
   const result=await client.auth.getUser();if(result.error||!result.data.user)throw Error('Could not verify your session. Please retry.');

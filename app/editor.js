@@ -67,6 +67,13 @@ export async function bindArtistEditor({client,resolveUser}){
  if((await resolveUser(client).catch(()=>null))?.id!==owner.id)return;
  const username=response.data?.approved_username;
  if(response.error||!username||!/^[a-z0-9][a-z0-9.]{1,30}[a-z0-9]$/.test(username)){status.textContent='An approved username and published artist page are needed for the design preview.';return;}
+ const publication=await client.from('studio_artist_pages').select('username').eq('username',username).maybeSingle();
+ if(publication.error||!publication.data){
+  status.textContent=publication.error?'Your artist page could not be checked. Please refresh.':'Publish your artist profile to start the design preview.';
+  const empty=root.querySelector('[data-editor-empty]');empty.replaceChildren();
+  const message=document.createElement('p'),link=document.createElement('a');message.textContent=publication.error?'Preview unavailable.':'Your artist page is not published yet.';
+  link.className='ui-button ui-button--primary';link.href='/profile/#profile-publication';link.textContent='Set up artist page';empty.append(message,link);return;
+ }
  const local=location.hostname==='127.0.0.1';
  const url=new URL('/'+encodeURIComponent(username)+'/',local?'http://127.0.0.1:8912':'https://artanrecords.com');url.searchParams.set('editor-preview','1');
  const initial=()=>({font:config.fonts[0].id,size:'standard',ribbon:null,sections:config.sections.map(item=>item.id),order:config.sections.map(item=>item.id),linkOrder:{},dividers:[],buttons:[{label:'Releases',url:'#artist-releases'}],copyright:''});
