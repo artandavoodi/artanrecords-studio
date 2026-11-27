@@ -20,7 +20,7 @@ export async function bindStudioAccessSetup({view,client,resolveUser}){
  resend.onclick=async()=>{if(busy)return;busy=true;button.disabled=resend.disabled=true;status.textContent='Requesting a new code…';try{
   const allowed=await client.rpc('contract_request_access_code',{envelope:setup.envelope,email:setup.email});if(allowed.error||allowed.data!==true)throw Error('Wait one minute, then retry. If access has ended, contact the label.');
   const sent=await client.auth.resetPasswordForEmail(setup.email,{redirectTo:'https://studio.artanrecords.com/account/?flow=studio-access'});if(sent.error)throw Error(sent.error.code==='over_email_send_rate_limit'?'Wait one minute before requesting another code.':'The new code could not be requested. Please retry in one minute.');
-  code.clear();status.textContent='New code requested. Check your email and use the newest code.';
+  code.clear();status.textContent='New code requested for '+setup.email+'. Check Inbox or Junk.';
  }catch(error){status.textContent=error.message||'The new code could not be requested.';}finally{busy=false;button.disabled=false;cooldown();}};
  const code=bindVerificationCode(codeForm.elements.code,{length:8,label:'One-time code',digitLabel:'Digit {digit} of {length}',onComplete:()=>{if(!codeForm.hidden&&!busy)codeForm.requestSubmit();}});
  const confirmAccess=async()=>{const user=await resolveUser(client);if(!user||user.email?.toLowerCase()!==setup.email.toLowerCase())throw Error();const result=await client.rpc('contract_access_setup_status',{envelope:setup.envelope});if(result.error||result.data?.username!==setup.username)throw Error();};

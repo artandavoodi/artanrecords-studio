@@ -1,0 +1,19 @@
+/* Generated from pinned Neuroartan inline feedback ownership. */
+:root{
+--inline-status-font-size:var(--caption-1-size);
+--inline-status-line-height:var(--caption-1-line-height);
+--inline-status-font-weight:var(--font-weight-semibold);
+}
+.ui-inline-status{
+  margin:0;
+  color:var(--text-secondary-color);
+  font-size:var(--inline-status-font-size);
+  line-height:var(--inline-status-line-height);
+  font-weight:var(--inline-status-font-weight);
+  overflow-wrap:anywhere;
+}
+
+.ui-inline-status:empty{
+  display:none;
+}
+

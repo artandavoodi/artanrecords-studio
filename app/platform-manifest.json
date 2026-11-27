@@ -76,7 +76,11 @@
     "assets/data/accounts/account-password-policy.json": "bf033355d19de22bd1995fb3b06dd6c5e16878627a1f393707107330af35789c",
     "assets/fragments/layers/website/account/account-profile-setup-drawer.html": "d8109fb8a979ee9a6adfb97f57b3b8c180d54d85caa8391a3da502ed384f60fd",
     "assets/css/layers/website/overlays/account/account-profile-setup-drawer.css": "ac8e7d14c896d4d0cccbbbfb6da1bd120933d74eba4a7e5d20d0af0d230ea155",
-    "assets/css/core/03-primitives/password-feedback.generated.css": "80358c0e8227b244b3e4a9ec405818d01cde235a9e9ee1b288d357721962dba6"
+    "assets/css/core/03-primitives/password-feedback.generated.css": "80358c0e8227b244b3e4a9ec405818d01cde235a9e9ee1b288d357721962dba6",
+    "assets/css/core/01-tokens/feedback.tokens.css": "7f4ab3d0b7673f36c3b5477362c10a11d294520666cf82f8b1e4dd4ab7949e2e",
+    "assets/css/core/03-primitives/feedback.css": "9e0ba4bf961a51a73d5212460ba5eb073053f8cc2d3a730055fb9f54853ecd94",
+    "assets/css/core/03-primitives/inline-feedback.generated.css": "666782de33278b1ab6fb86efe5f852a0dbba376a850fac866c6929fdb2622935"
   },
-  "passwordSourceRevision": "c3b24411dd25b09822dbc7f85d18eb1acba986c0"
+  "passwordSourceRevision": "c3b24411dd25b09822dbc7f85d18eb1acba986c0",
+  "feedbackSourceRevision": "e4c91959641a22d8183a14ce256f0a94394c3efb"
 }

@@ -3,6 +3,7 @@ import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {dirname} from 'node:path';
 const source='../website';
+const feedbackFiles=['assets/css/core/01-tokens/feedback.tokens.css','assets/css/core/03-primitives/feedback.css'];
 const passwordFiles=[
  'assets/js/core/02-systems/password-field.js',
  'assets/js/layers/website/system/account/identity/account-password-policy.js',
@@ -11,6 +12,7 @@ const passwordFiles=[
  'assets/css/layers/website/overlays/account/account-profile-setup-drawer.css'
 ];
 const files=[
+  ...feedbackFiles,
   ...passwordFiles,
   'assets/css/core/03-primitives/overlays.css',
   'assets/css/layers/website/layout/home.css',
@@ -64,6 +66,11 @@ const files=[
   'assets/fragments/layers/website/home/platform-menu/settings/appearance/index.html'
 ];
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
+export function inlineFeedbackStyles(tokens,source){
+ const declarations=[...tokens.matchAll(/--inline-status-[\w-]+:[^;]+;/g)].map(match=>match[0]),start=source.indexOf('.ui-inline-status{'),end=source.indexOf('/* =============================================================================',start);
+ if(declarations.length!==3||start<0||end<0)throw Error('Canonical inline feedback boundaries changed');
+ return '/* Generated from pinned Neuroartan inline feedback ownership. */\n:root{\n'+declarations.join('\n')+'\n}\n'+source.slice(start,end);
+}
 // Distribute the canonical password feedback without importing drawer layout ownership.
 export function passwordFeedbackStyles(source){
  const group=source.match(/\.account-profile-setup-drawer-field-group\{[^}]*\}/)?.[0];
@@ -85,9 +92,9 @@ export function backgroundStyles(source){
   if(tokens.length!==6)throw Error('Canonical wallpaper token count changed');
   return '/* Generated from pinned Neuroartan home.css background ownership. */\n:root{\n'+tokens.join('\n')+'\n}\n'+source.slice(start,end);
 }
-if(process.argv.includes('--sync')||process.argv.includes('--sync-passwords')){
+if(process.argv.includes('--sync')||process.argv.includes('--sync-passwords')||process.argv.includes('--sync-feedback')){
   const revision=execFileSync('git',['-C',source,'rev-parse','HEAD'],{encoding:'utf8'}).trim();
-  const partial=process.argv.includes('--sync-passwords'),manifest=partial?JSON.parse(await readFile('app/platform-manifest.json','utf8')):{source:'artandavoodi/website',revision,files:{}},selected=partial?[...passwordFiles]:files;
+  const feedbackOnly=process.argv.includes('--sync-feedback'),partial=process.argv.includes('--sync-passwords')||feedbackOnly,manifest=partial?JSON.parse(await readFile('app/platform-manifest.json','utf8')):{source:'artandavoodi/website',revision,files:{}},selected=partial?[...(feedbackOnly?feedbackFiles:passwordFiles)]:files;
   for(let index=0;index<selected.length;index++){
     const path=selected[index];
     const bytes=execFileSync('git',['-C',source,'show',`${revision}:docs/${path}`]);
@@ -98,8 +105,9 @@ if(process.argv.includes('--sync')||process.argv.includes('--sync-passwords')){
   if(!partial){const path='assets/css/layers/website/home/background/home-shell.generated.css';
   const bytes=backgroundStyles(await readFile('app/neuroartan/assets/css/layers/website/layout/home.css','utf8'));
   await writeFile('app/neuroartan/'+path,bytes);manifest.files[path]=hash(bytes);}
-  const passwordPath='assets/css/core/03-primitives/password-feedback.generated.css',passwordBytes=passwordFeedbackStyles(await readFile('app/neuroartan/'+passwordFiles.at(-1),'utf8'));
-  await mkdir(dirname('app/neuroartan/'+passwordPath),{recursive:true});await writeFile('app/neuroartan/'+passwordPath,passwordBytes);manifest.files[passwordPath]=hash(passwordBytes);manifest.passwordSourceRevision=revision;
+  if(!feedbackOnly){const passwordPath='assets/css/core/03-primitives/password-feedback.generated.css',passwordBytes=passwordFeedbackStyles(await readFile('app/neuroartan/'+passwordFiles.at(-1),'utf8'));
+  await mkdir(dirname('app/neuroartan/'+passwordPath),{recursive:true});await writeFile('app/neuroartan/'+passwordPath,passwordBytes);manifest.files[passwordPath]=hash(passwordBytes);manifest.passwordSourceRevision=revision;}
+  if(feedbackOnly||!partial){const path='assets/css/core/03-primitives/inline-feedback.generated.css',bytes=inlineFeedbackStyles(await readFile('app/neuroartan/'+feedbackFiles[0],'utf8'),await readFile('app/neuroartan/'+feedbackFiles[1],'utf8'));await writeFile('app/neuroartan/'+path,bytes);manifest.files[path]=hash(bytes);manifest.feedbackSourceRevision=revision;}
   await writeFile('app/platform-manifest.json',JSON.stringify(manifest,null,2)+'\n');
 }else{
   const manifest=JSON.parse(await readFile('app/platform-manifest.json','utf8'));

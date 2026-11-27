@@ -5,6 +5,7 @@ import './neuroartan/assets/js/core/02-systems/password-field.js';
 const noticeUrl=path=>publication.domain+publication.notices.find(notice=>notice.legacyPath===path).path;
 export async function bindAccount({client,config,resolveUser}){
   const view=document.querySelector('[data-account-view]');if(!view)return;
+  view.querySelector('[data-account-status]')?.classList.add('ui-inline-status');
   if(new URLSearchParams(location.search).get('flow')==='studio-access'){await bindStudioAccessSetup({view,client,resolveUser});return;}
   const status=view.querySelector('[data-account-status]'),form=view.querySelector('[data-auth-form]'),submit=view.querySelector('[data-auth-submit]'),recovery=view.querySelector('[data-recovery-form]');
   const google=document.createElement('button');google.type='button';google.className='ui-button studio-provider';google.disabled=!client||!config.providers.google;
