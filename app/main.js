@@ -65,7 +65,9 @@ document.querySelectorAll('.studio-account input:not([type=checkbox]):not([type=
 document.querySelectorAll('.studio-account button:not(.ui-password-field__toggle,.studio-photo-action,.global-close-button)').forEach(button=>button.classList.add('ui-button'));
 document.querySelectorAll('[data-signout]').forEach(button=>{button.classList.add('studio-signout');const icon=document.createElement('span');icon.className='studio-icon studio-signout-icon';icon.setAttribute('aria-hidden','true');button.prepend(icon);});
 const context={client,config,resolveUser,profileValues,validPhoto};
-const notificationsReady=bindNotifications(context);
+const accessSetup=location.pathname==='/account/'&&new URLSearchParams(location.search).get('flow')==='studio-access';
+const notificationsReady=accessSetup?Promise.resolve():bindNotifications(context);
+const mountAccountPage=()=>{const account=chrome.account,mount=document.querySelector('main');account.hidden=true;mount.replaceChildren(account);account.classList.add('studio-auth-page');account.setAttribute('open','');account.querySelector('#account-close').hidden=true;};
 document.querySelectorAll('[data-reset-password]').forEach(button=>button.addEventListener('click',async()=>{
   const status=document.querySelector('[data-security-status]');button.disabled=true;
   try{const user=client&&await resolveUser(client);if(!user)throw Error();const result=await client.auth.resetPasswordForEmail(user.email,{redirectTo:location.origin+'/account/?flow=recovery'});if(result.error)throw result.error;status.textContent='Check your email for a password reset link.';}catch{status.textContent='A reset link could not be requested. Sign in and try again.';}finally{button.disabled=false;}
@@ -75,17 +77,16 @@ const callback=readAccountCallback(new URL(location.href));
 const accountCallback=Boolean(callback.code||callback.token||callback.error);
 client?.auth.onAuthStateChange(event=>{if(event==='SIGNED_OUT'){try{for(const key of Object.keys(sessionStorage))if(key.startsWith('artanrecords-editor:'))sessionStorage.removeItem(key);}catch{}document.querySelectorAll('[data-profile-form],[data-artist-metadata],[data-release-controls],[data-submissions-list],[data-contracts-list]').forEach(element=>element.replaceChildren());document.querySelector('[data-avatar]')?.removeAttribute('src');location.replace('/account/');}});
 try{
-await bindAccount(context);await bindProfile(context);
+await bindAccount(context);
+if(accessSetup){mountAccountPage();document.querySelector('main').hidden=false;return;}
+await bindProfile(context);
 bindPartnershipThemes();
 await bindAccountAppearance(context);
 document.querySelector('main').hidden=false;
 await bindConnections(context);
 await bindOverview(context);
 if(client)try{chrome.setUser(await resolveUser(client));}catch{console.error('[studio] Account verification unavailable');}
-if(location.pathname==='/account/'){
- const account=chrome.account,mount=document.querySelector('main');
- account.hidden=true;mount.replaceChildren(account);account.classList.add('studio-auth-page');account.setAttribute('open','');account.querySelector('#account-close').hidden=true;
-}
+if(location.pathname==='/account/')mountAccountPage();
 await bindBilling(context);
 await bindAccountSecurity(context);
 await bindAccountRequests(context);
