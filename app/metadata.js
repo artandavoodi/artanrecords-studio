@@ -35,7 +35,7 @@ export async function bindReleaseMetadata({client,config,resolveUser}){
   submission=bindReleaseSubmission(view,{client,config,user,resolveUser,getDraft:()=>current,isDirty:()=>dirty||busy||artwork.busy,getArtwork:()=>artwork.asset});
   await submission.refresh();
   try{await list();await load();controls.hidden=false;status.textContent='Private drafts only. Nothing is delivered or published.';}catch{status.textContent='Your drafts could not be loaded. Refresh to retry.';return;}
-  form.addEventListener('input',event=>{if(!event.target.closest('[data-release-submission]'))dirty=true;});
+  form.addEventListener('input',event=>{if(!event.target.closest('[data-release-submission],[data-track-master]'))dirty=true;});
   const canLeave=()=>!busy&&!artwork.busy&&!submission.busy&&(!dirty||window.confirm('Discard unsaved changes to this draft?'));
   const setCount=desired=>{if(!Number.isInteger(desired)||desired<1||desired>schema.release.maxTracks){renumber();return;}if(desired<tracks.children.length&&!window.confirm('Remove the final '+(tracks.children.length-desired)+' track(s) from this draft?')){if(type.value==='Single'&&tracks.children.length>1)type.value='Album';renumber();return;}while(tracks.children.length>desired)tracks.lastElementChild.remove();while(tracks.children.length<desired)addTrack();renumber();dirty=true;};
   count.addEventListener('change',()=>setCount(Number(count.value)));

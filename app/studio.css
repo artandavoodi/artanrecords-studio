@@ -74,7 +74,7 @@ body { isolation:isolate; }
 
 /* Studio composition; shared brand values and label header motion stay canonical. */
 .studio-surface { display:grid; align-content:start; gap:var(--spacing-xl); inline-size:100%; min-inline-size:0; box-sizing:border-box; }
-.studio-platform-content > .studio-surface:not(:has(.studio-editor-layout)):not(.studio-settings-surface) { max-inline-size:var(--reading-width-md); margin-inline:auto; }
+.studio-platform-content > .studio-surface:not(:has(.studio-editor-layout)):not(.studio-settings-surface) { --cv-reading-width:100%; max-inline-size:var(--reading-width-md); margin-inline:auto; }
 .studio-platform-content > .studio-settings-surface { max-inline-size:calc(var(--layout-home-platform-rail-width) + var(--spacing-xl) + var(--reading-width-md)); margin-inline:auto; }
 .studio-surface > header { max-inline-size:var(--cv-reading-width); }
 .studio-page-header { display:grid; gap:var(--spacing-md); }
@@ -110,7 +110,7 @@ html:has(.studio-header-frame)::-webkit-scrollbar,body:has(.studio-header-frame)
 .studio-hero-actions > :is(a,button):where(:not(.ui-button--primary)),.studio-account .ui-button:where(:not(.ui-button--primary)) { background:var(--control-bg-hover); color:var(--cv-text-primary); }
 .studio-hero-actions .studio-primary,.studio-account .studio-primary { background:var(--label-primary-action-background); color:var(--label-primary-action-text); }
 .studio-hero-actions .studio-primary img,.studio-account .studio-primary img { filter:brightness(0) invert(1); }
-.studio-account { display:grid; gap:var(--spacing-lg); inline-size:100%; max-inline-size:var(--reading-width-md); }
+.studio-account { display:grid; gap:var(--spacing-lg); inline-size:100%; min-inline-size:0; }
 .studio-account form { display:grid; gap:var(--spacing-md); }
 .studio-account-request-dialog { position:fixed; inset:0; box-sizing:border-box; inline-size:100%; max-inline-size:none; block-size:100dvh; max-block-size:none; margin:0; padding:var(--spacing-lg); border:0; border-radius:0; background:var(--cv-page-bg); color:var(--cv-text-primary); overflow:auto; }
 .studio-account-request-dialog > header { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--spacing-lg); padding-block-end:var(--spacing-lg); border-block-end:var(--border-width-hairline) solid var(--control-border); }
