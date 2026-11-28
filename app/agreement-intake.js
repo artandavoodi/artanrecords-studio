@@ -49,6 +49,7 @@ export async function bindAgreementIntake({client,resolveUser,invitationOnly=fal
    else if(request.rehearsal)form.elements.artist_name.value='TEST ARTIST';
  else if(!invitationOnly){const profile=await client.from('studio_profiles').select('artist_name').eq('id',owner.id).maybeSingle();if(!profile.error)form.elements.artist_name.value=profile.data?.artist_name||'';}
    if(!await current())return;
+   form.querySelector('[data-intake-reply-email]').textContent=form.elements.reply_email.value;
    company();for(const control of form.elements){if(control.name==='reply_email')continue;if(control.closest('[data-intake-company]')&&form.elements.recipient_type.value!=='company')continue;control.disabled=!editable;}
    for(const name of ['recipient_type','legal_name','company_name','registration_number','signatory_name','signatory_capacity']){const field=form.elements[name];if(field.tagName==='SELECT')field.disabled=!editable||Boolean(request.current_version_id);else field.readOnly=Boolean(request.current_version_id);}
    form.querySelector('[data-intake-address]').disabled=invitationOnly||!editable||request.rehearsal===true;form.querySelector('[data-intake-confirm]').textContent=request.rehearsal?'I confirm this is fictional data for a non-binding rehearsal, not my legal identity.':'I confirm these details are accurate and ask Artanrecords to review them for my agreement.';

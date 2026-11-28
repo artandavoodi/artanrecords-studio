@@ -1,0 +1,21 @@
+{
+  "title": "Account email",
+  "open": "Change email",
+  "newEmail": "New email address",
+  "request": "Send verification codes",
+  "code": "Verification code",
+  "digit": "Digit {digit} of {length}",
+  "length": 8,
+  "verify": "Verify code",
+  "resend": "Send new codes",
+  "cancel": "Cancel",
+  "notice": "This changes your sign-in email. Submitted details and signed documents keep their recorded email.",
+  "sent": "Check your current and new inboxes. Enter each email-change code here.",
+  "remaining": "Code accepted. Enter the code from your other inbox to finish.",
+  "saved": "Email verified and updated.",
+  "failed": "The email change could not be completed. Your verified email is shown above.",
+  "invalid": "That code could not be verified. Use the newest email-change code or request new codes.",
+  "same": "Choose a different email address.",
+  "busy": "Checking email change",
+  "cooldown": "Please wait before requesting new codes."
+}

@@ -16,7 +16,7 @@ export function agreementIntakeMarkup(e,icon,{toolbar=false}={}){
  <p>${e(config.notice)}</p><p role="status" data-intake-status>Checking requested details...</p>${toolbar?`<details data-intake-history><summary><span>Previous requests</span>${icon('chevron-down')}</summary><div data-intake-list></div></details>`:'<div data-intake-list></div>'}
  <label data-intake-choice-label hidden>Details request<select class="ui-field" data-intake-choice></select></label>
  <form class="studio-account" data-intake-form hidden><p data-intake-message></p>
- <label>Verified reply email<input class="ui-field" name="reply_email" type="email" readonly></label>
+ <div class="studio-verified-email"><span>Verified reply email</span><output data-intake-reply-email></output><input name="reply_email" type="hidden">${toolbar?'<a href="/settings/#security">Manage account email</a>':''}</div>
  <label><span class="ui-field-label">Who will enter the agreement?<span class="ui-required-mark" aria-hidden="true"> *</span></span><select class="ui-field" name="recipient_type" required><option value="individual">Me personally</option><option value="company">A registered company</option></select></label>
  ${config.fields.map(field=>fieldMarkup(field,e)).join('')}
  <button class="ui-button" type="button" data-intake-address>${icon('address')}Use saved address</button>

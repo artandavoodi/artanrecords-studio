@@ -1,5 +1,6 @@
 import {privatePhone} from './account.js';
 import {showSaveConfirmation} from './neuroartan/assets/js/core/02-systems/toast.js';
+import {bindEmailChange} from './email-change.js';
 export async function bindAccountSecurity({client,resolveUser,config}){
  const root=document.querySelector('[data-account-security]');if(!root||!client)return;
  const form=root.querySelector('form'),status=root.querySelector('[data-account-security-status]');let owner;
@@ -12,6 +13,7 @@ export async function bindAccountSecurity({client,resolveUser,config}){
   root.querySelector('[data-security-phone-status]').textContent=config.phoneNotice;
   form.hidden=false;status.textContent='';
  }catch{status.textContent='Private account details could not be loaded. Refresh to retry.';return;}
+ bindEmailChange({root,client,resolveUser,owner});
  form.onsubmit=async event=>{
   event.preventDefault();const button=form.querySelector('button');button.disabled=true;
   try{

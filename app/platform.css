@@ -35,7 +35,7 @@
 /* Platinum fields and buttons share one surface; every separator uses one hairline. */
 html[data-partnership-theme=platinum] { --control-surface:var(--control-bg-hover); --control-border-unified:var(--cv-border); --border-width-hairline:0.5px; }
 @media(max-width:640px){.studio-overview-membership { grid-template-columns:minmax(0,1fr); }}
-.studio-platform { position:relative; display:grid; grid-template-columns:var(--studio-rail-width,var(--layout-home-platform-rail-width)) minmax(0,1fr); gap:var(--spacing-xl); align-items:stretch; }
+.studio-platform { position:relative; display:grid; grid-template-columns:var(--studio-rail-width,var(--layout-home-platform-rail-width)) minmax(0,1fr); gap:0; align-items:stretch; }
 .studio-platform-content { min-inline-size:0; display:grid; grid-template-rows:minmax(0,1fr); }
 .studio-platform-rail { min-inline-size:0; border-inline-end:var(--border-width-hairline) solid var(--cv-border); }
 .studio-platform-rail-scroll { position:sticky; inset-block-start:var(--site-header-height); padding-block:var(--spacing-lg); max-block-size:calc(100dvh - var(--site-header-height)); overflow-y:auto; box-sizing:border-box; padding-inline:var(--spacing-lg); }
