@@ -12,8 +12,8 @@ function fieldMarkup(field,e){
 export function agreementIntakeMarkup(e,icon,{toolbar=false}={}){
  const heading=`<h2 class="studio-section-label">${icon('contract')}${e(config.title)}</h2>`;
  return `<section class="surface-section" id="contract-details" data-agreement-intake>
- ${toolbar?`<header class="studio-agreement-toolbar">${heading}<div data-intake-tools><button class="ui-icon-button" type="button" data-intake-refresh aria-label="Refresh details">${icon('refresh')}</button></div></header>`:heading}
- <p>${e(config.notice)}</p><p role="status" data-intake-status>Checking requested details...</p><div data-intake-list></div>
+ ${toolbar?`<header class="studio-agreement-toolbar">${heading}<div data-intake-tools><button class="ui-icon-button studio-header-control" type="button" data-intake-refresh aria-label="Refresh details">${icon('refresh')}</button></div></header>`:heading}
+ <p>${e(config.notice)}</p><p role="status" data-intake-status>Checking requested details...</p>${toolbar?`<details data-intake-history><summary><span>Previous requests</span>${icon('chevron-down')}</summary><div data-intake-list></div></details>`:'<div data-intake-list></div>'}
  <label data-intake-choice-label hidden>Details request<select class="ui-field" data-intake-choice></select></label>
  <form class="studio-account" data-intake-form hidden><p data-intake-message></p>
  <label>Verified reply email<input class="ui-field" name="reply_email" type="email" readonly></label>

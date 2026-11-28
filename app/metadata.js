@@ -32,7 +32,7 @@ export async function bindReleaseMetadata({client,config,resolveUser}){
   const addTrack=(data={})=>{if(tracks.children.length>=schema.release.maxTracks)return;const track=view.querySelector('[data-track-template]').content.firstElementChild.cloneNode(true);track.dataset.trackId=data.id||crypto.randomUUID();populate(track,schema.release.trackFields,data);for(const person of data.contributors||[])addPerson(track,person);tracks.append(track);renumber();submission?.renderMasters();};
   const load=async data=>{if(data)data=releaseMetadata(data,schema);populate(form,schema.release.fields,data);populate(view.querySelector('[data-release-links]'),schema.release.linkFields,data?.links);populateVisibility(form,data?.visibility);tracks.replaceChildren();for(const track of data?.tracks||[{}])addTrack(track);await artwork.load(data?.artwork);dirty=false;};
   const list=async()=>{const result=await client.from('studio_release_drafts').select('id,title').eq('account_id',user.id).order('created_at',{ascending:false}).limit(100);if(result.error)throw result.error;records=result.data;picker.replaceChildren(new Option('New release',''),...records.map(row=>new Option(row.title,row.id)));picker.value=current||'';};
-  submission=bindReleaseSubmission(view,{client,config,user,resolveUser,getDraft:()=>current,isDirty:()=>dirty||busy||artwork.busy});
+  submission=bindReleaseSubmission(view,{client,config,user,resolveUser,getDraft:()=>current,isDirty:()=>dirty||busy||artwork.busy,getArtwork:()=>artwork.asset});
   await submission.refresh();
   try{await list();await load();controls.hidden=false;status.textContent='Private drafts only. Nothing is delivered or published.';}catch{status.textContent='Your drafts could not be loaded. Refresh to retry.';return;}
   form.addEventListener('input',event=>{if(!event.target.closest('[data-release-submission]'))dirty=true;});
@@ -40,8 +40,8 @@ export async function bindReleaseMetadata({client,config,resolveUser}){
   const setCount=desired=>{if(!Number.isInteger(desired)||desired<1||desired>schema.release.maxTracks){renumber();return;}if(desired<tracks.children.length&&!window.confirm('Remove the final '+(tracks.children.length-desired)+' track(s) from this draft?')){if(type.value==='Single'&&tracks.children.length>1)type.value='Album';renumber();return;}while(tracks.children.length>desired)tracks.lastElementChild.remove();while(tracks.children.length<desired)addTrack();renumber();dirty=true;};
   count.addEventListener('change',()=>setCount(Number(count.value)));
   type.addEventListener('change',()=>{if(type.value==='Single')setCount(1);else{count.readOnly=false;if(tracks.children.length===1)setCount(2);else renumber();}});
-  picker.addEventListener('change',async()=>{if(!canLeave()){picker.value=current||'';return;}const next=picker.value||null;busy=true;controls.inert=true;try{await identity(client,resolveUser,user.id);let data;if(next){const result=await client.from('studio_release_drafts').select('metadata').eq('account_id',user.id).eq('id',next).single();if(result.error)throw result.error;data=result.data.metadata;}await load(data);current=next;await submission.refresh();}catch{picker.value=current||'';status.textContent='This draft could not be opened. Your current work has not been replaced.';}finally{busy=false;controls.inert=false;}});
-  view.querySelector('[data-new-draft]').addEventListener('click',async()=>{if(!canLeave())return;busy=true;controls.inert=true;try{await load();current=null;picker.value='';await submission.refresh();}finally{busy=false;controls.inert=false;}});
+  picker.addEventListener('change',async()=>{if(!canLeave()){picker.value=current||'';return;}const next=picker.value||null;busy=true;controls.inert=true;try{await identity(client,resolveUser,user.id);let data;if(next){const result=await client.from('studio_release_drafts').select('metadata').eq('account_id',user.id).eq('id',next).single();if(result.error)throw result.error;data=result.data.metadata;}await load(data);current=next;await submission.refresh();}catch{picker.value=current||'';status.textContent='This draft could not be opened. Your current work has not been replaced.';}finally{busy=false;controls.inert=false;submission.sync();}});
+  view.querySelector('[data-new-draft]').addEventListener('click',async()=>{if(!canLeave())return;busy=true;controls.inert=true;try{await load();current=null;picker.value='';await submission.refresh();}finally{busy=false;controls.inert=false;submission.sync();}});
   view.addEventListener('click',event=>{
     const button=event.target.closest('button');if(!button||busy||submission.busy)return;
     if(button.matches('[data-add-track]')&&type.value!=='Single'){addTrack();dirty=true;}
@@ -67,6 +67,6 @@ export async function bindReleaseMetadata({client,config,resolveUser}){
         artwork.commit(cover);
       }
       dirty=false;await list();await submission.refresh();status.textContent='Release draft and visibility saved. Nothing is submitted or published until approved.';
-    }catch(error){status.textContent=error.message;}finally{busy=false;controls.inert=false;save.disabled=false;}
+    }catch(error){status.textContent=error.message;}finally{busy=false;controls.inert=false;save.disabled=false;submission.sync();}
   });
 }

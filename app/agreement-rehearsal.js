@@ -14,4 +14,5 @@ export async function bindSigningRehearsals({client,resolveUser}){
   menu.panel.classList.add('studio-content-dialog');menu.trigger.dataset.documentOptions='';toolbar.append(menu.trigger);
  };
  await mountSigningRehearsals({root,client,role:'artist',accountId:user.id,onRecordOptions:recordOptions,labels,icons:{confirmation:icon('help'),close:icon('close'),clear:icon('reset'),guide:icon('guide-scroll'),add:icon('plus'),edit:icon('edit'),save:icon('editor-save'),use:icon('signature'),default:icon('signature-default'),remove:icon('signature-remove'),open:icon('document-open'),refresh:icon('refresh'),sign:icon('signature'),review:icon('check'),archive:icon('shares-archive'),download:icon('download'),print:icon('print')}});
+ if(root.closest('.studio-agreements')){const refresh=root.querySelector('[data-rehearsal-refresh]'),header=document.createElement('header'),title=document.createElement('h2');header.className='studio-agreement-toolbar';title.textContent=labels.title;refresh.classList.add('studio-header-control');refresh.before(header);header.append(title,refresh);}
 }

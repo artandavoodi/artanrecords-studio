@@ -1,6 +1,6 @@
 {
   "source": "artandavoodi/artanrecords",
-  "commit": "232a04435cf5b81e2516829917f393314a4cf45d",
+  "commit": "472b98021074981fd94350e58fe6dde9a37de1ab",
   "files": {
     "assets/css/core/00-orchestrator/style.css": "a7a6c96fe25e5d50e88ce354170c53b0c25cb2ec07b8e8117f8aac9c8199a1ff",
     "assets/css/core/01-tokens/00-tokens-all.css": "449b594674fb4ace373549539a069eef38e1f3b4155575ea4d1319c033fa7b1d",
@@ -80,7 +80,7 @@
     "assets/data/commerce.json": "0206487c6a6b4f7f965838864172b101d71a7d5b74e3911397accd6cb0caf429",
     "assets/data/artists/reserved-routes.json": "df2403b255292dda7bf2f69ea33791c7fb8d3e78adfd95a57372066baf6fa237",
     "assets/data/artists/editor.json": "f6c77e617baa3a19ec35b19173662331b7f4df4a9a536920a803fc8f3f867e9f",
-    "assets/data/studio-plans.json": "2efa5a820fc1983b842e1ba4ff148501a784b15e278a0223aa88e9f02b66d3c7",
+    "assets/data/studio-plans.json": "49be6d8e8542edf16b99e59e5a66befd99952b5ec4a15d432dddb2b61ec7b539",
     "assets/data/partnerships.json": "9a4d7cd3d705be4d3625566e7454bbd5d1dd64ffaf3ef8e75f44cddc30926140",
     "foundation/partnerships.mjs": "6364160895222c78b3f6be5c46de8eea4458bd4472a04ce922103ff590167a20",
     "foundation/studio-plans.mjs": "c8d8b379959e107327630887579308a7510b6f9f6133d35401db470f8c713a5a",
@@ -108,7 +108,7 @@
     "assets/js/core/privacy-preferences.js": "9c2934ff280b0ddf424402c5165af152f0fee9c463e84809cd31abb0f1d693aa",
     "assets/js/layers/site/navigation.js": "293b014f562dcd257513c17ee3359602c9be2551987847f494cc8414da5ea18d",
     "assets/fragments/navigation/index.html": "4f1e7a8bb19c8447c913c16ec544d967ca9a6a34fae20b46fcda6e5de7d95a2b",
-    "assets/data/site.json": "a47346d73555a24e90520f7c029717a14180e5b5b6b607c2935f0e18b8024983",
+    "assets/data/site.json": "2da7c3fef8e4328093af919f06359a086134c75a8c1e61d2ce94de0d73d77052",
     "assets/data/icons.json": "cfcf93a4f27d760f409c077c9ee9dbc8b30256fed9e1c7e09b676f18c6199b8d",
     "assets/js/core/01-foundation/toggle.js": "6097773948c6265680bb2e25a8698d1146deeb3853a6e8e45eb0294a5044ca7a",
     "assets/js/layers/website/overlays/cookie/cookie-consent.js": "ae91c9e70e76d559e1b33728b044f8432111bf28e6a0e8d362b7e4842e431052",

@@ -314,7 +314,7 @@
   },
   "release": {
     "title": "Prepare a release",
-    "notice": "Save a private metadata draft for a single, EP or album. Saving does not submit music, create an agreement, publish a page or deliver to streaming services. Do not enter banking information or upload masters here.",
+    "notice": "Prepare a single, EP or album privately. Save your details and artwork, then upload a final master for each track before submitting for label review. Saving or submitting does not publish or distribute music. Keep bank and tax details out of release fields.",
     "fields": [
       {
         "name": "title",
