@@ -3,6 +3,7 @@ import {execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex'),manifestPath='app/agreement-workflow-manifest.json';
 const sources={
+ 'app/shared/record-options.js':'assets/js/layers/control-center/operations/shared/record-options.js',
  'app/shared/signature-library.js':'assets/js/layers/control-center/operations/shared/signature-library.js',
  'assets/brand/email-wordmark.png':'assets/brand/email-wordmark.png',
  'app/shared/agreement-rehearsal.js':'assets/js/layers/control-center/operations/shared/agreement-rehearsal.js',
@@ -16,6 +17,11 @@ const sources={
  'app/shared/agreement-rehearsal.css':'assets/css/layers/control-center/shared/agreement-rehearsal.css',
  'content/agreement-rehearsal.json':'assets/data/control-center/agreement-rehearsal.json'
 };
+if(process.argv.includes('--sync-record-options')){
+ const source='../control-center',revision=execFileSync('git',['-C',source,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),target='app/shared/record-options.js',file=sources[target];
+ const bytes=execFileSync('git',['-C',source,'show',revision+':'+file]);if(hash(bytes)!==hash(await readFile(source+'/'+file)))throw Error('Commit the record-options owner before synchronization');
+ await writeFile(target,bytes);const manifest=JSON.parse(await readFile(manifestPath,'utf8'));manifest.files[target]=hash(bytes);manifest.recordOptionsRevision=revision;await writeFile(manifestPath,JSON.stringify(manifest,null,2)+'\n');
+}
 if(process.argv.includes('--sync')){
  const source='../control-center',revision=execFileSync('git',['-C',source,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),files={};await mkdir('app/shared',{recursive:true});
  for(const [target,file] of Object.entries(sources)){const bytes=execFileSync('git',['-C',source,'show',revision+':'+file]);if(hash(bytes)!==hash(await readFile(source+'/'+file)))throw Error('Commit the agreement owner before synchronization');await writeFile(target,bytes);files[target]=hash(bytes);}

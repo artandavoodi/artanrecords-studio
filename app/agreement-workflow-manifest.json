@@ -13,6 +13,8 @@
     "app/shared/NotoSans-Regular.ttf": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
     "app/shared/NotoSans-LICENSE.txt": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb",
     "app/shared/agreement-rehearsal.css": "8e2b689823eb2c9b4f44c6d4f5995524edb45f3a2f778a5611bc606691e310a5",
-    "content/agreement-rehearsal.json": "1397d113ceba4a9089b337d58c0802fb358fa801686f815f3d57f6f403599ec7"
-  }
+    "content/agreement-rehearsal.json": "1397d113ceba4a9089b337d58c0802fb358fa801686f815f3d57f6f403599ec7",
+    "app/shared/record-options.js": "8950f23d3a9c9c4685d3c47a0b8b13f21af4c55c558698f2cfe2f60af246b20d"
+  },
+  "recordOptionsRevision": "1fed4c103b59de0fb1b315bc3dbdfdf611512d49"
 }

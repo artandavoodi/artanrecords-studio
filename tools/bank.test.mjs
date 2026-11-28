@@ -9,6 +9,7 @@ import {hasProAccess,hasStudioAccess} from '../app/subscriptions.js';
 import {partnershipSummary,resolveAppearanceTokens} from '../app/overview.js';
 import {catalogueConnections} from '../app/connections.js';
 import {overviewMarkup,partnershipThemesMarkup} from '../app/overview-render.mjs';
+import {overviewShortcuts} from '../app/overview-preferences.js';
 import {spotifyAuthorization,validMusicCallback} from '../app/music-connections.js';
 import {readAccountCallback} from '../app/account.js';
 test('Spotify authorization binds PKCE to a short-lived account-specific callback',async()=>{
@@ -50,6 +51,11 @@ test('active signed partnerships are authoritative even without an application',
  }
  for(const invalid of [{revoked_at:'2026-11-27T00:00:00Z'},{ends_at:'2026-11-26T00:00:00Z'},{starts_at:'2026-11-28T00:00:00Z'},{verified_at:null},{signed_at:null}])assert.equal(partnershipSummary(null,[{...evidence,partnership_tier:'silver',...invalid}],now).tier,null);
  assert.equal(partnershipSummary({status:'approved',approved_tier:'platinum'},[{...evidence,partnership_tier:'silver'}],now).tier,'silver');
+});
+test('Overview layout uses registered shortcut IDs without granting access',()=>{
+ assert.deepEqual(overviewShortcuts(null),['profile','releases','agreements','connections']);
+ assert.deepEqual(overviewShortcuts({shortcuts:['agreements','unknown','profile','agreements']}),['agreements','profile']);
+ assert.deepEqual(overviewShortcuts({shortcuts:[]}),[]);
 });
 const e=value=>String(value).replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;');
 test('Bank records approval without enabling money or inventing policy',async()=>{

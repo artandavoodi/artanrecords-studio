@@ -30,12 +30,12 @@ import {bindPortfolio} from './portfolio.js';
 import {bindSubscriptionPayments} from './subscription-payments.js';
 import {bindAccountSecurity} from './account-security.js';
 import {bindAccountRequests} from './account-requests.js';
-import {bindSigningPreview} from './signing-preview.js';
 import {bindAgreementDrafts} from './agreement-drafts.js';
 import {bindAgreementIntake} from './agreement-intake.js';
 import {bindSigningRehearsals} from './agreement-rehearsal.js';
 import {bindConnections} from './connections.js';
 import {bindOverview,bindPartnershipThemes} from './overview.js';
+import {bindOverviewPreferences} from './overview-preferences.js';
 import {admitWorkspace} from './workspace-access.js';
 async function initializeStudio(){
 let client=null;
@@ -59,10 +59,9 @@ if(publicRoute){
 await bindPreferences();
 await bindVisualLayers();
 bindSearch();
-bindSigningPreview();
 const chrome=bindChrome();
 document.querySelectorAll('.studio-account input:not([type=checkbox]):not([type=file]):not([type=range]):not([type=color]):not([type=hidden]),.studio-account textarea,.studio-account select:not(.ui-dropdown)').forEach(field=>field.classList.add('ui-field'));
-document.querySelectorAll('.studio-account button:not(.ui-password-field__toggle,.studio-photo-action,.global-close-button)').forEach(button=>button.classList.add('ui-button'));
+document.querySelectorAll('.studio-account button:not(.ui-password-field__toggle,.studio-photo-action,.global-close-button,.ui-reorder-handle,.ui-icon-button)').forEach(button=>button.classList.add('ui-button'));
 document.querySelectorAll('[data-signout]').forEach(button=>{button.classList.add('studio-signout');const icon=document.createElement('span');icon.className='studio-icon studio-signout-icon';icon.setAttribute('aria-hidden','true');button.prepend(icon);});
 const context={client,config,resolveUser,profileValues,validPhoto};
 const accessSetup=location.pathname==='/account/'&&new URLSearchParams(location.search).get('flow')==='studio-access';
@@ -83,7 +82,7 @@ await bindProfile(context);
 bindPartnershipThemes();
 await bindAccountAppearance(context);
 document.querySelector('main').hidden=false;
-await Promise.all([bindConnections(context),bindOverview(context)]);
+await Promise.all([bindConnections(context),bindOverview(context),bindOverviewPreferences(context)]);
 if(client)try{chrome.setUser(await resolveUser(client));}catch{console.error('[studio] Account verification unavailable');}
 if(location.pathname==='/account/')mountAccountPage();
 await Promise.all([

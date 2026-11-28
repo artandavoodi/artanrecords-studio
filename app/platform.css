@@ -8,6 +8,8 @@
 .studio-connection-list [data-connected=true] [data-service-status]::before { background:var(--status-success-color); }
 .studio-connection-icon { display:inline-block; flex:none; inline-size:var(--layout-home-platform-nav-icon-size); block-size:var(--layout-home-platform-nav-icon-size); background:currentColor; mask-size:contain; mask-position:center; mask-repeat:no-repeat; -webkit-mask-size:contain; -webkit-mask-position:center; -webkit-mask-repeat:no-repeat; }
 .studio-overview { display:grid; gap:var(--spacing-xl); }
+.studio-overview-option { gap:var(--spacing-md); padding-block:var(--spacing-sm); }
+.studio-overview-option > label { flex:1; min-inline-size:0; }
 .studio-overview-membership { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--spacing-lg); }
 .studio-overview-membership > div { display:flex; flex-direction:column; align-items:flex-start; padding:var(--spacing-lg); border-radius:var(--panel-radius-unified); background:var(--cv-surface); min-inline-size:0; }
 .studio-overview-membership strong { display:block; font-size:var(--font-size-md); font-weight:var(--font-weight-medium); margin-block:var(--spacing-md); }
