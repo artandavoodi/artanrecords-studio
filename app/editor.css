@@ -54,6 +54,8 @@
 .studio-editor-viewport { position:absolute; inset-block-start:0; inset-inline-start:var(--preview-offset,0px); inline-size:var(--preview-width,100%); block-size:var(--preview-height,100%); transform:scale(var(--preview-scale,1)); transform-origin:top left; background:var(--cv-page-bg); }
 .studio-editor-canvas iframe { display:block; inline-size:100%; block-size:100%; border:0; }
 .studio-editor-canvas iframe[hidden] { display:none; }
+.studio-editor-empty { display:grid; align-content:center; justify-items:center; gap:var(--spacing-lg); min-block-size:100%; padding:var(--spacing-xl); box-sizing:border-box; text-align:center; }
+.studio-editor-empty p { margin:0; max-inline-size:var(--reading-width-sm); }
 .studio-editor-controls[hidden] { display:none; }
 .studio-editor-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:var(--spacing-md); padding:var(--spacing-md); background:var(--cv-page-bg); border-block-end:var(--border-width-hairline) solid var(--cv-border); }
 .studio-editor-views { display:flex; align-items:center; gap:var(--spacing-sm); margin-inline-start:var(--spacing-lg); padding-inline-start:var(--spacing-lg); border-inline-start:var(--border-width-hairline) solid var(--cv-border); }

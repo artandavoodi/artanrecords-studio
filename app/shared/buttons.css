@@ -20,6 +20,10 @@
 /* =============================================================================
    02) SHARED BUTTON / CONTROL BASE
 ============================================================================= */
+:where(button,a[href],summary,select,input:is([type=button],[type=submit],[type=reset],[type=checkbox],[type=radio],[type=file]),[role=button]):not(:disabled):not([aria-disabled=true]):not([inert] *){
+  cursor:pointer;
+}
+
 .ui-button,
 .ui-control{
   appearance:none;
@@ -29,6 +33,12 @@
   align-items:center;
   justify-content:center;
   gap:var(--spacing-sm);
+  min-block-size:var(--button-height-md);
+  padding:var(--spacing-none) var(--button-padding-x-md);
+  border-radius:var(--button-radius-md);
+  color:var(--text-color);
+  font:inherit;
+  text-decoration:none;
   white-space:nowrap;
   border:none;
   background:transparent;

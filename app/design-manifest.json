@@ -1,8 +1,8 @@
 {
   "source": "artandavoodi/artan-store",
-  "revision": "389ded69a69c58ed4125a276230e1f23c078a26e",
+  "revision": "5da33cd87dd3dc92d6a240e0b5d943b96f8fce1c",
   "files": {
-    "buttons.css": "983ee7f5b342c3b26d79da020f4696f8c3fe65c699be3cc025235b039ff65508",
+    "buttons.css": "494622316829864e0f4030bc0916a2ac792120a61fc4e632f6ed18a739547c43",
     "password-field.css": "2f6bad49c2e0ffcb7f1125ea71e4a21532cfec9ee9530ccebe2f8247cfe522a1",
     "close-button.css": "b5ad572ef1c8bad5d0c36107b80d6293bc08c511f68838ec981b9dd1ec38d60e",
     "close-button.js": "3f5bde8e08d4f1e18cad86394b6d16ac083faa66edb00e0a63e0a8d86f074e01",

@@ -377,13 +377,22 @@ test('unpublished editor shows setup instead of a broken public page',async({pag
  await page.route('**/rest/v1/studio_artist_handles*',route=>route.fulfill({json:{approved_username:'testartist95'}}));
  await page.route('**/rest/v1/studio_artist_pages*',route=>route.fulfill({json:null}));
  await page.goto('/editor/');await expect(page.locator('[data-editor-frame]')).toBeHidden();await expect(page.getByRole('link',{name:'Set up artist page',exact:true})).toHaveAttribute('href','/profile/#profile-publication');await expect(page.locator('[data-editor-empty]')).toContainText('not published');
+ const action=page.locator('[data-editor-setup]');await expect(action.locator('.studio-icon')).toHaveCount(1);const geometry=await action.evaluate(el=>{const c=getComputedStyle(el);return {radius:parseFloat(c.borderRadius),border:c.borderTopWidth,gap:parseFloat(c.columnGap),button:el.getBoundingClientRect(),icon:el.querySelector('.studio-icon').getBoundingClientRect()};});expect(geometry.radius).toBeGreaterThan(0);expect(geometry.border).toBe('0px');expect(geometry.gap).toBeGreaterThan(0);expect(Math.abs(geometry.button.y+geometry.button.height/2-geometry.icon.y-geometry.icon.height/2)).toBeLessThan(1);
+ for(const theme of ['light','dark','custom']){await page.evaluate(theme=>window.NeuroartanTheme.applyThemeState({theme,...(theme==='custom'?{effective:'dark',tokens:{background:'#070909',text:'#dddfe0',accent:'#b8bbbd'}}:{})}),theme);const colors=await action.evaluate(el=>({text:getComputedStyle(el).color,background:getComputedStyle(el).backgroundColor,icon:getComputedStyle(el.querySelector('.studio-icon')).backgroundColor}));expect(colors.icon).toBe(colors.text);expect(colors.text).not.toBe(colors.background);}
+});
+test('workspace page headers use one compact size and inactive introductions stay out of navigation',async({page})=>{
+ await mockBackend(page);await signInFixture(page);let size;
+ for(const path of ['/','/projects/','/gallery/','/royalties/','/statements/','/payouts/']){
+  await page.goto(path);await expect(page.locator('html')).not.toHaveAttribute('data-page-loading');const heading=page.locator('.studio-page-header h1');await expect(heading).toBeVisible();const current=await heading.evaluate(el=>({size:getComputedStyle(el).fontSize,margin:getComputedStyle(el).marginTop}));size??=current.size;expect(current.size).toBe(size);expect(current.margin).toBe('0px');await expect(page.locator('#studio-workspace-navigation a[href="/referrals/"]')).toHaveCount(0);
+ }
 });
 test('approved username can request a reviewed replacement without changing the current address',async({page})=>{
- await mockBackend(page);await signInFixture(page);let pending=false;
+ await mockBackend(page);let pending=false;
  await page.route('**/rest/v1/studio_artist_handles*',route=>route.fulfill({json:{approved_username:'testartist95',requested_username:pending?'newmusician95':'testartist95',status:pending?'pending':'approved',notice:pending?'Awaiting review.':'Approved.'}}));
  await page.route('**/rest/v1/studio_artist_pages*',route=>route.fulfill({json:{username:'testartist95'}}));
  await page.route('**/rpc/studio_request_username',route=>{expect(route.request().postDataJSON()).toEqual({candidate:'newmusician95'});pending=true;return route.fulfill({json:null});});
- await page.goto('/profile/#profile-publication');const form=page.locator('[data-username-form]');await expect(form.getByRole('textbox')).toBeEditable();await form.getByRole('textbox').fill('newmusician95');await form.getByRole('button',{name:'Request username',exact:true}).click();await expect(page.locator('#username-status')).toContainText('current address stays active');await expect(page.locator('[data-public-page]')).toHaveAttribute('href','https://artanrecords.com/testartist95/');await expect(form.getByRole('textbox')).not.toBeEditable();
+ await signInFixture(page);
+ await page.goto('/profile/#profile-publication');const form=page.locator('[data-username-form]');await expect(form.getByRole('textbox')).toBeEditable();await form.getByRole('textbox').fill('newmusician95');await form.getByRole('button',{name:'Request change',exact:true}).click();await expect(page.locator('#username-status')).toContainText('current address stays active');await expect(page.locator('[data-public-page]')).toHaveAttribute('href','https://artanrecords.com/testartist95/');await expect(form.getByRole('textbox')).not.toBeEditable();await expect(form.getByRole('button',{name:'Awaiting review',exact:true})).toBeDisabled();
 });
 test('artist website navigation saves privately before explicit sharing',async({page})=>{
  await mockBackend(page);let saved;

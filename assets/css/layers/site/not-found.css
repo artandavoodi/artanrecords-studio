@@ -28,7 +28,6 @@
   --error404-eyebrow-color:color-mix(in srgb, var(--text-primary-color) 50%, transparent);
   --error404-body-color:color-mix(in srgb, var(--text-primary-color) 72%, transparent);
   --error404-primary-text:var(--text-primary-color);
-  --error404-primary-action-content:var(--color-white);
   --error404-action-icon-size:var(--icon-size-sm);
   --error404-secondary-border:var(--control-border);
   --error404-secondary-text:var(--text-primary-color);
@@ -222,6 +221,9 @@
 }
 
 .error404-action{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   gap:var(--control-gap);
 }
 
@@ -247,12 +249,6 @@
 .error404-action__icon--back{
   mask-image:url('/registry/icons/public/assets/core/navigation/direction/back.svg');
   -webkit-mask-image:url('/registry/icons/public/assets/core/navigation/direction/back.svg');
-}
-
-.error404-action--home,
-.error404-action--home:hover,
-.error404-action--home:focus-visible{
-  color:var(--error404-primary-action-content);
 }
 
 /* =========================================================

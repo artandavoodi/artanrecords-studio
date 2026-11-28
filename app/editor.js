@@ -70,9 +70,8 @@ export async function bindArtistEditor({client,resolveUser}){
  const publication=await client.from('studio_artist_pages').select('username').eq('username',username).maybeSingle();
  if(publication.error||!publication.data){
   status.textContent=publication.error?'Your artist page could not be checked. Please refresh.':'Publish your artist profile to start the design preview.';
-  const empty=root.querySelector('[data-editor-empty]');empty.replaceChildren();
-  const message=document.createElement('p'),link=document.createElement('a');message.textContent=publication.error?'Preview unavailable.':'Your artist page is not published yet.';
-  link.className='ui-button ui-button--primary';link.href='/profile/#profile-publication';link.textContent='Set up artist page';empty.append(message,link);return;
+  root.querySelector('[data-editor-empty-message]').textContent=publication.error?'Preview unavailable.':'Your artist page is not published yet.';
+  root.querySelector('[data-editor-setup]').hidden=Boolean(publication.error);return;
  }
  const local=location.hostname==='127.0.0.1';
  const url=new URL('/'+encodeURIComponent(username)+'/',local?'http://127.0.0.1:8912':'https://artanrecords.com');url.searchParams.set('editor-preview','1');
