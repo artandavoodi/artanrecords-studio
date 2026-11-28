@@ -76,7 +76,7 @@ html[data-studio-rail=closed] .studio-platform-group a { inline-size:var(--contr
 .studio-settings-content { min-inline-size:0; padding-block:var(--spacing-lg); }
 .studio-settings-group { display:grid; gap:var(--spacing-lg); }
 .studio-settings-group[hidden] { display:none; }
-.studio-settings-group > h2 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
+.studio-settings-group > h2,.studio-settings-group > section > h2 { margin:0; font-size:var(--font-size-h3); font-weight:var(--font-weight-medium); }
 @media(max-width:1024px){.studio-settings { grid-template-columns:minmax(0,1fr); }.studio-settings-navigation { border:0; }.studio-settings-navigation-items { position:static; max-block-size:none; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:var(--spacing-md); row-gap:var(--spacing-xs); }}
 .studio-settings .ui-button { display:inline-flex; align-items:center; justify-content:center; gap:var(--spacing-sm); min-block-size:var(--control-height-md); padding:var(--spacing-sm) var(--spacing-lg); border:0; border-radius:var(--account-field-radius); background:var(--control-bg-hover); color:inherit; font:inherit; cursor:pointer; }
 .studio-connection-list { display:grid; gap:var(--spacing-lg); }
